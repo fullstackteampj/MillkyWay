@@ -2,6 +2,9 @@ package board;
 
 import java.sql.*;
 import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
 import DBConnection.DBConnectionMgr;
 
 public class BoardMgr {
@@ -231,5 +234,24 @@ public class BoardMgr {
 		}
 		
 		return bean;
+	}
+	
+	
+	/* board04(글작성페이지) 활용메서드 */
+	// 작성글 insert
+	public void insertBoard(HttpServletRequest req) {
+		
+		try {
+			sql = "insert into boardtbl (userid, nickname, title, content, photo, genre, tab, ip)"
+					+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
+			pstmt = con.prepareStatement(sql);
+			// jsp에서 userid받아 보내야함
+			// pstmt.setInt(1, req.getParameter("userid"));
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
 	}
 }

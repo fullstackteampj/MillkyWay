@@ -1,11 +1,15 @@
 package routeServlet;
 
 import javax.servlet.ServletException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import board.BoardMgr;
+
 import java.io.IOException;
 
 @WebServlet("/board/*")
@@ -17,7 +21,17 @@ public class BoardServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        handleRequest(request, response);
+    	request.setCharacterEncoding("UTF-8");
+    	
+    	// 요청URL 불러오기
+    	String path = request.getPathInfo();
+    	
+    	// 새글작성 요청
+    	if ("/boardPost".equals(path)) {
+    		BoardMgr bMgr = new BoardMgr();
+    		bMgr.insertBoard(request);
+    	}
+        
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

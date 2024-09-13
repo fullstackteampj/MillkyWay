@@ -74,12 +74,6 @@
   			location.href = "../login/login01";
   		}
   	}
-  	
-  	// 카테고리의 이름과 파라미터로 전송되는 값 일치
-  	function getCateName() {
-  		
-  	}
-  	
   </script>
 </head>
 <body>
