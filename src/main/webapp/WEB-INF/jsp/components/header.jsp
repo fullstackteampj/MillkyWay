@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div class="headMiddle">
+      <div class="headMiddle"> 
 
         <h1>은하수책방</h1>
 
