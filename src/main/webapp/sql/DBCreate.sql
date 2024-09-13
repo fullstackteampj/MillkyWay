@@ -130,10 +130,10 @@ CREATE TABLE boardtbl (
     ip VARCHAR(45),                                 -- 작성자 IP 주소
     update_date DATE,                               -- 게시물 수정 날짜
     comment_count INT DEFAULT 0,                    -- 댓글 수 (기본값 0)
-    status VARCHAR(20),                             -- 게시물 상태 (active, inactive 등)
+    status VARCHAR(20)                         		-- 게시물 상태 (active, inactive 등)
 
-    FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 작성자 ID와 외래 키 연결
-    FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
+    -- FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 작성자 ID와 외래 키 연결
+    -- FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
 );
 
 -- 댓글 테이블
@@ -157,10 +157,10 @@ CREATE TABLE Reviewtbl (
     bookid INT, 
     score INT, 
     nickname VARCHAR(50), 
-    content TEXT, 
+    content TEXT
     
-    FOREIGN KEY (userid) REFERENCES membertbl(userid),
-    FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
+    -- FOREIGN KEY (userid) REFERENCES membertbl(userid),
+    -- FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
 );
 
 

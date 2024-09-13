@@ -10,8 +10,8 @@ import java.util.Map;
 public class SearchBookApiRef {
 
     public static void main(String[] args) {
-        String clientId = "Naver-Client-Id"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "Naver-Client-Secret"; // 애플리케이션 클라이언트 시크릿
+        String clientId = "7NOGl4nY8Lp_ieE9Ip9X"; // 애플리케이션 클라이언트 아이디
+        String clientSecret = "Uo73ED7wKU"; // 애플리케이션 클라이언트 시크릿
 
         String text = null;
         try {
