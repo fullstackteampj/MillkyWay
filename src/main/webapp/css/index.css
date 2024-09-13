@@ -1,0 +1,435 @@
+#wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+#wrap > header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 800;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  border-bottom: 2px solid #33afe9;
+}
+#wrap > header > .headTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  height: 40px;
+  margin: 1px auto 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+#wrap > header > .headTop > .frame > .topGnb > li {
+  width: 120px;
+  height: 40px;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on, #wrap > header > .headTop > .frame > .topGnb > li:hover {
+  background-color: #fff;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on > a, #wrap > header > .headTop > .frame > .topGnb > li:hover > a {
+  color: #1a6080;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > .underNav {
+  display: none;
+  position: absolute;
+  top: 41px;
+  left: calc((100% - 1200px) / 2);
+  z-index: 300;
+  width: 1200px;
+  height: auto;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
+  display: block;
+}
+#wrap > header > .headTop > .frame .userBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+}
+#wrap > header > .headTop > .frame .userBar > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+#wrap > header > .headTop > .frame .userBar > li > a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+#wrap > header > .headTop > .frame .userBar > li > a > .arrow {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList {
+  display: none;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li {
+  line-height: 25px;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
+  font-weight: 600;
+}
+#wrap > header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
+#wrap > header > .headTop > .frame .userBar > li > .myPageList:hover {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+  left: -10px;
+  width: 120px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 7px 0 #666;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+#wrap > header > .headMiddle > h1 {
+  position: absolute;
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchFrame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #33afe9;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchFrame > p.searchId {
+  width: 80px;
+  height: 40px;
+  color: #1a6080;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > form {
+  flex: 1 1 auto;
+}
+#wrap > header > .headMiddle > .searchFrame > form > input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 30px;
+}
+#wrap > header > .headMiddle > .searchFrame > span {
+  display: block;
+  width: 80px;
+  height: 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchList {
+  display: none;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList,
+#wrap > header > .headMiddle > .searchList:hover {
+  display: block;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: calc(50% - 250px);
+  padding: 0 10px;
+  background-color: #fff;
+  border: 2px solid #1a6080;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList > li,
+#wrap > header > .headMiddle > .searchList:hover > li {
+  margin: 5px;
+  color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > img.logo {
+  position: absolute;
+  top: calc(50% - 25px);
+  right: 100px;
+  width: 100px;
+  height: 50px;
+}
+
+#wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+#wrap > section {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section > .recommendSlide {
+  overflow: hidden;
+  position: relative;
+  width: 1200px;
+  padding: 10px 0;
+}
+#wrap > section > .recommendSlide > .frame {
+  display: flex;
+  width: 2400px;
+  height: 550px;
+  transition: all 0.5s ease-in-out;
+}
+#wrap > section > .recommendSlide > .prev {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  display: block;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  transform: translate(0, -50%);
+}
+#wrap > section > .recommendSlide > .prev:hover {
+  box-shadow: 0px 0px 3px #999;
+}
+#wrap > section > .recommendSlide > .next {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  display: block;
+  width: 40px;
+  height: 40px;
+  font-size: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  transform: translate(0, -50%);
+}
+#wrap > section > .recommendSlide > .next:hover {
+  box-shadow: 0px 0px 3px #999;
+}
+#wrap > section > .bestSlide {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  background: #fff;
+}
+#wrap > section > .bestSlide > .bookCard {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  position: relative;
+  width: 250px;
+  height: auto;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0 0 5px 0 #000;
+  box-sizing: border-box;
+}
+#wrap > section > .bestSlide > .bookCard > img {
+  width: 100%;
+  box-shadow: 0 0 10px 0 #000;
+  margin-bottom: 80px;
+}
+#wrap > section > .bestSlide > .bookCard > a {
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+}
+#wrap > section > .bestSlide > .bookCard > a > .title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+}
+#wrap > section > .bestSlide > .bookCard > a > .author {
+  width: 100%;
+  text-align: center;
+}
+#wrap > section > .bestSlide > .bookCard > a:hover {
+  text-decoration: underline;
+}
+#wrap > section > .bestSlide > .bookCard > .pointer {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 200;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(100, 100, 100, 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+}
+#wrap > section > .bestSlide > .bookCard > .pointer > i {
+  color: #fff;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+}
+#wrap > section > .bestSlide > .bookCard > .pointer > .fa-ellipsis-vertical {
+  display: block;
+}
+#wrap > section > .bestSlide > .bookCard > .pointer > .fa-x {
+  display: none;
+}
+#wrap > section > .bestSlide > .bookCard > .addCartContainer {
+  display: none;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 250px;
+  height: 100%;
+  background-color: rgba(100, 100, 100, 0.8);
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addCart {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 50px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addCart:hover {
+  background-color: rgba(255, 108, 159, 0.5);
+}
+#wrap > section > .boardContainer {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#wrap > section > .boardContainer > div {
+  width: 48%;
+  height: 420px;
+  padding: 0 20px;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > section > .boardContainer > div > h3 {
+  padding: 20px;
+  font-size: 20px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+#wrap > section > .boardContainer > div > h3:hover {
+  text-decoration: underline;
+}
+#wrap > section > .boardContainer > div > ul {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  padding: 0 20px;
+  height: 360px;
+  box-sizing: border-box;
+}
+#wrap > section > .boardContainer > div > ul li {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  padding-right: 25%;
+  line-height: 50px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+#wrap > section > .boardContainer > div > ul li:hover {
+  text-decoration: underline;
+}
+#wrap > section > .boardContainer > div > ul li > .author {
+  position: absolute;
+  right: 0px;
+  margin: 0 10px;
+}
+#wrap > footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+#wrap > footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=index.css.map */

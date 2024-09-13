@@ -1,0 +1,29 @@
+.duplication {
+  width: 100%;
+  height: 100%;
+  color: #222;
+  text-align: center;
+}
+.duplication > h1 {
+  padding: 20px;
+  font-size: 25px;
+  line-height: 1.8;
+}
+.duplication > h1 > span {
+  color: rgb(100, 130, 173);
+}
+.duplication > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin: 40px auto 20px;
+  background-color: rgb(226, 218, 214);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.duplication > button:hover {
+  background-color: #ded5d0;
+}/*# sourceMappingURL=signup024.css.map */

@@ -1,0 +1,113 @@
+@charset "utf-8";
+
+section.myPage01,
+section.myPage02,
+section.myPage03,
+section.myPage04,
+section.myPage05{
+    width: 1200px;
+    margin: 130px auto 0;
+
+    >.sectionHead{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        padding: 0 10px 10px;
+        border-bottom: 1px solid $priColor;
+        box-sizing: border-box;
+
+        >.myPageList{
+            width: 15%;
+            text-align: center;
+
+            >li{
+                height: 40px;
+                font-size: 16px;
+                line-height: 40px;
+                background-color: #fafafa;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: $priColor;
+                }
+
+                >a {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }//.myList
+
+        >.myInfoContainer{
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            height: auto;
+            padding: 20px;
+            background-color: $priWhite;
+            box-sizing: border-box;
+
+            >h3{
+                width: 100%;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+            }
+            
+            >.myGrade{
+                width: 40%;
+                height: 160px;
+                background-color: #fff;
+                box-sizing: border-box;
+
+                >.grade{
+                    @include flexCenter();
+                    flex-flow: column nowrap;
+                    width: 80%;
+                    height: 80px;
+                    margin: 0 auto;
+
+                    >.userName{
+                        font-size: 14px;
+                    }
+
+                    >.userGrade{
+                        height: 30px;
+                        font-size: 20px;
+                        line-height: 30px;
+                    }
+                }
+
+                >.point{
+                    @include flexCenter();
+                    flex-flow: column nowrap;
+                    width: 80%;
+                    height: 80px;
+                    margin: 0 auto;
+
+                    >span{
+                        height: 20px;
+                        line-height: 20px;
+                    }
+                }
+            }//.myGrade
+            
+            >.myInfo{
+                width: calc(60% - 10px);
+                height: 160px;
+                padding: 20px;
+                background-color: #fff;
+                box-sizing: border-box;
+
+                >p{
+                    height: 25px;
+                    line-height: 25px;
+                }
+            }//.myInfo
+        }//.myInfoContainer
+    }//.sectionHead
+}//section

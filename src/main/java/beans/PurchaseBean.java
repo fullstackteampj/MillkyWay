@@ -1,0 +1,56 @@
+package beans;
+
+public class PurchaseBean {
+	private int purchaseid;
+	private int userid;
+	private int bookid;
+	private String status;
+	private String purchase_date ;
+	private int quantity;
+	private int totalCount;
+	
+	public int getPurchaseid() {
+		return purchaseid;
+	}
+	public void setPurchaseid(int purchaseid) {
+		this.purchaseid = purchaseid;
+	}
+	public int getUserid() {
+		return userid;
+	}
+	public void setUserid(int userid) {
+		this.userid = userid;
+	}
+	public int getBookid() {
+		return bookid;
+	}
+	public void setBookid(int bookid) {
+		this.bookid = bookid;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getPurchase_date() {
+		return purchase_date;
+	}
+	public void setPurchase_date(String purchase_date) {
+		this.purchase_date = purchase_date;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	public int getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+	
+	
+}

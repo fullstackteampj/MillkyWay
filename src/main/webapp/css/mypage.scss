@@ -1,0 +1,688 @@
+@charset "utf-8";
+
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+// @media screen and (max-width: 1100px) {
+//     left: 0;
+// }
+
+@mixin flexCenter() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@import "_header";
+@import "_myPageSectionHead";
+
+#wrap {
+    width: 1200px;
+    margin: 0 auto;
+    // border: 1px solid #000;
+
+    >section.myPage01{
+        width: 1200px;
+        margin: 130px auto 0;
+
+
+        >.mainContainer{
+            width: 100%;
+            height: 900px;
+            margin-top: -20px;
+            padding: 50px;
+            box-sizing: border-box;
+
+            >h3{
+                font-size: 20px;
+                height: 30px;
+                line-height: 30px;
+                margin-bottom: 10px;
+            }
+
+            >.buyList{
+                border-radius: 10px;
+                background-color: #eee;
+
+                >li{
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    height: 150px;
+                    padding: 10px;
+                    border-bottom: 1px solid #ddd;
+                    box-sizing: border-box;
+
+                    >img{
+                        height: 100%;
+                    }
+
+                    >.bookInfo{
+                        display: flex;
+                        flex-flow: column nowrap;
+                        justify-content: space-evenly;
+                        flex: 1 1 0;
+                        height: 100%;
+                        padding-left: 50px;
+                        box-sizing: border-box;
+                        
+                        >.buydate{
+                            color: #aaa;
+                        }
+
+                        >.title{
+                            font-size: 20px;
+                        }
+
+                        >.author{
+                            font-size: 14px;
+                        }
+
+                        >.price{
+                            font-weight: 800;
+                        }
+                    }//.bookInfo
+
+                    >.content{
+                        display: flex;
+                        flex-flow: column wrap;
+                        justify-content: space-around;
+                        width: 20%;
+                        height: 100%;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 10px;
+                        box-sizing: border-box;
+
+                        p{
+                            font-size: 14px;
+                        }
+
+                        >.status{
+                            color: skyblue;
+                            font-size: 20px;
+                            font-weight: 600;
+                        }
+                    }//.content
+                }//li
+            }//.buyList
+
+            >.listSeletor{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 30px;
+                margin-top: 10px;
+
+                >li{
+                    @include flexCenter();
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                    cursor: pointer;
+
+                    >a {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &:hover{
+                        font-weight: 800;
+                    }
+
+                    &.on{
+                        text-decoration: underline;
+                    }
+                }
+            }//.listSeletor
+        }//.mainContainer
+
+
+    }//section
+
+    >section.myPage02{
+        width: 1200px;
+        margin: 130px auto 0;
+
+        >.mainContainer{
+            width: 100%;
+            height: 900px;
+            margin-top: -20px;
+            padding: 50px;
+            box-sizing: border-box;
+
+            >h3{
+                font-size: 20px;
+                height: 30px;
+                line-height: 30px;
+                margin-bottom: 10px;
+            }
+
+            >.cancelList{
+                border-radius: 10px;
+                background-color: #eee;
+
+                >li{
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    height: 150px;
+                    padding: 10px;
+                    border-bottom: 1px solid #ddd;
+                    box-sizing: border-box;
+
+                    >img{
+                        height: 100%;
+                    }
+
+                    >.bookInfo{
+                        display: flex;
+                        flex-flow: column nowrap;
+                        justify-content: space-evenly;
+                        flex: 1 1 0;
+                        height: 100%;
+                        padding-left: 50px;
+                        box-sizing: border-box;
+                        
+                        >.buydate{
+                            color: #aaa;
+                        }
+
+                        >.title{
+                            font-size: 20px;
+                        }
+
+                        >.author{
+                            font-size: 14px;
+                        }
+
+                        >.price{
+                            font-weight: 800;
+                        }
+                    }//.bookInfo
+
+                    >.content{
+                        display: flex;
+                        flex-flow: column wrap;
+                        justify-content: space-around;
+                        width: 20%;
+                        height: 100%;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 10px;
+                        box-sizing: border-box;
+
+                        p{
+                            font-size: 14px;
+                        }
+
+                        >.status{
+                            color: skyblue;
+                            font-size: 20px;
+                            font-weight: 600;
+                        }
+                    }//.content
+                }//li
+            }//.buyList
+
+            >.listSeletor{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 30px;
+                margin-top: 10px;
+
+                >li{
+                    @include flexCenter();
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                    cursor: pointer;
+
+                    >a {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &:hover{
+                        font-weight: 800;
+                    }
+
+                    &.on{
+                        font-weight: 800;
+                        text-decoration: underline;
+                    }
+                }
+            }//.listSeletor
+        }//.mainContainer
+
+    }//section
+
+    >section.myPage03{
+        width: 1200px;
+        margin: 130px auto 0;
+
+        >.mainContainer{            
+            width: 100%;
+            height: auto;
+            margin-top: -20px;
+            padding: 50px;
+            box-sizing: border-box;
+
+            >h3{
+                font-size: 20px;
+                height: 30px;
+                line-height: 30px;
+                margin-bottom: 10px;
+            }
+
+            >.updateContainer{
+                width: 100%;
+                height: auto;
+
+                >form{
+                    display: flex;
+                    flex-flow: row wrap;
+                    padding: 0 30px;
+                    box-sizing: border-box;
+
+                    >label{
+                        width: 100%;
+                        height: 40px;
+                        font-size: 16px;
+                        line-height: 40px;
+
+                        &[for=address]{
+                            width: 30px;
+                            text-align: center;
+                        }
+                        &+button{
+                            height: 25px;
+                            margin-top: 8px;
+                            margin-left: 20px;
+                        }
+                    }//label
+                    
+                    >input{
+                        width: 100%;
+                        height: 30px;
+                        line-height: 30px;
+                    }
+
+                    >input[type=radio],
+                    >span{
+                        width: 20px;
+                        height: 30px;
+                        line-height: 30px;
+                        text-align: center;
+                    }
+
+                    >button{
+                        height: 40px;
+                        margin-top: 30px;
+                        margin-left: 200px;
+                    }
+                }//form
+            }//.updateContainer
+        }//.mainContainer
+
+    }//section
+
+    >section.myPage04{
+        width: 1200px;
+        margin: 130px auto 0;
+
+
+        >.mainContainer{
+            width: 100%;
+            height: auto;
+            margin-top: -20px;
+            padding: 50px;
+            box-sizing: border-box;
+
+            >h3{
+                font-size: 20px;
+                height: 30px;
+                line-height: 30px;
+                margin-bottom: 10px;
+            }
+
+            >.myBoardList{
+
+                >li{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    height: auto;
+                    padding: 10px 20px;
+                    margin-bottom: 10px;
+                    background-color: #eee;
+                    border-radius: 10px;
+                    box-sizing: border-box;
+
+                    >.boardContainer{
+                        width: 90%;
+
+                        >.title{
+                            //1줄 말줄임처리
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            word-break: break-all;
+
+                            display: inline-block;
+                            width: 84%;
+                            height: 30px;
+                            font-size: 24px;
+                            line-height: 30px;
+                        }
+                        >.regDate{
+                            display: inline-block;
+                            width: 15%;
+                            color: #666;
+                            text-align: center;
+                        }
+                        >.content{
+                            //1줄 말줄임처리
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            word-break: break-all;
+
+                            width: 100%;
+                            margin-top: 10px;
+                            padding-right: 20px;
+                            box-sizing: border-box;
+                        }
+                    }//.boardContainer
+
+                    >.controls{
+                        display: flex;
+                        flex-flow: row wrap;
+                        justify-content: space-between;
+                        width: 10%;
+
+                        >i{
+                            display: none;
+                            width: 90%;
+                            height: 20px;
+                            margin: 0 auto;
+                            line-height: 20px;
+                            text-align: right;
+                            cursor: pointer;
+
+                            &.on{
+                                display: block;
+                            }
+                        }
+
+                        >button{
+                            width: 50px;
+                            margin-top: 10px;
+                            border-radius: 5px;
+
+                            &:hover{
+                                background-color: #aaa;
+                            }
+                        }
+                    }//.controls
+                }//li
+            }//.myBoardList
+
+            >.listSeletor{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 30px;
+                margin-top: 10px;
+
+                >li{
+                    @include flexCenter();
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                    cursor: pointer;
+
+                    >a {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &:hover{
+                        font-weight: 800;
+                    }
+
+                    &.on{
+                        text-decoration: underline;
+                    }
+                }
+            }//.listSeletor
+        }//.mainContainer
+
+
+    }//section
+
+    >section.myPage05{
+        width: 1200px;
+        margin: 130px auto 0;
+
+        >.mainContainer{
+            width: 100%;
+            height: 900px;
+            margin-top: -20px;
+            padding: 50px;
+            box-sizing: border-box;
+
+            >h3{
+                display: inline-block;
+                font-size: 20px;
+                height: 30px;
+                padding: 10px;
+                margin-top: -10px;
+                line-height: 30px;
+                text-align: center;
+                border: 1px solid $priWhite;
+                border-radius: 10px 10px 0 0;
+                cursor: pointer;
+
+                &.visible{
+                    color: #fff;
+                    background-color: $priStrong;
+                }
+            }
+
+            >.shoppingCart,
+            .wishList{
+                display: none;
+                border-radius: 0 10px 10px 10px;
+                background-color: #eee;
+
+                &.visible{
+                    display: block;
+                }
+
+                >li{
+                    display: flex;
+                    flex-flow: row wrap;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    height: 150px;
+                    padding: 10px;
+                    border-bottom: 1px solid #ddd;
+                    box-sizing: border-box;
+
+                    >input[type = checkbox]{
+                        margin-right: 10px;
+                    }
+
+                    >img{
+                        height: 100%;
+                    }
+
+                    >.bookInfo{
+                        display: flex;
+                        flex-flow: column nowrap;
+                        justify-content: space-evenly;
+                        flex: 1 1 0;
+                        height: 100%;
+                        padding-left: 50px;
+                        box-sizing: border-box;
+                        
+                        >.buydate{
+                            color: #aaa;
+                        }
+
+                        >.title{
+                            font-size: 20px;
+                        }
+
+                        >.author{
+                            font-size: 14px;
+                        }
+
+                        >.price{
+                            font-weight: 800;
+                        }
+                    }//.bookInfo
+
+                    >.content{
+                        display: flex;
+                        flex-flow: column wrap;
+                        justify-content: space-around;
+                        width: 20%;
+                        height: 100%;
+                        padding: 10px 20px;
+                        background-color: #fff;
+                        border-radius: 10px;
+                        box-sizing: border-box;
+
+                        >button{
+                            background: none;
+                            border: none;
+                            outline: none;
+
+                            height: 25px;
+                            line-height: 25px;
+                            border: 1px solid $priColor;
+                            border-radius: 10px;
+
+                            &:hover{
+                                color: #fff;
+                                background-color: $priColor;
+                            }
+                        }
+                    }//.content
+                }//li
+
+                >.chkPrinter{
+                    display: none;
+                    justify-content: center;
+                    align-items: center;
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    height: 60px;
+                    // height: 0;
+                    text-align: center;
+                    background-color: #fff;
+                    border-top: 1px solid #000;
+
+                    &.checked {
+                        display: flex;
+                    }
+
+                    >.mainDescript{
+                        font-size: 24px;
+                        width: 300px;
+                    }
+                    >.totalPrice{
+                        font-size: 20px;
+                        width: 300px;
+                    }
+
+                    >button{
+                        background: none;
+                        border: none;
+                        outline: none;
+
+                        width: 100px;
+                        height: 40px;
+                        margin: 0 100px;
+                        font-weight: 400;
+                        font-size: 14px;
+                        border: 1px solid $priColor;
+                        border-radius: 5px;
+
+                        &.buying{
+                            color: #fff;
+                            background-color: $priColor;
+                        }
+                    }
+                }//.chkBoxPrinter
+            }//.shoppingCart,.wishList
+
+            >.listSeletor{
+                display: none;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 30px;
+                margin-top: 10px;
+
+                &.visible {
+                    display: flex;
+                }
+
+                >li{
+                    @include flexCenter();
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                    cursor: pointer;
+
+                    >a {
+                        display: block;
+                        width: 100%;
+                        height: 100%;
+                        text-align: center;
+                    }
+
+                    &:hover{
+                        font-weight: 800;
+                    }
+
+                    &.on{
+                        text-decoration: underline;
+                    }
+                }
+            }//.listSeletor
+        }//.mainContainer
+
+
+    }//section
+
+
+    > footer {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 50px;
+        background-color: #aaa;
+        >address{
+            height: 100px;
+            @include flexCenter();
+        }
+    }//footer
+
+}//#wrap

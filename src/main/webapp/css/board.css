@@ -1,0 +1,870 @@
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Bold";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+* {
+  font-family: "Pretendard-Regular";
+}
+
+h1, h2 {
+  letter-spacing: -2px;
+}
+
+#wrap {
+  border-top: 1px solid transparent;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  min-width: 1200px;
+  height: auto;
+  margin: 0 auto;
+  background-color: #fff;
+  border-bottom: 2px solid #33afe9;
+  border-top: 1px solid transparent;
+  z-index: 800;
+}
+header > .headTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #33afe9;
+}
+header > .headTop > .frame {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  height: 40px;
+  margin: 1px auto 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+header > .headTop > .frame > .topGnb {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+header > .headTop > .frame > .topGnb > li {
+  width: 120px;
+  height: 40px;
+  background-color: #33afe9;
+}
+header > .headTop > .frame > .topGnb > li.on, header > .headTop > .frame > .topGnb > li:hover {
+  background-color: #fff;
+}
+header > .headTop > .frame > .topGnb > li.on > a, header > .headTop > .frame > .topGnb > li:hover > a {
+  color: #1a6080;
+}
+header > .headTop > .frame > .topGnb > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+header > .headTop > .frame .userBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+}
+header > .headTop > .frame .userBar > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+header > .headTop > .frame .userBar > li > a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+header > .headTop > .frame .userBar > li > a > .arrow {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+header > .headTop > .frame .userBar > li > .myPageList {
+  display: none;
+}
+header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
+header > .headTop > .frame .userBar > li > .myPageList:hover {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+  left: -10px;
+  width: 100px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 7px 0 #666;
+  box-sizing: border-box;
+}
+header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList > li,
+header > .headTop > .frame .userBar > li > .myPageList:hover > li {
+  line-height: 25px;
+}
+header > .headMiddle {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+header > .headMiddle > h1 {
+  position: absolute;
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+header > .headMiddle > .searchFrame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #33afe9;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+header > .headMiddle > .searchFrame > p.searchId {
+  width: 80px;
+  height: 40px;
+  color: #1a6080;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+header > .headMiddle > .searchFrame > input {
+  border: none;
+  outline: none;
+  flex: 1 1 auto;
+  height: 30px;
+}
+header > .headMiddle > .searchFrame > span {
+  display: block;
+  width: 80px;
+  height: 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #33afe9;
+}
+header > .headMiddle > .searchList {
+  display: none;
+}
+header > .headMiddle:has(p.searchId:hover) > .searchList,
+header > .headMiddle > .searchList:hover {
+  display: block;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: calc(50% - 250px);
+  padding: 0 10px;
+  background-color: #fff;
+  border: 2px solid #1a6080;
+  box-sizing: border-box;
+}
+header > .headMiddle:has(p.searchId:hover) > .searchList > li,
+header > .headMiddle > .searchList:hover > li {
+  margin: 5px;
+  color: #33afe9;
+  cursor: pointer;
+}
+header > .headMiddle > img.logo {
+  position: absolute;
+  top: calc(50% - 25px);
+  right: 100px;
+  width: 100px;
+  height: 50px;
+}
+
+header.scrolled > .headTop {
+  position: absolute;
+  top: -100%;
+}
+header.scrolled > .headMiddle {
+  height: 50px;
+  margin-top: 0px;
+}
+
+section {
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+  min-height: 600px;
+  margin-top: 170px;
+  padding-bottom: 120px;
+}
+section #category {
+  position: absolute;
+  left: 0;
+  width: 200px;
+  height: 506px;
+  border: 1px solid #ddd;
+}
+section #category > h3 {
+  padding: 12px;
+}
+section #category > ul {
+  font-size: 14px;
+}
+section #category > ul > li {
+  background-color: #fff;
+}
+section #category > ul > li > a {
+  padding: 6px 12px;
+  line-height: 30px;
+  height: 30px;
+  display: block;
+}
+section #category > ul > li > a:hover {
+  font-family: "Pretendard-Bold";
+  color: #33afe9;
+  font-size: 15px;
+}
+section #category > ul > li:last-of-type > a {
+  border-bottom: none;
+}
+section #category > ul > li.on > a {
+  font-family: "Pretendard-Bold";
+  color: #33afe9;
+  font-size: 15px;
+}
+section > #post {
+  width: 780px;
+  margin: 0 auto;
+}
+section > #post > #head {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  margin-bottom: 12px;
+}
+section > #post > #head > h2 {
+  font-size: 30px;
+  margin-right: 12px;
+}
+section > #post > #head > #tab {
+  display: flex;
+  font-size: 16px;
+}
+section > #post > #head > #tab > li {
+  margin: 0 7px;
+}
+section > #post > #head > #tab > li.on > a {
+  font-family: "Pretendard-Bold";
+  color: #33afe9;
+}
+section > #post > #head > #tab > li > a:hover {
+  color: #33afe9;
+}
+section > #post > #head > a {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+  padding: 10px 17px;
+  color: #fff;
+  font-size: 13px;
+  font-family: "Pretendard-Bold";
+  background-color: #33afe9;
+  border-radius: 3px;
+}
+section > #post > #list {
+  border: 1px solid #ccc;
+  padding: 0 10px;
+}
+section > #post > #list > a {
+  display: flex;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+section > #post > #list > a:last-of-type {
+  border: none;
+}
+section > #post > #list > a > .kind {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 70px;
+  color: #ccc;
+  text-align: center;
+}
+section > #post > #list > a .content {
+  width: 1px;
+  flex: 1 0 0;
+  padding: 0 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+section > #post > #list > a .content > .title {
+  padding: 5px 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+section > #post > #list > a .content > .title > span.commentCount {
+  margin-left: 3px;
+  color: #1a6080;
+}
+section > #post > #list > a .content > .postInfo {
+  display: flex;
+  color: #ccc;
+  font-size: 12px;
+}
+section > #post > #list > a .content > .postInfo > p {
+  border-right: 1px solid #ddd;
+  padding: 0 12px;
+}
+section > #post > #list > a .content > .postInfo > p:first-of-type {
+  padding-left: 0;
+}
+section > #post > #list > a .content > .postInfo > p:last-of-type {
+  border: none;
+  padding-right: 0;
+}
+section > #post > #list > a .content > .postInfo > p.over15 {
+  font-family: "Pretendard-Bold";
+  color: #1a6080;
+}
+section > #post > #list > a > .frame {
+  width: 50px;
+  height: 40px;
+  flex: 0 0 auto;
+}
+section > #post > #list > a > .frame > img {
+  width: 100%;
+  height: 100%;
+}
+section > #post > #pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  margin: 24px auto;
+  font-size: 15px;
+}
+section > #post > #pagination > li {
+  height: 100%;
+}
+section > #post > #pagination > li > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-left: none;
+}
+section > #post > #pagination > li > a:hover {
+  background-color: #edf5f8;
+  box-shadow: 0px 0px 1px 1px #33afe9;
+  border: 1px solid #33afe9;
+}
+section > #post > #pagination > li:first-of-type > a {
+  border-left: 1px solid #ccc;
+}
+section > #post > #pagination > li.on > a {
+  font-family: "Pretendard-Bold";
+  color: #1a6080;
+  background-color: #edf5f8;
+  box-shadow: 0px 0px 1px 1px #33afe9;
+  border: 1px solid #33afe9;
+}
+section > #post #postSearch > form {
+  display: flex;
+  justify-content: center;
+  font-size: 0;
+}
+section > #post #postSearch > form > select {
+  text-align: center;
+  width: 100px;
+  height: 35px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-right: none;
+  outline: none;
+}
+section > #post #postSearch > form > select:focus {
+  box-shadow: 0px 0px 3px 1px #33afe9;
+  border: 1px solid #33afe9;
+  z-index: 100;
+}
+section > #post #postSearch > form > input {
+  width: 300px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-right: none;
+  outline: none;
+}
+section > #post #postSearch > form > input:focus {
+  box-shadow: 0px 0px 3px 1px #33afe9;
+  border: 1px solid #33afe9;
+  z-index: 100;
+}
+section > #post #postSearch > form > button {
+  width: 60px;
+  border: 1px solid #ccc;
+  background: none;
+  outline: none;
+}
+section > #post #postSearch > form > button:focus {
+  box-shadow: 0px 0px 3px 1px #33afe9;
+  border: 1px solid #33afe9;
+  z-index: 100;
+}
+section > #post #postSearch > form > button:hover {
+  background-color: #edf5f8;
+}
+section > #bestPost {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 240px;
+  margin-top: 51px;
+  padding: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+}
+section > #bestPost > h3 {
+  font-size: 20px;
+  margin-bottom: 7px;
+}
+section > #bestPost > ul {
+  font-size: 14px;
+}
+section > #bestPost > ul > li {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 5px 0;
+}
+section > #bestPost > ul > li > a:hover {
+  color: #ccc;
+}
+section > h2 {
+  font-size: 30px;
+  margin-bottom: 7px;
+}
+section > form#FrmPost {
+  position: relative;
+}
+section > form#FrmPost > #writeArea {
+  padding: 30px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+}
+section > form#FrmPost > #writeArea > select {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 7px;
+  padding: 0 6px;
+  outline-color: #33afe9;
+}
+section > form#FrmPost > #writeArea > #writeHead {
+  display: flex;
+  margin-bottom: 20px;
+}
+section > form#FrmPost > #writeArea > #writeHead > select {
+  width: 100px;
+  height: 40px;
+  margin-right: 6px;
+  padding: 0 6px;
+  outline-color: #33afe9;
+}
+section > form#FrmPost > #writeArea > #writeHead > input {
+  flex: 1 0 0;
+  padding: 0 12px;
+  outline-color: #33afe9;
+}
+section > form#FrmPost > #writeArea > #postEditor {
+  margin-bottom: 12px;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet {
+  height: 35px;
+  border: 1px solid #000;
+  border-bottom: none;
+  font-size: 0;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button {
+  width: 35px;
+  height: 100%;
+  border: none;
+  border-right: 1px solid #000;
+  background-color: #eee;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.boldBtn {
+  font-family: "Pretendard-Bold";
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.italicBtn {
+  font-style: italic;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.underLineBtn {
+  text-decoration: underline;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.throughBtn {
+  text-decoration: line-through;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button:hover {
+  background-color: #ddd;
+}
+section > form#FrmPost > #writeArea > #postEditor > textarea {
+  width: 100%;
+  min-height: 500px;
+  padding: 30px;
+  box-sizing: border-box;
+  outline-color: #33afe9;
+}
+section > form#FrmPost > #uploadArea {
+  padding: 30px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+}
+section > form#FrmPost > #uploadArea > p {
+  margin-bottom: 10px;
+  font-family: "Pretendard-Bold";
+  font-size: 14px;
+}
+section > form#FrmPost > #uploadArea > #upload {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+section > form#FrmPost > #uploadArea > #upload > #uploadName {
+  flex: 1 0 0;
+  padding: 12px;
+  color: #ccc;
+  font-size: 13px;
+  border: 1px solid #ccc;
+}
+section > form#FrmPost > #uploadArea > #upload > #uploadName > li {
+  padding: 3px 0;
+}
+section > form#FrmPost > #uploadArea > #upload > #uploadName > li:first-of-type {
+  padding-top: 0;
+}
+section > form#FrmPost > #uploadArea > #upload > #uploadName > li:last-of-type {
+  padding-bottom: 0;
+}
+section > form#FrmPost > #uploadArea > #upload > label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: start;
+  width: 100px;
+  padding: 12px;
+  margin-left: 12px;
+  color: #fff;
+  font-size: 13px;
+  background-color: #ccc;
+}
+section > form#FrmPost > #uploadArea > #upload > #uploadFile {
+  display: none;
+}
+section > form#FrmPost > #postBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+section > form#FrmPost > #postBtn > button {
+  width: 110px;
+  height: 40px;
+  color: #fff;
+  outline: none;
+  border: none;
+  background-color: #ccc;
+}
+section > form#FrmPost > #postBtn > button:last-of-type {
+  margin-left: 5px;
+  background-color: #33afe9;
+}
+section > #postBox, section #commentBox {
+  margin-bottom: 12px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+section > #postBox {
+  position: relative;
+}
+section > #postBox > #readHead {
+  padding-top: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ccc;
+}
+section > #postBox > #readHead > #readHead-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+}
+section > #postBox > #readHead > #readHead-top > #readTit {
+  font-size: 18px;
+  font-family: "Pretendard-Bold";
+}
+section > #postBox > #readHead > #readHead-bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}
+section > #postBox > #readHead > #readHead-bottom > #regInfo {
+  font-size: 0;
+}
+section > #postBox > #readHead > #readHead-bottom > #regInfo > span {
+  font-size: 15px;
+}
+section > #postBox > #readHead > #readHead-bottom > #regInfo > span:first-of-type {
+  padding-right: 10px;
+  border-right: 1px solid #ccc;
+}
+section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type {
+  padding-left: 10px;
+}
+section > #postBox > #readHead > #readHead-bottom > #feedback {
+  display: flex;
+}
+section > #postBox > #readHead > #readHead-bottom > #feedback > p {
+  font-size: 15px;
+}
+section > #postBox > #readHead > #readHead-bottom > #feedback > p:first-of-type {
+  padding-right: 10px;
+  border-right: 1px solid #ccc;
+}
+section > #postBox > #readHead > #readHead-bottom > #feedback > p:last-of-type {
+  padding-left: 10px;
+}
+section > #postBox > #readContent {
+  padding: 40px 0;
+}
+section > #postBox > #readContent > #contentDetail {
+  padding-bottom: 40px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+section > #postBox > #readContent > #likeBtn {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+section > #postBox > #readContent > #likeBtn:hover {
+  border: 1px solid #33afe9;
+  outline: 1px solid #33afe9;
+}
+section > #postBox > #readContent > #likeBtn:hover > i, section > #postBox > #readContent > #likeBtn:hover > span {
+  color: #33afe9;
+}
+section > #postBox > #readContent > #likeBtn > i {
+  margin-top: 4px;
+  font-size: 20px;
+  color: #1a6080;
+}
+section > #postBox > #readContent > #likeBtn > span {
+  font-size: 12px;
+  color: #1a6080;
+}
+section > #postBox > #readContent > #likeBtn > span:first-of-type {
+  font-family: "Pretendard-Bold";
+}
+section > #postBox > #postMng {
+  display: flex;
+  position: absolute;
+  top: -37px;
+  right: 0;
+  font-size: 14px;
+}
+section > #postBox > #postMng > .readBtn {
+  margin-right: 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+section > #postBox > #postMng > .readBtn:first-child {
+  background-color: rgb(205, 92, 92);
+  border: 1px solid rgb(205, 92, 92);
+  color: #fff;
+}
+section > #postBox > #postMng > .readBtn:last-child {
+  border: 1px solid #ccc;
+  margin: 0;
+}
+section > #commentBox > #commentHead {
+  display: flex;
+  justify-content: space-between;
+}
+section > #commentBox > #commentHead > #commentOpt {
+  display: flex;
+}
+section > #commentBox > #commentHead > #commentOpt > h3 {
+  font-size: 18px;
+  margin-right: 12px;
+}
+section > #commentBox > #commentHead > #commentOpt > select {
+  text-align: center;
+  outline: none;
+  border: 1px solid #ccc;
+}
+section > #commentBox > #commentHead > #commentMng {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+}
+section > #commentBox > #commentHead > #commentMng > span {
+  margin-right: 10px;
+  cursor: pointer;
+}
+section > #commentBox > #commentHead > #commentMng > span:last-of-type {
+  margin: 0;
+}
+section > #commentBox > #commentCont {
+  font-size: 14px;
+  padding: 16px 0;
+}
+section > #commentBox > #commentCont > .comment {
+  padding: 5px 10px;
+  border-bottom: 1px solid #ccc;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #ccc;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .author {
+  font-family: "Pretendard-Bold";
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd {
+  display: flex;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
+  margin-right: 12px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
+  font-size: 0;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
+  display: block;
+  margin-top: 3px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
+  color: #33afe9;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i {
+  margin-left: 12px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i:hover {
+  color: rgb(205, 92, 92);
+}
+section > #commentBox > #commentCont > .comment > .commentMsg {
+  padding: 10px 0;
+}
+section > #commentBox > form {
+  margin-top: 30px;
+}
+section > #commentBox > form > #writeComment {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+section > #commentBox > form > #writeComment > .commentAuthor {
+  font-size: 14px;
+  font-family: "Pretendard-Bold";
+  padding: 10px;
+  color: #ccc;
+  border-bottom: 1px solid #ccc;
+}
+section > #commentBox > form > #writeComment > textarea {
+  display: block;
+  width: 100%;
+  min-height: 130px;
+  height: auto;
+  padding: 12px;
+  font-size: 15px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+}
+section > #commentBox > form > #writeComment > button {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 75px;
+  height: 35px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: none;
+}
+section > #btns {
+  display: flex;
+  justify-content: flex-end;
+}
+section > #btns > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 40px;
+  margin-right: 5px;
+  color: #fff;
+  background-color: #33afe9;
+}
+section > #btns > a:first-child {
+  background-color: #ccc;
+}
+section > #btns > a:last-child {
+  margin: 0;
+}
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  margin: 0 auto;
+  line-height: 130px;
+  text-align: center;
+  height: 130px;
+  background-color: #ddd;
+}/*# sourceMappingURL=board.css.map */

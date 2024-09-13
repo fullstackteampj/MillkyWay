@@ -1,0 +1,954 @@
+#wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+#wrap > header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 800;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  border-bottom: 2px solid #33afe9;
+}
+#wrap > header > .headTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  height: 40px;
+  margin: 1px auto 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+#wrap > header > .headTop > .frame > .topGnb > li {
+  width: 120px;
+  height: 40px;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on, #wrap > header > .headTop > .frame > .topGnb > li:hover {
+  background-color: #fff;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on > a, #wrap > header > .headTop > .frame > .topGnb > li:hover > a {
+  color: #1a6080;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > .underNav {
+  display: none;
+  position: absolute;
+  top: 41px;
+  left: calc((100% - 1200px) / 2);
+  z-index: 300;
+  width: 1200px;
+  height: auto;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
+  display: block;
+}
+#wrap > header > .headTop > .frame .userBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+}
+#wrap > header > .headTop > .frame .userBar > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+#wrap > header > .headTop > .frame .userBar > li > a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+#wrap > header > .headTop > .frame .userBar > li > a > .arrow {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList {
+  display: none;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li {
+  line-height: 25px;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
+  font-weight: 600;
+}
+#wrap > header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
+#wrap > header > .headTop > .frame .userBar > li > .myPageList:hover {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+  left: -10px;
+  width: 120px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 7px 0 #666;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+#wrap > header > .headMiddle > h1 {
+  position: absolute;
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchFrame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #33afe9;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchFrame > p.searchId {
+  width: 80px;
+  height: 40px;
+  color: #1a6080;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > form {
+  flex: 1 1 auto;
+}
+#wrap > header > .headMiddle > .searchFrame > form > input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 30px;
+}
+#wrap > header > .headMiddle > .searchFrame > span {
+  display: block;
+  width: 80px;
+  height: 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchList {
+  display: none;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList,
+#wrap > header > .headMiddle > .searchList:hover {
+  display: block;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: calc(50% - 250px);
+  padding: 0 10px;
+  background-color: #fff;
+  border: 2px solid #1a6080;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList > li,
+#wrap > header > .headMiddle > .searchList:hover > li {
+  margin: 5px;
+  color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > img.logo {
+  position: absolute;
+  top: calc(50% - 25px);
+  right: 100px;
+  width: 100px;
+  height: 50px;
+}
+
+section.myPage01,
+section.myPage02,
+section.myPage03,
+section.myPage04,
+section.myPage05 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+section.myPage01 > .sectionHead,
+section.myPage02 > .sectionHead,
+section.myPage03 > .sectionHead,
+section.myPage04 > .sectionHead,
+section.myPage05 > .sectionHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  padding: 0 10px 10px;
+  border-bottom: 1px solid #33afe9;
+  box-sizing: border-box;
+}
+section.myPage01 > .sectionHead > .myPageList,
+section.myPage02 > .sectionHead > .myPageList,
+section.myPage03 > .sectionHead > .myPageList,
+section.myPage04 > .sectionHead > .myPageList,
+section.myPage05 > .sectionHead > .myPageList {
+  width: 15%;
+  text-align: center;
+}
+section.myPage01 > .sectionHead > .myPageList > li,
+section.myPage02 > .sectionHead > .myPageList > li,
+section.myPage03 > .sectionHead > .myPageList > li,
+section.myPage04 > .sectionHead > .myPageList > li,
+section.myPage05 > .sectionHead > .myPageList > li {
+  height: 40px;
+  font-size: 16px;
+  line-height: 40px;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+section.myPage01 > .sectionHead > .myPageList > li:hover,
+section.myPage02 > .sectionHead > .myPageList > li:hover,
+section.myPage03 > .sectionHead > .myPageList > li:hover,
+section.myPage04 > .sectionHead > .myPageList > li:hover,
+section.myPage05 > .sectionHead > .myPageList > li:hover {
+  background-color: #33afe9;
+}
+section.myPage01 > .sectionHead > .myPageList > li > a,
+section.myPage02 > .sectionHead > .myPageList > li > a,
+section.myPage03 > .sectionHead > .myPageList > li > a,
+section.myPage04 > .sectionHead > .myPageList > li > a,
+section.myPage05 > .sectionHead > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+section.myPage01 > .sectionHead > .myInfoContainer,
+section.myPage02 > .sectionHead > .myInfoContainer,
+section.myPage03 > .sectionHead > .myInfoContainer,
+section.myPage04 > .sectionHead > .myInfoContainer,
+section.myPage05 > .sectionHead > .myInfoContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  height: auto;
+  padding: 20px;
+  background-color: #b6e2f7;
+  box-sizing: border-box;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > h3,
+section.myPage02 > .sectionHead > .myInfoContainer > h3,
+section.myPage03 > .sectionHead > .myInfoContainer > h3,
+section.myPage04 > .sectionHead > .myInfoContainer > h3,
+section.myPage05 > .sectionHead > .myInfoContainer > h3 {
+  width: 100%;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade {
+  width: 40%;
+  height: 160px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade > .grade,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade > .grade,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade > .grade,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade > .grade,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade > .grade {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+  width: 80%;
+  height: 80px;
+  margin: 0 auto;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userName,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userName,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userName,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userName,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userName {
+  font-size: 14px;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userGrade,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userGrade,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userGrade,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userGrade,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade > .grade > .userGrade {
+  height: 30px;
+  font-size: 20px;
+  line-height: 30px;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade > .point,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade > .point,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade > .point,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade > .point,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade > .point {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column nowrap;
+  width: 80%;
+  height: 80px;
+  margin: 0 auto;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myGrade > .point > span,
+section.myPage02 > .sectionHead > .myInfoContainer > .myGrade > .point > span,
+section.myPage03 > .sectionHead > .myInfoContainer > .myGrade > .point > span,
+section.myPage04 > .sectionHead > .myInfoContainer > .myGrade > .point > span,
+section.myPage05 > .sectionHead > .myInfoContainer > .myGrade > .point > span {
+  height: 20px;
+  line-height: 20px;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myInfo,
+section.myPage02 > .sectionHead > .myInfoContainer > .myInfo,
+section.myPage03 > .sectionHead > .myInfoContainer > .myInfo,
+section.myPage04 > .sectionHead > .myInfoContainer > .myInfo,
+section.myPage05 > .sectionHead > .myInfoContainer > .myInfo {
+  width: calc(60% - 10px);
+  height: 160px;
+  padding: 20px;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+section.myPage01 > .sectionHead > .myInfoContainer > .myInfo > p,
+section.myPage02 > .sectionHead > .myInfoContainer > .myInfo > p,
+section.myPage03 > .sectionHead > .myInfoContainer > .myInfo > p,
+section.myPage04 > .sectionHead > .myInfoContainer > .myInfo > p,
+section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
+  height: 25px;
+  line-height: 25px;
+}
+
+#wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+#wrap > section.myPage01 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section.myPage01 > .mainContainer {
+  width: 100%;
+  height: 900px;
+  margin-top: -20px;
+  padding: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage01 > .mainContainer > h3 {
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList {
+  border-radius: 10px;
+  background-color: #eee;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > img {
+  height: 100%;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .bookInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  flex: 1 1 0;
+  height: 100%;
+  padding-left: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .bookInfo > .buydate {
+  color: #aaa;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .bookInfo > .title {
+  font-size: 20px;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .bookInfo > .author {
+  font-size: 14px;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .bookInfo > .price {
+  font-weight: 800;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .content {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  width: 20%;
+  height: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .content p {
+  font-size: 14px;
+}
+#wrap > section.myPage01 > .mainContainer > .buyList > li > .content > .status {
+  color: skyblue;
+  font-size: 20px;
+  font-weight: 600;
+}
+#wrap > section.myPage01 > .mainContainer > .listSeletor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+#wrap > section.myPage01 > .mainContainer > .listSeletor > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+#wrap > section.myPage01 > .mainContainer > .listSeletor > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > section.myPage01 > .mainContainer > .listSeletor > li:hover {
+  font-weight: 800;
+}
+#wrap > section.myPage01 > .mainContainer > .listSeletor > li.on {
+  text-decoration: underline;
+}
+#wrap > section.myPage02 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section.myPage02 > .mainContainer {
+  width: 100%;
+  height: 900px;
+  margin-top: -20px;
+  padding: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage02 > .mainContainer > h3 {
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList {
+  border-radius: 10px;
+  background-color: #eee;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > img {
+  height: 100%;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .bookInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  flex: 1 1 0;
+  height: 100%;
+  padding-left: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .bookInfo > .buydate {
+  color: #aaa;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .bookInfo > .title {
+  font-size: 20px;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .bookInfo > .author {
+  font-size: 14px;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .bookInfo > .price {
+  font-weight: 800;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .content {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  width: 20%;
+  height: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .content p {
+  font-size: 14px;
+}
+#wrap > section.myPage02 > .mainContainer > .cancelList > li > .content > .status {
+  color: skyblue;
+  font-size: 20px;
+  font-weight: 600;
+}
+#wrap > section.myPage02 > .mainContainer > .listSeletor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+#wrap > section.myPage02 > .mainContainer > .listSeletor > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+#wrap > section.myPage02 > .mainContainer > .listSeletor > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > section.myPage02 > .mainContainer > .listSeletor > li:hover {
+  font-weight: 800;
+}
+#wrap > section.myPage02 > .mainContainer > .listSeletor > li.on {
+  font-weight: 800;
+  text-decoration: underline;
+}
+#wrap > section.myPage03 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section.myPage03 > .mainContainer {
+  width: 100%;
+  height: auto;
+  margin-top: -20px;
+  padding: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage03 > .mainContainer > h3 {
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer {
+  width: 100%;
+  height: auto;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form {
+  display: flex;
+  flex-flow: row wrap;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > label {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  line-height: 40px;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > label[for=address] {
+  width: 30px;
+  text-align: center;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > label + button {
+  height: 25px;
+  margin-top: 8px;
+  margin-left: 20px;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > input {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > input[type=radio],
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > span {
+  width: 20px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > button {
+  height: 40px;
+  margin-top: 30px;
+  margin-left: 200px;
+}
+#wrap > section.myPage04 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section.myPage04 > .mainContainer {
+  width: 100%;
+  height: auto;
+  margin-top: -20px;
+  padding: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage04 > .mainContainer > h3 {
+  font-size: 20px;
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: auto;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  background-color: #eee;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .boardContainer {
+  width: 90%;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .boardContainer > .title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  display: inline-block;
+  width: 84%;
+  height: 30px;
+  font-size: 24px;
+  line-height: 30px;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .boardContainer > .regDate {
+  display: inline-block;
+  width: 15%;
+  color: #666;
+  text-align: center;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .boardContainer > .content {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  width: 100%;
+  margin-top: 10px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .controls {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 10%;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .controls > i {
+  display: none;
+  width: 90%;
+  height: 20px;
+  margin: 0 auto;
+  line-height: 20px;
+  text-align: right;
+  cursor: pointer;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .controls > i.on {
+  display: block;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .controls > button {
+  width: 50px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+#wrap > section.myPage04 > .mainContainer > .myBoardList > li > .controls > button:hover {
+  background-color: #aaa;
+}
+#wrap > section.myPage04 > .mainContainer > .listSeletor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+#wrap > section.myPage04 > .mainContainer > .listSeletor > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+#wrap > section.myPage04 > .mainContainer > .listSeletor > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > section.myPage04 > .mainContainer > .listSeletor > li:hover {
+  font-weight: 800;
+}
+#wrap > section.myPage04 > .mainContainer > .listSeletor > li.on {
+  text-decoration: underline;
+}
+#wrap > section.myPage05 {
+  width: 1200px;
+  margin: 130px auto 0;
+}
+#wrap > section.myPage05 > .mainContainer {
+  width: 100%;
+  height: 900px;
+  margin-top: -20px;
+  padding: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage05 > .mainContainer > h3 {
+  display: inline-block;
+  font-size: 20px;
+  height: 30px;
+  padding: 10px;
+  margin-top: -10px;
+  line-height: 30px;
+  text-align: center;
+  border: 1px solid #b6e2f7;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+}
+#wrap > section.myPage05 > .mainContainer > h3.visible {
+  color: #fff;
+  background-color: #1a6080;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart,
+#wrap > section.myPage05 > .mainContainer .wishList {
+  display: none;
+  border-radius: 0 10px 10px 10px;
+  background-color: #eee;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart.visible,
+#wrap > section.myPage05 > .mainContainer .wishList.visible {
+  display: block;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li,
+#wrap > section.myPage05 > .mainContainer .wishList > li {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 150px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > input[type=checkbox],
+#wrap > section.myPage05 > .mainContainer .wishList > li > input[type=checkbox] {
+  margin-right: 10px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > img,
+#wrap > section.myPage05 > .mainContainer .wishList > li > img {
+  height: 100%;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  flex: 1 1 0;
+  height: 100%;
+  padding-left: 50px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .buydate,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .buydate {
+  color: #aaa;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .title,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .title {
+  font-size: 20px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .author,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .author {
+  font-size: 14px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .price,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .price {
+  font-weight: 800;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .content {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-around;
+  width: 20%;
+  height: 100%;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content > button,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .content > button {
+  background: none;
+  border: none;
+  outline: none;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid #33afe9;
+  border-radius: 10px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content > button:hover,
+#wrap > section.myPage05 > .mainContainer .wishList > li > .content > button:hover {
+  color: #fff;
+  background-color: #33afe9;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+  text-align: center;
+  background-color: #fff;
+  border-top: 1px solid #000;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter.checked,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter.checked {
+  display: flex;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > .mainDescript,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > .mainDescript {
+  font-size: 24px;
+  width: 300px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > .totalPrice,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > .totalPrice {
+  font-size: 20px;
+  width: 300px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > button,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > button {
+  background: none;
+  border: none;
+  outline: none;
+  width: 100px;
+  height: 40px;
+  margin: 0 100px;
+  font-weight: 400;
+  font-size: 14px;
+  border: 1px solid #33afe9;
+  border-radius: 5px;
+}
+#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > button.buying,
+#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > button.buying {
+  color: #fff;
+  background-color: #33afe9;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor.visible {
+  display: flex;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor > li:hover {
+  font-weight: 800;
+}
+#wrap > section.myPage05 > .mainContainer > .listSeletor > li.on {
+  text-decoration: underline;
+}
+#wrap > footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+#wrap > footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=mypage.css.map */

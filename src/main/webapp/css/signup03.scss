@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+$pri-color: rgb(127, 161, 195);
+$point-color : rgb(100, 130, 173);
+$sec-color : rgb(226, 218, 214);
+
+.zipcode{ //w500 h400
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  h1{
+    padding: 20px 0 50px;
+    color: $pri-color;
+    text-align: center;
+  }//h1
+  form[name=searchZipcodeFrm]{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+    >input{
+      outline: none;
+      width: 80%;
+      height: 35px;
+      margin-right: 5px;
+      padding: 5px;
+      font-size: 20px;
+      border: 1px solid $sec-color;
+      border-radius: 5px;
+      box-sizing: border-box;
+      &:focus{border-color: $point-color;}
+    }//input
+    >button{
+      background: none;
+      outline: none;
+      border: none;
+      width: 17%;
+      height: 35px;
+      color: #fdfdfd;
+      font-size: 16px;
+      background-color: $pri-color;
+      border-radius: 5px;
+      &:hover{background-color: $point-color;}
+      &:nth-of-type(2){
+        color: #555;
+        background-color: $sec-color;
+      }
+    }//button
+  }//form
+  >ul{
+    overflow: auto;
+    width: 450px;
+    max-height: 400px;
+    margin: 30px auto;
+    >li{
+      margin: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      &:hover{text-decoration: underline;}
+    }//li
+  }//ul
+  >button{
+    background: none;
+    border: none;
+    outline: none;
+    display: block;
+    width: 100px;
+    height: 30px;
+    margin: 50px auto 20px;
+    background-color: $sec-color;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover{background-color: darken($sec-color, 2);}
+  }
+}//section.zipcode

@@ -1,0 +1,314 @@
+@charset "utf-8"; 
+
+$pri-color: rgb(127, 161, 195);
+$point-color : rgb(100, 130, 173);
+$sec-color : rgb(226, 218, 214);
+$white: #fdfdfd;
+
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin basicBtnRemove {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+section.sign-up{
+  width: 1200px;
+  margin: 0 auto;
+  padding: 30px 0;
+
+  button{@include basicBtnRemove();}
+  input[type=checkbox]{
+    appearance: none;
+    background-image: url(./../images/emptycircle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor:pointer;
+    &:checked{background-image: url(./../images/checkedcircle.png);}
+  }//all chk
+  .btns{//뒤로가기, 다음페이지 버튼
+    display: flex;
+    justify-content: center;
+    width: 600px;
+    margin: 50px auto 30px;
+    >button{
+      width: 200px;
+      height: 50px;
+      margin-right: 20px;
+      color: $white;
+      font-weight: 600;
+      font-size: 17px;
+      background-color: $pri-color;
+      border-radius: 5px;
+      &:nth-of-type(1){
+        color: #555;
+        background-color: $sec-color;
+        &:hover{background-color: darken($sec-color, 2);}
+      }//1st button
+      &:last-child{
+        margin-right: 0;
+        &:hover{background-color: $point-color;}
+      }
+    }//button
+  }//btns
+
+  >h2{padding: 20px 0;}
+  >.progress{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 95%;
+    height: 70px;
+    margin: 10px auto 80px;
+    &.next-stage{
+      >.ball{left:49%;}
+      >.back-line1{background-color: $pri-color;}
+      >.text{>span:nth-of-type(2){font-weight: 600;}}
+    }//.next-stage
+    &.complete{
+      >.ball{left:97%;}
+      >.back-line1{background-color: $pri-color;}
+      >.back-line2{background-color: $pri-color;}
+      >.text{
+        >span:nth-of-type(2),span:nth-of-type(3){font-weight: 600;}}
+    }//.complete
+    >.ball{
+      position: absolute;
+      left: 15px;
+      top: -1px;
+      width: 22px;
+      height: 22px;
+      background-color: $point-color;
+      border-radius: 50%;
+    }//.ball
+    >div{
+      width: 48%;
+      height: 10px;
+      background-color: $sec-color;
+      &.back-line1{
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }//.back-line1
+      &.back-line2{
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }//.back-line2
+    }//div
+    >.text{
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 30px;
+      margin: 5px 0;
+      text-align: center;
+      background: none;
+      >span{
+        font-size: 15px;
+        &:nth-of-type(1){font-weight: 600;}
+      }//span
+    }//.text
+  }//.progress
+  >.agreement{
+    display: block;
+    padding: 10px 20px;
+    text-align: center;
+    &.hide{display: none;}
+    >h3{padding: 5px;}
+    >form{
+      >ul{
+        >li{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 10px;
+          padding: 10px 20px;
+          font-size: 15px;
+          border: 1px solid $sec-color;
+          border-radius: 30px;
+          box-sizing: border-box;
+          &:last-child{
+            margin: 80px 10px 30px 10px;
+            border: 2px solid $pri-color;
+          }//1st li
+          input[type=checkbox]{
+            width: 25px;
+            height: 25px;
+          }//input[checkbox]
+        }//li
+      }//ul
+      
+    }//form
+  }//.agreement
+
+  >.enterInfo{
+    display: none;
+    width: 800px;
+    margin: 0 auto;
+    &.on{display: block;}
+    input, select{box-sizing: border-box;}
+    button, label{@include flexCenter();}
+    >h3{padding: 5px; text-align: center;}//h3
+    >form{
+      padding: 10px;
+      >h4{margin-left: 60px;}
+      ul{
+        padding: 0 50px 50px 50px;
+        width: 650px;
+        margin: 10px auto 30px;
+        &:nth-of-type(1){//필수 정보 입력
+          padding-bottom: 30px;
+          border-bottom: 1px solid $pri-color;
+        }//1st ul
+        >li{
+          display: flex;
+          flex-flow: row nowrap;
+          align-items: center;
+          margin: 20px 0;
+          font-size: 16px;
+          input:focus, select:focus{border-color: $pri-color;}
+          #pwdquestion{width: 80%;}
+          #userId, #nickname{
+            width: 68%;
+            margin-right: 5px;
+            &+button{width: calc(12% - 5px);}
+          }//#userId, #nickname
+          #mobileCarrier{
+            width: calc(20% - 5px);
+            margin-right: 5px;
+            &+input{width: 60%;}
+          }//#mobileCarrier
+          #zipcode{
+            width: 73%;
+            margin-right: 5px;
+            &+button{width: calc(7% - 5px)}
+          }//#zipcode
+          #userEmail{
+            width: 65%;
+            margin-right: 5px;
+            &+button{
+              width: calc(15% - 5px);
+            }//#userEmail+button
+          }//#userEmail
+
+          #male{
+            margin: 0;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            &:after{content: '남';}
+          }//#male
+          #female{
+            margin: 0;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            &:after{content: '여';}
+          }//#female
+
+          >button{
+            height: 30px;
+            color: $white;
+            font-weight: 600;
+            background-color: $pri-color;
+            border-radius: 5px;
+            &:hover{background-color: $point-color;}
+          }//all button
+          >label{
+            display: block;
+            width: 20%;
+            text-align: justify;
+          }//label
+          >input[type=text],
+          input[type=password]{
+            width: 80%;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid $sec-color;
+            border-radius: 5px;
+            outline: none;
+            &:hover{box-shadow: 1px 1px 1px #ddd;}
+            &:focus{border-color: $point-color;}
+          }//input
+          
+          >input[type=radio]{
+            appearance: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 10%;
+            height: 30px;
+            border: 1px solid $sec-color;
+            box-sizing: border-box;
+            cursor: pointer;
+            &:after{//남,여 글자 after처리
+              @include flexCenter();
+              position: absolute;
+              left: 50%;
+              width: 20px;
+              height: 20px;
+              margin-left: -10px;
+              color: $sec-color;
+              font-weight: 600;
+              font-size: 17px;
+            }//radio:after
+            &:hover{
+              border-color: $pri-color;
+              &:after{color: $pri-color;}
+            }//radio:hover
+            &:checked{
+              background-color: $pri-color;
+              border: none;
+              &:after{color: #fdfdfd;}
+            }//checked radio
+            
+          }//input-radio
+          >select{
+            appearance: none;
+            outline: none;
+            width: calc((80% - 10px) / 3 );
+            height: 30px;
+            margin-right: 5px;
+            padding: 5px;
+            font-size: 16px;
+            border: 1px solid $sec-color;
+            border-radius: 5px;
+            background-image: url(./../images/dropdownGray.png);
+            background-position: 99% 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            &:hover{box-shadow: 1px 1px 1px #ddd;}
+            &:focus{
+              background-image: url(./../images/dropdownActive.png);
+              border-color: $point-color;
+            }
+            &#date{margin-right: 0;}
+          }//select
+          >input[type=checkbox]{
+            width: 20px;
+            height: 20px;
+            margin: 0 20px 0 1px;
+          }//chk
+        }//li
+      }//ul
+    }//form
+  }//.enterInfo
+  .finish{
+    display: none;
+    text-align: center;
+    &.on{display: block;}
+    >h2{
+      padding: 20px;
+      color: $point-color;
+      &+p{padding: 10px;font-weight: 600;}
+    }//h2
+  }//.finish
+}//section.sign-up

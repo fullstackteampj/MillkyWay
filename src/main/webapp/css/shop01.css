@@ -1,0 +1,253 @@
+section.shop-list {
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+}
+section.shop-list > h2 {
+  padding: 20px 0;
+}
+section.shop-list > nav {
+  position: absolute;
+  left: 0;
+  width: 200px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+section.shop-list > nav > ul i {
+  margin-right: 5px;
+  padding: 3px;
+  color: #fdfdfd;
+  font-size: 14px;
+  background-color: rgb(100, 130, 173);
+  border-radius: 50%;
+}
+section.shop-list > nav > ul > li {
+  font-size: 20px;
+  line-height: 1.8;
+}
+section.shop-list > nav > ul > li:last-child > ul > li > a {
+  font-weight: 500;
+}
+section.shop-list > nav > ul > li:last-child > ul > li > a:hover {
+  color: #222;
+  text-decoration: underline;
+}
+section.shop-list > nav > ul > li > a {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+section.shop-list > nav > ul > li > a:hover {
+  color: rgb(100, 130, 173);
+}
+section.shop-list > nav > ul > li > ul {
+  display: none;
+}
+section.shop-list > nav > ul > li > ul.on {
+  display: block;
+}
+section.shop-list > nav > ul > li > ul > li {
+  font-size: 15px;
+}
+section.shop-list > nav > ul > li > ul > li > a {
+  display: flex;
+  align-items: center;
+  padding-left: 25px;
+  font-weight: 600;
+}
+section.shop-list > nav > ul > li > ul > li > a:hover {
+  color: rgb(100, 130, 173);
+}
+section.shop-list > nav > ul > li > ul > li > a > i {
+  font-size: 10px;
+}
+section.shop-list > nav > ul > li > ul > li > ol {
+  display: none;
+  padding-left: 45px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+section.shop-list > nav > ul > li > ul > li > ol.on {
+  display: block;
+}
+section.shop-list > nav > ul > li > ul > li > ol > li:hover {
+  text-decoration: underline;
+}
+section.shop-list > nav > ul > li > ul > li > ol > li > a {
+  font-weight: 500;
+}
+section.shop-list > .container {
+  position: absolute;
+  right: 0;
+  width: 1000px;
+  height: 1450px;
+  padding: 10px 10px 10px 20px;
+  border-left: 1px solid rgb(226, 218, 214);
+  box-sizing: border-box;
+}
+section.shop-list > .container > nav {
+  position: absolute;
+  top: 9px;
+}
+section.shop-list > .container > nav > ul {
+  display: flex;
+}
+section.shop-list > .container > nav > ul > li {
+  width: 200px;
+}
+section.shop-list > .container > nav > ul > li.on > a {
+  position: absolute;
+  top: 1px;
+  z-index: 100;
+  width: 200px;
+  color: rgb(100, 130, 173);
+  border-color: rgb(100, 130, 173);
+  background-color: #fdfdfd;
+  border-bottom: 1px solid #fdfdfd;
+}
+section.shop-list > .container > nav > ul > li.on > a:hover {
+  color: rgb(100, 130, 173);
+}
+section.shop-list > .container > nav > ul > li > a {
+  display: block;
+  height: 50px;
+  color: rgb(226, 218, 214);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 50px;
+  background-color: #fdfdfd;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+section.shop-list > .container > nav > ul > li > a:hover {
+  color: rgb(127, 161, 195);
+}
+section.shop-list > .container > .book-frame {
+  overflow: hidden;
+  position: relative;
+  height: 1300px;
+  margin-top: 50px;
+  border-top: 1px solid rgb(100, 130, 173);
+}
+section.shop-list > .container > .book-frame > ol {
+  position: absolute;
+  top: 0;
+  padding: 0 10px;
+  background-color: #fdfdfd;
+}
+section.shop-list > .container > .book-frame > ol > li:nth-of-type(1) {
+  margin-top: 0;
+}
+section.shop-list > .container > .book-frame > ol > li > a {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 30px 0;
+  border-bottom: 1px solid rgb(226, 218, 214);
+}
+section.shop-list > .container > .book-frame > ol > li > a:hover > .text > h3 {
+  color: rgb(100, 130, 173);
+}
+section.shop-list > .container > .book-frame > ol > li > a:hover > .text > p {
+  text-decoration: underline;
+}
+section.shop-list > .container > .book-frame > ol > li > a > .cover {
+  width: 150px;
+  height: 200px;
+  background-image: url(./../images/basicofjava.jpg);
+  background-size: contain;
+}
+section.shop-list > .container > .book-frame > ol > li > a > .text {
+  flex: 1 1 0;
+  padding: 20px;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+section.shop-list > .container > .book-frame > ol > li > a > .text > h3 {
+  font-size: 20px;
+}
+section.shop-list > .container > .book-frame > ol > li > a > .text > p {
+  font-size: 16px;
+}
+section.shop-list > .container > .book-frame > ol > li > a > form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+section.shop-list > .container > .book-frame > ol > li > a > form > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin: 10px;
+  color: #fdfdfd;
+  font-weight: 600;
+  background-color: rgb(127, 161, 195);
+  border-radius: 5px;
+}
+section.shop-list > .container > .book-frame > ol > li > a > form > button:hover {
+  background-color: rgb(100, 130, 173);
+}
+section.shop-list > .container > .pagination-container {
+  position: absolute;
+  top: 1410px;
+  left: 50%;
+  width: 300px;
+  margin-left: -150px;
+}
+section.shop-list > .container > .pagination-container > i {
+  position: absolute;
+  font-size: 20px;
+  top: 50%;
+  margin-top: -10px;
+  cursor: pointer;
+}
+section.shop-list > .container > .pagination-container > i:hover {
+  color: rgb(100, 130, 173);
+}
+section.shop-list > .container > .pagination-container > i:nth-of-type(1) {
+  left: 30px;
+}
+section.shop-list > .container > .pagination-container > i:nth-of-type(2) {
+  right: 30px;
+}
+section.shop-list > .container > .pagination-container > .pagenation-frame {
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+  height: 20px;
+  margin: 0 auto;
+}
+section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+}
+section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button {
+  background: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+  border: 1px solid rgb(127, 161, 195);
+  border-radius: 5px;
+}
+section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button.on {
+  color: #fdfdfd;
+  background-color: rgb(127, 161, 195);
+}
+section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button:hover {
+  color: #fdfdfd;
+  background-color: rgb(100, 130, 173);
+}/*# sourceMappingURL=shop01.css.map */

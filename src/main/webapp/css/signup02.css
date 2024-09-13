@@ -1,0 +1,27 @@
+.idCheck {
+  width: 100%;
+  color: #222;
+  text-align: center;
+}
+.idCheck > h1 {
+  padding: 20px;
+  font-size: 25px;
+}
+.idCheck > h1 > span {
+  color: rgb(100, 130, 173);
+}
+.idCheck > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100px;
+  height: 30px;
+  margin: 50px auto 20px;
+  background-color: rgb(226, 218, 214);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.idCheck > button:hover {
+  background-color: #ded5d0;
+}/*# sourceMappingURL=signup02.css.map */

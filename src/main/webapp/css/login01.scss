@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+$pri-color: rgb(127, 161, 195);
+$point-color : rgb(100, 130, 173);
+$sec-color : rgb(226, 218, 214);
+
+
+// 정훈
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@import "_header";
+
+
+
+section.login{
+  width: 1200px;
+  margin: 0 auto;
+  >h2{
+    padding: 30px;
+    text-align: center;
+  }
+  >form{
+    width: 340px;
+    padding: 20px; 
+    margin: 0 auto;
+    border: 1px solid $sec-color;
+    border-radius: 20px;
+    >div{
+      width: 300px;
+      margin: 10px auto;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      
+      &:nth-of-type(3){
+        display: flex;
+        align-items: center;
+      }
+    }//div
+  }//form
+  label{
+    display: block;
+    width: 70px;
+    text-align: justify;
+  }
+  input[type=text],input[type=password]{
+    flex: 1 1 0;
+    width: 30%;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid $sec-color;
+    border-radius: 5px;
+    outline: none;
+    &:hover{box-shadow: 1px 1px 1px #ddd;}
+    &:focus{border-color: $point-color;}
+  }//input
+  input[type=checkbox]{
+    width: 20px;
+    height: 20px;
+    margin-right: 3px;
+    background-image: url(./../images/emptycircle.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+    appearance: none;
+    cursor:pointer;
+    &:checked{
+      background-image: url(./../images/checkedcircle.png);
+    }
+  }//input
+  button{
+    background: none;
+    border: none;
+    outline: none;
+    display: block;
+    width: 300px;
+    height: 50px;
+    margin: 20px auto 10px;
+    color: #fdfdfd;
+    font-weight: 600;
+    font-size: 17px;
+    background-color: $pri-color;
+    border-radius: 5px;
+    &:hover{background-color: $point-color;}
+  }//button
+  #loginMng{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    >a{
+      display: block;
+      margin: 5px 10px;
+      font-size: 14px;
+      &:hover{
+        color: $point-color;
+        text-decoration: underline;
+      }
+    }//a
+  }//loginMng
+}
+

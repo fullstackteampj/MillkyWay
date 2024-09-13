@@ -1,0 +1,81 @@
+.zipcode {
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 10px;
+  box-sizing: border-box;
+}
+.zipcode h1 {
+  padding: 20px 0 50px;
+  color: rgb(127, 161, 195);
+  text-align: center;
+}
+.zipcode form[name=searchZipcodeFrm] {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 450px;
+  margin: 0 auto;
+  text-align: center;
+}
+.zipcode form[name=searchZipcodeFrm] > input {
+  outline: none;
+  width: 80%;
+  height: 35px;
+  margin-right: 5px;
+  padding: 5px;
+  font-size: 20px;
+  border: 1px solid rgb(226, 218, 214);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.zipcode form[name=searchZipcodeFrm] > input:focus {
+  border-color: rgb(100, 130, 173);
+}
+.zipcode form[name=searchZipcodeFrm] > button {
+  background: none;
+  outline: none;
+  border: none;
+  width: 17%;
+  height: 35px;
+  color: #fdfdfd;
+  font-size: 16px;
+  background-color: rgb(127, 161, 195);
+  border-radius: 5px;
+}
+.zipcode form[name=searchZipcodeFrm] > button:hover {
+  background-color: rgb(100, 130, 173);
+}
+.zipcode form[name=searchZipcodeFrm] > button:nth-of-type(2) {
+  color: #555;
+  background-color: rgb(226, 218, 214);
+}
+.zipcode > ul {
+  overflow: auto;
+  width: 450px;
+  max-height: 400px;
+  margin: 30px auto;
+}
+.zipcode > ul > li {
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.zipcode > ul > li:hover {
+  text-decoration: underline;
+}
+.zipcode > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100px;
+  height: 30px;
+  margin: 50px auto 20px;
+  background-color: rgb(226, 218, 214);
+  border-radius: 5px;
+  cursor: pointer;
+}
+.zipcode > button:hover {
+  background-color: #ded5d0;
+}/*# sourceMappingURL=signup03.css.map */

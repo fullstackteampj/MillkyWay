@@ -1,0 +1,1051 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard-Bold';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$subcolor: #ccc;
+$hover: #edf5f8;
+$cautionColor: rgb(205, 92, 92);
+// $hover: #E8DFCA;
+
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+* {font-family: 'Pretendard-Regular';}
+h1, h2 {letter-spacing: -2px;}
+
+
+#wrap {
+  // width: 1200px;
+  // margin: 0 auto;
+  border-top: 1px solid transparent;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  width: 100%; 
+  min-width: 1200px;
+  height: auto;
+  margin: 0 auto;
+  background-color: #fff;
+  border-bottom: 2px solid $priColor;
+  border-top: 1px solid transparent;
+  z-index: 800;
+
+  > .headTop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: $priColor;
+
+      > .frame {
+          display: flex;
+          justify-content: space-between;
+          width: 1200px;
+          height: 40px;
+          margin: 1px auto 0;
+          padding: 10px;
+          box-sizing: border-box;
+
+          > .topGnb {
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              width: 50%;
+
+              > li {
+                  width: 120px;
+                  height: 40px;
+                  background-color: $priColor;
+
+                  &.on,
+                  &:hover {
+                      background-color: #fff;
+                      > a {
+                          color: $priStrong;
+                      }
+                  }
+
+                  > a {
+                      @include flexCenter();
+                      width: 100%;
+                      height: 100%;
+                      color: #fff;
+                      font-weight: 500;
+                      font-size: 16px;
+                  }
+              }
+          } //.topGnb
+
+          .userBar {
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              width: 35%;
+
+              > li {
+                  @include flexCenter();
+                  position: relative;
+                  width: 150px;
+                  height: 40px;
+                  cursor: pointer;
+
+                  > a {
+                      color: #fff;
+                      font-weight: 500;
+                      font-size: 14px;
+
+                      >.arrow{
+                          position: relative;
+                          top: 3px;
+                          //css삼각형만들기
+                          display: inline-block;
+                          border: 5px solid transparent;
+                          border-top-color: #fff;
+                      }
+                  }
+
+                  >.myPageList{
+                      display: none;
+                  }
+
+                  &:hover:has(.arrow)>.myPageList,
+                  >.myPageList:hover{
+                      display: block;
+                      position: absolute;
+                      z-index: 100;
+                      top: 40px;
+                      left: -10px;
+                      width: 100px;
+                      padding: 0 10px;
+                      background-color: #fff;
+                      box-shadow: 0 0 7px 0 #666;
+                      box-sizing: border-box;
+                      >li{
+                          line-height: 25px;
+                      }
+                  }
+              }
+          } //.userBar
+      } //.frame
+  } //.headTop
+
+  > .headMiddle {
+      display: flex;
+      position: relative;
+      align-items: center;
+      width: 1200px;
+      height: 80px;
+      margin: 0 auto;
+      margin-top: 40px;
+
+      // border: 1px solid #000;
+
+      > h1 {
+          position: absolute;
+          width: 300px;
+          height: 80px;
+          line-height: 80px;
+          text-align: center;
+      }
+
+      > .searchFrame {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          overflow: hidden;
+          position: relative;
+          width: 500px;
+          height: 40px;
+          margin: 0 auto;
+          border: 3px solid $priColor;
+          border-radius: 20px;
+          box-sizing: border-box;
+
+          > p.searchId {
+              width: 80px;
+              height: 40px;
+              color: $priStrong;
+              font-size: 12px;
+              line-height: 40px;
+              text-align: center;
+              cursor: pointer;
+          }
+          > input {
+              border: none;
+              outline: none;
+              flex: 1 1 auto;
+              height: 30px;
+          }
+          > span {
+              display: block;
+              width: 80px;
+              height: 40px;
+              color: #fff;
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 40px;
+              text-align: center;
+              background-color: $priColor;
+          }
+      } //.searchFrame
+
+      >.searchList{
+          display: none;
+      }
+
+      &:has(p.searchId:hover)>.searchList,
+      >.searchList:hover{
+      // &:has(p.searchId) > .searchList {
+          display: block;
+          position: absolute;
+          top: calc(50% + 10px);
+          left: calc(50% - 250px);
+          padding: 0 10px;
+          background-color: #fff;
+          border: 2px solid $priStrong;
+          box-sizing: border-box;
+
+          >li{
+              margin: 5px;
+              color: $priColor;
+              cursor: pointer;
+          }
+      }
+
+      >img.logo{
+          position: absolute;
+          top: calc(50% - 25px);
+          right: 100px;
+          width: 100px;
+          height: 50px;
+      }
+
+  } //.headMiddle
+} //header
+
+
+header.scrolled {
+
+  > .headTop {
+      position: absolute;
+      top: -100%;
+  } //.headTop
+
+  > .headMiddle {
+      height: 50px;
+      margin-top: 0px;
+  }
+} //header.scrolled
+
+section {
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+  min-height: 600px;
+  margin-top: calc(120px + 50px); //헤더높이 + 마진여백
+  // margin-top: 50px; //헤더높이 + 마진여백
+  padding-bottom: 120px;
+  // border: 1px solid blue;
+
+  // 메인 페이지 
+  // 카테고리 박스
+  #category {
+    position: absolute;
+    left: 0;
+    width: 200px;
+    height: 506px; // // js조작때문에 고정값 부여
+    border: 1px solid #ddd;
+
+    >h3 {
+      padding: 12px;
+      // border: 1px solid #000;
+    }
+    
+    >ul {
+      font-size: 14px;
+
+      >li {
+        background-color: #fff;
+        
+        >a {
+          padding: 6px 12px;
+          line-height: 30px;
+          height: 30px;
+          // border: 1px solid blue;
+          display: block;
+          // border-bottom: 1px solid #ccc;
+
+          &:hover {
+            font-family: 'Pretendard-Bold';
+            color: $priColor;
+            font-size: 15px;
+            // background-color: $hover;
+          }
+        }
+
+        &:last-of-type>a {border-bottom: none;}
+
+        &.on>a {
+          font-family: 'Pretendard-Bold';
+          color: $priColor;
+          font-size: 15px;
+          // background-color: $hover;
+          // outline: $priColor;
+        }
+      } //li
+    } //ul
+  } //#selectCategory
+
+  // 글목록 박스
+  >#post {
+    width: 780px;
+    margin: 0 auto;
+    
+    >#head {
+      display: flex;
+      align-items: flex-end;
+      position: relative;
+      margin-bottom: 12px;
+
+      >h2 {
+        font-size: 30px;
+        margin-right: 12px;
+      }
+      
+      >#tab {
+        display: flex;
+        font-size: 16px;
+        
+        >li {
+          margin: 0 7px;
+
+          &.on>a {
+            font-family: 'Pretendard-Bold';
+            color: $priColor;
+          }
+
+          >a:hover {
+            color: $priColor;
+          }
+        }
+      } //ul#tab
+
+      >a {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        padding: 10px 17px;
+        color: #fff;
+        font-size: 13px;
+        font-family: 'Pretendard-Bold';
+        background-color: $priColor;
+        border-radius: 3px;
+      }
+    } // #head
+
+    >#list {
+      border: 1px solid $subcolor;
+      padding: 0 10px;
+  
+      >a {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
+
+        &:last-of-type {border: none;}
+
+        >.kind {
+          display: inline-block;
+          flex: 0 0 auto;
+          width: 70px;
+          color: $subcolor;
+          text-align: center;
+          // border: 1px solid #000;
+        } // .kind
+
+        .content {
+          width: 1px;
+          flex: 1 0 0;
+          padding: 0 10px;
+          font-size: 16px;
+          box-sizing: border-box;
+          // border: 1px solid #000;
+
+          >.title {
+            // border: 1px solid #000;
+            padding: 5px 0;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            >span {
+
+              &.commentCount {
+                margin-left: 3px;
+                color: $priStrong;
+              }
+            }
+          }
+
+          >.postInfo {
+            display: flex;
+            color: $subcolor;
+            font-size: 12px;
+
+            >p {
+              border-right: 1px solid #ddd;
+              padding: 0 12px;
+
+              &:first-of-type {padding-left: 0;}
+              &:last-of-type {border: none; padding-right: 0;}
+
+              &.over15 {
+                font-family: 'Pretendard-Bold';
+                color: $priStrong;
+              }
+            }
+          } //.postInfo
+        } //.content
+
+        >.frame {
+          width: 50px;
+          height: 40px;
+          flex: 0 0 auto;
+
+          >img {width: 100%; height: 100%;}
+        }
+      } //a
+      
+    } // #list
+  
+    >#pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 35px;
+      margin: 24px auto;
+      font-size: 15px;
+
+      >li {
+        height: 100%;
+
+        >a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+          height: 100%;
+          border: 1px solid $subcolor;
+          border-left: none;
+
+          &:hover {
+            background-color: $hover;
+            box-shadow: 0px 0px 1px 1px $priColor;
+            border: 1px solid $priColor;
+          }
+        }
+
+        &:first-of-type>a {border-left: 1px solid $subcolor;}
+
+        &.on>a {
+          font-family: 'Pretendard-Bold';
+          color: $priStrong;
+          background-color: $hover;
+          box-shadow: 0px 0px 1px 1px $priColor;
+          border: 1px solid $priColor;
+        }
+      }
+    } // #pagination
+
+    #postSearch {
+
+      >form {
+        display: flex;
+        justify-content: center;
+        font-size: 0;
+        
+        >select {
+          text-align: center;
+          width: 100px;
+          height: 35px;
+          font-size: 15px;
+          border: 1px solid $subcolor;
+          border-right: none;
+          outline: none;
+
+          &:focus {
+            box-shadow: 0px 0px 3px 1px $priColor;
+            border: 1px solid $priColor;
+            z-index: 100;
+          }
+        }
+
+        >input {
+          width: 300px;
+          padding: 0 12px;
+          box-sizing: border-box;
+          border: 1px solid $subcolor;
+          border-right: none;
+          outline: none;
+
+          &:focus {
+            box-shadow: 0px 0px 3px 1px $priColor;
+            border: 1px solid $priColor;
+            z-index: 100;
+          }
+        }
+
+        >button {
+          width: 60px;
+          border: 1px solid $subcolor;
+          background: none;
+          outline: none;
+
+          &:focus {
+            box-shadow: 0px 0px 3px 1px $priColor;
+            border: 1px solid $priColor;
+            z-index: 100;
+          }
+
+          &:hover {
+            background-color: $hover;
+          }
+        }
+      } //form
+    } //#postSearch
+  } // #post
+
+  // 인기글 박스
+  >#bestPost {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 240px; // js조작때문에 고정값 부여
+    margin-top: 51px;
+    padding: 16px;
+    background-color: #fff;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+
+    >h3 {
+      font-size: 20px;
+      margin-bottom: 7px;
+    } //h3
+
+
+    >ul {
+      font-size: 14px;
+
+      >li {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 5px 0;
+        
+        >a:hover {
+          color: $subcolor;
+        }
+      }
+    }
+  } //#bestPost
+
+  // 글쓰기/보기/수정에서 h2
+  >h2 {
+    font-size: 30px;
+    margin-bottom: 7px;
+  }
+
+
+  // 글쓰기 페이지
+  >form#FrmPost {
+    position: relative;
+
+    >#writeArea {
+      padding: 30px;
+      margin-bottom: 12px;
+      border: 1px solid $subcolor;
+
+      >select {
+        width: 100%;
+        height: 40px;
+        margin-bottom: 7px;
+        padding: 0 6px;
+        outline-color: $priColor;
+      } // 카테고리 선택
+
+      >#writeHead { //제목영역
+        display: flex;
+        margin-bottom: 20px;
+
+        >select {
+          width: 100px;
+          height: 40px;
+          margin-right: 6px;
+          padding: 0 6px;
+          outline-color: $priColor;
+        } //말머리 선택
+
+        >input {
+          flex: 1 0 0;
+          padding: 0 12px;
+          outline-color: $priColor;
+        } // 제목
+      } //#writeHead
+
+      >#postEditor { //글쓰기 영역
+        margin-bottom: 12px;
+
+        >#writeSet {
+          height: 35px;
+          border: 1px solid #000;
+          border-bottom: none;
+          font-size: 0;
+
+          >button {
+            width: 35px;
+            height: 100%;
+            border: none;
+            border-right: 1px solid #000;
+            background-color: #eee;
+
+            &.boldBtn {font-family: 'Pretendard-Bold';}
+            &.italicBtn {font-style: italic;}
+            &.underLineBtn {text-decoration: underline;}
+            &.throughBtn {text-decoration: line-through;}
+
+            &:hover {background-color: #ddd;}
+          }
+        }
+
+        >textarea { //글쓰기
+          width: 100%;
+          min-height: 500px;
+          padding: 30px;
+          box-sizing: border-box;
+          outline-color: $priColor;
+        } //textarea
+      } //#postEditor
+
+    } //#writeArea
+
+    >#uploadArea {
+      padding: 30px;
+      border: 1px solid $subcolor;
+      margin-bottom: 12px;
+
+      >p {
+        margin-bottom: 10px;
+        font-family: 'Pretendard-Bold';
+        font-size: 14px;
+      }
+      
+      >#upload {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+
+        >#uploadName {
+          flex: 1 0 0;
+          padding: 12px;
+          color: $subcolor;
+          font-size: 13px;
+          border: 1px solid $subcolor;
+  
+          >li {
+            padding: 3px 0;
+            // border: 1px solid #000;
+  
+            &:first-of-type {padding-top: 0;}
+            &:last-of-type {padding-bottom: 0;}
+          }
+        } //.uploadName
+  
+        >label {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          align-self: start;
+          width: 100px;
+          padding: 12px;
+          margin-left: 12px;
+          color: #fff;
+          font-size: 13px;
+          background-color: #ccc;
+        }
+  
+        >#uploadFile {display: none;}
+      } //#uploadArea
+      }
+
+    >#postBtn {
+      display: flex;
+      justify-content: flex-end;
+      // border: 1px solid #000;
+
+      >button {
+        width: 110px;
+        height: 40px;
+        color: #fff;
+        outline: none;
+        border: none;
+        background-color: $subcolor;
+
+        &:last-of-type {
+          margin-left: 5px;
+          background-color: $priColor;
+        }
+      } //button
+    } //#postBtn
+  } //form 
+
+  
+  // 글보기 페이지
+  >#postBox, #commentBox {
+    margin-bottom: 12px;
+    padding: 20px;
+    border: 1px solid $subcolor;
+  }
+
+  >#postBox {
+    position: relative;
+
+    >#readHead {
+      padding-top: 6px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid $subcolor;
+
+      >#readHead-top {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 7px;
+
+        >#readTit {
+          font-size: 18px;
+          font-family: 'Pretendard-Bold';
+        } //p#readTit
+      } //#readHead-top
+
+      >#readHead-bottom {
+        display: flex;
+        justify-content: space-between;
+        font-size: 15px;
+        // border: 1px solid #000;
+
+        >#regInfo {
+          font-size: 0;
+
+          >span {
+            font-size: 15px;
+
+            &:first-of-type {
+              padding-right: 10px;
+              border-right: 1px solid $subcolor;
+            }
+
+            &:last-of-type {
+              padding-left: 10px;
+            }
+          }
+        } //#regInfo
+
+        >#feedback {
+          display: flex;
+
+          >p {
+            font-size: 15px;
+
+            &:first-of-type {
+              padding-right: 10px;
+              border-right: 1px solid $subcolor;
+            }
+
+            &:last-of-type {
+              padding-left: 10px;
+            }
+          }
+        } //#feedback
+      } //#readHead-bottom
+    } //#readHead
+
+    >#readContent {
+      padding: 40px 0;
+
+      >#contentDetail {
+        padding-bottom: 40px;
+        font-size: 14px;
+        line-height: 1.5;
+        // border: 1px solid #000;
+
+        >p {}
+      } //#contentDetail
+
+      >#likeBtn {
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+        border: 1px solid $subcolor;
+        border-radius: 3px;
+        cursor: pointer;
+
+        &:hover {
+          border: 1px solid $priColor;
+          outline: 1px solid $priColor;
+        }
+
+        &:hover>i,
+        &:hover>span {color: $priColor;}
+
+        >i {
+          margin-top: 4px;
+          font-size: 20px;
+          color: $priStrong;
+
+        }
+
+        >span {
+          font-size: 12px;
+          color: $priStrong;
+
+          &:first-of-type{font-family: 'Pretendard-Bold';}
+        }
+      }
+    } //#likeBtn
+
+    >#postMng {
+      display: flex;
+      position: absolute;
+      top: -37px;
+      right: 0;
+      font-size: 14px;
+      // border: 1px solid #000;
+      
+      >.readBtn {
+        margin-right: 5px;
+        padding: 5px;
+        cursor: pointer;
+
+        &:first-child {
+          background-color: $cautionColor;
+          border: 1px solid $cautionColor;
+          color: #fff;
+        }
+
+        &:last-child {
+          border: 1px solid $subcolor;
+          margin: 0;
+        }
+      }
+    } //div#postMng
+    
+  } //#postBox
+
+
+  >#commentBox {
+    
+    >#commentHead {
+      display: flex;
+      justify-content: space-between;
+
+      >#commentOpt {
+        display: flex;
+        // border: 1px solid blue;
+
+        >h3 {
+          font-size: 18px;
+          margin-right: 12px;
+        }
+
+        >select {
+          text-align: center;
+          outline: none;
+          border: 1px solid $subcolor;
+        }
+      } //#commentOpt
+
+      >#commentMng {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 15px;
+
+        >span {
+          margin-right: 10px;
+          // border: 1px solid #000;
+          cursor: pointer;
+
+          &:last-of-type {margin: 0;}
+        }
+      } //#commentMng
+    } //#commentHead
+
+    >#commentCont {
+      font-size: 14px;
+      padding: 16px 0;
+
+      >.comment {
+        padding: 5px 10px;
+        border-bottom: 1px solid $subcolor;
+        border: 1px solid $subcolor;
+        margin-bottom: 10px;
+
+        >.commentInfo {
+          display: flex;
+          justify-content: space-between;
+          padding: 5px 0;
+          border-bottom: 1px solid $subcolor;
+          // border: 1px solid #000;
+          
+          >.author {
+            font-family: 'Pretendard-Bold';
+          } //.author
+
+          >.commentAdd{
+            display: flex;
+
+            >.commentDate {
+              margin-right: 12px;
+              // border: 1px solid #000;
+            } //.commentDate
+
+            >.author-addOns {
+              font-size: 0;
+
+              >span {
+                display: inline-block;
+                font-size: 12px;
+                cursor: pointer;
+
+                >i {
+                  display: block;
+                  margin-top: 3px;
+
+                  &:hover {
+                    color: $priColor;
+                  }
+                }
+
+                &:last-child>i {
+                  margin-left: 12px;
+
+                  &:hover {
+                    color: $cautionColor;
+                  }
+                }
+              }
+              // border: 1px solid #000;
+            }//.addOns
+          } //.commentAdd
+        } //.commentAuthor
+
+        >.commentMsg {
+          padding: 10px 0;
+          // border: 1px solid #000;
+        } //.commentMsg
+      } //.comment
+    } //#commentCont
+
+    >form {
+      margin-top: 30px;
+      // border: 1px solid blue;
+
+      >#writeComment {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid $subcolor;
+        border-radius: 6px;
+
+        >.commentAuthor {
+          font-size: 14px;
+          font-family: 'Pretendard-Bold';
+          padding: 10px;
+          color: $subcolor;
+          border-bottom: 1px solid $subcolor;
+        }
+
+        >textarea {
+          display: block;
+          width: 100%;
+          min-height: 130px;
+          height: auto;
+          padding: 12px;
+          font-size: 15px;
+          box-sizing: border-box;
+          border: none;
+          outline: none;
+        }
+        
+        >button {
+          position: absolute;
+          right: 20px;
+          bottom: 20px;
+          width: 75px;
+          height: 35px;
+          outline: none;
+          border: 1px solid $subcolor;
+          border-radius: 3px;
+          background: none;
+        }
+      } //#writeComment
+
+    } //form
+
+  } //#commentBox
+
+  >#btns {
+    display: flex;
+    justify-content: flex-end;
+
+    >a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 110px;
+      height: 40px;
+      margin-right: 5px;
+      color: #fff;
+      background-color: $priColor;
+
+      &:first-child {background-color: $subcolor;}
+  
+      &:last-child {
+        margin: 0;
+      }
+    }
+  } //#btns
+
+} // section
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  margin: 0 auto;
+  line-height: 130px;
+  text-align: center;
+  height: 130px;
+  background-color: #ddd;
+}
