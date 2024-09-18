@@ -58,19 +58,22 @@ CREATE TABLE membertbl (
     answer VARCHAR(100) NOT NULL,           -- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름
     nickname VARCHAR(100),                  -- 별명
-    gender CHAR(1),                         -- 성별 (M, F)
+    gender CHAR(1) default null,            -- 성별 (M, F)
     zipcode VARCHAR(10),                    -- 우편번호
     usergrade VARCHAR(100),					-- 유저등급
 	curpoint int,							-- 보유포인트
 	expectpoint int,						-- 적립예정포인트
     address TEXT,                           -- 주소
     phone VARCHAR(20),                      -- 전화번호
-    email VARCHAR(100),                     -- 이메일
+    email VARCHAR(100) default null,        -- 이메일
     signup_date DATE,     					-- 회원 가입 날짜, 기본값 현재 날짜
     last_login_date DATE,                   -- 마지막 로그인 날짜
     status VARCHAR(20),                     -- 회원 상태 (active, inactive 등)
-    favorite TEXT,                          -- 좋아하는 장르 배열로 입력 (확인 필요)
-    profile_photo BLOB                      -- 프로필 사진
+    favorite TEXT default null,             -- 좋아하는 장르 배열로 입력 (확인 필요)
+    profile_photo BLOB,                     -- 프로필 사진
+    
+    birth VARCHAR(20) default null			-- 생년월일
+    agree CHAR(1)                           -- 동의여부
 );
 
 -- 트리거는 날짜 기본값 설정에 불필요함

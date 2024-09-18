@@ -25,6 +25,17 @@
 	String aIntro = bean.getAuthorIntro();
 	String isbn = bean.getIsbn();
 	int pages = bean.getPages();
+	
+	//한줄평 총 개수 
+	int totalReview = bMgr.totalReview(bookid);
+	
+	//한줄평 폼 submit 시 데이터 받기
+	   int rscore = (int)session.getAttribute("score");
+	   String content = request.getParameter("content");
+	   String userid = (String)session.getAttribute("userid");
+	   //id -> nickname 가져오기
+	   //글 등록
+	   //bMgr.insertReview();
 %>
 
 <!DOCTYPE html>
@@ -33,7 +44,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop02.css?after" />
   <title>상품 상세 페이지</title>
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
@@ -77,7 +87,7 @@
 	          <i class="fa-solid fa-star"></i>
 	          <i class="fa-solid fa-star"></i>
 	          <span><%=score%></span>
-	          <a href="#" class="scroll-oneReview">한줄평(<span>한줄평 개수</span>)</a>
+	          <a href="#" class="scroll-oneReview">한줄평(<span><%=totalReview%></span>)</a>
 	        </p>
 	
 	        <div class="order-qty">
@@ -213,7 +223,7 @@
 	            <i class="fa-solid fa-pencil"></i>
 	          </p>
 	        </div><!--star-avg-->
-	        <form name="reviewFrm" action="#" method="post">
+	        <form name="reviewFrm" action="/shop/shop02" method="post">
 	          <div class="input-star">
 	            <i class="fa-solid fa-star"></i>
 	            <i class="fa-solid fa-star"></i>
@@ -232,7 +242,7 @@
 	      
 	        	for(int i=0; i<rlist.size(); i++){
 	        		ReviewBean rbean = rlist.get(i);
-	        		int rscore = rbean.getScore();
+	        		//int score = rbean.getScore();
 	        		String rcontent = rbean.getContent();
 	        		String nickname = rbean.getNickname();
 	        		%>

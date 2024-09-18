@@ -5,6 +5,8 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 $white : #fdfdfd;
 
+@import "_header";
+
 section.shop-product{
   position: relative;
   width: 1200px;

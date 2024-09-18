@@ -89,6 +89,45 @@ public class BookInfoMgr {
 		return rlist;
 	}
 	
-	//한줄평 입력하기
+	//도서별 한줄평 총 개수 구하기
+	   public int totalReview(int bookid) {
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = null;
+	      int totalReview = 0;
+	      try {
+	         con = pool.getConnection();
+	         sql = "select count(*) from booktbl where bookid = ? ";
+	         pstmt= con.prepareStatement(sql);
+	         pstmt.setInt(1, bookid);
+	         rs = pstmt.executeQuery();
+	         if(rs.next()) {
+	            totalReview = rs.getInt(1);
+	         }
+	      }catch(Exception e) {
+	         e.printStackTrace();
+	      }finally {
+	         pool.freeConnection(con, pstmt, rs);;
+	      }
+	      return totalReview;
+	   }
+	   
+	   //한줄평 입력하기
+	   public void insertReview(int score, String content, String nickname) {
+	      Connection con = null;
+	      PreparedStatement pstmt = null;
+	      ResultSet rs = null;
+	      String sql = null;
+	      
+	      try {
+	         sql = "insert ";
+	      }catch(Exception e){
+	         e.printStackTrace();
+	      }finally {
+	         pool.freeConnection(con, pstmt, rs);
+	      }
+	      
+	   }
 	
 }

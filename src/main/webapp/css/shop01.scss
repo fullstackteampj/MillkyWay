@@ -4,6 +4,19 @@ $pri-color: rgb(127, 161, 195);
 $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 정훈
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+@import "_header";
+
 section.shop-list{
   position: relative;
   width: 1200px;

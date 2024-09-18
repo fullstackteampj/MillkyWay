@@ -5,6 +5,11 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 $white: #fdfdfd;
 
+// 정훈
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
 @mixin flexCenter {
   display: flex;
   justify-content: center;
@@ -17,9 +22,11 @@ $white: #fdfdfd;
   outline: none;
 }
 
+@import "_header";
+
 section.sign-up{
   width: 1200px;
-  margin: 0 auto;
+  margin: 120px auto;
   padding: 30px 0;
 
   button{@include basicBtnRemove();}
@@ -175,8 +182,8 @@ section.sign-up{
           margin: 20px 0;
           font-size: 16px;
           input:focus, select:focus{border-color: $pri-color;}
-          #pwdquestion{width: 80%;}
-          #userId, #nickname{
+          #question{width: 80%;}
+          #account, #nickname{
             width: 68%;
             margin-right: 5px;
             &+button{width: calc(12% - 5px);}
@@ -187,11 +194,15 @@ section.sign-up{
             &+input{width: 60%;}
           }//#mobileCarrier
           #zipcode{
-            width: 73%;
+            width: 13%;
             margin-right: 5px;
-            &+button{width: calc(7% - 5px)}
           }//#zipcode
-          #userEmail{
+          #basicAddress{
+            width: 58%;
+            margin-right: 5px;
+            &+button{width: calc(9% - 10px)}
+          }
+          #email{
             width: 65%;
             margin-right: 5px;
             &+button{
