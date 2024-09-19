@@ -1,9 +1,13 @@
 package board;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
 
@@ -59,7 +63,7 @@ public class BoardMgr {
 			}
 			
 			
-			sql += " order by regdate desc limit " + start + ", " + end;
+			sql += " order by boardid desc limit " + start + ", " + end;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -70,13 +74,16 @@ public class BoardMgr {
 				bean.setNickname(rs.getString("nickname"));
 				bean.setTitle(rs.getString("title"));
 				bean.setContent(rs.getString("content"));
-				bean.setPhoto(rs.getBytes("photo"));
+				if(rs.getBlob("photo") != null) {
+					Blob photoBlob = rs.getBlob("photo");
+					byte[] photo = photoBlob.getBytes(1, (int)photoBlob.length());
+					bean.setPhoto(photo);
+				}
 				bean.setGenre(rs.getString("genre"));
 				bean.setTab(rs.getString("tab"));
 				bean.setRegdate(rs.getString("regdate"));
 				bean.setCount(rs.getInt("count"));
 				bean.setLiked(rs.getInt("liked"));
-				bean.setCommentCount(rs.getInt("comment_count"));
 				bean.setBest(rs.getString("best"));
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setIp(rs.getString("ip"));
@@ -219,7 +226,6 @@ public class BoardMgr {
 				bean.setRegdate(rs.getString("regdate"));
 				bean.setCount(rs.getInt("count"));
 				bean.setLiked(rs.getInt("liked"));
-				bean.setCommentCount(rs.getInt("comment_count"));
 				bean.setBest(rs.getString("best"));
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setIp(rs.getString("ip"));
@@ -236,17 +242,106 @@ public class BoardMgr {
 		return bean;
 	}
 	
+	// 총 댓글 수 반환
+	public int getCommentCount(int boardid) {
+		int count = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select count(commentid) from commenttbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return count;
+	}
+	
+	// 댓글 반환
+	public ArrayList<CommentBean> getCommentList(int boardid) {
+		ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "select * from commenttbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CommentBean bean = new CommentBean();
+				bean.setCommentid(rs.getInt("commentid"));
+				bean.setUserid(rs.getInt("userid"));
+				bean.setNickname(rs.getString("nickname"));
+				bean.setContent(rs.getString("content"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setParentCommentid(rs.getInt("parent_commentid"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setUpdateDate(rs.getString("update_date"));
+				bean.setIp(rs.getString("ip"));
+				bean.setStatus(rs.getInt("status"));
+				clist.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return clist;
+	}
+	
+	// 댓글 작성
+	public void insertComment(HttpServletRequest req) {
+		
+		try {
+			con = pool.getConnection();
+			sql = "insert into commenttbl (userid, nickname, content, ref, pos, depth, regdate, ip)"
+					+ "values (?, ?, ?, ?, 0, 0, now(), ?);";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
+			pstmt.setString(2, req.getParameter("nickname"));
+			pstmt.setString(3, req.getParameter("inputComment"));
+			pstmt.setInt(4, Integer.parseInt(req.getParameter("ref")));
+			pstmt.setString(5, req.getParameter("userip"));
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
 	
 	/* board04(글작성페이지) 활용메서드 */
 	// 작성글 insert
-	public void insertBoard(HttpServletRequest req) {
+	public void insertBoard(HttpServletRequest req) throws ServletException, IOException {
+
+    	Part imagePart = req.getPart("uploadFile");
+    	InputStream imageInputStream = imagePart.getInputStream();
 		
 		try {
+			con = pool.getConnection();
 			sql = "insert into boardtbl (userid, nickname, title, content, photo, genre, tab, ip)"
 					+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
 			pstmt = con.prepareStatement(sql);
 			// jsp에서 userid받아 보내야함
-			// pstmt.setInt(1, req.getParameter("userid"));
+			 pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
+			 pstmt.setString(2, req.getParameter("nickname"));
+			 pstmt.setString(3, req.getParameter("postTit"));
+			 pstmt.setString(4, req.getParameter("postCont"));
+			 pstmt.setBlob(5, imageInputStream);
+			 pstmt.setString(6, req.getParameter("postGenre"));
+			 pstmt.setString(7, req.getParameter("postTab"));
+			 pstmt.setString(8, req.getParameter("userip"));
+			 pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

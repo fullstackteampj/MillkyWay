@@ -1,14 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="board.BoardBean" %>
+<%@ page import="board.BoardBean, board.DateMgr, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <%
-	//임시로 세션 저장
-	session.setAttribute("idKey", "milky");
-
 	request.setCharacterEncoding("UTF-8");
-	String loginId = (String)session.getAttribute("idKey");
+
+	//임시로 로그인 세션 저장
+	MemberBean mBean = new MemberBean();
+	mBean.setUserid(2);
+	mBean.setAccount("toto");
+	mBean.setNickname("토토");
+	session.setAttribute("mBean", mBean);
+
+	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
+	Integer loginId = loginBean.getUserid();
 	
 	int totalRecord=0; //전체레코드수
 	int numPerPage=10; // 페이지당 레코드 수 
@@ -63,7 +69,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>커뮤니티 | 은하수책방</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script defer src="${pageContext.request.contextPath}/js/board01.js"></script>
@@ -130,7 +136,7 @@
           
           <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
-          	if(loginId != null) { %>
+			if(loginId != null) { %>
 	          <a href="./board04">글쓰기</a>
           <%} else { %>
         	  <a href="#" onclick="goLogin()">글쓰기</a>
@@ -151,7 +157,7 @@
           else {forCount = listSize;}
           
           if(postList.isEmpty()) { // 추출된 게시글이 없을경우
-        	  out.println("<p>게시물이 없습니다.</p>");
+        	  out.println("<p>등록된 게시물이 없습니다.</p>");
           } else { // 추출된 게시글이 있을경우
         	 
         	
@@ -160,22 +166,58 @@
 			 	int boardid = bean.getBoardid();
 			 	String kind = bean.getTab();
 			 	String title = bean.getTitle();
-			 	int commentCount = bean.getCommentCount();
+			 	int commentCount = bMgr.getCommentCount(boardid);
 			 	String nickname = bean.getNickname();
-			 	String regDate = bean.getRegdate();
+			 	String regDate = bean.getRegdate();	
+			 	String updateDate = bean.getUpdateDate();
 			 	int count = bean.getCount();
 			 	int liked = bean.getLiked();
+			 	byte[] photo = bean.getPhoto();
+			 	
+			 	
+			 	// 날짜데이터 가공
+			 	DateMgr dateMgr = new DateMgr();
+			 	
+			 	// 오늘날짜 추출
+			 	String today = dateMgr.getToday();
+			 	// 시:분 (오늘작성글)
+			 	String todayPost = dateMgr.getFormatDate(regDate, "today");
+			 	// 월-일 (올해이면서 오늘 이전글)
+			 	String prevdayPost = dateMgr.getFormatDate(regDate, "yesterday");
+			 	// 년-월-일 (올해이전글)
+			 	String prevYearPost = dateMgr.getFormatDate(regDate, "lastYear");
+			 	
 			  %>
-				<a href="board02?num=<%=boardid%>">
+			<a href="board02?num=<%=boardid%>">
 	            <span class="tab"><%=kind%></span>
 	            <div class="content">
 	              <p class="title">
 	                <span><%=title%></span>
+	                <% if(commentCount > 0) { %>
 	                <span class="commentCount">[<%=commentCount%>]</span>
+	                <%}%>
+	                
 	              </p>
 	              <div class="postInfo">
 	                <p class="postuser"><%=nickname%></p>
-	                <p class="postDate"><%=regDate%></p>
+	                <p class="postDate">
+	                	<% // 오늘 작성글이면 시:분
+	                	   if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") == dateMgr.getIntDate(today, "date")) { %>
+						       <%=todayPost%>
+	                	<% } 
+	                	   // 올해이면서 오늘이전 작성글이면 월.일
+	                	   else if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") < dateMgr.getIntDate(today, "date")) { %>
+	                	       <%=prevdayPost%>
+	                	<% } 
+	                	   // 올해이전 작성글이면 년.월.일
+	                	   else if(dateMgr.getIntDate(regDate, "year") < dateMgr.getIntDate(today, "year")) { %>
+	                		   <%=prevYearPost%>
+	                	<% }
+	                	  // 수정됐으면 덧붙임
+	                	  if(updateDate != null) { %>
+	                	(수정됨)
+	                	<% } %>
+	                </p>
 	                <p class="views">조회 <span><%=count%></span></p>
 	                
 	                <% // 추천수가 15이상이면 스타일적용
@@ -186,13 +228,19 @@
 	                <% } %> 추천 <span><%=liked%></span></p>
 	              </div>
 	            </div>
-	            <p class="frame">
-	              <img src="#" alt="#">
-	            </p>
-	          </a>
+	            
+	            
+	            <% // 첨부이미지가 있으면 출력
+	               if(photo.length > 0) { %>
+	            	<p class="frame">
+	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
+	            	</p>
+	            <% } %>
+	            
+	        </a>
 	           
-		<%  }
-          }
+		<%  } // for
+          } // else if
           
           %>
         

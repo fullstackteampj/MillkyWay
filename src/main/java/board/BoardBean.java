@@ -12,7 +12,6 @@ public class BoardBean {
 	private String regdate;
 	private int count;
 	private int liked;
-	private int commentCount;
 	private String best;
 	private int bookid;
 	private String ip;
@@ -84,12 +83,6 @@ public class BoardBean {
 	}
 	public void setLiked(int liked) {
 		this.liked = liked;
-	}
-	public int getCommentCount() {
-		return commentCount;
-	}
-	public void setCommentCount(int commentCount) {
-		this.commentCount = commentCount;
 	}
 	public String getBest() {
 		return best;

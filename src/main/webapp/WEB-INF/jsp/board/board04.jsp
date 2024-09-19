@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <%
 	request.setCharacterEncoding("UTF-8");
-	String loginId = (String)session.getAttribute("idKey");
-	boolean loginOk = (session != null && session.getAttribute("idKey") != null);
+	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
+	boolean loginOk = (session != null && loginBean != null);
+	int loginId = loginBean.getUserid();
+	String loginNickname = loginBean.getNickname();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,13 +16,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>글쓰기 | 은하수책방</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script defer src="${pageContext.request.contextPath}/js/header.js"></script>
   <script defer src="${pageContext.request.contextPath}/js/board04.js"></script>
   <script>
-  	// 페이지 로드 시, 로그인이 안되어있으면 confirm
+  
+  	// 페이지 로드 시, 로그인이 안되어있으면 confirm (직접 주소창으로 접근 시 제한)
   	window.onload = function() {
         if(<%=!loginOk%>) {
            const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?")
@@ -40,20 +44,22 @@
     <section>
       <h2><a href="board01">은하수 광장✨</a></h2>
       <form action="boardPost" method="post" name="FrmPost" id="FrmPost" enctype="multipart/form-data">
-		<input type="hidden" name="ip" value="<%=request.getRemoteAddr()%>">
+      	<input type="hidden" name="userid" value="<%=loginId%>">
+      	<input type="hidden" name="nickname" value="<%=loginNickname%>">
+		<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>">
         <div id="writeArea">
-          <select name="selectCategory" id="selectCategory" required>
+          <select name="postGenre" id="postGenre" required>
 	          <option value="" selected disabled hidden>카테고리 선택</option>
 	          
 	        <!-- 카테고리목록 출력 -->
 	        <%  ArrayList<String> cList = bMgr.getCategoryList();
-	        	for(int i=0; i<cList.size(); i++) {%>
+	        	for(int i=1; i<cList.size(); i++) {%>
 	           	<option value="<%=cList.get(i)%>"><%=cList.get(i)%></option>
 	        <% } %>
           </select>
           
           <div id="writeHead">
-            <select name="selectTab" id="selectTab">
+            <select name="postTab" id="postTab">
             <!-- 탭테이블의 0,1,2 항목은 전체,인기,일반 고정 -->
               <option value="일반" selected>일반</option>
             <!-- 카테고리목록 출력 -->
@@ -80,7 +86,7 @@
               <li>선택된 파일이 없습니다.</li>
             </ul>
             <label for="uploadFile">파일찾기</label>
-            <input type="file" name="uploadFile" id="uploadFile" accept="image/*" multiple>
+            <input type="file" name="uploadFile" id="uploadFile" accept="image/*">
           </div>
         </div>
 
@@ -110,7 +116,7 @@
     function writeChk() {
       const $frm = document.FrmPost;
 
-      if($frm.selectCategory.value == "") {
+      if($frm.postGenre.value == "") {
         alert("카테고리를 선택해주세요.");
         $frm.selectCategory.focus();
         return;
