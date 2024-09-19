@@ -29,25 +29,22 @@
 	//한줄평 총 개수 
 	int totalReview = bMgr.totalReview(bookid);
 	
-	//한줄평 폼 submit 시 데이터 받기
-	   int rscore = (int)session.getAttribute("score");
-	   String content = request.getParameter("content");
-	   String userid = (String)session.getAttribute("userid");
-	   //id -> nickname 가져오기
-	   //글 등록
-	   //bMgr.insertReview();
 %>
+<script defer>
 
+
+
+</script>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop02.css?after" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop02.css?after01" />
   <title>상품 상세 페이지</title>
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/shop02.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/shop02.js?ver01"></script>
 </head>
 
 <body>
@@ -214,16 +211,23 @@
 	        <div class="star-avg">
 	          <h4>평균<br />별점</h4>
 	          <p>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
+	          	<%
+	          		for(int c=0; c<score; c++){
+	          			%>
+	          			<i class="fa-solid fa-star"></i>
+	          			<%
+	          		}
+	          		for(int e=0; e<5-score; e++){
+	          			%>
+	          			<i class="fa-regular fa-star"></i>
+	          			<%
+	          		}
+	          	%>
 	            <%=score%>.0 / 5.0
 	            <i class="fa-solid fa-pencil"></i>
 	          </p>
 	        </div><!--star-avg-->
-	        <form name="reviewFrm" action="/shop/shop02" method="post">
+	        <form name="reviewFrm" action="/shop/shop03" method="post" onsubmit="reviewFn()">
 	          <div class="input-star">
 	            <i class="fa-solid fa-star"></i>
 	            <i class="fa-solid fa-star"></i>
@@ -231,8 +235,9 @@
 	            <i class="fa-solid fa-star"></i>
 	            <i class="fa-solid fa-star"></i>
 	          </div>
-	          <input name="oneReviewText" id="oneReviewText" type="text" max="70"/>
+	          <input name="content" id="content" type="text" max="70"/>
 	          <button>입력</button>
+	          <input type="hidden" name="bookid" value="<%=bookid%>" />
 	        </form>
 	        <ul>
 	        <%
@@ -274,6 +279,20 @@
       	<address>&copy;Designed by teamMillkyWay</address>
       </footer>
 	</div>
+<script>
+	const sidKey = '<%=session.getAttribute("idKey")%>';
+	
+	
+	if(sidKey){//세션에 idKey값 있을 경우 - 로그인상태
+		checkReview();
+	}else{//비로그인 상태
+		if(confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?')){
+			location.href = 'login/login01';
+		}else{
+			history.back();
+		}
+	}//if
+</script>
 </body>
 
 </html>

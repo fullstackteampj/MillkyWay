@@ -108,10 +108,15 @@ window.addEventListener('scroll', ()=>{
   }
 });
 
+let score = 0;
 
 //한줄평 아이콘 클릭시 입력폼 나타나게
 const $reviewFrm = document.querySelector('.shop-product form[name=reviewFrm]');
 const $pencil = document.querySelector('.fa-pencil');
+
+$reviewFrm.addEventListener('submit', (evt)=>{
+  evt.preventDefault();
+})
 
 $pencil.addEventListener('click', ()=>{
   $reviewFrm.classList.toggle('pencil');
@@ -141,8 +146,20 @@ $stars.forEach(($star, idx)=>{
     for(let k=$stars.length-1; k>idx; k--){
       $stars[k].style.color = '#ddd';/******* 포인트 컬러에 따라 변경 필요********/
     }
+    score = idx;
   });
 });
+
+//한줄평 등록 확인창
+const checkReview = () => {
+  alert('hi');
+  const url = '/shop/shop03?score='+ score;
+  window.open(url, "review", "width=400, height=300");
+};
+
+
+
+
 
 
 

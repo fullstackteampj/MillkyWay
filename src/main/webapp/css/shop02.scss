@@ -5,6 +5,17 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 $white : #fdfdfd;
 
+// 정훈
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+@mixin flexCenter() {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @import "_header";
 
 section.shop-product{
@@ -28,6 +39,7 @@ section.shop-product{
     font-weight: 800;
     background-color: rgba(#fdfdfd, 0.8);
     border-top: 1px solid $sec-color;
+    z-index: 100;
     >div{
       display: flex;
       flex-flow: row nowrap;
@@ -338,7 +350,6 @@ section.shop-product{
         margin: 0 auto 60px;
         border: 1px solid $pri-color;
         border-radius: 5px;
-     
         &.pencil{
           display: flex;
           flex-flow: row nowrap;
@@ -352,7 +363,7 @@ section.shop-product{
             &.colorstar{color: $point-color;}
           }//i
         }//.input-star
-        >#oneReviewText{
+        >#content{
           flex: 1 1 0;
           margin-right: 20px;
           padding: 10px;

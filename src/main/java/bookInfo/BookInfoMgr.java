@@ -18,7 +18,7 @@ public class BookInfoMgr {
 		}
 	}
 	
-	//id에 따른 책 모든 정보 bean 저장
+	//id에 따른 도서 모든 정보 bean 저장
 	public Vector<BookBean> getBook(int bookid){
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -68,7 +68,6 @@ public class BookInfoMgr {
 		try {
 			con = pool.getConnection();
 			sql = "select * from reviewtbl where bookid = ?";
-			System.out.println("sql="+sql);
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, bookid);
 			rs = pstmt.executeQuery();
@@ -113,20 +112,56 @@ public class BookInfoMgr {
 	      return totalReview;
 	   }
 	   
-	   //한줄평 입력하기
-	   public void insertReview(int score, String content, String nickname) {
+	   //userid -> nickname 가져오기
+	   public String getNickname(int userid) {
+		   Connection con = null;
+		   PreparedStatement pstmt = null;
+		   ResultSet rs = null;
+		   String sql = null;
+		   String nickname = null;
+		   try {
+			   con = pool.getConnection();
+			   sql = "select nickname from membertbl where userid = ?";
+			   pstmt = con.prepareStatement(sql);
+			   pstmt.setInt(1, userid);
+			   rs = pstmt.executeQuery();
+			   if(rs.next()) {
+				   nickname = rs.getString(1);
+			   }
+		   }catch(Exception e) {
+			   e.printStackTrace();
+		   }finally {
+			   pool.freeConnection(con, pstmt, rs);
+		   }
+		   return nickname;
+	   }
+	   //한줄평 reviewtbl 입력하기
+	   public boolean insertReview(ReviewBean bean) {
 	      Connection con = null;
 	      PreparedStatement pstmt = null;
-	      ResultSet rs = null;
 	      String sql = null;
+	      boolean flag = false;
 	      
 	      try {
-	         sql = "insert ";
+	    	  con = pool.getConnection();
+	    	  sql = "insert reviewtbl (userid, bookid, score, content, nickname)"
+	        		 + "values(?,?,?,?,?)";
+	    	  pstmt = con.prepareStatement(sql);
+	    	  pstmt.setInt(1, bean.getUserid());
+	    	  pstmt.setInt(2, bean.getBookid());
+	    	  pstmt.setInt(3, bean.getScore());
+	    	  pstmt.setString(4, bean.getContent());
+	    	  pstmt.setString(5, bean.getNickname());
+	    	  
+	    	  if(pstmt.executeUpdate() == 1) {
+					flag = true;
+				}
 	      }catch(Exception e){
 	         e.printStackTrace();
 	      }finally {
-	         pool.freeConnection(con, pstmt, rs);
+	         pool.freeConnection(con, pstmt);
 	      }
+	      return flag;
 	      
 	   }
 	
