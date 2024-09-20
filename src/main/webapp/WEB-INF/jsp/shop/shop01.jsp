@@ -1,13 +1,46 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<% request.setCharacterEncoding("UTF-8"); %>
+<jsp:useBean id="bMgr" class="bookInfo.BookListMgr" />
+<%
+
+	int totalRecord = 0; //전체 레코드 수
+	int numPerPage = 5; //페이지당 레코드 수
+	int pagePerBlock = 5; //블럭당 페이지 수
+	
+	int totalPage = 0; //전체 페이지 수
+	int totalblock = 0; //전체 블럭 수
+	
+	int nowPage = 1; //현재 페이지
+	int nowBlock = 1; //현재 블럭
+	
+	int start = 0; //DB의 select 시작번호
+	int end = 5; //시작 번호로 부터 가져올 select 개수
+	
+	int listSize = 0; //현재 읽어온 게시물의 수
+	
+	String keyField = ""; //구분할 장르
+	
+	if(request.getParameter("keyField") != null){
+		keyField = request.getParameter("keyField");
+	}
+	
+	if(request.getParameter("nowPage") != null){
+		nowPage = Integer.parseInt(request.getParameter("nowPage"));
+	}
+	start = (nowPage * numPerPage) - numPerPage;
+	end = numPerPage;
+	
+	//totalRecord = bMgr.getTotalCount(keyField);
+	
+%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop01.css?after" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop01.css?after01" />
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
   <script defer src="${pageContext.request.contextPath}/js/shop01.js"></script>
   <title>상품 목록</title>
@@ -951,7 +984,7 @@
 	        </ul>
 	      </nav>
 	
-	      <div class="book-frame">
+	     
 	        <ol>
 	          <!--동적생성
 	          <li>
@@ -975,14 +1008,15 @@
 	          </li>
 	          -->
 	        </ol>
-	      </div>
-	      <div class="pagination-container">
-	        <div class="pagenation-frame">
-	          <div class="pagenation-slide">
-	            
+	    
+	    
+	          <div class="pagenation">
+	          	<i class="fa-solid fa-caret-left"></i>
+	            <button>1</button>
+	            <button>2</button>
+	            <button>3</button>
+	            <i class="fa-solid fa-caret-right"></i>
 	          </div>
-	        </div>
-	      </div>
 	    </div><!--.container-->
 	  </section>
 	  <footer>

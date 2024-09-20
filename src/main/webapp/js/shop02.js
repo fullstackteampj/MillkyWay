@@ -108,8 +108,6 @@ window.addEventListener('scroll', ()=>{
   }
 });
 
-let score = 0;
-
 //한줄평 아이콘 클릭시 입력폼 나타나게
 const $reviewFrm = document.querySelector('.shop-product form[name=reviewFrm]');
 const $pencil = document.querySelector('.fa-pencil');
@@ -121,46 +119,4 @@ $reviewFrm.addEventListener('submit', (evt)=>{
 $pencil.addEventListener('click', ()=>{
   $reviewFrm.classList.toggle('pencil');
 });
-
-
-//한줄평 별 호버시 색변화
-const $stars = document.querySelectorAll('.shop-product .input-star>i');
-
-
-$stars.forEach(($star, idx)=>{
-  $star.addEventListener('mouseenter', ()=>{
-      for(let i=0; i<=idx; i++){
-      $stars[i].classList.add('colorstar');
-      }
-  });
-  $star.addEventListener('mouseleave', ()=>{
-    for(let i=0; i<$stars.length; i++){
-      $stars[i].classList.remove('colorstar');
-    }
-  });
-
-  $star.addEventListener('click', ()=>{
-    for(let i=0; i<=idx; i++){
-      $stars[i].style.color = 'rgb(100, 130, 173)';/******* 포인트 컬러에 따라 변경 필요********/
-    }
-    for(let k=$stars.length-1; k>idx; k--){
-      $stars[k].style.color = '#ddd';/******* 포인트 컬러에 따라 변경 필요********/
-    }
-    score = idx;
-  });
-});
-
-//한줄평 등록 확인창
-const checkReview = () => {
-  alert('hi');
-  const url = '/shop/shop03?score='+ score;
-  window.open(url, "review", "width=400, height=300");
-};
-
-
-
-
-
-
-
 

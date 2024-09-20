@@ -20,7 +20,7 @@ $priWhite: #b6e2f7;
 section.shop-list{
   position: relative;
   width: 1200px;
-  margin: 0 auto;
+  margin: 120px auto 0;
   >h2{
     padding: 20px 0;
   }//h2
@@ -139,16 +139,10 @@ section.shop-list{
         }//li
       }//ul
     }//nav
-    >.book-frame{
-      overflow: hidden;
-      position: relative;
-      height: 1300px;
-      margin-top: 50px;
-      border-top: 1px solid $point-color ;
+    
       >ol{
-        position: absolute;
-        top: 0;
-       
+        margin-top: 50px;
+        border-top: 1px solid $point-color ;
         padding: 0 10px;
         background-color: #fdfdfd;
         
@@ -199,43 +193,32 @@ section.shop-list{
                 background-color: $pri-color;
                 border-radius: 5px;
                 &:hover{background-color: $point-color;}
-              }
+              }//button
             }//form
           }//a
         }//li
       }//ol-도서목록
-    }//.book-frame
-    >.pagination-container{
-      position: absolute;
-      top: 1410px;
-      left: 50%;
-      width: 300px;
-      margin-left: -150px;
-     
-      >i{
-        position: absolute;
-        font-size: 20px;
-        top: 50%;
-        margin-top: -10px;
-        cursor: pointer;
-        &:hover{color: $point-color;}
-        &:nth-of-type(1){left: 30px;}
-        &:nth-of-type(2){right: 30px;}
-      }
-      >.pagenation-frame{
-        overflow: hidden;
-        position: relative;
-        width: 200px;
-        height: 20px;
-        margin: 0 auto;
-        >.pagenation-slide{
-          display: flex;
-          flex-flow: row nowrap;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          left: 0;
-          >button{
+   
+    
+      
+      >.pagenation{
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        align-items: center;
+        
+         >i{
+           position: absolute;
+           font-size: 20px;
+           top: 50%;
+           margin-top: -10px;
+           cursor: pointer;
+           &:hover{color: $point-color;}
+           &:nth-of-type(1){left: 30px;}
+           &:nth-of-type(2){right: 30px;}
+         }
+        
+        >button{
             background: none;
             outline: none;
             display: flex;
@@ -255,8 +238,6 @@ section.shop-list{
               background-color: $point-color;
             }
           }//button
-        }//.pagenation-slide
-      }//.pagenation-frame
-    }//.pagination-container
+        }//.pagenation
   }//.container
 }//section.shop-list

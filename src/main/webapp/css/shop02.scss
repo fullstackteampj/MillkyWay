@@ -21,7 +21,7 @@ $priWhite: #b6e2f7;
 section.shop-product{
   position: relative;
   width: 1200px;
-  margin: 0 auto;
+  margin: 120px auto 0;
   padding: 50px 50px 80px 50px;
   font-size: 17px;
   box-sizing: border-box;
@@ -384,7 +384,7 @@ section.shop-product{
       }//form
       >ul{
         overflow: auto;
-        width: 90%;
+        width: 95%;
         max-height: 500px;
         margin: 0 auto;
      
@@ -398,10 +398,11 @@ section.shop-product{
             &:last-child{margin-right: 10px;}
           }//i
           >p{
+            flex: 1 1 0;
             height: 50px;
             line-height: 60px;
           }
-          >p{flex: 1 1 0;}
+          >span{margin-right: 10px;}
         }//li
       }//ul
     }//.one-review

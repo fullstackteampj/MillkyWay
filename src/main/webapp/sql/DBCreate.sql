@@ -72,7 +72,7 @@ CREATE TABLE membertbl (
     favorite TEXT default null,             -- 좋아하는 장르 배열로 입력 (확인 필요)
     profile_photo BLOB,                     -- 프로필 사진
     
-    birth VARCHAR(20) default null			-- 생년월일
+    birth VARCHAR(20) default null,			-- 생년월일
     agree CHAR(1)                           -- 동의여부
 );
 

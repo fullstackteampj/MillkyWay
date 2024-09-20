@@ -11,11 +11,11 @@ public class SignupMgr {
 		try {
 			pool = DBConnectionMgr.getInstance();
 		}catch(Exception e) {
-			System.out.println("Error : connection 연결 실패 ");
+			System.out.println("Error : connection 에러");
 		}
 	}
 	
-	//아이디 중복 체크
+	//id 중복 체크
 	public boolean checkId(String account) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -56,7 +56,7 @@ public class SignupMgr {
 		return flag;
 	}
 	
-	//회원정보 등록
+	//회원 가입
 	public boolean insertMember(MemberBean bean) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -79,11 +79,11 @@ public class SignupMgr {
 			pstmt.setString(10, bean.getGender());
 			pstmt.setString(11, bean.getYear()+bean.getMonth()+bean.getDate());
 			pstmt.setString(12, bean.getEmail());
-			//도서 취향 숫자화 저장
+			//도서 취향 저장
 			String[] favorite = bean.getFavorite();
 			if(favorite != null) {
 				char[] fav = { '0', '0', '0', '0', '0', '0', '0' };
-				String[] lists = {"소설", "로맨스", "여행", "미스터리", "과학", "만화", "sf"};
+				String[] lists = {"소설", "로맨스", "여행", "미스터리", "과학", "만화", "판타지"};
 				
 				for(int i=0;i<favorite.length; i++) {
 					for(int k=0; k<lists.length; k++) {
@@ -98,7 +98,7 @@ public class SignupMgr {
 				pstmt.setString(13, "0000000");
 			}
 			
-			//선택 약관 동의여부 저장
+			//선택 사항 동의여부
 			boolean useInfo = false;
 			String[] agrees = bean.getAgree();
 			for(int a=0; a<agrees.length; a++) {
