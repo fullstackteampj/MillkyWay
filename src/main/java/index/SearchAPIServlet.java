@@ -1,5 +1,17 @@
 package index;
-import java.io.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -7,30 +19,38 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BookSearch {
+@WebServlet("/searchAPI")
+public class SearchAPIServlet extends HttpServlet {
 
-    public static String runApi(String subject) {
-        String clientId = "7NOGl4nY8Lp_ieE9Ip9X"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "Uo73ED7wKU"; // 애플리케이션 클라이언트 시크릿
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String subject = request.getParameter("subject");
+        String clientId = ""; // 애플리케이션 클라이언트 아이디
+        String clientSecret = ""; // 애플리케이션 클라이언트 시크릿
 
         String text = null;
         try {
-            text = URLEncoder.encode(subject, "UTF-8"); // 검색어 입력
+            text = URLEncoder.encode(subject, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        //  JSON 응답 받기
-        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=5&start=1";
+        // API URL : JSON 응답 받기
+        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=10&start=1";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL, requestHeaders);
         
-		return responseBody;
+        // JSON 응답을 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter out = response.getWriter();
+        out.print(responseBody);
+        out.flush();
     }
-
+    
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {

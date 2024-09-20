@@ -619,7 +619,7 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   width: 30px;
   text-align: center;
 }
-#wrap > section.myPage03 > .mainContainer > .updateContainer > form > label[for=address] + button {
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > label + button {
   height: 25px;
   margin-top: 8px;
   margin-left: 20px;
@@ -631,20 +631,10 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
 }
 #wrap > section.myPage03 > .mainContainer > .updateContainer > form > input[type=radio],
 #wrap > section.myPage03 > .mainContainer > .updateContainer > form > span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 20px;
-  height: 40px;
-  line-height: 40px;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
-}
-#wrap > section.myPage03 > .mainContainer > .updateContainer > form > span.genLabel {
-  width: 60px;
-  height: 40px;
-  margin-left: -15px;
-  font-size: 16px;
-  line-height: 40px;
 }
 #wrap > section.myPage03 > .mainContainer > .updateContainer > form > button {
   height: 40px;
