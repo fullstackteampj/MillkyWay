@@ -1,20 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="board.BoardBean, board.DateMgr, beans.MemberBean" %>
+<%@ page import="beans.BoardBean, board.DateMgr, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
+<!-- 글목록 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
 
 	//임시로 로그인 세션 저장
 	MemberBean mBean = new MemberBean();
-	mBean.setUserid(2);
-	mBean.setAccount("toto");
-	mBean.setNickname("토토");
+	mBean.setUserid(1);
+	mBean.setAccount("milky@naver.com");
+	mBean.setNickname("밀키");
 	session.setAttribute("mBean", mBean);
 
-	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
-	Integer loginId = loginBean.getUserid();
+	MemberBean loginBean = null;
+	Integer loginId = null;
+	
+	if(session != null && session.getAttribute("mBean") != null) {
+		loginBean = (MemberBean)session.getAttribute("mBean");
+		loginId = loginBean.getUserid();
+	}
 	
 	int totalRecord=0; //전체레코드수
 	int numPerPage=10; // 페이지당 레코드 수 
@@ -164,6 +170,7 @@
 			for(int i=0; i<forCount; i++) {
 			 	BoardBean bean = postList.get(i);
 			 	int boardid = bean.getBoardid();
+			 	String genre = bean.getGenre();
 			 	String kind = bean.getTab();
 			 	String title = bean.getTitle();
 			 	int commentCount = bMgr.getCommentCount(boardid);
@@ -189,7 +196,7 @@
 			 	
 			  %>
 			<a href="board02?num=<%=boardid%>">
-	            <span class="tab"><%=kind%></span>
+	            <span class="tab"><%=kind%> / <%=genre%></span>
 	            <div class="content">
 	              <p class="title">
 	                <span><%=title%></span>
@@ -231,7 +238,7 @@
 	            
 	            
 	            <% // 첨부이미지가 있으면 출력
-	               if(photo.length > 0) { %>
+	               if(photo != null && photo.length > 0) { %>
 	            	<p class="frame">
 	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
 	            	</p>
@@ -283,7 +290,7 @@
         </ul> <!--#pagination-->
   
         <div id="postSearch">
-          <form action="board01" method="get" name="frmPostSearch">
+          <form action="board01" method="get" name="frmPostSearch" autocomplete="off">
             <select name="keyField" id="keyField">
               <option value="multiple">제목+내용</option>
               <option value="title">제목</option>

@@ -1,6 +1,7 @@
 package board;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
+import beans.BoardBean;
+import beans.CommentBean;
 
 public class BoardMgr {
 	private DBConnectionMgr pool;
@@ -206,7 +209,7 @@ public class BoardMgr {
 	// 글에대한 데이터 bean 반환
 	public BoardBean getPost(int boardid) {
 		
-		BoardBean bean = new BoardBean();
+		BoardBean bean = null;
 		
 		try {
 			con = pool.getConnection();
@@ -215,6 +218,7 @@ public class BoardMgr {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
+				bean = new BoardBean();
 				bean.setBoardid(rs.getInt("boardid"));
 				bean.setUserid(rs.getInt("userid"));
 				bean.setNickname(rs.getString("nickname"));
@@ -240,6 +244,49 @@ public class BoardMgr {
 		}
 		
 		return bean;
+	}
+	
+	// 조회수 증가
+	public void upCount(int boardid) {
+		int count = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "update boardtbl set count = count+1 where boardid = " + boardid;
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 추천수 증가
+	public int upLike(HttpServletRequest req) {
+		String boardid = req.getParameter("num");
+		int updateLiked = 0;
+		try {
+			// 추천 수 증가
+			con = pool.getConnection();
+			sql = "update boardtbl set liked = liked+1 where boardid = " + boardid;
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			
+			// 증가된 추천 수 추출
+			sql = "select liked from boardtbl where boardid = " + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				updateLiked = rs.getInt("liked");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+
+		return updateLiked;
 	}
 	
 	// 총 댓글 수 반환
@@ -320,12 +367,45 @@ public class BoardMgr {
 		}
 	}
 	
+	/* board03(글수정페이지) 활용메서드 */
+	public boolean editBoard(HttpServletRequest req) throws ServletException, IOException {
+		Part imagePart = req.getPart("uploadFile");
+    	InputStream imageInputStream = imagePart.getInputStream();
+		boolean flag = false;
+		
+		try {
+			con = pool.getConnection();
+			sql = "update boardtbl set nickname=?, title=?, content=?, photo=?, genre=?,"
+					+ "tab=?, ip=?, update_date=? where boardid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, req.getParameter("nickname"));
+			pstmt.setString(2, req.getParameter("postTit"));
+			pstmt.setString(3, req.getParameter("postCont"));
+			pstmt.setBlob(4, imageInputStream);
+			pstmt.setString(5, req.getParameter("postGenre"));
+			pstmt.setString(6, req.getParameter("postTab"));
+			pstmt.setString(7, req.getParameter("userip"));
+			DateMgr dMgr = new DateMgr();
+			pstmt.setString(8, dMgr.getToday());
+			pstmt.setInt(9, Integer.parseInt(req.getParameter("boardid")));
+			pstmt.executeUpdate();
+			flag = true;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
+	}
+	
 	/* board04(글작성페이지) 활용메서드 */
-	// 작성글 insert
-	public void insertBoard(HttpServletRequest req) throws ServletException, IOException {
+	// 글작성 insert
+	public boolean insertBoard(HttpServletRequest req) throws ServletException, IOException {
 
     	Part imagePart = req.getPart("uploadFile");
     	InputStream imageInputStream = imagePart.getInputStream();
+		boolean flag = false;
 		
 		try {
 			con = pool.getConnection();
@@ -342,11 +422,47 @@ public class BoardMgr {
 			 pstmt.setString(7, req.getParameter("postTab"));
 			 pstmt.setString(8, req.getParameter("userip"));
 			 pstmt.executeUpdate();
+
+			flag = true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
+	}
+	
+	
+	/* board05(글삭제페이지) 활용메서드 */
+	public boolean deleteBoard(HttpServletRequest req) {
+		int userid = Integer.parseInt(req.getParameter("userid"));
+		int inputPwd = Integer.parseInt(req.getParameter("pwd"));
+		int boardid = Integer.parseInt(req.getParameter("boardid"));
+		boolean flag = false;
+		
+		// 멤버테이블에서 글작성자의 userid와 일치하는 회원의 비밀번호를 추출
+		try {
+			con = pool.getConnection();
+			sql = "select pwd from membertbl where userid = " + userid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			// 글작성자의 비밀번호와 입력받은 비밀번호가 같으면
+			if(rs.next()) {
+				if(rs.getInt("pwd") == inputPwd) {
+					sql = "update boardtbl set status = 9 where boardid = " + boardid;
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+					flag = true;
+				}				
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		
+		return flag;
 	}
+	
 }

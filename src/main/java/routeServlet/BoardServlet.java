@@ -28,13 +28,48 @@ public class BoardServlet extends HttpServlet {
     	// 요청URL 불러오기
     	String path = request.getPathInfo();
     	
-    	// 새글작성 요청
-    	if ("/boardPost".equals(path)) {
+    	// 글 작성 요청
+    	if("/boardPost".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
-    		bMgr.insertBoard(request);
-    		response.sendRedirect("board01");
+    		boolean insertOk = bMgr.insertBoard(request);
+    		if(insertOk) {
+    			response.sendRedirect("board01");    			
+    		} else {
+    			response.sendRedirect("boardError");
+    		}
     	}
     	
+    	// 글 삭제 요청
+    	if("/boardDelete".equals(path)) {
+    		BoardMgr bMgr = new BoardMgr();
+    		boolean deleteOk = bMgr.deleteBoard(request);
+    		if(deleteOk) {
+    			response.sendRedirect("board01");    			
+    		} else {
+    			response.sendRedirect("boardError");
+    		}
+    	}
+    	
+    	// 글 수정 요청
+    	if("/boardEdit".equals(path)) {
+    		BoardMgr bMgr = new BoardMgr();
+    		boolean editOk = bMgr.editBoard(request);
+    		if(editOk) {
+    			response.sendRedirect("board01");
+    		} else {
+    			response.sendRedirect("boardError");
+    		}
+    	}
+    	
+    	// 추천 수 증가
+    	if("/uplike".equals(path)) {
+    		BoardMgr bMgr = new BoardMgr();
+    		int updateLiked = bMgr.upLike(request);
+    		response.setContentType("application/json");
+    		response.getWriter().write("{\"liked\": " + updateLiked + "}");
+    	}
+    	
+    	// 댓글 작성 요청
     	if("/boardComment".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		bMgr.insertComment(request);

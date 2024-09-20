@@ -1,15 +1,38 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, board.BoardBean, board.CommentBean, beans.MemberBean" %>
+<%@ page import="java.util.*, beans.BoardBean, beans.CommentBean, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
+<!-- 글보기 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
-	Integer loginId = loginBean.getUserid();
-	String loginNickname = loginBean.getNickname();
-	int boardid = Integer.parseInt(request.getParameter("num"));
-	BoardBean post = bMgr.getPost(boardid);
+	int num = Integer.parseInt(request.getParameter("num"));
+	
+	// 조회수 증가
+	bMgr.upCount(num);
+	
+	MemberBean loginBean = null;
+	Integer loginId = null;
+	String loginNickname = null;
+	// 로그인 상태면 필요한 데이터 추출(id, nickname)
+	if(session != null && session.getAttribute("mBean") != null) {
+		loginBean = (MemberBean)session.getAttribute("mBean");
+		loginId = loginBean.getUserid();
+		loginNickname = loginBean.getNickname();
+	}
+	
+	BoardBean post = bMgr.getPost(num);
+	// 글정보 추출
+	String title = post.getTitle();
+	String nickname = post.getNickname();
+	String regdate = post.getRegdate();
+	String updateDate = post.getUpdateDate();
+	int count = post.getCount();
+	int liked = post.getLiked();
+	byte[] photo = post.getPhoto();
+	String content = post.getContent();
+	int userid = post.getUserid();
+	int status = post.getStatus();
 	
 	int totalRecord=0; //전체레코드수
 	int numPerPage=30; // 페이지당 레코드 수 
@@ -32,6 +55,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script defer src="${pageContext.request.contextPath}/js/header.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/board02.js"></script>
 </head>
 <body>
   <div id="wrap">
@@ -39,55 +63,69 @@
 	 
 	  <section>
 	    <h2><a href="./board01">은하수 광장✨</a></h2>
-	
+	    
+		<% // status가 0인 게시글만 내용출력, 9일경우 alert 후 목록으로 이동
+	    if(post != null && status == 0) { %>
 	    <div id="postBox">
+	    
 	      <div id="readHead">
 	        <div id="readHead-top">
-	          <p id="readTit"><%= post.getTitle() %></p>
+	          <p id="readTit"><%=title%></p>
 	        </div> <!--readHead-top-->
 	
 	        <div id="readHead-bottom">
 	          <div id="regInfo">
-	            <span id="postAuthor"><%= post.getNickname() %></span>
-	            <span id="postRegdate"><%= post.getRegdate() %></span>
+	            <span id="postAuthor"><%=nickname%></span>
+	            <span id="postRegdate"><%=regdate%>
+	            <%// 수정됐으면 덧붙임
+               	if(updateDate != null) { %>
+               		<span class="edited">(수정됨)</span>
+             <% } %>
+	            </span>
 	          </div>
 	
 	          <div id="feedback">
-	            <p>조회 <span><%= post.getCount() %></span></p>
-	            <p>추천 <span><%= post.getLiked() %></span></p>
+	            <p>조회 <span><%=count%></span></p>
+	            <p>추천 <span><%=liked%></span></p>
 	          </div>
 	        </div> <!--readHead-bottom-->
 	      </div> <!--readHead-->
 	
 	      <div id="readContent">
 	        <div id="contentDetail">
-	          <p>
 	          <% // 이미지가 존재하면 출력
-	          	 if(post.getPhoto().length > 0) { %>
-		            <img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(post.getPhoto()) %>" alt="#">
+	          	 if(photo != null && photo.length > 0) { %>
+		            <img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
 		            <br />
 	          <% } %>
-	            <%= post.getContent() %>
+	          <p>
+	          	<pre><%=content%></pre>
 	          </p>
 	        </div>
 	
-	        <p id="likeBtn">
-	          <span><%= post.getLiked() %></span>
+	        <p id="likeBtn" onclick="uplike(<%=num%>, this)">
+	          <span><%=liked%></span>
 	          <i class="fa-regular fa-thumbs-up"></i>
 	        </p>
 	      </div>
 	
-	      <div id="postMng">
-	        <a href="board05" class="readBtn">삭제 <i class="fa-solid fa-trash-can"></i></a>
-	        <a href="board03?num=<%= post.getBoardid() %>" class="readBtn">수정 <i class="fa-solid fa-pencil"></i></a>
+		<% // 내글일 때만 수정/삭제버튼
+			if(loginBean != null) { 
+				if(userid == loginId) {%>
+		  <div id="postMng">
+	        <a href="board05?num=<%=num%>" class="readBtn">삭제 <i class="fa-solid fa-trash-can"></i></a>
+	        <a href="board03?num=<%=num%>" class="readBtn">수정 <i class="fa-solid fa-pencil"></i></a>
 	      </div> <!--postMng-->
+		<%		}
+			} %>
+	      
 	    </div> <!--postBox-->
 	
 	    <div id="commentBox">
 	    
 	      <div id="commentHead">
 	        <div id="commentOpt">
-	          <h3>댓글 [<span><%= bMgr.getCommentCount(boardid) %></span>]</h3>
+	          <h3>댓글 [<span><%= bMgr.getCommentCount(num) %></span>]</h3>
 	          <select name="commentSort" id="commentSort">
 	            <option value="등록순">등록순</option>
 	            <option value="최신순">최신순</option>
@@ -103,7 +141,7 @@
 	
 	      
 	      
-	      <% ArrayList<CommentBean> clist = bMgr.getCommentList(boardid); 
+	      <% ArrayList<CommentBean> clist = bMgr.getCommentList(num); 
 			listSize = clist.size();
           
           // 반복문으로 출력할 댓글이 한페이지게시글수 보다 많으면 그만큼만,
@@ -117,36 +155,44 @@
         <%
 			for(int i=0; i<forCount; i++) {
 				CommentBean bean = clist.get(i);
-				String nickname = bean.getNickname();
-				String regdate = bean.getRegdate();
-				String content = bean.getContent();
-				int userid = bean.getUserid();
+				String comNickname = bean.getNickname();
+				String comRegdate = bean.getRegdate();
+				String comContent = bean.getContent();
+				int comUserid = bean.getUserid();
 		%>
 	    	<div class="comment">
 	    	
 	          <div class="commentInfo">
 	            <% // 글작성자와 댓글작성자가 같을경우 작성자표시
-	            if(post.getUserid() == userid) { %>
+	            if(loginBean != null) { 
+	            	if(userid == comUserid) {%>
 	            	<span class="author same">
-	         <% } else { %>
+	         <% 	}
+	         	} else { %>
 	            	<span class="author">
 	         <% } %>
-	            <%=nickname%></span>
+	            <%=comNickname%></span>
 	            
 	            <div class="commentAdd">
-	              <span class="commentDate"><%=regdate%></span>
+	              <span class="commentDate"><%=comRegdate%></span>
 	              
 	              <div class="author-addOns">
 	                <span><i class="fa-solid fa-reply" title="답글"></i></span>
+	                <% // 내댓글일 때만 수정/삭제버튼
+					if(loginBean != null) { 
+						if(comUserid == loginId) {%>
 	                <span><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
 	                <span><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
+	                <%	}
+					} %>
+	                
 	              </div>
 	            </div>
 	            
 	          </div>
 	          
 	          <div class="commentMsg">
-	            <p class="text"><%=content%></p>
+	            <p class="text"><%=comContent%></p>
 	          </div>
 	        </div> <!--comment-->
 	     <% } //for %>
@@ -154,20 +200,23 @@
 	   <% } // if%>
 	     	        
 	      
-	
-	      <form action="boardComment" name="commentFrm" id="commentFrm" method="post">
-	      	<input type="hidden" name="userid" value="<%=loginId%>">
-	      	<input type="hidden" name="nickname" value="<%=loginNickname%>">
-	      	<input type="hidden" name="ref" value="<%=boardid%>">
-	      	<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>">
-	        <div id="writeComment">
-	          <p class="commentAuthor">
-	            <%=loginNickname%>
-	          </p>
-	          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
-	          <button type="button" onclick="javascript:commentChk()">작성</button>
-	        </div>
-	      </form>
+		<% // 로그인 되어있을 때만 댓글폼 노출
+			if(loginBean != null) { %>
+				<form action="boardComment" name="commentFrm" id="commentFrm" method="post" autocomplete="off">
+			      	<input type="hidden" name="userid" value="<%=loginId%>" />
+			      	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
+			      	<input type="hidden" name="ref" value="<%=num%>" />
+			      	<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+			        <div id="writeComment">
+			          <p class="commentAuthor">
+			            <%=loginNickname%>
+			          </p>
+			          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
+			          <button type="button" onclick="commentChk()">작성</button>
+			        </div>
+				</form>
+		<% } %>
+	      
 	    </div> <!--commentBox-->
 	
 	    <div id="btns"> <!--임시-->
@@ -181,7 +230,14 @@
         	  <a href="#" onclick="goLogin()">글쓰기</a>
           <%}%>
 	    </div>
-	
+	    <% } else {// if(status == 9) %>
+	    <div id="postBox">
+	    </div>
+	    <script>
+	    	alert("삭제된 게시글입니다.");
+	    	location.href="board01";
+	    </script>
+		<% } %>
 	  </section>
 	
 	  
@@ -189,24 +245,5 @@
 	    푸터영역
 	  </footer>
   </div>
-  <script>
-	function goLogin() {
-		const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?");
-		if(result) {
-			location.href = "/login/login01";
-		}
-	}
-	
-	function commentChk() {
-		const frm = document.commentFrm;
-		if(frm.inputComment.value == "" || frm.inputComment.value == null) {
-			alert("내용이 입력되지 않았습니다.");
-			frm.inputComment.focus();
-			return;
-		}
-		
-		frm.submit();
-	}
-  </script>
 </body>
 </html>

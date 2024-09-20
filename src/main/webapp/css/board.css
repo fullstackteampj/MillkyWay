@@ -323,7 +323,7 @@ section > #post > #list > a:last-of-type {
 section > #post > #list > a > .tab {
   display: inline-block;
   flex: 0 0 auto;
-  width: 70px;
+  width: 80px;
   color: #ccc;
   text-align: center;
 }
@@ -660,6 +660,9 @@ section > #postBox > #readHead > #readHead-bottom > #regInfo > span:first-of-typ
 section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type {
   padding-left: 10px;
 }
+section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type > .edited {
+	color: #aaa;
+}
 section > #postBox > #readHead > #readHead-bottom > #feedback {
   display: flex;
 }
@@ -681,7 +684,10 @@ section > #postBox > #readContent > #contentDetail {
   font-size: 15px;
   line-height: 1.5;
 }
-section > #postBox > #readContent > #contentDetail> p> img {
+section > #postBox > #readContent > #contentDetail> p {
+	
+}
+section > #postBox > #readContent > #contentDetail> p > img {
 	max-width: 100%;
 }
 section > #postBox > #readContent > #likeBtn {
@@ -814,7 +820,7 @@ section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i {
   margin: 0;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i:hover {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
   color: rgb(205, 92, 92);
 }
 section > #commentBox > #commentCont > .comment > .commentMsg {
@@ -874,8 +880,8 @@ section > #btns {
 }
 section > #btns > a {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 110px;
   height: 40px;
   margin-right: 5px;
@@ -888,7 +894,63 @@ section > #btns > a:first-child {
 section > #btns > a:last-child {
   margin: 0;
 }
-
+section > #postBox > #deleteArea {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	margin: 70px 0;
+}
+section > #postBox > #deleteArea > h3 {
+	font-size: 30px;
+	font-family: "Pretendard-Bold";
+}
+section > #postBox > #deleteArea > p {
+	font-size: 14px;
+	margin-bottom: 50px;
+}
+section > #postBox > #deleteArea > #delFrm {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30px;
+}
+section > #postBox >#deleteArea >  #delFrm > p {
+	margin-bottom: 12px;
+	color: #222;
+	font-size: 18px;
+	font-family: "Pretendard-Bold";
+}
+section > #postBox > #deleteArea > #delFrm > input {
+	width: 400px;
+	height: 35px;
+	padding: 0 12px;
+	box-sizing: border-box;
+	border: 1px solid #222;
+	border-radius: 3px;
+	outline: none;
+}
+section > #postBox > #deleteArea > #delFrm > input:focus {
+	border-color: #33afe9;
+	outline: 1px solid #33afe9;
+}
+section > #btns > button {
+	width: 110px;
+	height: 40px;
+	margin-right: 5px;
+	color: #fff;
+	outline: none;
+	border: none;
+	background-color: #ccc;
+}
+section > #btns > button:last-child {
+	margin-right: 0;
+	background-color: #33afe9;
+}
+section > #btns > button:last-child:hover {
+	background-color: rgb(205, 92, 92);
+}
 footer {
   width: 100%;
   min-width: 1200px;

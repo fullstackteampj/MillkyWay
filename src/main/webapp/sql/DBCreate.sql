@@ -107,46 +107,49 @@ CREATE TABLE Booktbl (
 -- 게시판 게시물을 저장하는 테이블
 CREATE TABLE boardtbl (
     boardid INT PRIMARY KEY AUTO_INCREMENT,         -- 게시물 ID, 기본 키 및 자동 증가
+    userid INT,                            		    -- 작성자 ID(식별자)
+    nickname VARCHAR(100),                          -- 작성자 닉네임
     title VARCHAR(200),                             -- 게시물 제목
-    author VARCHAR(100),                            -- 작성자 이름
-    genre VARCHAR(50),                              -- 도서 장르 (소설, 역사, 철학 등)
-    tab VARCHAR(10),								-- 글의 탭분류 (인기, 일반, 질문, 감상)
     content TEXT,                                   -- 게시물 내용
-    count INT DEFAULT 0,                            -- 조회수 (기본값 0)
+    photo MEDIUMBLOB,                               -- 게시물에 포함된 사진
+    genre VARCHAR(50),                              -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
+    tab VARCHAR(10),								-- 글의 탭분류 (일반, 질문, 감상, 추천)
     regdate datetime default now(),                 -- 게시물 작성 날짜
-    photo BLOB,                                     -- 게시물에 포함된 사진
-
-    -- 보드테이블 인서트문제떄문에 임시로 살려놓음(ref,pos,depth)
-    ref INT DEFAULT 0,                              -- 댓글이 속한 댓글위치(0은 최상위 댓글)
-    pos INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-    depth INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-
-
-    userid INT,                            		    -- 작성자 ID, 외래 키로 `membertbl` 참조
+    count INT DEFAULT 0,                            -- 조회수 (기본값 0)
+    liked INT DEFAULT 0,                            -- 추천 갯수
+    best VARCHAR(1) DEFAULT "N",					-- 인기글여부 (기본값 "N", 인기글활성화 "Y")
     bookid INT,                             		-- 북아이디
-
-    liked INT DEFAULT 0,                            -- 좋아요 갯수
-    
     ip VARCHAR(45),                                 -- 작성자 IP 주소
-    update_date DATE,                               -- 게시물 수정 날짜
-    comment_count INT DEFAULT 0,                    -- 댓글 수 (기본값 0)
-    status VARCHAR(20),                             -- 게시물 상태 (active, inactive 등)
-
-    FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 작성자 ID와 외래 키 연결
-    FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
+    update_date datetime,                           -- 게시물 수정 날짜
+    status int DEFAULT 0                   		    -- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
 -- 댓글 테이블
 CREATE TABLE commenttbl (
 	commentid INT PRIMARY KEY AUTO_INCREMENT,		-- 댓글 ID, 기본키 및 자동 증가
-	author VARCHAR(100), 							-- 댓글 작성자
+	userid INT, 							        -- 댓글 작성자
+    nickname VARCHAR(100),
 	content TEXT,									-- 댓글 내용
-    ref INT DEFAULT 0,                              -- 댓글이 속한 댓글위치(0은 최상위 댓글)
+    ref INT DEFAULT 0,                              -- 댓글이 속한 글 (100~127 사이에서만)
+    pos INT DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
     depth INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
+	parent_commentid INT,							-- 대댓글이 속한 댓글
     regdate datetime default now(),                 -- 댓글 작성 날짜
-    update_date DATE,                               -- 댓글 수정 날짜
+    update_date datetime,                               -- 댓글 수정 날짜
     ip VARCHAR(45),                                 -- 작성자 IP 주소
-    status VARCHAR(20)                             -- 댓글 상태 (active, inactive 등) -- 이건 삭제여부인가?
+    status int DEFAULT 0                   		    -- 게시물 상태 (0 : 일반 /  9 : 삭제)
+);
+
+-- 게시판 카테고리 테이블
+CREATE TABLE categoryForAdmintbl (
+	categoryid int primary key,						-- 마지막꺼의  +1
+	category VARCHAR(100)							-- 카테고리명
+);
+
+-- 게시판 탭 테이블
+CREATE TABLE tabForAdmintbl (
+	tabid int primary key,						-- 마지막꺼의  +1
+	tab VARCHAR(100)							-- 탭명
 );
 
 

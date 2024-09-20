@@ -1,4 +1,4 @@
-package board;
+package beans;
 
 public class CommentBean {
 	private int commentid;
