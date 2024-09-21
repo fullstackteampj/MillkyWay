@@ -241,7 +241,7 @@
 		          <p class="commentAuthor">
 		            <span>답글</span><%=loginNickname%>
 		          </p>
-		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
+		          <textarea name="inputComment" placeholder="답글을 작성해보세요!"></textarea>
 		          <button type="button" onclick="replySubmit()">작성</button>
 		        </div>
 			</form>

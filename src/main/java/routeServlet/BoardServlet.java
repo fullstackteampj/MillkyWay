@@ -41,7 +41,7 @@ public class BoardServlet extends HttpServlet {
     		if(insertOk) {
     			response.sendRedirect("board01");    			
     		} else {
-    			response.sendRedirect("boardError");
+    			response.sendRedirect("boardError?error=failPost");
     		}
     	}
     	
@@ -49,10 +49,11 @@ public class BoardServlet extends HttpServlet {
     	if("/boardDelete".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		boolean deleteOk = bMgr.deleteBoard(request);
+    		String boardid = request.getParameter("boardid");
     		if(deleteOk) {
     			response.sendRedirect("board01");    			
     		} else {
-    			response.sendRedirect("boardError");
+    			response.sendRedirect("boardError?error=failDelete&num="+boardid);
     		}
     	}
     	
@@ -63,7 +64,7 @@ public class BoardServlet extends HttpServlet {
     		if(editOk) {
     			response.sendRedirect("board01");
     		} else {
-    			response.sendRedirect("boardError");
+    			response.sendRedirect("boardError?error=failEdit");
     		}
     	}
     	
@@ -71,7 +72,6 @@ public class BoardServlet extends HttpServlet {
     	if("/uplike".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		boolean hasLiked = bMgr.hasLikeSameId(request); // 중복여부 검사
-
     		
     		if(hasLiked) { // 중복이면 메세지 출력
     			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

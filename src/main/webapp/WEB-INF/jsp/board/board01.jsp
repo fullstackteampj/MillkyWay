@@ -154,7 +154,12 @@
         	  <a href="#" onclick="goLogin()">글쓰기</a>
           <%}%>
         </div> <!--#head-->
-
+	
+		<% // 검색햇을시
+		if(!(keyWord == null || keyWord.equals(""))) { %>
+			<p id="searchInfo">"<span> <%= keyWord %> </span>"의 검색결과 입니다.</p>
+	<%	} %>
+		
 		<!-- 글목록 -->
         <div id="list">
         

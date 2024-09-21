@@ -134,7 +134,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser, today) {
 		const $respan = document.createElement('span');
 		const $reinputComment = document.createElement('textarea');
 		$reinputComment.setAttribute('name', 'inputComment');
-		$reinputComment.setAttribute('placeholder', '댓글을 작성해보세요!');
+		$reinputComment.setAttribute('placeholder', '답글을 작성해보세요!');
 		const $editSubmit = document.createElement('button');
 		$editSubmit.setAttribute('type', 'button');
 		$editSubmit.setAttribute('onclick', 'replySubmit()');

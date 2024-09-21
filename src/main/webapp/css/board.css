@@ -299,6 +299,16 @@ section > #post > #head > a {
   background-color: #33afe9;
   border-radius: 3px;
 }
+section > #post > #searchInfo {
+	margin-left: 12px;
+	padding-bottom: 12px;
+    font-family: "Pretendard-Bold";
+	font-size: 16px;
+}
+section > #post > #searchInfo > span {
+	color: #33afe9;
+    font-family: "Pretendard-Bold";
+}
 section > #post > #list {
   border: 1px solid #ccc;
   padding: 0 10px;
