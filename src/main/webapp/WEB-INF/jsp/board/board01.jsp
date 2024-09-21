@@ -7,13 +7,6 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	//임시로 로그인 세션 저장
-	MemberBean mBean = new MemberBean();
-	mBean.setUserid(1);
-	mBean.setAccount("milky@naver.com");
-	mBean.setNickname("밀키");
-	session.setAttribute("mBean", mBean);
-
 	MemberBean loginBean = null;
 	Integer loginId = null;
 	
@@ -95,7 +88,12 @@
 
     <section>
       <h2 class="sr-only">은하수 광장✨</h2>
-        
+      <!-- 임시: 개발자용 로그인/로그아웃 -->
+      <div>
+      	<button type="button" onclick="location.href='forDev/loginMilky'">밀키 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginToto'">또또 로그인</button>
+      	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
+      </div>
       <article id="category">
         <h3 class="sr-only">카테고리</h3>
         
@@ -121,7 +119,15 @@
       <article id="post">
         
         <div id="head">
-          <h2>전체글</h2>
+          <h2><% // 게시판제목 (전체글, 인문학, 에세이 등)
+          	if(category == null || category.equals("전체")) { %>
+          	<a href="board01?category=전체&nowPage=1">
+          	전체글
+          <%} else {%>
+          	<a href="board01?category=<%=category%>&nowPage=1"> 
+          	<%=category%> 게시판
+          <%}%></a>
+          </h2>
           
           <ul id="tab">
           <%// 탭 목록
@@ -153,14 +159,13 @@
         <div id="list">
         
           <%
+          // 글정보 추출
           ArrayList<BoardBean> postList = bMgr.getPostList(keyField, keyWord, category, tab, start, end);
           listSize = postList.size();
           
           // 반복문으로 출력할 게시글이 한페이지게시글수 보다 많으면 그만큼만,
           // 그보다 적으면 가진만큼만 반복
-          int forCount = 0;
-          if(listSize >= numPerPage) {forCount = numPerPage;}
-          else {forCount = listSize;}
+          int forCount = listSize >= numPerPage ? numPerPage : listSize;
           
           if(postList.isEmpty()) { // 추출된 게시글이 없을경우
         	  out.println("<p>등록된 게시물이 없습니다.</p>");
@@ -178,7 +183,8 @@
 			 	String regDate = bean.getRegdate();	
 			 	String updateDate = bean.getUpdateDate();
 			 	int count = bean.getCount();
-			 	int liked = bean.getLiked();
+			 	String best = bean.getBest();
+			 	int liked = bMgr.getLikedCount(boardid);
 			 	byte[] photo = bean.getPhoto();
 			 	
 			 	
@@ -198,9 +204,16 @@
 			<a href="board02?num=<%=boardid%>">
 	            <span class="tab"><%=kind%> / <%=genre%></span>
 	            <div class="content">
-	              <p class="title">
-	                <span><%=title%></span>
-	                <% if(commentCount > 0) { %>
+	            	<p class="title">
+	              <% // 인기글이면 제목에 스타일 적용 
+	            	 if(best.equals("Y")) {%>
+	            	 <span class="overBestLike">
+            	  <% } else { %>
+            		  <span>
+            	  <% } %>
+	                <%=title%></span>
+	                <% // 댓글이 1개 이상이면 댓글 수 출력
+	                  if(commentCount > 0) { %>
 	                <span class="commentCount">[<%=commentCount%>]</span>
 	                <%}%>
 	                
@@ -229,7 +242,7 @@
 	                
 	                <% // 추천수가 15이상이면 스타일적용
 	                   if(liked >= 15) { %>
-	                	<p class="like over15">
+	                	<p class="like overBestLike">
 	                <% } else { %>
 	                	<p class="like">
 	                <% } %> 추천 <span><%=liked%></span></p>
@@ -315,14 +328,23 @@
       </article> <!-- #post-->
 
       <article id="bestPost">
-        <h3><a href="">실시간 인기글</a></h3>
-        <ul>
-          <li><a href="#">선거는 몸의 56분 침묵은 자본인 군 지나치다. 연극이 떼돈과 </a></li>
-          <li><a href="#">는, 기술 되지. 의한 처지가 작고 있으니까 56호 부모다 작동이란</a></li>
-          <li><a href="#">사실 이루어 30채, 사회적 문화적 주다가 </a></li>
-          <li><a href="#">아침의 불어오고도 대체로 그 측 금융은 것 대한데. 인간을 있다 적절하여 나를 아내로</a></li>
-          <li><a href="#">다 묻다가 만난다 나에서, 찾아지어 있다. 것 나선 유역이다</a></li>
-          <li><a href="#">활약한 지원하고 보건 일환을 막아 아니는</a></li>
+        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">실시간 인기글</a></h3>
+        
+        <% // 인기글 목록 출력 
+        	ArrayList<BoardBean> bestList = bMgr.getBestList();
+        	if(bestList.isEmpty()) {
+        		out.println("<p>등록된 인기글이 없습니다.</p>");
+        	} else {
+        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size();
+        		%>
+        		<ul>
+        	 <% for(int i=0; i<roofCount; i++) {
+        		 BoardBean bBean = bestList.get(i);
+        		 int bBoardid = bBean.getBoardid();
+        		 String bTitle = bBean.getTitle(); %>
+          		<li><a href="board02?num=<%=bBoardid%>"><%=bTitle%></a></li>
+          	 <% }
+          	 }%>
         </ul>
       </article>
 

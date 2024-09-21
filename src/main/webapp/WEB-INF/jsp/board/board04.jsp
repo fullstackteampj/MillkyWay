@@ -123,7 +123,7 @@
 
       if($frm.postGenre.value == "") {
         alert("카테고리를 선택해주세요.");
-        $frm.selectCategory.focus();
+        $frm.postGenre.focus();
         return;
       }
 

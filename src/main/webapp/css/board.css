@@ -339,10 +339,12 @@ section > #post > #list > a .content > .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  margin-bottom: 3px;
 }
 section > #post > #list > a .content > .title > span.commentCount {
   margin-left: 3px;
   color: #1a6080;
+  font-size: 14px;
 }
 section > #post > #list > a .content > .postInfo {
   display: flex;
@@ -359,10 +361,6 @@ section > #post > #list > a .content > .postInfo > p:first-of-type {
 section > #post > #list > a .content > .postInfo > p:last-of-type {
   border: none;
   padding-right: 0;
-}
-section > #post > #list > a .content > .postInfo > p.over15 {
-  font-family: "Pretendard-Bold";
-  color: #1a6080;
 }
 section > #post > #list > a > .frame {
   flex: 0 0 auto;
@@ -462,7 +460,7 @@ section > #bestPost {
   top: 0;
   right: 0;
   width: 200px;
-  height: 240px;
+  max-height: 240px;
   margin-top: 51px;
   padding: 16px;
   background-color: #fff;
@@ -472,6 +470,15 @@ section > #bestPost {
 section > #bestPost > h3 {
   font-size: 20px;
   margin-bottom: 7px;
+  /*border: 1px solid red;*/
+}
+section > #bestPost > p {
+	display: flex;
+  	align-items: center;
+  	height: 35px;
+  	font-size: 13px;
+  	color: #222;
+    /*border: 1px solid blue;*/
 }
 section > #bestPost > ul {
   font-size: 14px;
@@ -625,6 +632,11 @@ section > #postBox, section #commentBox {
   padding: 20px;
   border: 1px solid #ccc;
 }
+section #commentBox > p {
+	padding: 30px 0;
+	font-size: 14px;
+	text-align: center;
+}
 section > #postBox {
   position: relative;
 }
@@ -636,7 +648,7 @@ section > #postBox > #readHead {
 section > #postBox > #readHead > #readHead-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 7px;
+  margin-bottom: 12px;
 }
 section > #postBox > #readHead > #readHead-top > #readTit {
   font-size: 18px;
@@ -684,10 +696,10 @@ section > #postBox > #readContent > #contentDetail {
   font-size: 15px;
   line-height: 1.5;
 }
-section > #postBox > #readContent > #contentDetail> p {
+section > #postBox > #readContent > #contentDetail > p {
 	
 }
-section > #postBox > #readContent > #contentDetail> p > img {
+section > #postBox > #readContent > #contentDetail > img {
 	max-width: 100%;
 }
 section > #postBox > #readContent > #likeBtn {
@@ -773,7 +785,7 @@ section > #commentBox > #commentHead > #commentMng > span:last-of-type {
 }
 section > #commentBox > #commentCont {
   font-size: 14px;
-  padding: 16px 0;
+  margin: 16px 0;
 }
 section > #commentBox > #commentCont > .comment {
   padding: 5px 10px;
@@ -792,7 +804,8 @@ section > #commentBox > #commentCont > .comment > .commentInfo > .author {
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .same {
 	display: inline;
-    box-shadow: inset 0 -10px 0 #D9FCDB;
+    /*box-shadow: inset 0 -10px 0 #D9FCDB;*/
+    box-shadow: inset 0 -10px 0 #b0dbe3;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd {
   display: flex;
@@ -806,19 +819,19 @@ section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
   display: inline-block;
+  margin-top: 3px;
+  margin-right: 12px;
   font-size: 12px;
   cursor: pointer;
 }
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child {
+  margin: 0;
+}
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
   display: block;
-  margin-top: 3px;
-  margin-right: 12px;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
   color: #33afe9;
-}
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i {
-  margin: 0;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
   color: rgb(205, 92, 92);
@@ -826,27 +839,52 @@ section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .
 section > #commentBox > #commentCont > .comment > .commentMsg {
   padding: 10px 0;
 }
+
 section > #commentBox > form {
   margin-top: 30px;
 }
-section > #commentBox > form > #writeComment {
+section > #commentBox > #commentCont > form {
+  margin-bottom: 10px;
+}
+section > #commentBox > #commentCont > #replyFrm {
+  position: relative;
+  margin-left: 50px;
+}
+section > #commentBox > #commentCont > #replyFrm:after {
+	position: absolute;
+	top: 10px;
+	left: -25px;
+	width: 10px;
+	height: 10px;
+	content: '👉';
+}
+section > #commentBox > form > #writeComment,
+section > #commentBox > #commentCont > form > #writeComment {
   position: relative;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 6px;
+  outline: none;
 }
-section > #commentBox > form > #writeComment:focus-within {
+section > #commentBox > form > #writeComment:focus-within,
+section > #commentBox > #commentCont > form > #writeComment:focus-within {
   border-color: #33afe9;
   outline: 1px solid #33afe9;
 }
-section > #commentBox > form > #writeComment > .commentAuthor {
+section > #commentBox > form > #writeComment > .commentAuthor,
+section > #commentBox > #commentCont > form > #writeComment > .commentAuthor {
   font-size: 14px;
   font-family: "Pretendard-Bold";
   padding: 10px;
   color: #ccc;
   border-bottom: 1px solid #ccc;
 }
-section > #commentBox > form > #writeComment > textarea {
+section > #commentBox > #commentCont > form > #writeComment > .commentAuthor > span {
+	font-size: 12px;
+	margin-right: 10px;
+}
+section > #commentBox > form > #writeComment > textarea,
+section > #commentBox > #commentCont > form > #writeComment > textarea {
   display: block;
   width: 100%;
   min-height: 130px;
@@ -857,7 +895,8 @@ section > #commentBox > form > #writeComment > textarea {
   border: none;
   outline: none;
 }
-section > #commentBox > form > #writeComment > button {
+section > #commentBox > form > #writeComment > button,
+section > #commentBox > #commentCont > form > #writeComment > button {
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -869,10 +908,16 @@ section > #commentBox > form > #writeComment > button {
   background: none;
 }
 
-section > #commentBox > form > #writeComment > button:hover {
+section > #commentBox > form > #writeComment > button:hover,
+section > #commentBox > #commentCont > form > #writeComment > button:hover {
 	color: #fff;
 	background-color: #33afe9;
 	border-color: #33afe9;
+}
+
+
+section > #commentBox > #commentCont > form.off {
+	display: none;
 }
 section > #btns {
   display: flex;
@@ -960,3 +1005,9 @@ footer {
   height: 130px;
   background-color: #ddd;
 }/*# sourceMappingURL=board.css.map */
+
+
+.overBestLike {
+  font-family: "Pretendard-Bold";
+  color: #42a4b9;
+}

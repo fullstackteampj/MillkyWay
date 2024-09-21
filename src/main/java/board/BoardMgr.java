@@ -86,7 +86,6 @@ public class BoardMgr {
 				bean.setTab(rs.getString("tab"));
 				bean.setRegdate(rs.getString("regdate"));
 				bean.setCount(rs.getInt("count"));
-				bean.setLiked(rs.getInt("liked"));
 				bean.setBest(rs.getString("best"));
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setIp(rs.getString("ip"));
@@ -103,6 +102,31 @@ public class BoardMgr {
 		return postList;
 	}
 	
+	// 인기글 목록추출 (인기글탭)
+	public ArrayList<BoardBean> getBestList() {
+		ArrayList<BoardBean> bList = new ArrayList<BoardBean>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM boardtbl WHERE status=0 AND best='Y'"
+					+ "ORDER BY regdate DESC LIMIT 0, 6;";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardBean bean = new BoardBean();
+				bean.setBoardid(rs.getInt("boardid"));
+				bean.setTitle(rs.getString("title"));
+				bList.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return bList;
+	}
 	
 	// 현재 불러온 총 게시글 수 반환
 	public int getTotalCount(String keyField, String keyWord, String category, String tab) {
@@ -143,7 +167,7 @@ public class BoardMgr {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				totalCount = rs.getInt(1);
 			}
 			
@@ -229,7 +253,6 @@ public class BoardMgr {
 				bean.setTab(rs.getString("tab"));
 				bean.setRegdate(rs.getString("regdate"));
 				bean.setCount(rs.getInt("count"));
-				bean.setLiked(rs.getInt("liked"));
 				bean.setBest(rs.getString("best"));
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setIp(rs.getString("ip"));
@@ -264,29 +287,126 @@ public class BoardMgr {
 	
 	// 추천수 증가
 	public int upLike(HttpServletRequest req) {
-		String boardid = req.getParameter("num");
+		int boardid = Integer.parseInt(req.getParameter("ref"));
+		int userid = Integer.parseInt(req.getParameter("userid"));
 		int updateLiked = 0;
 		try {
 			// 추천 수 증가
 			con = pool.getConnection();
-			sql = "update boardtbl set liked = liked+1 where boardid = " + boardid;
+			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, userid);
 			pstmt.executeUpdate();
 			
 			// 증가된 추천 수 추출
-			sql = "select liked from boardtbl where boardid = " + boardid;
+			sql = "select count(likedid) from likedtbl where ref=" + boardid;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
+			
 			if(rs.next()) {
-				updateLiked = rs.getInt("liked");
+				updateLiked = rs.getInt(1);
+				
+				if(updateLiked >= 15) {
+					// 추천수가 15이상이면 인기글부여
+					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-
+		
 		return updateLiked;
+	}
+	
+	// 임시 !! 개발자용: 추천수
+	public int upLike(int ref, int uid) {
+		int boardid = ref;
+		int userid = uid;
+		int updateLiked = 0;
+		try {
+			// 추천 수 증가
+			con = pool.getConnection();
+			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, userid);
+			pstmt.executeUpdate();
+			
+			// 증가된 추천 수 추출
+			sql = "select count(likedid) from likedtbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				updateLiked = rs.getInt(1);
+				
+				if(updateLiked >= 15) {
+					// 추천수가 15이상이면 인기글부여
+					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return updateLiked;
+	}
+	
+	// 누적 추천 수 반환
+	public int getLikedCount(int boardid) {
+		int count = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select count(likedid) from likedtbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return count;
+	}
+	
+	// 추천 중복 체크
+	public boolean hasLikeSameId(HttpServletRequest req) {
+		int boardid = Integer.parseInt(req.getParameter("ref"));
+		int userid = Integer.parseInt(req.getParameter("userid"));
+		boolean result = false;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select count(likedid) from likedtbl where ref=? and userid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, userid);			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1) > 0; // count가 0보다 크면 true
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return result;
 	}
 	
 	// 총 댓글 수 반환
@@ -299,7 +419,7 @@ public class BoardMgr {
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				count = rs.getInt(1);
 			}
 		} catch(Exception e) {
@@ -311,7 +431,7 @@ public class BoardMgr {
 		return count;
 	}
 	
-	// 댓글 반환
+	// 댓글 내용 반환
 	public ArrayList<CommentBean> getCommentList(int boardid) {
 		ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
 		
@@ -347,18 +467,18 @@ public class BoardMgr {
 	}
 	
 	// 댓글 작성
-	public void insertComment(HttpServletRequest req) {
+	public void insertComment(int userid, String nickname, int ref, String userip, String commentMsg) {
 		
 		try {
 			con = pool.getConnection();
 			sql = "insert into commenttbl (userid, nickname, content, ref, pos, depth, regdate, ip)"
 					+ "values (?, ?, ?, ?, 0, 0, now(), ?);";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
-			pstmt.setString(2, req.getParameter("nickname"));
-			pstmt.setString(3, req.getParameter("inputComment"));
-			pstmt.setInt(4, Integer.parseInt(req.getParameter("ref")));
-			pstmt.setString(5, req.getParameter("userip"));
+			pstmt.setInt(1, userid);
+			pstmt.setString(2, nickname);
+			pstmt.setString(3, commentMsg);
+			pstmt.setInt(4, ref);
+			pstmt.setString(5, userip);
 			pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, beans.BoardBean, beans.CommentBean, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
+<jsp:useBean id="dMgr" class="board.DateMgr" />
 <!-- 글보기 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -28,7 +29,7 @@
 	String regdate = post.getRegdate();
 	String updateDate = post.getUpdateDate();
 	int count = post.getCount();
-	int liked = post.getLiked();
+	int liked = bMgr.getLikedCount(num);
 	byte[] photo = post.getPhoto();
 	String content = post.getContent();
 	int userid = post.getUserid();
@@ -103,12 +104,21 @@
 	          </p>
 	        </div>
 	
-	        <p id="likeBtn" onclick="uplike(<%=num%>, this)">
+	        <p id="likeBtn" onclick="
+	        <% // 로그인 시에만 글 추천 가능
+	           if(loginBean != null) { %>
+	        	uplike(<%=num%>, <%=loginId%>, this)
+	        <% } else { %>
+	        	alert('로그인이 필요한 서비스 입니다.')
+	        <% } %>
+	        ">
 	          <span><%=liked%></span>
 	          <i class="fa-regular fa-thumbs-up"></i>
 	        </p>
 	      </div>
-	
+		 <!-- 임시: 개발자용 추천버튼 -->
+       	 <button type="button" onclick="location.href='forDev/likebug?num=<%=num%>'">추천버그버튼(인기글은15개부터)</button>
+      	
 		<% // 내글일 때만 수정/삭제버튼
 			if(loginBean != null) { 
 				if(userid == loginId) {%>
@@ -121,7 +131,7 @@
 	      
 	    </div> <!--postBox-->
 	
-	    <div id="commentBox">
+	    <div id="commentBox" class="commentBox-<%=num%>">
 	    
 	      <div id="commentHead">
 	        <div id="commentOpt">
@@ -138,83 +148,124 @@
 	        </div> <!-- div#commentMng -->
 	      </div> <!--commentHead-->
 	
-	
-	      
-	      
 	      <% ArrayList<CommentBean> clist = bMgr.getCommentList(num); 
 			listSize = clist.size();
           
-          // 반복문으로 출력할 댓글이 한페이지게시글수 보다 많으면 그만큼만,
+          // 반복문으로 출력할 댓글이 한페이지댓글수 보다 많으면 그만큼만,
           // 그보다 적으면 가진만큼만 반복
           int forCount = 0;
           if(listSize >= numPerPage) {forCount = numPerPage;}
           else {forCount = listSize;}
-          
-          if(!clist.isEmpty()) {// 추출된 게시글이 있을경우 %>
+          %>
 		<div id="commentCont">
-        <%
+		<%
+          if(!clist.isEmpty()) {// 추출된 댓글이 있을경우
+        	  
 			for(int i=0; i<forCount; i++) {
 				CommentBean bean = clist.get(i);
+				int commentId = bean.getCommentid();
 				String comNickname = bean.getNickname();
 				String comRegdate = bean.getRegdate();
 				String comContent = bean.getContent();
 				int comUserid = bean.getUserid();
+				int comPos = bean.getPos();
+				int comDepth = bean.getDepth();
 		%>
-	    	<div class="comment">
+	    	<div class="comment comment-<%=num%>">
 	    	
 	          <div class="commentInfo">
 	            <% // 글작성자와 댓글작성자가 같을경우 작성자표시
-	            if(loginBean != null) { 
-	            	if(userid == comUserid) {%>
+	           		if(userid == comUserid) {%>
 	            	<span class="author same">
-	         <% 	}
-	         	} else { %>
+	           <% } else { %>
 	            	<span class="author">
-	         <% } %>
+	         	 <% } %>
 	            <%=comNickname%></span>
 	            
 	            <div class="commentAdd">
 	              <span class="commentDate"><%=comRegdate%></span>
 	              
 	              <div class="author-addOns">
-	                <span><i class="fa-solid fa-reply" title="답글"></i></span>
+	              	<% // 로그인 시에만 답글버튼
+					if(loginBean != null) { %>
+						<span onclick="toggleReply(this);"><i class="fa-solid fa-reply" title="답글"></i></span>
+				 <% } %>
 	                <% // 내댓글일 때만 수정/삭제버튼
 					if(loginBean != null) { 
 						if(comUserid == loginId) {%>
-	                <span><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
+	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
 	                <span><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
 	                <%	}
 					} %>
 	                
-	              </div>
-	            </div>
+	              </div> <!-- .author-addOns -->
+	            </div> <!-- commentAdd -->
 	            
-	          </div>
+	          </div> <!-- commentInfo -->
 	          
 	          <div class="commentMsg">
 	            <p class="text"><%=comContent%></p>
 	          </div>
-	        </div> <!--comment-->
+	        </div> <!-- .comment -->
+	        
+	        <!-- 댓글수정 폼 (숨김/수정버튼으로 토글) -->
+	        <form action="commentEdit" name="comEditFrm" id="comEditFrm" method="post" autocomplete="off" class="off">
+		        <div id="writeComment">
+		          <p class="commentAuthor">
+		            <span>수정</span><%=loginNickname%>
+		          </p>
+		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"><%=comContent%></textarea>
+		          <button type="button" onclick="replySubmit()">수정</button>
+		        </div>
+		        
+		        
+		        <input type="hidden" name="userid" value="<%=loginId%>" />
+		      	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
+		      	<input type="hidden" name="ref" value="<%=num%>" />
+		      	<input type="hidden" name="parent_commentid" value="<%=commentId%>" />
+		      	<input type="hidden" name="pos" value="<%=comPos%>" />
+		      	<input type="hidden" name="depth" value="<%=comDepth%>" />
+		      	<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+			</form>
+	        
+	        <!-- 대댓글 폼 (숨김/답글버튼으로 토글) -->
+	        <form action="commentReply" name="replyFrm" id="replyFrm" method="post" autocomplete="off" class="off">
+		      	<input type="hidden" name="userid" value="<%=loginId%>" />
+		      	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
+		      	<input type="hidden" name="ref" value="<%=num%>" />
+		      	<input type="hidden" name="parent_commentid" value="<%=commentId%>" />
+		      	<input type="hidden" name="pos" value="<%=comPos%>" />
+		      	<input type="hidden" name="depth" value="<%=comDepth%>" />
+		      	<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+		        <div id="writeComment">
+		          <p class="commentAuthor">
+		            <span>답글</span><%=loginNickname%>
+		          </p>
+		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
+		          <button type="button" onclick="replySubmit()">작성</button>
+		        </div>
+			</form>
 	     <% } //for %>
-		</div> <!--commentCont-->
 	   <% } // if%>
-	     	        
-	      
+		</div> <!--commentCont-->
+	   
 		<% // 로그인 되어있을 때만 댓글폼 노출
-			if(loginBean != null) { %>
-				<form action="boardComment" name="commentFrm" id="commentFrm" method="post" autocomplete="off">
-			      	<input type="hidden" name="userid" value="<%=loginId%>" />
-			      	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
-			      	<input type="hidden" name="ref" value="<%=num%>" />
-			      	<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+			if(loginBean != null) { 
+			 	
+			 	// 오늘날짜 추출
+			 	String today = dMgr.getToday();
+			%>
+				<form name="commentFrm" id="commentFrm" method="post" autocomplete="off">
 			        <div id="writeComment">
 			          <p class="commentAuthor">
 			            <%=loginNickname%>
 			          </p>
 			          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
-			          <button type="button" onclick="commentChk()">작성</button>
+			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>', '<%=today%>')">작성</button>
 			        </div>
 				</form>
+		<% } else { %>
+			<p>로그인 이후에 댓글을 작성할 수 있습니다.</p>
 		<% } %>
 	      
 	    </div> <!--commentBox-->

@@ -11,7 +11,6 @@ public class BoardBean {
 	private String tab;
 	private String regdate;
 	private int count;
-	private int liked;
 	private String best;
 	private int bookid;
 	private String ip;
@@ -77,12 +76,6 @@ public class BoardBean {
 	}
 	public void setCount(int count) {
 		this.count = count;
-	}
-	public int getLiked() {
-		return liked;
-	}
-	public void setLiked(int liked) {
-		this.liked = liked;
 	}
 	public String getBest() {
 		return best;

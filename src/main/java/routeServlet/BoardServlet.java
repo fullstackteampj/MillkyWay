@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 import board.BoardMgr;
+import beans.CommentBean;
 
 @WebServlet("/board/*")
 public class BoardServlet extends HttpServlet {
@@ -24,6 +29,7 @@ public class BoardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     		throws ServletException, IOException {
     	request.setCharacterEncoding("UTF-8");
+    	response.setCharacterEncoding("UTF-8");
     	
     	// 요청URL 불러오기
     	String path = request.getPathInfo();
@@ -61,21 +67,51 @@ public class BoardServlet extends HttpServlet {
     		}
     	}
     	
-    	// 추천 수 증가
+    	// 글 추천 중복체크 후 추천수 증가 / 인기글 여부 업데이트
     	if("/uplike".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
-    		int updateLiked = bMgr.upLike(request);
-    		response.setContentType("application/json");
-    		response.getWriter().write("{\"liked\": " + updateLiked + "}");
+    		boolean hasLiked = bMgr.hasLikeSameId(request); // 중복여부 검사
+
+    		
+    		if(hasLiked) { // 중복이면 메세지 출력
+    			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    		} else { // 중복이 아니면 추천수 증가
+    			int updateLiked = bMgr.upLike(request);
+    			response.setContentType("application/json");
+    			response.getWriter().write("{\"liked\": " + updateLiked + "}");
+    		}
     	}
     	
     	// 댓글 작성 요청
     	if("/boardComment".equals(path)) {
+    		response.setContentType("application/json");
     		BoardMgr bMgr = new BoardMgr();
-    		bMgr.insertComment(request);
-    		response.sendRedirect(request.getHeader("Referer")); // 이전페이지로 리다이렉트
+    		
+    		// 요청데이터를 문자열로 읽기
+    		StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+            
+            // URL디코딩으로 fetch문에서 body로 받은 parameter를 추출
+            String[] params = sb.toString().split("&");
+            int userid = Integer.parseInt(URLDecoder.decode(params[0].split("=")[1], StandardCharsets.UTF_8));
+            String nickname = URLDecoder.decode(params[1].split("=")[1], StandardCharsets.UTF_8);
+            int ref = Integer.parseInt(URLDecoder.decode(params[2].split("=")[1], StandardCharsets.UTF_8));
+            String userip = URLDecoder.decode(params[3].split("=")[1], StandardCharsets.UTF_8);
+            String commentMsg = URLDecoder.decode(params[4].split("=")[1], StandardCharsets.UTF_8);
+            
+            // DB에 댓글저장
+            bMgr.insertComment(userid, nickname, ref, userip, commentMsg);
+            
+            // 응답
+            PrintWriter out = response.getWriter();
+            out.write("{\"commentMsg\":\"" + commentMsg + "\"}");
+            out.flush();
     	}
-        
+    	
+    	
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
