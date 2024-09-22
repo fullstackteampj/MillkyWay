@@ -1,16 +1,14 @@
-#wrap {
-  width: 1200px;
-  margin: 0 auto;
-}
 #wrap > header {
-  position: fixed;
-  left: 0;
+  position: absolute;
   top: 0;
-  z-index: 800;
   width: 100%;
+  min-width: 1200px;
   height: auto;
+  margin: 0 auto;
   background-color: #fff;
   border-bottom: 2px solid #33afe9;
+  border-top: 1px solid transparent;
+  z-index: 800;
 }
 #wrap > header > .headTop {
   position: absolute;
@@ -115,7 +113,7 @@
   display: block;
   position: absolute;
   z-index: 100;
-  top: 40px;
+  top: 30px;
   left: -10px;
   width: 120px;
   padding: 0 10px;
@@ -152,6 +150,9 @@
   border-radius: 20px;
   box-sizing: border-box;
 }
+#wrap > header > .headMiddle > .searchFrame.searched {
+  border-radius: 20px 20px 0 0;
+}
 #wrap > header > .headMiddle > .searchFrame > p.searchId {
   width: 80px;
   height: 40px;
@@ -171,7 +172,7 @@
   height: 30px;
 }
 #wrap > header > .headMiddle > .searchFrame > span {
-  display: block;
+  display: none;
   width: 80px;
   height: 40px;
   color: #fff;
@@ -181,6 +182,61 @@
   text-align: center;
   background-color: #33afe9;
   cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > span.visible {
+  display: block;
+}
+#wrap > header > .headMiddle > .searchedList {
+  position: absolute;
+  top: 60px;
+  left: 350px;
+  width: 500px;
+  height: auto;
+}
+#wrap > header > .headMiddle > .searchedList > li {
+  background-color: #fff;
+  border: 3px solid #33afe9;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li:last-child {
+  border-radius: 0 0 20px 20px;
+}
+#wrap > header > .headMiddle > .searchedList > li > p {
+  width: 100%;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > img {
+  height: 80px;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .title {
+  width: 30%;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .author {
+  width: 30%;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .genre {
+  width: 10%;
+  color: #666;
 }
 #wrap > header > .headMiddle > .searchList {
   display: none;
@@ -208,6 +264,33 @@
   right: 100px;
   width: 100px;
   height: 50px;
+}
+
+aside {
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  align-items: center;
+  width: 100px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+  border: 1px solid #000;
+}
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 section.myPage01,
@@ -371,10 +454,6 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   line-height: 25px;
 }
 
-#wrap {
-  width: 1200px;
-  margin: 0 auto;
-}
 #wrap > section.myPage01 {
   width: 1200px;
   margin: 130px auto 0;
@@ -635,6 +714,13 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   height: 30px;
   line-height: 30px;
   text-align: center;
+}
+#wrap > section.myPage03 > .mainContainer > .updateContainer > form > span.genLabel {
+  width: 60px;
+  height: 40px;
+  margin-left: -15px;
+  font-size: 16px;
+  line-height: 40px;
 }
 #wrap > section.myPage03 > .mainContainer > .updateContainer > form > button {
   height: 40px;
@@ -939,16 +1025,4 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
 }
 #wrap > section.myPage05 > .mainContainer > .listSeletor > li.on {
   text-decoration: underline;
-}
-#wrap > footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-}
-#wrap > footer > address {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }/*# sourceMappingURL=mypage.css.map */

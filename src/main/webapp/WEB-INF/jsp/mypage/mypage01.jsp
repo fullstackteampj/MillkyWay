@@ -168,9 +168,7 @@ String userId = (String) session.getAttribute("idKey");
     </section>
 
 
-    <footer>
-      <address>&copy;Designed by teamMillkyWay</address>
-    </footer>
+	<jsp:include page="../components/footer.jsp" />
 
   </div>
 

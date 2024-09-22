@@ -9,22 +9,22 @@
 <body>
 
 	<aside>
-       <div class="searchFrame">
-         <form name="bookSearchFrm" autocomplete="off">
-         	<input type="text" name="bookSearch" />
+       <div class="searchAPIFrame">
+         <form name="bookSearchAPIFrm" autocomplete="off">
+         	<input type="text" name="bookSearchAPI" />
          	<button type="submit" style="display:none;">검색</button>
          </form>
-         <span onclick="search()">검색</span>
+         <span onclick="searchAPI()">검색</span>
        </div>
 	</aside>
 	
 	<script>
-	    async function search() {
-	        const subject = document.querySelector("input[name=bookSearch]").value;
+	    async function searchAPI() {
+	        const subject = document.querySelector("input[name=bookSearchAPI]").value;
 			
 	        if (subject == null || subject.trim() === "") {
 	            alert("검색하실 내용을 입력해주세요.");
-	            document.bookSearchFrm.bookSearch.focus();
+	            document.bookSearchAPIFrm.bookSearch.focus();
 	            return;
 	        }else{
 		        try {
@@ -38,11 +38,11 @@
 	        }//if(subject==null || subject=="")~else
 	    }// async function search()
 	    
-	    const $bookSearchFrm = document.querySelector("form[name=bookSearchFrm]");
-	    $bookSearchFrm.addEventListener('submit', (evt) => {
+	    const $bookSearchAPIFrm = document.querySelector("form[name=bookSearchAPIFrm]");
+	    $bookSearchAPIFrm.addEventListener('submit', (evt) => {
 	        evt.preventDefault(); // 기본 제출 방지
-	        search(); // 검색 함수 호출
-	        $bookSearchFrm.reset(); //검색어초기화
+	        searchAPI(); // 검색 함수 호출
+	        $bookSearchAPIFrm.reset(); //검색어초기화
 	    });
 
 	    

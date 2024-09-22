@@ -1,0 +1,18 @@
+@charset "utf-8";
+
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+aside {
+    display: flex;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    align-items: center;
+    width: 100px;
+    height: 80px;
+    margin: 0 auto;
+    margin-top: 40px;
+    border: 1px solid #000;
+} //aside

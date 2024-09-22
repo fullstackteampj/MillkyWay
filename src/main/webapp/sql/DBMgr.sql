@@ -40,7 +40,6 @@ drop tables boardtbl;
 
 select count(*) from wishtbl WHERE userid = 3;
 
-
 SHOW VARIABLES LIKE 'secure_file_priv';
 
 

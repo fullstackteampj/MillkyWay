@@ -97,4 +97,50 @@ public class ProcsMgr {
 	}//boolean delMyWish(int wishId)
 	
 	
+	
+	public boolean addToCart(int userId, int bookId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		Boolean flag = false;
+		
+		try {
+			conn = pool.getConnection();
+			sql = "insert into carttbl (userid, bookid, status, added_date)"
+					+ "values(?,?,?,curdate()) ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, bookId);
+			pstmt.setString(3, "active");
+			
+			int j = pstmt.executeUpdate();
+			if(j>0)
+				flag = true;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt);
+		}
+		
+		return flag;
+	}//boolean addToCart(int userId, int bookId)
+	
 }//class ProcsMgr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

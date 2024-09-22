@@ -1,16 +1,14 @@
-#wrap {
-  width: 1200px;
-  margin: 0 auto;
-}
 #wrap > header {
-  position: fixed;
-  left: 0;
+  position: absolute;
   top: 0;
-  z-index: 800;
   width: 100%;
+  min-width: 1200px;
   height: auto;
+  margin: 0 auto;
   background-color: #fff;
   border-bottom: 2px solid #33afe9;
+  border-top: 1px solid transparent;
+  z-index: 800;
 }
 #wrap > header > .headTop {
   position: absolute;
@@ -115,7 +113,7 @@
   display: block;
   position: absolute;
   z-index: 100;
-  top: 40px;
+  top: 30px;
   left: -10px;
   width: 120px;
   padding: 0 10px;
@@ -152,6 +150,9 @@
   border-radius: 20px;
   box-sizing: border-box;
 }
+#wrap > header > .headMiddle > .searchFrame.searched {
+  border-radius: 20px 20px 0 0;
+}
 #wrap > header > .headMiddle > .searchFrame > p.searchId {
   width: 80px;
   height: 40px;
@@ -171,7 +172,7 @@
   height: 30px;
 }
 #wrap > header > .headMiddle > .searchFrame > span {
-  display: block;
+  display: none;
   width: 80px;
   height: 40px;
   color: #fff;
@@ -181,6 +182,61 @@
   text-align: center;
   background-color: #33afe9;
   cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > span.visible {
+  display: block;
+}
+#wrap > header > .headMiddle > .searchedList {
+  position: absolute;
+  top: 60px;
+  left: 350px;
+  width: 500px;
+  height: auto;
+}
+#wrap > header > .headMiddle > .searchedList > li {
+  background-color: #fff;
+  border: 3px solid #33afe9;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li:last-child {
+  border-radius: 0 0 20px 20px;
+}
+#wrap > header > .headMiddle > .searchedList > li > p {
+  width: 100%;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > img {
+  height: 80px;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .title {
+  width: 30%;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .author {
+  width: 30%;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .genre {
+  width: 10%;
+  color: #666;
 }
 #wrap > header > .headMiddle > .searchList {
   display: none;
@@ -210,10 +266,33 @@
   height: 50px;
 }
 
-#wrap {
-  width: 1200px;
+aside {
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  align-items: center;
+  width: 100px;
+  height: 80px;
   margin: 0 auto;
+  margin-top: 40px;
+  border: 1px solid #000;
 }
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #wrap > section {
   width: 1200px;
   margin: 130px auto 0;
@@ -222,12 +301,12 @@
   overflow: hidden;
   position: relative;
   width: 1200px;
-  padding: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 #999;
 }
 #wrap > section > .recommendSlide > .frame {
   display: flex;
   width: 2400px;
-  height: 550px;
   transition: all 0.5s ease-in-out;
 }
 #wrap > section > .recommendSlide > .prev {
@@ -268,32 +347,53 @@
 }
 #wrap > section > .bestSlide {
   display: flex;
+  flex-flow: row wrap;
   justify-content: space-evenly;
   width: 100%;
+  margin-top: 20px;
   background: #fff;
+}
+#wrap > section > .bestSlide > h2 {
+  width: 1200px;
+  margin-left: 33.3333333333px;
+}
+#wrap > section > .bestSlide > h2 > a {
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 50px;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 50px;
+}
+#wrap > section > .bestSlide > h2 > a:hover {
+  color: #b6e2f7;
+}
+#wrap > section > .bestSlide > h2 > a > span {
+  color: #999;
+  font-size: 14px;
 }
 #wrap > section > .bestSlide > .bookCard {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   position: relative;
-  width: 250px;
+  width: 200px;
   height: auto;
   margin: 10px 0;
   padding: 10px;
-  border-radius: 20px;
-  box-shadow: 0 0 5px 0 #000;
   box-sizing: border-box;
 }
 #wrap > section > .bestSlide > .bookCard > img {
   width: 100%;
-  box-shadow: 0 0 10px 0 #000;
-  margin-bottom: 80px;
+  height: 250px;
+  box-shadow: 0 0 10px 0 #999;
+  margin-bottom: 60px;
 }
 #wrap > section > .bestSlide > .bookCard > a {
-  width: 100%;
+  width: calc(100% - 20px);
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
 }
 #wrap > section > .bestSlide > .bookCard > a > .title {
   overflow: hidden;
@@ -344,27 +444,27 @@
   top: 0;
   left: 0;
   z-index: 100;
-  width: 250px;
+  width: 200px;
   height: 100%;
   background-color: rgba(100, 100, 100, 0.8);
-  border-radius: 20px;
+  border-radius: 10px;
   box-sizing: border-box;
 }
-#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addCart {
+#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addToCart {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50px;
+  height: 60px;
   color: #fff;
   font-weight: 500;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 60px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
-#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addCart:hover {
+#wrap > section > .bestSlide > .bookCard > .addCartContainer > .addToCart:hover {
   background-color: rgba(255, 108, 159, 0.5);
 }
 #wrap > section > .boardContainer {
@@ -389,7 +489,24 @@
   cursor: pointer;
 }
 #wrap > section > .boardContainer > div > h3:hover {
-  text-decoration: underline;
+  border-bottom: 1px solid #33afe9;
+}
+#wrap > section > .boardContainer > div > h3:hover > a {
+  color: #b6e2f7;
+}
+#wrap > section > .boardContainer > div > h3:hover > a > span {
+  color: #b6e2f7;
+}
+#wrap > section > .boardContainer > div > h3 > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+#wrap > section > .boardContainer > div > h3 > a > span {
+  color: #999;
+  font-size: 16px;
 }
 #wrap > section > .boardContainer > div > ul {
   -ms-overflow-style: none;
@@ -420,16 +537,4 @@
   position: absolute;
   right: 0px;
   margin: 0 10px;
-}
-#wrap > footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-}
-#wrap > footer > address {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }/*# sourceMappingURL=index.css.map */
