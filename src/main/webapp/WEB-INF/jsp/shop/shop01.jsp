@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
 <% request.setCharacterEncoding("UTF-8"); %>
+<%@ page import="beans.BookBean" %>
+<%@ page import="java.util.Vector" %>
 <jsp:useBean id="bMgr" class="bookInfo.BookListMgr" />
 <%
 
@@ -9,7 +11,7 @@
 	int pagePerBlock = 5; //블럭당 페이지 수
 	
 	int totalPage = 0; //전체 페이지 수
-	int totalblock = 0; //전체 블럭 수
+	int totalBlock = 0; //전체 블럭 수
 	
 	int nowPage = 1; //현재 페이지
 	int nowBlock = 1; //현재 블럭
@@ -19,20 +21,38 @@
 	
 	int listSize = 0; //현재 읽어온 게시물의 수
 	
-	String keyField = ""; //구분할 장르
+	String category = null; //구분할 카테고리
+	String genre = null; //구분할 장르
+	String tap = null;
+
+	Vector<BookBean> blist = null;
 	
-	if(request.getParameter("keyField") != null){
-		keyField = request.getParameter("keyField");
+	
+	if(request.getParameter("category") != null){
+		category = request.getParameter("category");
+		
+		if(request.getParameter("genre") != null){
+			genre = request.getParameter("genre");
+		}
+	}//if
+	
+	if(request.getParameter("tap") != null){
+		tap = request.getParameter("tap");
 	}
 	
 	if(request.getParameter("nowPage") != null){
 		nowPage = Integer.parseInt(request.getParameter("nowPage"));
 	}
+	
 	start = (nowPage * numPerPage) - numPerPage;
 	end = numPerPage;
 	
-	//totalRecord = bMgr.getTotalCount(keyField);
+	totalRecord = bMgr.getTotalCount(category, genre);
+	totalPage = (int)Math.ceil((double)totalRecord / numPerPage); //전체 페이지수
 	
+	nowBlock = (int)Math.ceil((double)nowPage / pagePerBlock);//현재 블럭 계산
+	
+	totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock); //전체 블럭 계산
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -40,10 +60,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop01.css?after01" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop01.css?after007" />
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
   <script defer src="${pageContext.request.contextPath}/js/shop01.js"></script>
   <title>상품 목록</title>
+  <script type="text/javascript">
+  	function pageing(page){
+  		document.readFrm.nowPage.value = page;
+  		document.readFrm.submit();
+  	} 
+  	function block(value){
+  		document.readFrm.nowPage.value = <%=pagePerBlock%>*(value-1)+1;
+  		document.readFrm.submit();
+  	}
+  </script>
 </head>
 
 <body>
@@ -55,7 +85,7 @@
 	    <nav>
 	      <ul class="book-broadCategory">
 	        <li>
-	          <a href="#">
+	          <a href="/shop/shop01?category=국내도서">
 	            <i class="fa-solid fa-plus"></i>
 	            국내도서
 	          </a>
@@ -848,9 +878,9 @@
 	        </li><!--국내도서 li-->
 	
 	        <li>
-	          <a href="#">
+	          <a href="/shop/shop01?category=해외도서">
 	            <i class="fa-solid fa-plus"></i>
-	            외국도서
+	            해외도서
 	          </a>
 	
 	          <ul class="book-genreCategory">
@@ -980,12 +1010,52 @@
 	          <li class="on"><a href="#">도서 모두보기</a></li>
 	          <li><a href="#">베스트셀러</a></li>
 	          <li><a href="#">정가 인하</a></li>
-	          <li><a href="#">추천 도서</a></li>
+	          <li><a href="/shop/shop01?tap=recommend">추천 도서</a></li>
 	        </ul>
 	      </nav>
-	
-	     
-	        <ol>
+		  <ol>
+		  	<%
+		  		blist = bMgr.getBookList(category, genre, start, end, tap);
+		  		listSize = blist.size();
+		  		if(blist.isEmpty()){
+		  			out.println("등록된 게시물이 없습니다.");
+		  		}else{
+		  			for(int i=0; i<numPerPage; i++){
+		  				if(i == listSize) break;
+		  				BookBean bean = blist.get(i);
+		  				int bookid = bean.getBookid();
+		  				String author = bean.getAuthor();
+		  				String title = bean.getTitle();
+		  				String contents = bean.getContents();
+		  				String[] contArr = contents.split("\\."); //.구분자사용, [.]도 가능
+		  				int price = bean.getPrice();
+		  				String pDate = bean.getPublish_date();
+		  				String imgUrl = "/image?bookid="+bookid;
+		  			%>
+		  			<li>
+			            <a href="/shop/shop02?bookid=<%=bookid%>">
+			              <img src="<%=imgUrl%>" alt="<%=title%>" />
+			              <div class="text">
+			                <h3><%=title%></h3>
+			                <p><%=author%></p>
+			              	<p><%=pDate%></p>
+			                <p>가격 : <%=price%>원</p>
+			                <br />
+			                <p>
+			                  <%=contArr[0]%>
+			                </p>
+			              </div>
+			              <form method="post" name="listFrm">
+			                <button formaction="/mypage/mypage05">장바구니</button>
+			                <button formaction="/buy/buy01">바로구매</button>
+			                <input type="hidden" name="bookid" value="<%=bookid%>"/>
+			              </form>
+			            </a>
+		          	</li>
+		  			<%
+		  			}//for
+		  		}//else
+		  	%>
 	          <!--동적생성
 	          <li>
 	            <a href="#">
@@ -1009,19 +1079,40 @@
 	          -->
 	        </ol>
 	    
-	    
 	          <div class="pagenation">
-	          	<i class="fa-solid fa-caret-left"></i>
-	            <button>1</button>
-	            <button>2</button>
-	            <button>3</button>
-	            <i class="fa-solid fa-caret-right"></i>
-	          </div>
+	          	<%
+	          		int pageStart = (nowBlock - 1) * pagePerBlock + 1;
+	          		int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage+1 ;
+	          		//하단 페이지 끝 
+	          		if(totalPage != 0){
+						if(nowBlock > 1){%>
+	          			<a href="javascript:block('<%=nowBlock-1%>')"><i class="fa-solid fa-caret-left"></i></a>
+	          			<%}//if - nowBlock>1
+	          			while(pageStart < pageEnd){%>
+	          			<button onclick="javascript:pageing('<%=pageStart%>')" <%= pageStart == nowPage ? "class='on'" : "" %>>
+	          			<%=pageStart%></button>
+	          			<%pageStart++;
+						}//while
+	          			if(totalBlock > nowBlock){
+	          			%>
+	          			<a href="javascript:block('<%=nowBlock+1%>')"><i class="fa-solid fa-caret-right"></i></a>
+	          			<%	
+	          			}//if - t>n
+	          			
+	          		}//if - totalPage
+	          	%>
+	          
+	          </div><!-- .pagination -->
 	    </div><!--.container-->
 	  </section>
 	  <footer>
       	<address>&copy;Designed by teamMillkyWay</address>
       </footer>
+      <form name="readFrm" method="get">
+		  <input type="hidden" name="nowPage" value="<%=nowPage%>" />
+	      <input type="hidden" name="category" value="<%=category%>" />
+	      <input type="hidden" name="genre" value="<%=genre%>" />
+      </form>
 	</div>
 </body>
 

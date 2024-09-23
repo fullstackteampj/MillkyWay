@@ -1,8 +1,10 @@
 package bookInfo;
 
 import java.sql.*;
+import java.util.Vector;
 
 import DBConnection.DBConnectionMgr;
+import beans.BookBean;
 
 public class BookListMgr {
 	
@@ -14,10 +16,66 @@ public class BookListMgr {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+	}//BookListMgr()
+	
+	//ë„ì„œ ëª©ë¡ ê°€ì ¸ì˜¤ê¸°
+	public Vector<BookBean> getBookList(String category, String genre, int start, int end,  String tap){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<BookBean> blist = new Vector<BookBean>();
+		try {
+			con = pool.getConnection();
+			System.out.println(tap);
+			
+			if(category == null || category.equals("null") || category.equals("")) {
+				sql = "select * from booktbl limit ?, ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				pstmt.setInt(2, end);
+			}else if(genre == null || genre.equals("null") || genre.equals("")){
+				//ì¥ë¥´ ì„ íƒì‹œ 
+				sql = "select * from booktbl where category = ?  limit ?, ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, category);
+				pstmt.setInt(2, start);
+				pstmt.setInt(3, end);
+			}else {
+				sql = "select * from booktbl where category = ? and genre = ?  limit ?, ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, category);
+				pstmt.setString(2, genre);
+				pstmt.setInt(3, start);
+				pstmt.setInt(4, end);
+			}
+			
+			if(tap != null && tap.equals("recommend")){//ì¶”ì²œ ë„ì„œ 10ê¶Œ
+				sql = "select * from booktbl order by score desc limit 0, 10";
+				pstmt = con.prepareStatement(sql);
+			}
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookBean bean = new BookBean();
+				bean.setBookid(rs.getInt("bookid"));
+				bean.setAuthor(rs.getString("author"));
+				bean.setTitle(rs.getString("title"));
+				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setContents(rs.getString("contents"));
+				bean.setPrice(rs.getInt("price"));
+				blist.add(bean);
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return blist;
 	}
 
-	//Àå¸£¿¡ µû¸¥ ÃÑ °Ô½Ã¹° ¼ö
-	public int getTotalCounnt(String keyField) {
+	//ì¡°ê±´ì— ë§ëŠ” ì „ì²´ ë„ì„œ ê°œìˆ˜
+	public int getTotalCount(String category, String genre) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -26,13 +84,26 @@ public class BookListMgr {
 		try {
 			con = pool.getConnection();
 			
-			if(keyField.equals("null") || keyField.equals("")) {
-				//Á¶°Ç ¾øÀÌ ÀüÃ¼ ·¹ÄÚµå
+			if(category == null || category.equals("null") || category.equals("")) {
+				//ì•„ë¬´ ì¡°ê±´ ì—†ëŠ” ê²½ìš° -> ëª¨ë“  ë„ì„œ 
 				sql = "select count(bookid) from booktbl";
 				pstmt = con.prepareStatement(sql);
+			}else if(genre == null || genre.equals("null") || genre.equals("")){
+				//ì¹´í…Œê³ ë¦¬ë§Œ ì§€ì •ëœ ê²½ìš°
+				sql = "select count(bookid) from booktbl where category = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, category);
 			}else {
-				//Á¶°Ç ¸¸Á· ·¹ÄÚµå
-				//sql = "select count(bookid) from booktbl where"
+				//ì¹´í…Œê³ ë¦¬, ì¥ë¥´ ëª¨ë‘ ì§€ì •ëœ ê²½ìš°
+				sql = "select count(bookid) from booktbl where category = ? and genre = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, category);
+				pstmt.setString(2, genre);
+			}
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				totalCount = rs.getInt(1);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

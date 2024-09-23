@@ -292,14 +292,9 @@ section.shop-list > .container {
   position: absolute;
   right: 0;
   width: 1000px;
-  height: 1450px;
   padding: 10px 10px 10px 20px;
   border-left: 1px solid rgb(226, 218, 214);
   box-sizing: border-box;
-}
-section.shop-list > .container > nav {
-  position: absolute;
-  top: 9px;
 }
 section.shop-list > .container > nav > ul {
   display: flex;
@@ -309,7 +304,7 @@ section.shop-list > .container > nav > ul > li {
 }
 section.shop-list > .container > nav > ul > li.on > a {
   position: absolute;
-  top: 1px;
+  top: 10px;
   z-index: 100;
   width: 200px;
   color: rgb(100, 130, 173);
@@ -338,7 +333,6 @@ section.shop-list > .container > nav > ul > li > a:hover {
   color: rgb(127, 161, 195);
 }
 section.shop-list > .container > ol {
-  margin-top: 50px;
   border-top: 1px solid rgb(100, 130, 173);
   padding: 0 10px;
   background-color: #fdfdfd;
@@ -358,19 +352,21 @@ section.shop-list > .container > ol > li > a:hover > .text > h3 {
 section.shop-list > .container > ol > li > a:hover > .text > p {
   text-decoration: underline;
 }
-section.shop-list > .container > ol > li > a > .cover {
+section.shop-list > .container > ol > li > a > img {
+  display: block;
   width: 150px;
-  height: 200px;
-  background-image: url(./../images/basicofjava.jpg);
-  background-size: contain;
+  box-shadow: 1px 1px 2px rgb(226, 218, 214);
 }
 section.shop-list > .container > ol > li > a > .text {
   flex: 1 1 0;
-  padding: 20px;
+  margin-left: 10px;
+  padding: 10px 20px;
   font-weight: 500;
+  line-height: 1.8;
   box-sizing: border-box;
 }
 section.shop-list > .container > ol > li > a > .text > h3 {
+  padding: 10px 0;
   font-size: 20px;
 }
 section.shop-list > .container > ol > li > a > .text > p {
@@ -398,61 +394,37 @@ section.shop-list > .container > ol > li > a > form > button {
 section.shop-list > .container > ol > li > a > form > button:hover {
   background-color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination-container {
-  position: absolute;
-  top: 1410px;
-  left: 50%;
-  width: 300px;
-  margin-left: -150px;
+section.shop-list > .container > .pagenation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row nowrap;
+  height: 200px;
 }
-section.shop-list > .container > .pagination-container > i {
-  position: absolute;
+section.shop-list > .container > .pagenation > a {
+  display: block;
   font-size: 20px;
-  top: 50%;
-  margin-top: -10px;
-  cursor: pointer;
 }
-section.shop-list > .container > .pagination-container > i:hover {
+section.shop-list > .container > .pagenation > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination-container > i:nth-of-type(1) {
-  left: 30px;
-}
-section.shop-list > .container > .pagination-container > i:nth-of-type(2) {
-  right: 30px;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame {
-  overflow: hidden;
-  position: relative;
-  width: 200px;
-  height: 20px;
-  margin: 0 auto;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide {
+section.shop-list > .container > .pagenation > button {
   display: flex;
-  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 0;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button {
   background: none;
   outline: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 20px;
   height: 20px;
   margin: 0 10px;
   border: 1px solid rgb(127, 161, 195);
   border-radius: 5px;
 }
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button.on {
+section.shop-list > .container > .pagenation > button.on {
   color: #fdfdfd;
   background-color: rgb(127, 161, 195);
 }
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button:hover {
+section.shop-list > .container > .pagenation > button:hover {
   color: #fdfdfd;
   background-color: rgb(100, 130, 173);
 }/*# sourceMappingURL=shop01.css.map */

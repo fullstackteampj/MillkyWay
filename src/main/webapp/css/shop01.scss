@@ -3,6 +3,7 @@
 $pri-color: rgb(127, 161, 195);
 $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
+$white : #fdfdfd;
 
 @mixin flexCenter {
   display: flex;
@@ -71,7 +72,7 @@ section.shop-list{
               font-weight: 600;
               &:hover{color: $point-color;}
               >i{font-size: 10px;}
-            }
+            }//a
           
             >ol{
               display: none;
@@ -94,23 +95,19 @@ section.shop-list{
     position: absolute;
     right: 0;
     width: 1000px;
-    height: 1450px;
     padding: 10px 10px 10px 20px;
     border-left: 1px solid $sec-color;
     box-sizing: border-box;
 
     >nav{
-      position: absolute;
-      top: 9px;
       >ul{
         display: flex;
         >li{
           width: 200px;
-          
           &.on{
             >a{
               position: absolute;
-              top: 1px;
+              top: 10px;
               z-index: 100;
               width: 200px;
               color: $point-color;
@@ -141,7 +138,7 @@ section.shop-list{
     }//nav
     
       >ol{
-        margin-top: 50px;
+        
         border-top: 1px solid $point-color ;
         padding: 0 10px;
         background-color: #fdfdfd;
@@ -159,21 +156,24 @@ section.shop-list{
                 >p{text-decoration: underline;}
               }//a:hover>.text
             }//a:hover
-            >.cover{
+            >img{
+              display: block;
               width: 150px;
-              height: 200px;
-              background-image: url(./../images/basicofjava.jpg);
-              background-size: contain;
-            }//.cover
+              box-shadow: 1px 1px 2px $sec-color;
+            }//img
             >.text{
               flex: 1 1 0;
-              padding: 20px;
+              margin-left: 10px;
+              padding: 10px 20px;
               font-weight: 500;
+              line-height: 1.8;
               box-sizing: border-box;
-              >h3{font-size: 20px;}
-              >p{
-                font-size: 16px;
+            
+              >h3{
+                padding: 10px 0;
+                font-size: 20px;
               }
+              >p{font-size: 16px;}
             }//.text
             >form{
               display: flex;
@@ -198,46 +198,36 @@ section.shop-list{
           }//a
         }//li
       }//ol-도서목록
-   
-    
-      
+
       >.pagenation{
-        display: flex;
+        @include flexCenter();
         flex-flow: row nowrap;
-        justify-content: center;
-        align-items: center;
+        height: 200px;
         
-         >i{
-           position: absolute;
+         >a{
+           display: block;
            font-size: 20px;
-           top: 50%;
-           margin-top: -10px;
-           cursor: pointer;
            &:hover{color: $point-color;}
-           &:nth-of-type(1){left: 30px;}
-           &:nth-of-type(2){right: 30px;}
-         }
+         }//a
         
         >button{
+          @include flexCenter();
             background: none;
             outline: none;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 20px;
             height: 20px;
             margin: 0 10px;
             border: 1px solid $pri-color;
             border-radius: 5px;
             &.on{
-              color: #fdfdfd;
+              color: $white;
               background-color: $pri-color;
             }
             &:hover{
-              color: #fdfdfd;
+              color: $white;
               background-color: $point-color;
             }
           }//button
-        }//.pagenation
+        }//.pagination
   }//.container
 }//section.shop-list
