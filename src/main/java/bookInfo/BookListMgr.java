@@ -52,27 +52,26 @@ public class BookListMgr {
 			if(tap != null) {
 				
 				switch(tap) {
-					case "추천 도서":
-						sql = "select * from booktbl order by score desc limit ?, ?";
-						break;
-						
 					case "도서 모두보기":
 						sql = "select * from booktbl limit ?, ?";
+						break;
+						
+					case "베스트셀러":
+						sql = "select * from booktbl order by score desc, stock_Quantity asc limit ?, ?";
 						break;
 						
 					case "정가 인하": 
 						sql = "select * from booktbl order by stock_Quantity desc limit ?, ?";
 						break;
 						
-					case "베스트셀러":
-						sql = "select * from booktbl order by score desc, stock_Quantity asc limit ?, ?";
+					case "추천 도서":
+						sql = "select * from booktbl order by score desc limit ?, ?";
 						break;
-				}
-				
+				}//switch
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, start);
 				pstmt.setInt(2, end);
-			}
+			}//if
 			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -97,7 +96,7 @@ public class BookListMgr {
 	//tap nav 가져오기
 
 	//조건에 맞는 전체 도서 개수
-	public int getTotalCount(String category, String genre) {
+	public int getTotalCount(String category, String genre, String tap) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -108,19 +107,41 @@ public class BookListMgr {
 			
 			if(category == null || category.equals("null") || category.equals("")) {
 				//아무 조건 없는 경우 -> 모든 도서 
-				sql = "select count(bookid) from booktbl";
+				sql = "select count(*) from booktbl";
 				pstmt = con.prepareStatement(sql);
 			}else if(genre == null || genre.equals("null") || genre.equals("")){
 				//카테고리만 지정된 경우
-				sql = "select count(bookid) from booktbl where category = ?";
+				sql = "select count(*) from booktbl where category = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, category);
 			}else {
 				//카테고리, 장르 모두 지정된 경우
-				sql = "select count(bookid) from booktbl where category = ? and genre = ?";
+				sql = "select count(*) from booktbl where category = ? and genre = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, category);
 				pstmt.setString(2, genre);
+			}
+			
+			if(tap != null) {
+			
+				switch(tap) {
+					case "도서 모두보기":
+						sql = "select count(*) from booktbl";
+						break;
+						
+					case "베스트셀러":
+						sql = "select count(*) from (select * from booktbl order by score desc, stock_Quantity asc limit 15) as results";
+						break;
+						
+					case "정가 인하": 
+						sql = "select count(*) from (select * from booktbl order by stock_Quantity desc limit 20) as results";
+						break;
+						
+					case "추천 도서":
+						sql = "select count(*) from (select * from booktbl order by score desc limit 10) as results";
+						break;	
+				}
+				pstmt = con.prepareStatement(sql);
 			}
 			
 			rs = pstmt.executeQuery();

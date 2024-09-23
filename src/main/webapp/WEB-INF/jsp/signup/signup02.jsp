@@ -30,7 +30,6 @@
     		<%
     	}
     %>
-    
     <button type="button" onclick=self.close()>닫기</button>
   </div>
 </body>

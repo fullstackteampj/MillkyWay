@@ -53,9 +53,9 @@
 		      <p><%=changePage%>화면으로 ... <span></span></p>
 		    </article>
 	  </section>
-	  <footer>
-      	<address>&copy;Designed by teamMillkyWay</address>
-      </footer>
+	  
+	  <jsp:include page="./components/footer.jsp" />
+	  
 	</div>
 <script>
 	  //5초 뒤 메인 페이지 이동

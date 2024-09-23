@@ -25,7 +25,7 @@ $genreCategoryAs.forEach($genreCategoryA => {
 
 let nowIdx = 0;
 //목록 위 탭 네비게이션 클릭 이벤트
-const $containerTapAs = document.querySelectorAll('.shop-list .container>nav>ul>li>a');
+const $containerTapAs = document.querySelectorAll('.shop-list .container>.content>nav>ul>li>a');
 
 (function(){
   $containerTapAs.forEach(($containerTapA, idx) => {

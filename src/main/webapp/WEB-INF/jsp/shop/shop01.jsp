@@ -45,9 +45,10 @@
 	}
 	
 	start = (nowPage * numPerPage) - numPerPage;
-	end = numPerPage;
+	end = start + numPerPage;
 	
-	totalRecord = bMgr.getTotalCount(category, genre);
+	totalRecord = bMgr.getTotalCount(category, genre, tap);
+	if(end>totalRecord) end = totalRecord;
 	totalPage = (int)Math.ceil((double)totalRecord / numPerPage); //전체 페이지수
 	
 	nowBlock = (int)Math.ceil((double)nowPage / pagePerBlock);//현재 블럭 계산
@@ -82,6 +83,7 @@
 
 	  <section class="shop-list">
 	    <h2>도서 목록</h2>
+	    <div class="container" >
 	    <nav>
 	      <ul class="book-broadCategory">
 	        <li>
@@ -1021,7 +1023,7 @@
 	      </ul>
 	    </nav>
 	
-	    <div class="container">
+	    <div class="content">
 	      <nav>
 	        <ul>
 	          <li class="on"><a href="/shop/shop01?tap=도서 모두보기">도서 모두보기</a></li>
@@ -1034,6 +1036,7 @@
 		  	<%
 		  		blist = bMgr.getBookList(category, genre, start, end, tap);
 		  		listSize = blist.size();
+		  		System.out.println("listSize" + listSize);
 		  		if(blist.isEmpty()){
 		  			%>
 		  			<li>
@@ -1048,10 +1051,11 @@
 		  				String author = bean.getAuthor();
 		  				String title = bean.getTitle();
 		  				String contents = bean.getContents();
-		  				String[] contArr = contents.split("\\."); //.구분자사용, [.]도 가능
+		  				String[] contArr = contents.split("다."); //.구분자사용, [.]도 가능
 		  				int price = bean.getPrice();
 		  				int score = bean.getScore();
 		  				String imgUrl = "/image?bookid="+bookid;
+		  				
 		  			%>
 		  			<li>
 			            <a href="/shop/shop02?bookid=<%=bookid%>">
@@ -1077,7 +1081,7 @@
 			                </p>
 			                <br />
 			                <p>
-			                  <%=contArr[0]%>
+			                  <%=contArr[0] + "다."%>
 			                </p>
 			              </div>
 			              <form method="post" name="listFrm">
@@ -1091,27 +1095,6 @@
 		  			}//for
 		  		}//else
 		  	%>
-	          <!--동적생성
-	          <li>
-	            <a href="#">
-	              <div class="cover"></div>
-	              <div class="text">
-	                <h3>자바의 정석</h3>
-	                <p>남궁성</p>
-	                <p>가격 : <span>27000</span>원</p>
-	                <br />
-	                <p>
-	                  자바 프로그래머로써 반드시 알아야하는 것을 모두 담은책. 저자는 자바를 소개하는데 그치지 않고 프로그래머로써 꼭 알아야하는 내용들을 체계적으로 정리하였다.
-	                </p>
-	              </div>
-	              <form action="#" method="post" name="listFrm">
-	                <input type="hidden" name="bookid">
-	                <button>장바구니</button>
-	                <button>바로구매</button>
-	              </form>
-	            </a>
-	          </li>
-	          -->
 	        </ol>
 	    
 	          <div class="pagination">
@@ -1119,9 +1102,7 @@
 	          		int pageStart = (nowBlock - 1) * pagePerBlock + 1;
 	          		int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage+1 ;
 	          		//하단 페이지 끝 
-	          		if(tap != null){
-	          			totalRecord = 10;
-	          		}
+	          		
 	          		if(totalPage != 0){
 						if(nowBlock > 1){%>
 	          			<a href="javascript:block('<%=nowBlock-1%>')"><i class="fa-solid fa-caret-left"></i></a>
@@ -1140,11 +1121,12 @@
 	          	%>
 	          
 	          </div><!-- .pagination -->
+	    </div><!--.content-->
 	    </div><!--.container-->
 	  </section>
-	  <footer>
-      	<address>&copy;Designed by teamMillkyWay</address>
-      </footer>
+	  
+	  <jsp:include page="../components/footer.jsp" />
+	  
       <form name="readFrm" method="get">
 		  <input type="hidden" name="nowPage" value="<%=nowPage%>" />
 	      <input type="hidden" name="category" value="<%=category%>" />

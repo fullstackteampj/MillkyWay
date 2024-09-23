@@ -6,6 +6,8 @@ $sec-color : rgb(226, 218, 214);
 $white : #fdfdfd;
 
 @import "_header";
+@import "_aside";
+@import "_footer";
 
 section.choice{
   position: relative;
@@ -142,13 +144,3 @@ section.choice{
   }//.container
 }//section.choice
 
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-  >address{
-      height: 100px;
-      @include flexCenter();
-  }
-}

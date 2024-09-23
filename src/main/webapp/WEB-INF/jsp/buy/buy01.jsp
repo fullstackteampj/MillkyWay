@@ -112,6 +112,7 @@
                 </ul>
             </form>
         </section>
+        <jsp:include page="../components/footer.jsp" />
     </div>
 </body>
 </html>

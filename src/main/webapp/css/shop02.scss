@@ -17,6 +17,8 @@ $priWhite: #b6e2f7;
 }
 
 @import "_header";
+@import "_aside";
+@import "_footer";
 
 section.shop-product{
   position: relative;
@@ -408,14 +410,3 @@ section.shop-product{
     }//.one-review
   }//.headbook+ul
 }//section.shop-product
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-  >address{
-      height: 100px;
-      @include flexCenter();
-  }
-}
