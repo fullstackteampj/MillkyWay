@@ -162,7 +162,7 @@
 	        	  %>
 	        	  <li id="latest0<%= i %>">
 		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
-		        	  <span class="author"><%= bean.getAuthor() %></span>
+		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
 	          }
@@ -182,7 +182,7 @@
 	        	  %>
 	        	  <li id="best0<%= i %>">
 		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
-		        	  <span class="author"><%= bean.getAuthor() %></span>
+		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
 	          }
