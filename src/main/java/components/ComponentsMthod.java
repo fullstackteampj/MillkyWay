@@ -54,5 +54,36 @@ public class ComponentsMthod {
 		
 		return mbean;
 	}//MemberBean getMypageMember(int id)
+	
+	
+	public String getNickName(String userId) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String nickName = null;
+		
+		try {
+			conn = pool.getConnection();
+			sql = "select nickName from membertbl where userid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(userId));
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				nickName = rs.getString("nickName");
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+		
+		return nickName;
+	}// String getNickName(int userId)
+	
 
 }//class componentsMthod

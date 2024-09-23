@@ -108,7 +108,7 @@ CREATE TABLE Booktbl (
 CREATE TABLE boardtbl (
     boardid INT PRIMARY KEY AUTO_INCREMENT,         -- 게시물 ID, 기본 키 및 자동 증가
     title VARCHAR(200),                             -- 게시물 제목
-    author VARCHAR(100),                            -- 작성자 이름
+    nickname VARCHAR(100),                            -- 작성자 이름
     genre VARCHAR(50),                              -- 도서 장르 (소설, 역사, 철학 등)
     tab VARCHAR(10),								-- 글의 탭분류 (인기, 일반, 질문, 감상)
     content TEXT,                                   -- 게시물 내용

@@ -14,7 +14,7 @@
 		%>
 		alert("로그아웃되었습니다."); // 로그아웃 완료 메시지
 	}
-	location.href="/login/login01"
+	location.href="/login/login01";
 </script>
 </body>
 </html>
