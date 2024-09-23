@@ -5,6 +5,8 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 $white : #fdfdfd;
 
+@import "_header";
+
 section.choice{
   position: relative;
   width: 1200px;
@@ -94,7 +96,6 @@ section.choice{
             padding: 30px 0 10px;
           }//h4
           >img{
-            width: 250px;
             height: 400px;
             margin-bottom: 60px;
             box-shadow: 2px 2px 2px $sec-color;
@@ -140,3 +141,14 @@ section.choice{
     }//.frame
   }//.container
 }//section.choice
+
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+  >address{
+      height: 100px;
+      @include flexCenter();
+  }
+}

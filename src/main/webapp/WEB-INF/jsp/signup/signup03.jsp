@@ -8,12 +8,13 @@
   <title>우편번호 검색</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signup03.css?after" />
+ 
 </head>
 <body>
 	<div class="zipcode">
     <h1>우편번호 검색</h1>
     <form name="searchZipcodeFrm" method="post" autocomplete="off">
-      <input type="text" name="searchZipcode" />
+      <input type="text" name="searchZipcode" onclick="zipSearch()"/>
       <button>검색</button>
     </form>
     <ul>
@@ -21,5 +22,6 @@
     </ul>
     <button type="button" onclick=self.close()>닫기</button>
   </div>
+
 </body>
 </html>

@@ -1,5 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<jsp:useBean id="sMgr" class="procs.SignupMgr" />
+<%
+	request.setCharacterEncoding("UTF-8");
+	String account = request.getParameter("idKey");
+	boolean result = sMgr.checkId(account);
+	
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,16 +18,20 @@
 </head>
 <body>
   <div class="duplication">
-    <!--if(사용가능할 경우)
-    <h1><span>아이디</span>는<br />사용 가능한 <br />아이디 입니다.</h1>
-    -->
-    <h1><span>아이디</span>는<br />이미 존재합니다.</h1>
-    <p>다시 입력해 주세요.</p>
+    <% 
+    	if(result){
+    		%>
+    		 <h1><span><%=account%></span>는<br />이미 존재합니다.</h1>
+    		 <p>다시 입력해 주세요.</p>
+    		<%
+    	}else{
+    		%>
+    		 <h1><span><%=account%></span>는<br />사용 가능한 <br />아이디 입니다.</h1>
+    		<%
+    	}
+    %>
+    
     <button type="button" onclick=self.close()>닫기</button>
-    <!--
-        input.value = ''
-        input.focus();
-    -->
   </div>
 </body>
 </html>
