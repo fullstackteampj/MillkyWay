@@ -92,9 +92,10 @@
 	          <ul class="book-genreCategory">
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=소설">
 	                <i class="fa-solid fa-plus"></i>
-	                건강/취미
+	                소설
+	                <!--  건강/취미-->
 	              </a>
 	              <ol>
 	                <li><a href="#">건강운동</a></li>
@@ -127,9 +128,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=가족">
 	                <i class="fa-solid fa-plus"></i>
-	                경제경영
+	                가족
+	                <!-- 경제경영 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">경제학/경제일반</a></li>
@@ -144,9 +146,10 @@
 	            </li>
 	            
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=전쟁">
 	                <i class="fa-solid fa-plus"></i>
-	                공무원 수험서
+	                전쟁
+	                <!-- 공무원 수험서 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">역량평가</a></li>
@@ -164,9 +167,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=스릴러">
 	                <i class="fa-solid fa-plus"></i>
-	                과학
+	                스릴러
+	                <!-- 과학 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">기초과학/교양과학</a></li>
@@ -192,9 +196,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=역사소설">
 	                <i class="fa-solid fa-plus"></i>
-	                달력/기타
+	                역사소설
+	                <!-- 달력/기타 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">2025년 가계부</a></li>
@@ -214,9 +219,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=이민문학">
 	                <i class="fa-solid fa-plus"></i>
-	                대학교재
+	                이민문학
+	                <!-- 대학교재 -->
 	            </a>
 	              <ol>
 	                <li><a href="#">경상계열</a></li>
@@ -238,9 +244,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=가족소설">
 	                <i class="fa-solid fa-plus"></i>
-	                만화
+	                가족소설
+	                <!-- 만화 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">캐릭터상품</a></li>
@@ -267,9 +274,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=사회소설">
 	                <i class="fa-solid fa-plus"></i>
-	                사회과학
+	                사회소설
+	                <!-- 사회과학 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">비평/칼럼</a></li>
@@ -293,9 +301,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=시">
 	                <i class="fa-solid fa-plus"></i>
-	                소설/시/희곡
+	                시
+	                <!--  소설/시/희곡-->
 	              </a>
 	              <ol>
 	                <li><a href="#">한국소설</a></li>
@@ -329,9 +338,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=철학소설">
 	                <i class="fa-solid fa-plus"></i>
-	                수험서/자격증
+	                철학소설
+	                <!-- 수험서/자격증 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">국가기술자격</a></li>
@@ -357,9 +367,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=자전소설">
 	                <i class="fa-solid fa-plus"></i>
-	                어린이
+	                자전소설
+	                <!-- 어린이 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">초등 한국사</a></li>
@@ -385,7 +396,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=에세이">
 	                <i class="fa-solid fa-plus"></i>
 	                에세이
 	              </a>
@@ -414,9 +425,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=성장소설">
 	                <i class="fa-solid fa-plus"></i>
-	                여행
+	                성장소설
+	                <!-- 여행 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">국내 여행에세이</a></li>
@@ -456,7 +468,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=역사">
 	                <i class="fa-solid fa-plus"></i>
 	                역사
 	              </a>
@@ -486,9 +498,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=단편소설">
 	                <i class="fa-solid fa-plus"></i>
-	                예술/대중문화
+	                단편소설
+	                <!-- 예술/대중문화 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">컬러링북</a></li>
@@ -509,9 +522,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=에세이">
 	                <i class="fa-solid fa-plus"></i>
-	                외국어
+	                에세이
+	                <!-- 외국어 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">어학사전</a></li>
@@ -544,7 +558,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=요리/살림">
 	                <i class="fa-solid fa-plus"></i>
 	                요리/살림
 	              </a>
@@ -573,7 +587,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=유아">
 	                <i class="fa-solid fa-plus"></i>
 	                유아
 	              </a>
@@ -593,7 +607,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=인문학">
 	                <i class="fa-solid fa-plus"></i>
 	                인문학
 	              </a>
@@ -619,7 +633,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=자기계발">
 	                <i class="fa-solid fa-plus"></i>
 	                자기계발
 	              </a>
@@ -643,7 +657,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=잡지">
 	                <i class="fa-solid fa-plus"></i>
 	                잡지
 	              </a>
@@ -672,7 +686,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=장르소설">
 	                <i class="fa-solid fa-plus"></i>
 	                장르소설
 	              </a>
@@ -689,7 +703,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=전집/중고전집">
 	                <i class="fa-solid fa-plus"></i>
 	                전집/중고전집
 	              </a>
@@ -711,7 +725,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=종교/역학">
 	                <i class="fa-solid fa-plus"></i>
 	                종교/역학
 	              </a>
@@ -727,7 +741,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=좋은부모">
 	                <i class="fa-solid fa-plus"></i>
 	                좋은부모
 	              </a>
@@ -747,7 +761,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=청소년">
 	                <i class="fa-solid fa-plus"></i>
 	                청소년
 	              </a>
@@ -776,7 +790,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=컴퓨터/모바일">
 	                <i class="fa-solid fa-plus"></i>
 	                컴퓨터/모바일
 	              </a>
@@ -799,7 +813,7 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=국내도서&genre=참고서">
 	                <i class="fa-solid fa-plus"></i>
 	                참고서
 	              </a>
@@ -832,7 +846,6 @@
 	                </li>
 	                <li>
 	                  <a href="#">
-	                    <i class="fa-solid fa-plus"></i>
 	                    중학교참고서
 	                  </a>
 	                    <ul>
@@ -856,7 +869,6 @@
 	                </li>
 	                <li>
 	                  <a href="#">
-	                    <i class="fa-solid fa-plus"></i>
 	                    고등학교참고서
 	                  </a>
 	                    <ul>
@@ -885,9 +897,10 @@
 	
 	          <ul class="book-genreCategory">
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=해외도서&genre=판타지">
 	                <i class="fa-solid fa-plus"></i>
-	                영미도서
+	                판타지
+	                <!-- 영미도서 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">ELT/어학/사전</a></li>
@@ -907,9 +920,10 @@
 	              </ol>
 	            </li>
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=해외도서&genre=소설">
 	                <i class="fa-solid fa-plus"></i>
-	                일본도서
+	                소설
+	                <!-- 일본도서 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">경제/경영</a></li>
@@ -932,9 +946,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=해외도서&genre=철학">
 	                <i class="fa-solid fa-plus"></i>
-	                어린이
+	                철학
+	                <!-- 어린이 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">그림책</a></li>
@@ -947,9 +962,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=해외도서&genre=로맨스">
 	                <i class="fa-solid fa-plus"></i>
-	                중국도서
+	                로맨스
+	                <!-- 중국도서 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">소설</a></li>
@@ -958,9 +974,10 @@
 	            </li>
 	
 	            <li>
-	              <a href="#">
+	              <a href="/shop/shop01?category=해외도서&genre=역사소설">
 	                <i class="fa-solid fa-plus"></i>
-	                기타언어권
+	                역사소설
+	                <!-- 기타언어권 -->
 	              </a>
 	              <ol>
 	                <li><a href="#">독일 도서</a></li>
@@ -976,7 +993,7 @@
 	        </li><!--외국도서 li-->
 	
 	        <li>
-	          <a href="#">
+	          <a href="/shop/shop01?category=eBook">
 	            <i class="fa-solid fa-plus"></i>
 	            eBook
 	          </a>
@@ -1007,10 +1024,10 @@
 	    <div class="container">
 	      <nav>
 	        <ul>
-	          <li class="on"><a href="#">도서 모두보기</a></li>
-	          <li><a href="#">베스트셀러</a></li>
-	          <li><a href="#">정가 인하</a></li>
-	          <li><a href="/shop/shop01?tap=recommend">추천 도서</a></li>
+	          <li class="on"><a href="/shop/shop01?tap=도서 모두보기">도서 모두보기</a></li>
+	          <li><a href="/shop/shop01?tap=베스트셀러">베스트셀러</a></li>
+	          <li><a href="/shop/shop01?tap=정가 인하">정가 인하</a></li>
+	          <li><a href="/shop/shop01?tap=추천 도서">추천 도서</a></li>
 	        </ul>
 	      </nav>
 		  <ol>
@@ -1018,7 +1035,11 @@
 		  		blist = bMgr.getBookList(category, genre, start, end, tap);
 		  		listSize = blist.size();
 		  		if(blist.isEmpty()){
-		  			out.println("등록된 게시물이 없습니다.");
+		  			%>
+		  			<li>
+		  				<h3 style="padding:50px" align="center">등록된 게시물이 없습니다.</h3>
+		  			</li>
+		  			<%
 		  		}else{
 		  			for(int i=0; i<numPerPage; i++){
 		  				if(i == listSize) break;
@@ -1029,7 +1050,7 @@
 		  				String contents = bean.getContents();
 		  				String[] contArr = contents.split("\\."); //.구분자사용, [.]도 가능
 		  				int price = bean.getPrice();
-		  				String pDate = bean.getPublish_date();
+		  				int score = bean.getScore();
 		  				String imgUrl = "/image?bookid="+bookid;
 		  			%>
 		  			<li>
@@ -1038,8 +1059,22 @@
 			              <div class="text">
 			                <h3><%=title%></h3>
 			                <p><%=author%></p>
-			              	<p><%=pDate%></p>
 			                <p>가격 : <%=price%>원</p>
+			                <p>
+			                	 <%
+					        		for(int c=0; c<score; c++){
+					        			%>
+					        			<i class="fa-solid fa-star"></i>
+					        			<%
+					        		}//for - make colorstar
+					        		for(int e=0; e<5-score; e++){
+					        			%>
+					        			<i class="fa-regular fa-star"></i>
+					        			<% 
+					        		}//for - make emptystar
+	        					%>
+	        					<%=score%>
+			                </p>
 			                <br />
 			                <p>
 			                  <%=contArr[0]%>
@@ -1079,11 +1114,14 @@
 	          -->
 	        </ol>
 	    
-	          <div class="pagenation">
+	          <div class="pagination">
 	          	<%
 	          		int pageStart = (nowBlock - 1) * pagePerBlock + 1;
 	          		int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage+1 ;
 	          		//하단 페이지 끝 
+	          		if(tap != null){
+	          			totalRecord = 10;
+	          		}
 	          		if(totalPage != 0){
 						if(nowBlock > 1){%>
 	          			<a href="javascript:block('<%=nowBlock-1%>')"><i class="fa-solid fa-caret-left"></i></a>
@@ -1098,7 +1136,6 @@
 	          			<a href="javascript:block('<%=nowBlock+1%>')"><i class="fa-solid fa-caret-right"></i></a>
 	          			<%	
 	          			}//if - t>n
-	          			
 	          		}//if - totalPage
 	          	%>
 	          
@@ -1112,6 +1149,7 @@
 		  <input type="hidden" name="nowPage" value="<%=nowPage%>" />
 	      <input type="hidden" name="category" value="<%=category%>" />
 	      <input type="hidden" name="genre" value="<%=genre%>" />
+	      <input type="hidden" name="tap" value="<%=tap%>" />
       </form>
 	</div>
 </body>

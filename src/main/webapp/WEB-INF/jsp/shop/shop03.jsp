@@ -55,7 +55,13 @@
 <body>
 	<div>
 		<h1><%=inform%></h1>
-		<button type="button" onclick="self.close()">닫기</button>
+		<button type="button" onclick="javascript:closeReload()">닫기</button>
 	</div>
+<script>
+	const closeReload = () => {
+		self.close();
+		window.opener.location.reload();
+	};
+</script>
 </body>
 </html>

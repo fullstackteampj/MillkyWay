@@ -45,7 +45,7 @@
 
 <body>
 	<div id="wrap">
-	
+	  <jsp:include page="../components/header.jsp" />
 	  <section class="shop-product">
 	    <form name="quickFrm" method="post">
 	      <div>

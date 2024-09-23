@@ -18,7 +18,7 @@ public class BookListMgr {
 		}
 	}//BookListMgr()
 	
-	//도서 목록 가져오기
+	//도서 목록 nav 가져오기
 	public Vector<BookBean> getBookList(String category, String genre, int start, int end,  String tap){
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -27,7 +27,6 @@ public class BookListMgr {
 		Vector<BookBean> blist = new Vector<BookBean>();
 		try {
 			con = pool.getConnection();
-			System.out.println(tap);
 			
 			if(category == null || category.equals("null") || category.equals("")) {
 				sql = "select * from booktbl limit ?, ?";
@@ -50,17 +49,38 @@ public class BookListMgr {
 				pstmt.setInt(4, end);
 			}
 			
-			if(tap != null && tap.equals("recommend")){//추천 도서 10권
-				sql = "select * from booktbl order by score desc limit 0, 10";
+			if(tap != null) {
+				
+				switch(tap) {
+					case "추천 도서":
+						sql = "select * from booktbl order by score desc limit ?, ?";
+						break;
+						
+					case "도서 모두보기":
+						sql = "select * from booktbl limit ?, ?";
+						break;
+						
+					case "정가 인하": 
+						sql = "select * from booktbl order by stock_Quantity desc limit ?, ?";
+						break;
+						
+					case "베스트셀러":
+						sql = "select * from booktbl order by score desc, stock_Quantity asc limit ?, ?";
+						break;
+				}
+				
 				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, start);
+				pstmt.setInt(2, end);
 			}
+			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				BookBean bean = new BookBean();
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setAuthor(rs.getString("author"));
 				bean.setTitle(rs.getString("title"));
-				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setScore(rs.getInt("score"));
 				bean.setContents(rs.getString("contents"));
 				bean.setPrice(rs.getInt("price"));
 				blist.add(bean);
@@ -73,6 +93,8 @@ public class BookListMgr {
 		}
 		return blist;
 	}
+	
+	//tap nav 가져오기
 
 	//조건에 맞는 전체 도서 개수
 	public int getTotalCount(String category, String genre) {

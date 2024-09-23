@@ -622,4 +622,17 @@ section.shop-product .headbook + ul .one-review > ul > li > p {
 }
 section.shop-product .headbook + ul .one-review > ul > li > span {
   margin-right: 10px;
+}
+
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }/*# sourceMappingURL=shop02.css.map */
