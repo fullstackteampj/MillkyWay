@@ -317,6 +317,8 @@
 
 	<jsp:include page="../components/footer.jsp" />
 
+	<jsp:include page="../components/aside.jsp" />
+
   </div>
 
 <script>

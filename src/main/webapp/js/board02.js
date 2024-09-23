@@ -36,7 +36,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		alert("내용을 입력해주세요.");
 		frm.inputComment.focus();
 		return;
-	}
+	};
 	
 	// 댓글작성 비동기 요청
 	const commentMsg = frm.inputComment.value;

@@ -322,33 +322,31 @@ String nickName = cMgr.getNickName(userId);
 	</script>
 	
 	<script>
-	// 스크롤 감지 헤더 노출
-	const $header = document.querySelector('header');
+		// 스크롤 감지 헤더 노출
+		const $header = document.querySelector('header');
+		
+		let lastScroll = document.documentElement.scrollTop || 0;
+		
+		window.addEventListener('scroll', ()=>{
+		  let nowScroll = document.documentElement.scrollTop;
+		  const scrollTop = Math.ceil(window.scrollY);
+		
+		  // 헤더 - 스크롤 시 세로스크롤만 상단 fixed
+		  $header.style.top = scrollTop + 'px';
+		
+		  // 스크롤감지헤더
+		  if(nowScroll > lastScroll) { // 스크롤 다운
+		    // 헤더탑 숨김
+		    $header.classList.add('scrolled');
+		  } else { // 스크롤 업
+		    // 헤더탑 보임
+		    $header.classList.remove('scrolled');
+		  }
+		  
+		  lastScroll = nowScroll;
+		});
+	</script>
 	
-	let lastScroll = document.documentElement.scrollTop || 0;
-	
-	window.addEventListener('scroll', ()=>{
-	  let nowScroll = document.documentElement.scrollTop;
-	  const scrollTop = Math.ceil(window.scrollY);
-	
-	  // 헤더 - 스크롤 시 세로스크롤만 상단 fixed
-	  $header.style.top = scrollTop + 'px';
-	
-	  // 스크롤감지헤더
-	  if(nowScroll > lastScroll) { // 스크롤 다운
-	    // 헤더탑 숨김
-	    $header.classList.add('scrolled');
-	  } else { // 스크롤 업
-	    // 헤더탑 보임
-	    $header.classList.remove('scrolled');
-	  }
-	  
-	  lastScroll = nowScroll;
-	});
-	
-	
-</script>
-
 </body>
 </html>
 

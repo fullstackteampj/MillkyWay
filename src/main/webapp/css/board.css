@@ -299,27 +299,9 @@ section > #post > #head > a {
   background-color: #33afe9;
   border-radius: 3px;
 }
-section > #post > #searchInfo {
-	margin-left: 12px;
-	padding-bottom: 12px;
-    font-family: "Pretendard-Bold";
-	font-size: 16px;
-}
-section > #post > #searchInfo > span {
-	color: #33afe9;
-    font-family: "Pretendard-Bold";
-}
 section > #post > #list {
   border: 1px solid #ccc;
   padding: 0 10px;
-}
-section > #post > #list > p {
-	display: flex;
-	justify-content: center;
-  	align-items: center;
-  	height: 100px;
-  	font-size: 15px;
-  	color: #222;
 }
 section > #post > #list > a {
   display: flex;
@@ -330,10 +312,10 @@ section > #post > #list > a {
 section > #post > #list > a:last-of-type {
   border: none;
 }
-section > #post > #list > a > .tab {
+section > #post > #list > a > .kind {
   display: inline-block;
   flex: 0 0 auto;
-  width: 80px;
+  width: 70px;
   color: #ccc;
   text-align: center;
 }
@@ -349,16 +331,14 @@ section > #post > #list > a .content > .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  margin-bottom: 3px;
 }
 section > #post > #list > a .content > .title > span.commentCount {
   margin-left: 3px;
   color: #1a6080;
-  font-size: 14px;
 }
 section > #post > #list > a .content > .postInfo {
   display: flex;
-  color: #bbb;
+  color: #ccc;
   font-size: 12px;
 }
 section > #post > #list > a .content > .postInfo > p {
@@ -372,17 +352,18 @@ section > #post > #list > a .content > .postInfo > p:last-of-type {
   border: none;
   padding-right: 0;
 }
+section > #post > #list > a .content > .postInfo > p.over15 {
+  font-family: "Pretendard-Bold";
+  color: #1a6080;
+}
 section > #post > #list > a > .frame {
+  width: 50px;
+  height: 40px;
   flex: 0 0 auto;
-  overflow: hidden;
-  width: 60px;
-  height: 50px;
-  margin-right: 20px;
 }
 section > #post > #list > a > .frame > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 section > #post > #pagination {
   display: flex;
@@ -470,7 +451,7 @@ section > #bestPost {
   top: 0;
   right: 0;
   width: 200px;
-  max-height: 240px;
+  height: 240px;
   margin-top: 51px;
   padding: 16px;
   background-color: #fff;
@@ -480,15 +461,6 @@ section > #bestPost {
 section > #bestPost > h3 {
   font-size: 20px;
   margin-bottom: 7px;
-  /*border: 1px solid red;*/
-}
-section > #bestPost > p {
-	display: flex;
-  	align-items: center;
-  	height: 35px;
-  	font-size: 13px;
-  	color: #222;
-    /*border: 1px solid blue;*/
 }
 section > #bestPost > ul {
   font-size: 14px;
@@ -642,11 +614,6 @@ section > #postBox, section #commentBox {
   padding: 20px;
   border: 1px solid #ccc;
 }
-section #commentBox > p {
-	padding: 30px 0;
-	font-size: 14px;
-	text-align: center;
-}
 section > #postBox {
   position: relative;
 }
@@ -658,7 +625,7 @@ section > #postBox > #readHead {
 section > #postBox > #readHead > #readHead-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
 }
 section > #postBox > #readHead > #readHead-top > #readTit {
   font-size: 18px;
@@ -682,9 +649,6 @@ section > #postBox > #readHead > #readHead-bottom > #regInfo > span:first-of-typ
 section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type {
   padding-left: 10px;
 }
-section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type > .edited {
-	color: #aaa;
-}
 section > #postBox > #readHead > #readHead-bottom > #feedback {
   display: flex;
 }
@@ -703,14 +667,8 @@ section > #postBox > #readContent {
 }
 section > #postBox > #readContent > #contentDetail {
   padding-bottom: 40px;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-}
-section > #postBox > #readContent > #contentDetail > p {
-	
-}
-section > #postBox > #readContent > #contentDetail > img {
-	max-width: 100%;
 }
 section > #postBox > #readContent > #likeBtn {
   display: flex;
@@ -795,7 +753,7 @@ section > #commentBox > #commentHead > #commentMng > span:last-of-type {
 }
 section > #commentBox > #commentCont {
   font-size: 14px;
-  margin: 16px 0;
+  padding: 16px 0;
 }
 section > #commentBox > #commentCont > .comment {
   padding: 5px 10px;
@@ -812,89 +770,53 @@ section > #commentBox > #commentCont > .comment > .commentInfo {
 section > #commentBox > #commentCont > .comment > .commentInfo > .author {
   font-family: "Pretendard-Bold";
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .same {
-	display: inline;
-    /*box-shadow: inset 0 -10px 0 #D9FCDB;*/
-    box-shadow: inset 0 -10px 0 #b0dbe3;
-}
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd {
   display: flex;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
   margin-right: 12px;
-  color: #aaa;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
   font-size: 0;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
   display: inline-block;
-  margin-top: 3px;
-  margin-right: 12px;
   font-size: 12px;
   cursor: pointer;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child {
-  margin: 0;
-}
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
   display: block;
+  margin-top: 3px;
 }
 section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
   color: #33afe9;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i {
+  margin-left: 12px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i:hover {
   color: rgb(205, 92, 92);
 }
 section > #commentBox > #commentCont > .comment > .commentMsg {
   padding: 10px 0;
 }
-
 section > #commentBox > form {
   margin-top: 30px;
 }
-section > #commentBox > #commentCont > form {
-  margin-bottom: 10px;
-}
-section > #commentBox > #commentCont > #replyFrm {
-  position: relative;
-  margin-left: 50px;
-}
-section > #commentBox > #commentCont > #replyFrm:after {
-	position: absolute;
-	top: 10px;
-	left: -25px;
-	width: 10px;
-	height: 10px;
-	content: '👉';
-}
-section > #commentBox > form > #writeComment,
-section > #commentBox > #commentCont > form > #writeComment {
+section > #commentBox > form > #writeComment {
   position: relative;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 6px;
-  outline: none;
 }
-section > #commentBox > form > #writeComment:focus-within,
-section > #commentBox > #commentCont > form > #writeComment:focus-within {
-  border-color: #33afe9;
-  outline: 1px solid #33afe9;
-}
-section > #commentBox > form > #writeComment > .commentAuthor,
-section > #commentBox > #commentCont > form > #writeComment > .commentAuthor {
+section > #commentBox > form > #writeComment > .commentAuthor {
   font-size: 14px;
   font-family: "Pretendard-Bold";
   padding: 10px;
   color: #ccc;
   border-bottom: 1px solid #ccc;
 }
-section > #commentBox > #commentCont > form > #writeComment > .commentAuthor > span {
-	font-size: 12px;
-	margin-right: 10px;
-}
-section > #commentBox > form > #writeComment > textarea,
-section > #commentBox > #commentCont > form > #writeComment > textarea {
+section > #commentBox > form > #writeComment > textarea {
   display: block;
   width: 100%;
   min-height: 130px;
@@ -905,8 +827,7 @@ section > #commentBox > #commentCont > form > #writeComment > textarea {
   border: none;
   outline: none;
 }
-section > #commentBox > form > #writeComment > button,
-section > #commentBox > #commentCont > form > #writeComment > button {
+section > #commentBox > form > #writeComment > button {
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -917,26 +838,14 @@ section > #commentBox > #commentCont > form > #writeComment > button {
   border-radius: 3px;
   background: none;
 }
-
-section > #commentBox > form > #writeComment > button:hover,
-section > #commentBox > #commentCont > form > #writeComment > button:hover {
-	color: #fff;
-	background-color: #33afe9;
-	border-color: #33afe9;
-}
-
-
-section > #commentBox > #commentCont > form.off {
-	display: none;
-}
 section > #btns {
   display: flex;
   justify-content: flex-end;
 }
 section > #btns > a {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 110px;
   height: 40px;
   margin-right: 5px;
@@ -949,63 +858,7 @@ section > #btns > a:first-child {
 section > #btns > a:last-child {
   margin: 0;
 }
-section > #postBox > #deleteArea {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin: 70px 0;
-}
-section > #postBox > #deleteArea > h3 {
-	font-size: 30px;
-	font-family: "Pretendard-Bold";
-}
-section > #postBox > #deleteArea > p {
-	font-size: 14px;
-	margin-bottom: 50px;
-}
-section > #postBox > #deleteArea > #delFrm {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
-}
-section > #postBox >#deleteArea >  #delFrm > p {
-	margin-bottom: 12px;
-	color: #222;
-	font-size: 18px;
-	font-family: "Pretendard-Bold";
-}
-section > #postBox > #deleteArea > #delFrm > input {
-	width: 400px;
-	height: 35px;
-	padding: 0 12px;
-	box-sizing: border-box;
-	border: 1px solid #222;
-	border-radius: 3px;
-	outline: none;
-}
-section > #postBox > #deleteArea > #delFrm > input:focus {
-	border-color: #33afe9;
-	outline: 1px solid #33afe9;
-}
-section > #btns > button {
-	width: 110px;
-	height: 40px;
-	margin-right: 5px;
-	color: #fff;
-	outline: none;
-	border: none;
-	background-color: #ccc;
-}
-section > #btns > button:last-child {
-	margin-right: 0;
-	background-color: #33afe9;
-}
-section > #btns > button:last-child:hover {
-	background-color: rgb(205, 92, 92);
-}
+
 footer {
   width: 100%;
   min-width: 1200px;
@@ -1015,9 +868,3 @@ footer {
   height: 130px;
   background-color: #ddd;
 }/*# sourceMappingURL=board.css.map */
-
-
-.overBestLike {
-  font-family: "Pretendard-Bold";
-  color: #42a4b9;
-}

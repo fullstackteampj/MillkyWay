@@ -166,6 +166,8 @@ String userId = (String) session.getAttribute("idKey");
 
 	<jsp:include page="../components/footer.jsp" />
 
+	<jsp:include page="../components/aside.jsp" />
+
   </div>
 
 </body>
