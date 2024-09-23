@@ -12,7 +12,6 @@
 
 <%
 	String userId = (String) session.getAttribute("idKey");
-
 	int ranCount = 0;
 	String category = null;
 %>

@@ -113,6 +113,9 @@ CREATE TABLE boardtbl (
     userid INT,                            		    -- 작성자 ID(식별자)
     nickname VARCHAR(100),                          -- 작성자 닉네임
     title VARCHAR(200),                             -- 게시물 제목
+    nickname VARCHAR(100),                            -- 작성자 이름
+    genre VARCHAR(50),                              -- 도서 장르 (소설, 역사, 철학 등)
+    tab VARCHAR(10),								-- 글의 탭분류 (인기, 일반, 질문, 감상)
     content TEXT,                                   -- 게시물 내용
     photo MEDIUMBLOB,                               -- 게시물에 포함된 사진
     genre VARCHAR(50),                              -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)

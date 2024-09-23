@@ -8,6 +8,8 @@ show tables;
 
 select * from membertbl;
 
+-- partnertbl;
+
 select * from booktbl;
 
 select * from boardtbl;

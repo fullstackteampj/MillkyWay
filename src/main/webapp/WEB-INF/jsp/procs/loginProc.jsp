@@ -8,7 +8,6 @@
 	String pwd = request.getParameter("pwd");
 	String saveId = request.getParameter("saveId");
 	
-	
 	MemberBean mBean = lMgr.getLoginInfo(account);
 	String userId = Integer.toString(mBean.getUserid());
 	
@@ -21,9 +20,10 @@
 		<%
 	}else{
 		session.setAttribute("idKey", userId);
+		
 		if(saveId != null){
 		    Cookie cookie = new Cookie("saveId", account);
-		    cookie.setMaxAge(60 * 60 * 24);
+		    cookie.setMaxAge(60 * 60 * 24);//쿠키의 보관기간 1일
 		    response.addCookie(cookie);
 		}
 		%>

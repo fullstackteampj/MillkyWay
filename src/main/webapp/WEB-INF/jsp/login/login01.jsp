@@ -4,6 +4,7 @@
 // 아이디저장 쿠키반영
 String saveId = "";
 Cookie[] cookies = request.getCookies();
+System.out.print(cookies);
 if(cookies!=null){
 	for(int i = 0; i < cookies.length; i++){
 		if(cookies[i].getName().equals("saveId")){
