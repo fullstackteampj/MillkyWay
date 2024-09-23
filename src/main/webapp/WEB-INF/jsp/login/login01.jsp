@@ -1,5 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<% 
+// 아이디저장 쿠키반영
+String saveId = "";
+Cookie[] cookies = request.getCookies();
+if(cookies!=null){
+	for(int i = 0; i < cookies.length; i++){
+		if(cookies[i].getName().equals("saveId")){
+			saveId = cookies[i].getValue();
+			break; // 쿠키를 찾으면 반복 종료
+		}//if
+	}//for
+}//if
+
+String userId = (String) session.getAttribute("idKey");
+%>
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
@@ -18,17 +33,37 @@
 
     <section class="login">
       <h2>로그인</h2>
-      <form name="loginFrm" method="post" action="#">
+      <form name="loginFrm" method="post" action="/procs/loginProc">
         <div id="idInput">
           <label for="id">아이디</label>
-          <input type="text" name="id" id="id">
+          <%
+          if(saveId==null||saveId.equals("")){
+        	  %>
+        	  <input type="text" name="id" id="id">
+        	  <%
+          }else{
+        	  %>
+        	  <input type="text" name="id" id="id" value="<%=saveId%>">
+        	  <%
+          }
+          %>
         </div>
         <div id="pwdInput">
           <label for="pwd">비밀번호</label>
           <input type="password" name="pwd" id="pwd">
         </div>
         <div>
-          <input type="checkbox" name="saveId" id="saveId">
+          <%
+          if(saveId==null||saveId.equals("")){
+        	  %>
+        	  <input type="checkbox" name="saveId" id="saveId" value="saveId" />
+        	  <%
+          }else{
+        	  %>
+        	  <input type="checkbox" name="saveId" id="saveId" value="saveId" checked />
+        	  <%
+          }
+          %>
           <label for="saveId">아이디 저장</label>
         </div>
         

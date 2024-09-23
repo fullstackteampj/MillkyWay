@@ -195,7 +195,7 @@ CREATE TABLE wishtbl (
 -- 장바구니 항목을 저장하는 테이블
 CREATE TABLE carttbl (
 	cartid INT PRIMARY KEY AUTO_INCREMENT,
-    userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
+    userid INT,                             		-- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 장바구니 상태 (active, inactive 등)
     added_date DATE,                                -- 장바구니 추가 날짜
