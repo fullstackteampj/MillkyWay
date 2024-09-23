@@ -1,7 +1,219 @@
 @charset "UTF-8";
-section.sign-up {
+#wrap {
   width: 1200px;
   margin: 0 auto;
+}
+#wrap > header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 800;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  border-bottom: 2px solid #33afe9;
+}
+#wrap > header > .headTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  height: 40px;
+  margin: 1px auto 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+#wrap > header > .headTop > .frame > .topGnb > li {
+  width: 120px;
+  height: 40px;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on, #wrap > header > .headTop > .frame > .topGnb > li:hover {
+  background-color: #fff;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on > a, #wrap > header > .headTop > .frame > .topGnb > li:hover > a {
+  color: #1a6080;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > .underNav {
+  display: none;
+  position: absolute;
+  top: 41px;
+  left: calc((100% - 1200px) / 2);
+  z-index: 300;
+  width: 1200px;
+  height: auto;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
+  display: block;
+}
+#wrap > header > .headTop > .frame .userBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+}
+#wrap > header > .headTop > .frame .userBar > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+#wrap > header > .headTop > .frame .userBar > li > a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+#wrap > header > .headTop > .frame .userBar > li > a > .arrow {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList {
+  display: none;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li {
+  line-height: 25px;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
+  font-weight: 600;
+}
+#wrap > header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
+#wrap > header > .headTop > .frame .userBar > li > .myPageList:hover {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+  left: -10px;
+  width: 120px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 7px 0 #666;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+#wrap > header > .headMiddle > h1 {
+  position: absolute;
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchFrame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #33afe9;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchFrame > p.searchId {
+  width: 80px;
+  height: 40px;
+  color: #1a6080;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > form {
+  flex: 1 1 auto;
+}
+#wrap > header > .headMiddle > .searchFrame > form > input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 30px;
+}
+#wrap > header > .headMiddle > .searchFrame > span {
+  display: block;
+  width: 80px;
+  height: 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchList {
+  display: none;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList,
+#wrap > header > .headMiddle > .searchList:hover {
+  display: block;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: calc(50% - 250px);
+  padding: 0 10px;
+  background-color: #fff;
+  border: 2px solid #1a6080;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList > li,
+#wrap > header > .headMiddle > .searchList:hover > li {
+  margin: 5px;
+  color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > img.logo {
+  position: absolute;
+  top: calc(50% - 25px);
+  right: 100px;
+  width: 100px;
+  height: 50px;
+}
+
+section.sign-up {
+  width: 1200px;
+  margin: 120px auto;
   padding: 30px 0;
 }
 section.sign-up button {
@@ -198,14 +410,14 @@ section.sign-up > .enterInfo > form ul > li {
 section.sign-up > .enterInfo > form ul > li input:focus, section.sign-up > .enterInfo > form ul > li select:focus {
   border-color: rgb(127, 161, 195);
 }
-section.sign-up > .enterInfo > form ul > li #pwdquestion {
+section.sign-up > .enterInfo > form ul > li #question {
   width: 80%;
 }
-section.sign-up > .enterInfo > form ul > li #userId, section.sign-up > .enterInfo > form ul > li #nickname {
+section.sign-up > .enterInfo > form ul > li #account, section.sign-up > .enterInfo > form ul > li #nickname {
   width: 68%;
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #userId + button, section.sign-up > .enterInfo > form ul > li #nickname + button {
+section.sign-up > .enterInfo > form ul > li #account + button, section.sign-up > .enterInfo > form ul > li #nickname + button {
   width: calc(12% - 5px);
 }
 section.sign-up > .enterInfo > form ul > li #mobileCarrier {
@@ -216,17 +428,21 @@ section.sign-up > .enterInfo > form ul > li #mobileCarrier + input {
   width: 60%;
 }
 section.sign-up > .enterInfo > form ul > li #zipcode {
-  width: 73%;
+  width: 13%;
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #zipcode + button {
-  width: calc(7% - 5px);
+section.sign-up > .enterInfo > form ul > li #basicAddress {
+  width: 58%;
+  margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #userEmail {
+section.sign-up > .enterInfo > form ul > li #basicAddress + button {
+  width: calc(9% - 10px);
+}
+section.sign-up > .enterInfo > form ul > li #email {
   width: 65%;
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #userEmail + button {
+section.sign-up > .enterInfo > form ul > li #email + button {
   width: calc(15% - 5px);
 }
 section.sign-up > .enterInfo > form ul > li #male {

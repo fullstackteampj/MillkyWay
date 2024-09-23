@@ -4,7 +4,16 @@ $pri-color: rgb(127, 161, 195);
 $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .duplication{ 
+  @include flexCenter();
+  flex-flow: column nowrap;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   color: #222;

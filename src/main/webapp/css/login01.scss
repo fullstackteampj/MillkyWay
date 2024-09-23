@@ -19,10 +19,9 @@ $priWhite: #b6e2f7;
 @import "_header";
 
 
-
 section.login{
   width: 1200px;
-  margin: 0 auto;
+  margin: 120px auto 60px;
   >h2{
     padding: 30px;
     text-align: center;
@@ -105,5 +104,16 @@ section.login{
       }
     }//a
   }//loginMng
+}//section.login
+
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+  >address{
+      height: 100px;
+      @include flexCenter();
+  }
 }
 

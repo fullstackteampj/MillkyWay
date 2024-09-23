@@ -3,11 +3,26 @@
 $pri-color: rgb(127, 161, 195);
 $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
+$white : #fdfdfd;
+
+@mixin flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// 정훈
+$priColor: #33afe9;
+$priStrong: #1a6080;
+$priWhite: #b6e2f7;
+
+@import "_header";
 
 section.shop-list{
   position: relative;
   width: 1200px;
-  margin: 0 auto;
+  height: 1700px;
+  margin: 120px auto 0;
   >h2{
     padding: 20px 0;
   }//h2
@@ -58,7 +73,7 @@ section.shop-list{
               font-weight: 600;
               &:hover{color: $point-color;}
               >i{font-size: 10px;}
-            }
+            }//a
           
             >ol{
               display: none;
@@ -81,23 +96,19 @@ section.shop-list{
     position: absolute;
     right: 0;
     width: 1000px;
-    height: 1450px;
     padding: 10px 10px 10px 20px;
     border-left: 1px solid $sec-color;
     box-sizing: border-box;
 
     >nav{
-      position: absolute;
-      top: 9px;
       >ul{
         display: flex;
         >li{
           width: 200px;
-          
           &.on{
             >a{
               position: absolute;
-              top: 1px;
+              top: 10px;
               z-index: 100;
               width: 200px;
               color: $point-color;
@@ -126,124 +137,108 @@ section.shop-list{
         }//li
       }//ul
     }//nav
-    >.book-frame{
-      overflow: hidden;
-      position: relative;
-      height: 1300px;
-      margin-top: 50px;
+    >ol{
+      
       border-top: 1px solid $point-color ;
-      >ol{
-        position: absolute;
-        top: 0;
-       
-        padding: 0 10px;
-        background-color: #fdfdfd;
-        
-        >li{
-          &:nth-of-type(1){margin-top: 0;}
-          >a{
-            display: flex;
-            flex-flow: row nowrap;
-            padding: 30px 0;
-            border-bottom: 1px solid $sec-color;
-            &:hover{
-              &>.text{
-                >h3{color: $point-color;}  
-                >p{text-decoration: underline;}
-              }//a:hover>.text
-            }//a:hover
-            >.cover{
-              width: 150px;
-              height: 200px;
-              background-image: url(./../images/basicofjava.jpg);
-              background-size: contain;
-            }//.cover
-            >.text{
-              flex: 1 1 0;
-              padding: 20px;
-              font-weight: 500;
-              box-sizing: border-box;
-              >h3{font-size: 20px;}
-              >p{
-                font-size: 16px;
-              }
-            }//.text
-            >form{
-              display: flex;
-              flex-flow: column nowrap;
-              justify-content: center;
-              align-items: center;
-              >button{
-                background: none;
-                border: none;
-                outline: none;
-                display: block;
-                width: 100px;
-                height: 40px;
-                margin: 10px;
-                color: #fdfdfd;
-                font-weight: 600;
-                background-color: $pri-color;
-                border-radius: 5px;
-                &:hover{background-color: $point-color;}
-              }
-            }//form
-          }//a
-        }//li
-      }//ol-도서목록
-    }//.book-frame
-    >.pagination-container{
-      position: absolute;
-      top: 1410px;
-      left: 50%;
-      width: 300px;
-      margin-left: -150px;
-     
-      >i{
-        position: absolute;
-        font-size: 20px;
-        top: 50%;
-        margin-top: -10px;
-        cursor: pointer;
-        &:hover{color: $point-color;}
-        &:nth-of-type(1){left: 30px;}
-        &:nth-of-type(2){right: 30px;}
-      }
-      >.pagenation-frame{
-        overflow: hidden;
-        position: relative;
-        width: 200px;
-        height: 20px;
-        margin: 0 auto;
-        >.pagenation-slide{
+      padding: 0 10px;
+      background-color: #fdfdfd;
+      
+      >li{
+        &:nth-of-type(1){margin-top: 0;}
+        >a{
           display: flex;
           flex-flow: row nowrap;
-          justify-content: center;
-          align-items: center;
-          position: absolute;
-          left: 0;
-          >button{
-            background: none;
-            outline: none;
+          padding: 30px 0;
+          border-bottom: 1px solid $sec-color;
+          &:hover{
+            &>.text{
+              >p:last-of-type{text-decoration: underline;}
+            }//a:hover>.text
+          }//a:hover
+          >img{
+            display: block;
+            width: 150px;
+            box-shadow: 1px 1px 2px $sec-color;
+          }//img
+          >.text{
+            flex: 1 1 0;
+            margin-left: 10px;
+            padding: 0 20px;
+            font-weight: 500;
+            line-height: 1.8;
+            box-sizing: border-box;
+            >h3{
+              padding: 10px 0;
+              font-size: 20px;
+            }
+            >p{
+              font-size: 16px;
+              &:nth-of-type(3){font-size: 13px;}
+              >i{color: $pri-color;}
+            }
+          }//.text
+          >form{
             display: flex;
+            flex-flow: column nowrap;
             justify-content: center;
             align-items: center;
-            width: 20px;
-            height: 20px;
-            margin: 0 10px;
-            border: 1px solid $pri-color;
-            border-radius: 5px;
-            &.on{
+            >button{
+              background: none;
+              border: none;
+              outline: none;
+              display: block;
+              width: 100px;
+              height: 40px;
+              margin: 10px;
               color: #fdfdfd;
+              font-weight: 600;
               background-color: $pri-color;
-            }
-            &:hover{
-              color: #fdfdfd;
-              background-color: $point-color;
-            }
-          }//button
-        }//.pagenation-slide
-      }//.pagenation-frame
-    }//.pagination-container
+              border-radius: 5px;
+              &:hover{background-color: $point-color;}
+            }//button
+          }//form
+        }//a
+      }//li
+    }//ol-도서목록
+
+    >.pagination{
+      @include flexCenter();
+      flex-flow: row nowrap;
+      height: 100px;
+        >a{
+          display: block;
+          font-size: 20px;
+          &:hover{color: $point-color;}
+        }//a
+      >button{
+        @include flexCenter();
+          background: none;
+          outline: none;
+          width: 20px;
+          height: 20px;
+          margin: 0 10px;
+          border: 1px solid $pri-color;
+          border-radius: 5px;
+          &.on{
+            color: $white;
+            background-color: $pri-color;
+          }
+          &:hover{
+            color: $white;
+            background-color: $point-color;
+          }
+        }//button
+    }//.pagination
   }//.container
 }//section.shop-list
+
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+  >address{
+      height: 100px;
+      @include flexCenter();
+  }
+}
