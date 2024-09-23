@@ -169,7 +169,7 @@ ORDER BY regdate DESC LIMIT 0, 10;
 SELECT * FROM boardtbl WHERE status=0 AND tab="질문"
 ORDER BY regdate DESC LIMIT 0, 10;
 
--- 인기글 탭 글 추출
+-- 글 추출 (인기글 영역)
 SELECT * FROM boardtbl WHERE status=0 AND best='Y' ORDER BY regdate DESC LIMIT 0, 10;
 
 -- 추천수
@@ -188,5 +188,31 @@ UPDATE boardtbl SET best = 'Y' WHERE boardid=1;
 # 클릭한 글 추출
 INSERT * FROM boardtbl WHERE boardid = 1;
 
+# 클릭한 글 추출
+SELECT * FROM boardtbl WHERE boardid = 1;
+
+# 클릭한 글의 댓글 추출
+select * from commenttbl where ref = 127;
+select count(commentid) from commenttbl where ref = 127;
+
+# 댓글 등록
+insert into commenttbl (userid, nickname, content, ref, pos, depth, parent_commentid, regdate, ip)
+values (1, "밀키", "내가일빠당", 3, 0, 0, null, now(), "127.0.0.1");
+
+# 조회수증가
+update boardtbl set count = count+1 where boardid = 1;
+
+# 추천수증가
+update boardtbl set liked = liked+1 where boardid = 1;
+select liked from boardtbl where boardid = 1;
+
+# 글삭제(status 값 변경)
+select * from boardtbl where status=0;
+update boardtbl set status = 9 where boardid=1;
+
+# 글수정
+update boardtbl set nickname="또또밍기", title="디비로수정", content="제발잘되길ㅜㅜㅜㅜ", 
+photo=null, genre="역사", tab="추천", ip="127.0.0.1", update_date=now() 
+where boardid=1;
 
 

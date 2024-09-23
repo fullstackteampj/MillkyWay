@@ -467,24 +467,41 @@ public class BoardMgr {
 	}
 	
 	// 댓글 작성
-	public void insertComment(int userid, String nickname, int ref, String userip, String commentMsg) {
+	public void insertComment(int userid, String nickname, int ref, String userip, String commentMsg, String regDate) {
 		
 		try {
 			con = pool.getConnection();
 			sql = "insert into commenttbl (userid, nickname, content, ref, pos, depth, regdate, ip)"
-					+ "values (?, ?, ?, ?, 0, 0, now(), ?);";
+					+ "values (?, ?, ?, ?, 0, 0, ?, ?);";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, userid);
 			pstmt.setString(2, nickname);
 			pstmt.setString(3, commentMsg);
 			pstmt.setInt(4, ref);
-			pstmt.setString(5, userip);
+			pstmt.setString(5, regDate);
+			pstmt.setString(6, userip);
 			pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+	}
+	
+	// 댓글 삭제
+	public void deleteComment(int commentid) {
+		
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE commenttbl SET status = 9 WHERE commentid="+commentid;
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
 	}
 	
 	/* board03(글수정페이지) 활용메서드 */

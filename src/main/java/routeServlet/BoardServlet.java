@@ -101,9 +101,10 @@ public class BoardServlet extends HttpServlet {
             int ref = Integer.parseInt(URLDecoder.decode(params[2].split("=")[1], StandardCharsets.UTF_8));
             String userip = URLDecoder.decode(params[3].split("=")[1], StandardCharsets.UTF_8);
             String commentMsg = URLDecoder.decode(params[4].split("=")[1], StandardCharsets.UTF_8);
+            String regDate = URLDecoder.decode(params[5].split("=")[1], StandardCharsets.UTF_8);
             
             // DB에 댓글저장
-            bMgr.insertComment(userid, nickname, ref, userip, commentMsg);
+            bMgr.insertComment(userid, nickname, ref, userip, commentMsg, regDate);
             
             // 응답
             PrintWriter out = response.getWriter();
@@ -111,6 +112,25 @@ public class BoardServlet extends HttpServlet {
             out.flush();
     	}
     	
+    	// 댓글 삭제 요청
+    	if("/boardCommentDel".equals(path)) {
+    		response.setContentType("application/json");
+    		BoardMgr bMgr = new BoardMgr();
+    		
+    		// 요청데이터를 문자열로 읽기
+    		StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+            
+            // fetch에서 body로 받은 parameter 데이터 추출
+            int commentId = Integer.parseInt(URLDecoder.decode(sb.toString().split("=")[1], StandardCharsets.UTF_8));
+            
+            // DB에 댓글 status 업데이트
+            bMgr.deleteComment(commentId);
+            
+    	}
     	
     }
 

@@ -130,7 +130,7 @@
 			} %>
 	      
 	    </div> <!--postBox-->
-	
+	    
 	    <div id="commentBox" class="commentBox-<%=num%>">
 	    
 	      <div id="commentHead">
@@ -170,7 +170,10 @@
 				int comUserid = bean.getUserid();
 				int comPos = bean.getPos();
 				int comDepth = bean.getDepth();
-		%>
+				int comStatus = bean.getStatus();
+				//status==0인건 정상출력/status=9면서 대댓이있는건 내용대체출력+버튼미출력
+		        if(comStatus==0) {
+        %>
 	    	<div class="comment comment-<%=num%>">
 	    	
 	          <div class="commentInfo">
@@ -194,7 +197,7 @@
 					if(loginBean != null) { 
 						if(comUserid == loginId) {%>
 	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
-	                <span><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
+	                <span onclick="commentDelete(<%=commentId%>, this);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
 	                <%	}
 					} %>
 	                
@@ -242,18 +245,22 @@
 		            <span>답글</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="답글을 작성해보세요!"></textarea>
-		          <button type="button" onclick="replySubmit()">작성</button>
+		          <button type="button" onclick="editSubmit()">작성</button>
 		        </div>
 			</form>
-	     <% } //for %>
-	   <% } // if%>
+			
+	        <% } //else if(status==9) {
+	        	//status=9면서 대댓이있는건 내용대체출력+버튼미출력
+	        	//} // else if(status==9)
+	     	} //for(int i=0; i<forCount; i++)
+	      } // if(!clist.isEmpty())%>
 		</div> <!--commentCont-->
 	   
 		<% // 로그인 되어있을 때만 댓글폼 노출
 			if(loginBean != null) { 
 			 	
 			 	// 오늘날짜 추출
-			 	String today = dMgr.getToday();
+			 	// String today = dMgr.getToday(); --페이지가 로드되었을 때 기준시각
 			%>
 				<form name="commentFrm" id="commentFrm" method="post" autocomplete="off">
 			        <div id="writeComment">
@@ -261,7 +268,7 @@
 			            <%=loginNickname%>
 			          </p>
 			          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
-			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>', '<%=today%>')">작성</button>
+			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>')">작성</button>
 			        </div>
 				</form>
 		<% } else { %>

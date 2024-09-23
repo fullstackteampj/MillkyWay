@@ -7,8 +7,29 @@ function goLogin() {
 	}
 }
 
+// 시각데이터 가공('10'미만일시 '06'와 같은 형태)
+function zeroDate(thing) {
+	let obj;
+	if(thing == 'month') {
+		obj = new Date().getMonth();
+	}
+	if(thing == 'date') {
+		obj = new Date().getDate();
+	}
+	if(thing == 'hours') {
+		obj = new Date().getHours();
+	}
+	if(thing == 'minutes') {
+		obj = new Date().getMinutes();
+	}
+	if(thing == 'seconds') {
+		obj = new Date().getSeconds();
+	}
+	return obj < 10 ? '0'+obj : obj;
+}
+
 // 댓글작성
-async function comSubmit(userid, nickname, ref, userip, postuser, today) {
+async function comSubmit(userid, nickname, ref, userip, postuser) {
 	// 댓글작성 유효성 검사
 	const frm = document.commentFrm;
 	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
@@ -19,12 +40,14 @@ async function comSubmit(userid, nickname, ref, userip, postuser, today) {
 	
 	// 댓글작성 비동기 요청
 	const commentMsg = frm.inputComment.value;
+	
+	const regdate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
 	const response = await fetch('boardComment', {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded; '
+			'Content-Type': 'application/x-www-form-urlencoded;'
 		},
-		body: 'userid='+userid+'&nickname='+nickname+'&ref='+ref+'&userip='+userip+'&commentMsg='+commentMsg
+		body: 'userid='+userid+'&nickname='+nickname+'&ref='+ref+'&userip='+userip+'&commentMsg='+commentMsg+'&regdate='+regdate
 	});
 	
 	if(response.ok) {
@@ -75,7 +98,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser, today) {
 		$author.textContent = nickname;
 		$commentInfo.append($commentAdd);
 		$commentAdd.append($commentDate);
-		$commentDate.textContent = today;
+		$commentDate.textContent = regdate;
 		$commentAdd.append($authorAddOns);
 		$authorAddOns.append($replyBtn);
 		$replyBtn.append($replyIcon);
@@ -173,6 +196,32 @@ function toggleEdit(element) {
 	const $editFrm = element.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
 	$editFrm.classList.toggle('off');
 	$editFrm.inputComment.focus();
+}
+
+// 수정 유효성검사 후 비동기요청
+function editSubmit() {
+	
+}
+
+// 댓글삭제 비동기요청
+async function commentDelete(commentId, element) {
+	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
+		if(confirmtrue) {
+			const response = await fetch('boardCommentDel', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded;'
+				},
+				body: 'commentId=' + commentId
+			});
+				
+			if(response.ok) {
+				//const deleteComment = element.parentElement.parentElement.parentElement.parentElement.lastElementChild;
+				//deleteComment.textContent = '삭제된 댓글입니다.';
+				const deleteComment = element.parentElement.parentElement.parentElement.parentElement;
+				deleteComment.remove();
+			}
+		}
 }
 
 // 글 추천 비동기요청
