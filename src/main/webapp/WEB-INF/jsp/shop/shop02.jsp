@@ -25,7 +25,11 @@
 	String aIntro = bean.getAuthorIntro();
 	String isbn = bean.getIsbn();
 	int pages = bean.getPages();
+	
+	//한줄평 총 개수 
+	int totalReview = bMgr.totalReview(bookid);
 %>
+
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,11 +37,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop02.css?after" />
   <title>상품 상세 페이지</title>
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/shop02.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/shop02.js?ver100"></script>
 </head>
 
 <body>
@@ -71,13 +74,20 @@
 	        </p>
 	        <p>배송료 : 2000원&nbsp;<span>(5만원 이상 무료배송)</span></p>
 	        <p>
-	          <i class="fa-solid fa-star"></i>
-	          <i class="fa-solid fa-star"></i>
-	          <i class="fa-solid fa-star"></i>
-	          <i class="fa-solid fa-star"></i>
-	          <i class="fa-solid fa-star"></i>
+	          <%
+	        		for(int c=0; c<score; c++){
+	        			%>
+	        			<i class="fa-solid fa-star"></i>
+	        			<%
+	        		}//for - make colorstar
+	        		for(int e=0; e<5-score; e++){
+	        			%>
+	        			<i class="fa-regular fa-star"></i>
+	        			<% 
+	        		}//for - make emptystar
+	        	%>
 	          <span><%=score%></span>
-	          <a href="#" class="scroll-oneReview">한줄평(<span>한줄평 개수</span>)</a>
+	          <a href="#" class="scroll-oneReview">한줄평(<span><%=totalReview%></span>)</a>
 	        </p>
 	
 	        <div class="order-qty">
@@ -204,16 +214,23 @@
 	        <div class="star-avg">
 	          <h4>평균<br />별점</h4>
 	          <p>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
-	            <i class="fa-solid fa-star"></i>
+	          	<%
+	          		for(int c=0; c<score; c++){
+	          			%>
+	          			<i class="fa-solid fa-star"></i>
+	          			<%
+	          		}
+	          		for(int e=0; e<5-score; e++){
+	          			%>
+	          			<i class="fa-regular fa-star"></i>
+	          			<%
+	          		}
+	          	%>
 	            <%=score%>.0 / 5.0
 	            <i class="fa-solid fa-pencil"></i>
 	          </p>
 	        </div><!--star-avg-->
-	        <form name="reviewFrm" action="#" method="post">
+	        <form name="reviewFrm" method="post">
 	          <div class="input-star">
 	            <i class="fa-solid fa-star"></i>
 	            <i class="fa-solid fa-star"></i>
@@ -221,8 +238,9 @@
 	            <i class="fa-solid fa-star"></i>
 	            <i class="fa-solid fa-star"></i>
 	          </div>
-	          <input name="oneReviewText" id="oneReviewText" type="text" max="70"/>
-	          <button>입력</button>
+	          <input name="content" id="content" type="text" max="70"/>
+	          <button type="button" onclick="reviewFn()">입력</button>
+	          <input type="hidden" name="bookid" value="<%=bookid%>" />
 	        </form>
 	        <ul>
 	        <%
@@ -232,24 +250,24 @@
 	      
 	        	for(int i=0; i<rlist.size(); i++){
 	        		ReviewBean rbean = rlist.get(i);
-	        		int rscore = rbean.getScore();
-	        		String rcontent = rbean.getContent();
+	        		int rScore = rbean.getScore();
+	        		String rContent = rbean.getContent();
 	        		String nickname = rbean.getNickname();
 	        		%>
 	        		<li>     
 	        		<%
-	        		for(int c=0; c<score; c++){
+	        		for(int c=0; c<rScore; c++){
 	        			%>
 	        			<i class="fa-solid fa-star"></i>
 	        			<%
 	        		}//for - make colorstar
-	        		for(int e=0; e<5-score; e++){
+	        		for(int e=0; e<5-rScore; e++){
 	        			%>
 	        			<i class="fa-regular fa-star"></i>
 	        			<% 
 	        		}//for - make emptystar
 	        		%>
-		        		<p><%=rcontent%></p>
+		        		<p><%=rContent%></p>
 		        		<span><%=nickname%></span>
 	        		</li>
 	        		<%
@@ -264,6 +282,71 @@
       	<address>&copy;Designed by teamMillkyWay</address>
       </footer>
 	</div>
+<script>
+//한줄평 별 호버시 색변화
+	const $stars = document.querySelectorAll('.shop-product .input-star>i');
+	let inputScore = 0;
+	
+	$stars.forEach(($star, idx)=>{
+	  $star.addEventListener('mouseenter', ()=>{
+	      for(let i=0; i<=idx; i++){
+	      $stars[i].classList.add('colorstar');
+	      }
+	  });
+	  $star.addEventListener('mouseleave', ()=>{
+	    for(let i=0; i<$stars.length; i++){
+	      $stars[i].classList.remove('colorstar');
+	    }
+	  });
+	
+	  $star.addEventListener('click', ()=>{
+	    for(let i=0; i<=idx; i++){
+	      $stars[i].style.color = 'rgb(100, 130, 173)';/******* 포인트 컬러에 따라 변경 필요********/
+	    }
+	    for(let k=$stars.length-1; k>idx; k--){
+	      $stars[k].style.color = '#ddd';/******* 포인트 컬러에 따라 변경 필요********/
+	    }
+	    inputScore = idx+1;
+	  });
+	});
+	
+	//한줄평 등록 확인창
+	const sidKey = '<%=session.getAttribute("idKey")%>';//문자열로 받음
+	const frm = document.reviewFrm;
+
+	console.log(sidKey);
+	const checkReview = () => {
+	  //const url = '/shop/shop03?inputScore='+ inputScore + ',idKey=' + sidKey; 로그인 상태 되면 다시 확인해보기
+	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=1'; //임의 아이디키 넣음
+	  window.open(url, "review", "width=400, height=300");
+	  frm.action = url;
+	  frm.target = "review";
+	  frm.submit();
+	};
+	
+	const reviewFn = () => {
+		//유효성 검사
+		if(frm.content.value == ''){
+			alert('한줄평 내용을 입력해 주세요.');
+			document.frm.content.focus();
+			return;
+		}
+		
+		checkReview();
+		
+		//세션 값에 따라 다르게 출력
+		/*
+		if(sidKey === 'null'){//비로그인 상태
+			const loginAnswer = confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?')
+			if(loginAnswer){
+				location.href = 'login/login01';
+			}
+		}else{
+			checkReview();
+			
+		}*/
+	}
+</script>
 </body>
 
 </html>

@@ -15,13 +15,49 @@ public class MemberBean {
 	private String gender;
 	private String zipcode;
 	private String address;
+	private String phoneNum;
 	private String phone;
 	private String email;
 	private String signup_date;
 	private String last_login_date;
 	private String status;
-	private String favorite;
+	private String[] favorite;
 	private byte[] profile_photo;
+	private String year;
+	private String month;
+	private String date;
+	private String[] agree;
+	
+	public String[] getAgree() {
+		return agree;
+	}
+	public void setAgree(String[] agree) {
+		this.agree = agree;
+	}
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 	
 	public int getCurpoint() {
 		return curpoint;
@@ -132,10 +168,10 @@ public class MemberBean {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getFavorite() {
+	public String[] getFavorite() {
 		return favorite;
 	}
-	public void setFavorite(String favorite) {
+	public void setFavorite(String[] favorite) {
 		this.favorite = favorite;
 	}
 	public byte[] getProfile_photo() {

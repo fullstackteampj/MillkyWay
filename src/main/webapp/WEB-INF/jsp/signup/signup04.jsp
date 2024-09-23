@@ -1,8 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:useBean id="sMgr" class="procs.SignupMgr" />
+<%
+	request.setCharacterEncoding("UTF-8");
+	String nickname = request.getParameter("nickname");
+	boolean result = sMgr.checkNickname(nickname);
+%>
 <!DOCTYPE html> 
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,16 +18,25 @@
 
 <body>
    <div class="duplication">
-	    <!--if(사용가능할 경우)
-	    <h1><span>별명</span>은<br />사용 가능한 <br />별명 입니다.</h1>
-	    -->
-	    <h1><span>별명</span>을<br />이미 다른 회원이 사용중입니다.</h1>
-	    <p>다시 입력해 주세요.</p>
+	    <% if(result){
+	    	%>
+	    	 <h1>
+	    	 	<span><%=nickname%></span>을<br />
+	    	 	이미 다른 회원이 사용중입니다.
+	    	 </h1>
+	    	 <p>다시 입력해 주세요.</p>
+	    	<%
+	    }else{
+	    	%>
+	    	 <h1>
+		    	 <span><%=nickname%></span>은<br />
+		    	 사용 가능한<br />
+		    	 별명 입니다.
+	    	 </h1>
+	    	<%
+	    }%>
+	   
 	    <button type="button" onclick=self.close()>닫기</button>
-	    <!--
-	        input.value = ''
-	        input.focus();
-	    -->
   	</div>
 
 </html>

@@ -1,7 +1,220 @@
+#wrap {
+  width: 1200px;
+  margin: 0 auto;
+}
+#wrap > header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 800;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+  border-bottom: 2px solid #33afe9;
+}
+#wrap > header > .headTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame {
+  display: flex;
+  justify-content: space-between;
+  width: 1200px;
+  height: 40px;
+  margin: 1px auto 0;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50%;
+}
+#wrap > header > .headTop > .frame > .topGnb > li {
+  width: 120px;
+  height: 40px;
+  background-color: #33afe9;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on, #wrap > header > .headTop > .frame > .topGnb > li:hover {
+  background-color: #fff;
+}
+#wrap > header > .headTop > .frame > .topGnb > li.on > a, #wrap > header > .headTop > .frame > .topGnb > li:hover > a {
+  color: #1a6080;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+}
+#wrap > header > .headTop > .frame > .topGnb > li > .underNav {
+  display: none;
+  position: absolute;
+  top: 41px;
+  left: calc((100% - 1200px) / 2);
+  z-index: 300;
+  width: 1200px;
+  height: auto;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+#wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
+  display: block;
+}
+#wrap > header > .headTop > .frame .userBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 35%;
+}
+#wrap > header > .headTop > .frame .userBar > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 150px;
+  height: 40px;
+  cursor: pointer;
+}
+#wrap > header > .headTop > .frame .userBar > li > a {
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+}
+#wrap > header > .headTop > .frame .userBar > li > a > .arrow {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  border: 5px solid transparent;
+  border-top-color: #fff;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList {
+  display: none;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li {
+  line-height: 25px;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#wrap > header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
+  font-weight: 600;
+}
+#wrap > header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
+#wrap > header > .headTop > .frame .userBar > li > .myPageList:hover {
+  display: block;
+  position: absolute;
+  z-index: 100;
+  top: 40px;
+  left: -10px;
+  width: 120px;
+  padding: 0 10px;
+  background-color: #fff;
+  box-shadow: 0 0 7px 0 #666;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle {
+  display: flex;
+  position: relative;
+  align-items: center;
+  width: 1200px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+#wrap > header > .headMiddle > h1 {
+  position: absolute;
+  width: 300px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchFrame {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  width: 500px;
+  height: 40px;
+  margin: 0 auto;
+  border: 3px solid #33afe9;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchFrame > p.searchId {
+  width: 80px;
+  height: 40px;
+  color: #1a6080;
+  font-size: 12px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchFrame > form {
+  flex: 1 1 auto;
+}
+#wrap > header > .headMiddle > .searchFrame > form > input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 30px;
+}
+#wrap > header > .headMiddle > .searchFrame > span {
+  display: block;
+  width: 80px;
+  height: 40px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > .searchList {
+  display: none;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList,
+#wrap > header > .headMiddle > .searchList:hover {
+  display: block;
+  position: absolute;
+  top: calc(50% + 10px);
+  left: calc(50% - 250px);
+  padding: 0 10px;
+  background-color: #fff;
+  border: 2px solid #1a6080;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle:has(p.searchId:hover) > .searchList > li,
+#wrap > header > .headMiddle > .searchList:hover > li {
+  margin: 5px;
+  color: #33afe9;
+  cursor: pointer;
+}
+#wrap > header > .headMiddle > img.logo {
+  position: absolute;
+  top: calc(50% - 25px);
+  right: 100px;
+  width: 100px;
+  height: 50px;
+}
+
 section.shop-list {
   position: relative;
   width: 1200px;
-  margin: 0 auto;
+  height: 1700px;
+  margin: 120px auto 0;
 }
 section.shop-list > h2 {
   padding: 20px 0;
@@ -80,14 +293,9 @@ section.shop-list > .container {
   position: absolute;
   right: 0;
   width: 1000px;
-  height: 1450px;
   padding: 10px 10px 10px 20px;
   border-left: 1px solid rgb(226, 218, 214);
   box-sizing: border-box;
-}
-section.shop-list > .container > nav {
-  position: absolute;
-  top: 9px;
 }
 section.shop-list > .container > nav > ul {
   display: flex;
@@ -97,7 +305,7 @@ section.shop-list > .container > nav > ul > li {
 }
 section.shop-list > .container > nav > ul > li.on > a {
   position: absolute;
-  top: 1px;
+  top: 10px;
   z-index: 100;
   width: 200px;
   color: rgb(100, 130, 173);
@@ -125,59 +333,56 @@ section.shop-list > .container > nav > ul > li > a {
 section.shop-list > .container > nav > ul > li > a:hover {
   color: rgb(127, 161, 195);
 }
-section.shop-list > .container > .book-frame {
-  overflow: hidden;
-  position: relative;
-  height: 1300px;
-  margin-top: 50px;
+section.shop-list > .container > ol {
   border-top: 1px solid rgb(100, 130, 173);
-}
-section.shop-list > .container > .book-frame > ol {
-  position: absolute;
-  top: 0;
   padding: 0 10px;
   background-color: #fdfdfd;
 }
-section.shop-list > .container > .book-frame > ol > li:nth-of-type(1) {
+section.shop-list > .container > ol > li:nth-of-type(1) {
   margin-top: 0;
 }
-section.shop-list > .container > .book-frame > ol > li > a {
+section.shop-list > .container > ol > li > a {
   display: flex;
   flex-flow: row nowrap;
   padding: 30px 0;
   border-bottom: 1px solid rgb(226, 218, 214);
 }
-section.shop-list > .container > .book-frame > ol > li > a:hover > .text > h3 {
-  color: rgb(100, 130, 173);
-}
-section.shop-list > .container > .book-frame > ol > li > a:hover > .text > p {
+section.shop-list > .container > ol > li > a:hover > .text > p:last-of-type {
   text-decoration: underline;
 }
-section.shop-list > .container > .book-frame > ol > li > a > .cover {
+section.shop-list > .container > ol > li > a > img {
+  display: block;
   width: 150px;
-  height: 200px;
-  background-image: url(./../images/basicofjava.jpg);
-  background-size: contain;
+  box-shadow: 1px 1px 2px rgb(226, 218, 214);
 }
-section.shop-list > .container > .book-frame > ol > li > a > .text {
+section.shop-list > .container > ol > li > a > .text {
   flex: 1 1 0;
-  padding: 20px;
+  margin-left: 10px;
+  padding: 0 20px;
   font-weight: 500;
+  line-height: 1.8;
   box-sizing: border-box;
 }
-section.shop-list > .container > .book-frame > ol > li > a > .text > h3 {
+section.shop-list > .container > ol > li > a > .text > h3 {
+  padding: 10px 0;
   font-size: 20px;
 }
-section.shop-list > .container > .book-frame > ol > li > a > .text > p {
+section.shop-list > .container > ol > li > a > .text > p {
   font-size: 16px;
 }
-section.shop-list > .container > .book-frame > ol > li > a > form {
+section.shop-list > .container > ol > li > a > .text > p:nth-of-type(3) {
+  font-size: 13px;
+}
+section.shop-list > .container > ol > li > a > .text > p > i {
+  color: rgb(127, 161, 195);
+}
+section.shop-list > .container > ol > li > a > form {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 }
-section.shop-list > .container > .book-frame > ol > li > a > form > button {
+section.shop-list > .container > ol > li > a > form > button {
   background: none;
   border: none;
   outline: none;
@@ -190,64 +395,53 @@ section.shop-list > .container > .book-frame > ol > li > a > form > button {
   background-color: rgb(127, 161, 195);
   border-radius: 5px;
 }
-section.shop-list > .container > .book-frame > ol > li > a > form > button:hover {
+section.shop-list > .container > ol > li > a > form > button:hover {
   background-color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination-container {
-  position: absolute;
-  top: 1410px;
-  left: 50%;
-  width: 300px;
-  margin-left: -150px;
+section.shop-list > .container > .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: row nowrap;
+  height: 100px;
 }
-section.shop-list > .container > .pagination-container > i {
-  position: absolute;
+section.shop-list > .container > .pagination > a {
+  display: block;
   font-size: 20px;
-  top: 50%;
-  margin-top: -10px;
-  cursor: pointer;
 }
-section.shop-list > .container > .pagination-container > i:hover {
+section.shop-list > .container > .pagination > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination-container > i:nth-of-type(1) {
-  left: 30px;
-}
-section.shop-list > .container > .pagination-container > i:nth-of-type(2) {
-  right: 30px;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame {
-  overflow: hidden;
-  position: relative;
-  width: 200px;
-  height: 20px;
-  margin: 0 auto;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide {
+section.shop-list > .container > .pagination > button {
   display: flex;
-  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 0;
-}
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button {
   background: none;
   outline: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 20px;
   height: 20px;
   margin: 0 10px;
   border: 1px solid rgb(127, 161, 195);
   border-radius: 5px;
 }
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button.on {
+section.shop-list > .container > .pagination > button.on {
   color: #fdfdfd;
   background-color: rgb(127, 161, 195);
 }
-section.shop-list > .container > .pagination-container > .pagenation-frame > .pagenation-slide > button:hover {
+section.shop-list > .container > .pagination > button:hover {
   color: #fdfdfd;
   background-color: rgb(100, 130, 173);
+}
+
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }/*# sourceMappingURL=shop01.css.map */

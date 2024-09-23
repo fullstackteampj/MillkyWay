@@ -36,7 +36,7 @@ public class IndexMgr {
 			
 			while(rs.next()) {
 				beans.BoardBean bean = new beans.BoardBean();
-				bean.setAuthor(rs.getString("author"));
+				bean.setNickname(rs.getString("nickname"));
 				bean.setContent(rs.getString("content"));
 				bean.setBoardid(rs.getInt("boardid"));
 				latestList.add(bean);
@@ -68,7 +68,7 @@ public class IndexMgr {
 			
 			while(rs.next()) {
 				beans.BoardBean bean = new beans.BoardBean();
-				bean.setAuthor(rs.getString("author"));
+				bean.setNickname(rs.getString("nickname"));
 				bean.setContent(rs.getString("content"));
 				bean.setBoardid(rs.getInt("boardid"));
 				bestList.add(bean);
