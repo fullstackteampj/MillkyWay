@@ -3,24 +3,19 @@ package beans;
 public class BoardBean {
 	private int boardid;
 	private int userid;
-	private int bookid;
-	private int liked;
-	private int ref;
-	private int pos;
-	private int depth;
+	private String nickname;
 	private String title;
-	private String author;
+	private String content;
+	private byte[] photo;
 	private String genre;
 	private String tab;
-	private String content;
-	private String count;
 	private String regdate;
-	private String photo;
+	private int count;
+	private String best;
+	private int bookid;
 	private String ip;
-	private String update_date;
-	private String comment_count;
-	private String status;
-	private int totalCount;
+	private String updateDate;
+	private int status;
 	
 	public int getBoardid() {
 		return boardid;
@@ -34,35 +29,11 @@ public class BoardBean {
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
-	public int getBookid() {
-		return bookid;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setBookid(int bookid) {
-		this.bookid = bookid;
-	}
-	public int getLiked() {
-		return liked;
-	}
-	public void setLiked(int liked) {
-		this.liked = liked;
-	}
-	public int getRef() {
-		return ref;
-	}
-	public void setRef(int ref) {
-		this.ref = ref;
-	}
-	public int getPos() {
-		return pos;
-	}
-	public void setPos(int pos) {
-		this.pos = pos;
-	}
-	public int getDepth() {
-		return depth;
-	}
-	public void setDepth(int depth) {
-		this.depth = depth;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	public String getTitle() {
 		return title;
@@ -70,11 +41,17 @@ public class BoardBean {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getAuthor() {
-		return author;
+	public String getContent() {
+		return content;
 	}
-	public void setAuthor(String author) {
-		this.author = author;
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public byte[] getPhoto() {
+		return photo;
+	}
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 	public String getGenre() {
 		return genre;
@@ -88,29 +65,29 @@ public class BoardBean {
 	public void setTab(String tab) {
 		this.tab = tab;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public String getCount() {
-		return count;
-	}
-	public void setCount(String count) {
-		this.count = count;
-	}
 	public String getRegdate() {
 		return regdate;
 	}
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
 	}
-	public String getPhoto() {
-		return photo;
+	public int getCount() {
+		return count;
 	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
+	public void setCount(int count) {
+		this.count = count;
+	}
+	public String getBest() {
+		return best;
+	}
+	public void setBest(String best) {
+		this.best = best;
+	}
+	public int getBookid() {
+		return bookid;
+	}
+	public void setBookid(int bookid) {
+		this.bookid = bookid;
 	}
 	public String getIp() {
 		return ip;
@@ -118,31 +95,18 @@ public class BoardBean {
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-	public String getUpdate_date() {
-		return update_date;
+	public String getUpdateDate() {
+		return updateDate;
 	}
-	public void setUpdate_date(String update_date) {
-		this.update_date = update_date;
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
 	}
-	public String getComment_count() {
-		return comment_count;
-	}
-	public void setComment_count(String comment_count) {
-		this.comment_count = comment_count;
-	}
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public int getTotalCount() {
-		return totalCount;
-	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
-	}
 	
 	
-	
-}//BoardBean
+}

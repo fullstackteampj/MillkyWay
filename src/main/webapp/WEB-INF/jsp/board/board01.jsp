@@ -1,14 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="board.BoardBean" %>
+<%@ page import="beans.BoardBean, board.DateMgr, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
+<!-- 글목록 페이지 -->
 <%
-	//임시로 세션 저장
-	session.setAttribute("idKey", "milky");
-
 	request.setCharacterEncoding("UTF-8");
-	String loginId = (String)session.getAttribute("idKey");
+
+	MemberBean loginBean = null;
+	Integer loginId = null;
+	
+	if(session != null && session.getAttribute("mBean") != null) {
+		loginBean = (MemberBean)session.getAttribute("mBean");
+		loginId = loginBean.getUserid();
+	}
 	
 	int totalRecord=0; //전체레코드수
 	int numPerPage=10; // 페이지당 레코드 수 
@@ -63,7 +68,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>커뮤니티 | 은하수책방</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script defer src="${pageContext.request.contextPath}/js/board01.js"></script>
@@ -74,12 +79,6 @@
   			location.href = "../login/login01";
   		}
   	}
-  	
-  	// 카테고리의 이름과 파라미터로 전송되는 값 일치
-  	function getCateName() {
-  		
-  	}
-  	
   </script>
 </head>
 <body>
@@ -89,7 +88,12 @@
 
     <section>
       <h2 class="sr-only">은하수 광장✨</h2>
-        
+      <!-- 임시: 개발자용 로그인/로그아웃 -->
+      <div>
+      	<button type="button" onclick="location.href='forDev/loginMilky'">밀키 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginToto'">또또 로그인</button>
+      	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
+      </div>
       <article id="category">
         <h3 class="sr-only">카테고리</h3>
         
@@ -115,7 +119,15 @@
       <article id="post">
         
         <div id="head">
-          <h2>전체글</h2>
+          <h2><% // 게시판제목 (전체글, 인문학, 에세이 등)
+          	if(category == null || category.equals("전체")) { %>
+          	<a href="board01?category=전체&nowPage=1">
+          	전체글
+          <%} else {%>
+          	<a href="board01?category=<%=category%>&nowPage=1"> 
+          	<%=category%> 게시판
+          <%}%></a>
+          </h2>
           
           <ul id="tab">
           <%// 탭 목록
@@ -136,69 +148,124 @@
           
           <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
-          	if(loginId != null) { %>
+			if(loginId != null) { %>
 	          <a href="./board04">글쓰기</a>
           <%} else { %>
         	  <a href="#" onclick="goLogin()">글쓰기</a>
           <%}%>
         </div> <!--#head-->
-
+	
+		<% // 검색햇을시
+		if(!(keyWord == null || keyWord.equals(""))) { %>
+			<p id="searchInfo">"<span> <%= keyWord %> </span>"의 검색결과 입니다.</p>
+	<%	} %>
+		
 		<!-- 글목록 -->
         <div id="list">
         
           <%
+          // 글정보 추출
           ArrayList<BoardBean> postList = bMgr.getPostList(keyField, keyWord, category, tab, start, end);
           listSize = postList.size();
           
           // 반복문으로 출력할 게시글이 한페이지게시글수 보다 많으면 그만큼만,
           // 그보다 적으면 가진만큼만 반복
-          int forCount = 0;
-          if(listSize >= numPerPage) {forCount = numPerPage;}
-          else {forCount = listSize;}
+          int forCount = listSize >= numPerPage ? numPerPage : listSize;
           
           if(postList.isEmpty()) { // 추출된 게시글이 없을경우
-        	  out.println("<p>게시물이 없습니다.</p>");
+        	  out.println("<p>등록된 게시물이 없습니다.</p>");
           } else { // 추출된 게시글이 있을경우
         	 
         	
 			for(int i=0; i<forCount; i++) {
 			 	BoardBean bean = postList.get(i);
 			 	int boardid = bean.getBoardid();
+			 	String genre = bean.getGenre();
 			 	String kind = bean.getTab();
 			 	String title = bean.getTitle();
-			 	int commentCount = bean.getCommentCount();
+			 	int commentCount = bMgr.getCommentCount(boardid);
 			 	String nickname = bean.getNickname();
-			 	String regDate = bean.getRegdate();
+			 	String regDate = bean.getRegdate();	
+			 	String updateDate = bean.getUpdateDate();
 			 	int count = bean.getCount();
-			 	int liked = bean.getLiked();
+			 	String best = bean.getBest();
+			 	int liked = bMgr.getLikedCount(boardid);
+			 	byte[] photo = bean.getPhoto();
+			 	
+			 	
+			 	// 날짜데이터 가공
+			 	DateMgr dateMgr = new DateMgr();
+			 	
+			 	// 오늘날짜 추출
+			 	String today = dateMgr.getToday();
+			 	// 시:분 (오늘작성글)
+			 	String todayPost = dateMgr.getFormatDate(regDate, "today");
+			 	// 월-일 (올해이면서 오늘 이전글)
+			 	String prevdayPost = dateMgr.getFormatDate(regDate, "yesterday");
+			 	// 년-월-일 (올해이전글)
+			 	String prevYearPost = dateMgr.getFormatDate(regDate, "lastYear");
+			 	
 			  %>
-				<a href="board02?num=<%=boardid%>">
-	            <span class="tab"><%=kind%></span>
+			<a href="board02?num=<%=boardid%>">
+	            <span class="tab"><%=kind%> / <%=genre%></span>
 	            <div class="content">
-	              <p class="title">
-	                <span><%=title%></span>
+	            	<p class="title">
+	              <% // 인기글이면 제목에 스타일 적용 
+	            	 if(best.equals("Y")) {%>
+	            	 <span class="overBestLike">
+            	  <% } else { %>
+            		  <span>
+            	  <% } %>
+	                <%=title%></span>
+	                <% // 댓글이 1개 이상이면 댓글 수 출력
+	                  if(commentCount > 0) { %>
 	                <span class="commentCount">[<%=commentCount%>]</span>
+	                <%}%>
+	                
 	              </p>
 	              <div class="postInfo">
 	                <p class="postuser"><%=nickname%></p>
-	                <p class="postDate"><%=regDate%></p>
+	                <p class="postDate">
+	                	<% // 오늘 작성글이면 시:분
+	                	   if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") == dateMgr.getIntDate(today, "date")) { %>
+						       <%=todayPost%>
+	                	<% } 
+	                	   // 올해이면서 오늘이전 작성글이면 월.일
+	                	   else if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") < dateMgr.getIntDate(today, "date")) { %>
+	                	       <%=prevdayPost%>
+	                	<% } 
+	                	   // 올해이전 작성글이면 년.월.일
+	                	   else if(dateMgr.getIntDate(regDate, "year") < dateMgr.getIntDate(today, "year")) { %>
+	                		   <%=prevYearPost%>
+	                	<% }
+	                	  // 수정됐으면 덧붙임
+	                	  if(updateDate != null) { %>
+	                	(수정됨)
+	                	<% } %>
+	                </p>
 	                <p class="views">조회 <span><%=count%></span></p>
 	                
 	                <% // 추천수가 15이상이면 스타일적용
 	                   if(liked >= 15) { %>
-	                	<p class="like over15">
+	                	<p class="like overBestLike">
 	                <% } else { %>
 	                	<p class="like">
 	                <% } %> 추천 <span><%=liked%></span></p>
 	              </div>
 	            </div>
-	            <p class="frame">
-	              <img src="#" alt="#">
-	            </p>
-	          </a>
+	            
+	            
+	            <% // 첨부이미지가 있으면 출력
+	               if(photo != null && photo.length > 0) { %>
+	            	<p class="frame">
+	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
+	            	</p>
+	            <% } %>
+	            
+	        </a>
 	           
-		<%  }
-          }
+		<%  } // for
+          } // else if
           
           %>
         
@@ -241,7 +308,7 @@
         </ul> <!--#pagination-->
   
         <div id="postSearch">
-          <form action="board01" method="get" name="frmPostSearch">
+          <form action="board01" method="get" name="frmPostSearch" autocomplete="off">
             <select name="keyField" id="keyField">
               <option value="multiple">제목+내용</option>
               <option value="title">제목</option>
@@ -266,14 +333,23 @@
       </article> <!-- #post-->
 
       <article id="bestPost">
-        <h3><a href="">실시간 인기글</a></h3>
-        <ul>
-          <li><a href="#">선거는 몸의 56분 침묵은 자본인 군 지나치다. 연극이 떼돈과 </a></li>
-          <li><a href="#">는, 기술 되지. 의한 처지가 작고 있으니까 56호 부모다 작동이란</a></li>
-          <li><a href="#">사실 이루어 30채, 사회적 문화적 주다가 </a></li>
-          <li><a href="#">아침의 불어오고도 대체로 그 측 금융은 것 대한데. 인간을 있다 적절하여 나를 아내로</a></li>
-          <li><a href="#">다 묻다가 만난다 나에서, 찾아지어 있다. 것 나선 유역이다</a></li>
-          <li><a href="#">활약한 지원하고 보건 일환을 막아 아니는</a></li>
+        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">실시간 인기글</a></h3>
+        
+        <% // 인기글 목록 출력 
+        	ArrayList<BoardBean> bestList = bMgr.getBestList();
+        	if(bestList.isEmpty()) {
+        		out.println("<p>등록된 인기글이 없습니다.</p>");
+        	} else {
+        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size();
+        		%>
+        		<ul>
+        	 <% for(int i=0; i<roofCount; i++) {
+        		 BoardBean bBean = bestList.get(i);
+        		 int bBoardid = bBean.getBoardid();
+        		 String bTitle = bBean.getTitle(); %>
+          		<li><a href="board02?num=<%=bBoardid%>"><%=bTitle%></a></li>
+          	 <% }
+          	 }%>
         </ul>
       </article>
 

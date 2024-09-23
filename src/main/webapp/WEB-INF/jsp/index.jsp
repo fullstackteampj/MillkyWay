@@ -8,7 +8,14 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<jsp:useBean id="iMth" class="index.IndexMethod" /> 
+<jsp:useBean id="iMgr" class="index.IndexMgr" /> 
+
+<%
+	String userId = (String) session.getAttribute("idKey");
+
+	int ranCount = 0;
+	String category = null;
+%>
 
 <%--
 	작동확인 완료
@@ -29,7 +36,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/function.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/index.js"></script>
 
 </head>
 
@@ -39,7 +46,6 @@
 	<jsp:include page="./components/header.jsp" />
     
     <section>
-      <h2 class="sr-only">메인컨텐츠</h2>
       <div class="recommendSlide">
         <p class="frame">
           <video src="${pageContext.request.contextPath}/images/bookabout.mp4" autoplay loop muted style="width: 1200px; height: auto;"></video>
@@ -50,14 +56,36 @@
       </div>
 
       <div class="bestSlide">
+	  <h2><a href="#">국내도서 <span>바로가기</span></a></h2>
 		<%
-		for(int i=0; i<4; i++) {
-			int ranId = (int)Math.floor((Math.random()*87 + 1));
-			BookBean ranBBean = iMth.getRanBook(ranId);
+		// 국내도서 총 갯수중 랜덤 5개 추출
+		category = "국내도서";
+		ranCount = iMgr.getCatCount(category);
+		int[] ranList = new int[5];
+		
+		for (int i = 0; i < 5; i++) {
+		    int ranId;
+		    boolean flag;
+		
+		    do {
+		        flag = false;
+		        ranId = (int) Math.floor(Math.random() * ranCount) + 1;
+		
+		        // 중복 확인
+		        for (int j = 0; j < i; j++) {
+		            if (ranList[j] == ranId) {
+		            	flag = true; // 중복이면 true로 설정
+		                break;
+		            }
+		        }
+		    } while (flag); // 중복이면 다시 랜덤 생성
+		
+		    ranList[i] = ranId; // 중복이 없으면 ID 저장
+		    BookBean ranBBean = iMgr.getRanBook(ranId - 1, category);
 			%>
 	        <div class="bookCard">
-				<img src="/image?bookid=<%= ranId %>" alt="<%= ranBBean.getTitle() %>">
-				<a href="shop/shop02?bookid=<%= ranId %>">
+				<img src="/image?bookid=<%=ranBBean.getBookid()%>" alt="<%= ranBBean.getTitle() %>">
+				<a href="shop/shop02?bookid=<%= ranBBean.getBookid() %>">
 				    <h3 class="title"><%= ranBBean.getTitle() %></h3>
 				    <p class="author"><%= ranBBean.getAuthor() %></p>
 				</a>
@@ -66,7 +94,54 @@
 			        <i class="fa-solid fa-x"></i>
 			    </span>
 			    <div class="addCartContainer">
-			        <p class="addCart">장바구니에 추가</p>
+	        		<p class="addToCart" onClick="addToCart('<%=userId%>','<%=ranBBean.getBookid()%>','<%=ranBBean.getTitle()%>','<%=i%>')">장바구니에 추가</p>
+			    </div>
+			</div>
+			<%
+		}
+		%>
+      </div>
+	  
+      
+      <div class="bestSlide">
+   	  <h2><a href="#">해외도서 <span>바로가기</span></a></h2>
+		<%
+		// 국내도서 총 갯수중 랜덤 5개 추출
+		category = "해외도서";
+		ranCount = iMgr.getCatCount(category);
+		
+		for (int i = 0; i < 5; i++) {
+		    int ranId;
+		    boolean flag;
+		
+		    do {
+		        flag = false;
+		        ranId = (int) Math.floor(Math.random() * ranCount) + 1;
+		
+		        // 중복 확인
+		        for (int j = 0; j < i; j++) {
+		            if (ranList[j] == ranId) {
+		            	flag = true; // 중복이면 true로 설정
+		                break;
+		            }
+		        }
+		    } while (flag); // 중복이면 다시 랜덤 생성
+		
+		    ranList[i] = ranId; // 중복이 없으면 ID 저장
+		    BookBean ranBBean = iMgr.getRanBook(ranId - 1, category);
+			%>
+	        <div class="bookCard">
+				<img src="/image?bookid=<%=ranBBean.getBookid()%>" alt="<%= ranBBean.getTitle() %>">
+				<a href="shop/shop02?bookid=<%= ranBBean.getBookid() %>">
+				    <h3 class="title"><%= ranBBean.getTitle() %></h3>
+				    <p class="author"><%= ranBBean.getAuthor() %></p>
+				</a>
+			    <span class="pointer">
+			        <i class="fa-solid fa-ellipsis-vertical"></i>
+			        <i class="fa-solid fa-x"></i>
+			    </span>
+			    <div class="addCartContainer">
+	        		<p class="addToCart" onClick="addToCart('<%=userId%>','<%=ranBBean.getBookid()%>','<%=ranBBean.getTitle()%>','<%=i+5%>')">장바구니에 추가</p>
 			    </div>
 			</div>
 			<%
@@ -77,17 +152,17 @@
       <div class="boardContainer">
 
         <div class="latestBoard">
-          <h3><a href="/board/board01">최신글</a></h3>
+          <h3><a href="/board/board01">최신 게시물<span>더보기</span></a></h3>
           <ul class="latestBoardList">
 	          <%
-	          Vector<BoardBean> latestList = iMth.getLastBoardList();
+	          Vector<BoardBean> latestList = iMgr.getLastBoardList();
 	          
 	          for(int i=0; i<latestList.size(); i++) {
 	        	  BoardBean bean = latestList.get(i);
 	        	  %>
 	        	  <li id="latest0<%= i %>">
 		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
-		        	  <span class="author"><%= bean.getAuthor() %></span>
+		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
 	          }
@@ -97,17 +172,17 @@
         
 
         <div class="bestBoard">
-          <h3><a href="/board/board01">인기글</a></h3>
+          <h3><a href="/board/board01">인기 게시물<span>더보기</span></a></h3>
           <ul class="bestBoardList">
 	          <%
-	          Vector<BoardBean> bestList = iMth.getBestBoardList();
+	          Vector<BoardBean> bestList = iMgr.getBestBoardList();
 	          
 	          for(int i=0; i<bestList.size(); i++) {
 	        	  BoardBean bean = bestList.get(i);
 	        	  %>
 	        	  <li id="best0<%= i %>">
 		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
-		        	  <span class="author"><%= bean.getAuthor() %></span>
+		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
 	          }
@@ -119,9 +194,7 @@
 
     </section>
 
-    <footer>
-      <address>&copy;Designed by teamMillkyWay</address>
-    </footer>
+	<jsp:include page="./components/footer.jsp" />
 
   </div>
 
