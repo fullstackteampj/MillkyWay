@@ -7,11 +7,6 @@
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr"/>
 <%
 String userId = (String) session.getAttribute("idKey");
-	
-	// 임시로 3번 지정을 위한 코드
-	if (userId == null) {
-		userId = "3";
-	}
 %>
 
 <%

@@ -12,12 +12,7 @@
 
 <%
 	String userId = (String) session.getAttribute("idKey");
-		
-	// 임시로 3번 지정을 위한 코드
-	if (userId == null) {
-		userId = "3";
-	}
-	
+
 	int ranCount = 0;
 	String category = null;
 %>

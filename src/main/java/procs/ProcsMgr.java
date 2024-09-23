@@ -126,6 +126,33 @@ public class ProcsMgr {
 		return flag;
 	}//boolean addToCart(int userId, int bookId)
 	
+	
+	public boolean updatePwd(String account, String newPwd) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		Boolean flag = false;
+		
+		try {
+			conn = pool.getConnection();
+			sql = "update membertbl set pwd = ? where account = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, newPwd);
+			pstmt.setString(2, account);
+			
+			int j = pstmt.executeUpdate();
+			if(j>0)
+				flag = true;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt);
+		}
+		
+		return flag;
+	}// boolean updatePwd(String account, String newPwd)
+	
 }//class ProcsMgr
 
 

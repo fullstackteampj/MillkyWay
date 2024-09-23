@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%
 String userId = (String) session.getAttribute("idKey");
-
-// 임시로 3번 지정을 위한 코드
-if (userId == null) {
-	userId = "3";
-}
 %>
 <!DOCTYPE html>
 <html>
@@ -321,7 +316,7 @@ if (userId == null) {
           $searchCat.textContent = $searchItem.textContent;
         });
       });//$searchItems.forEach(($searchItem)
-	    
+
 	</script>
 
 </body>

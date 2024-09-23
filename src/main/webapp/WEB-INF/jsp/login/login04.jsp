@@ -1,5 +1,22 @@
+<% request.setCharacterEncoding("UTF-8"); %>
+<%@ page import="beans.MemberBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%> 
+    pageEncoding="UTF-8"%>
+<jsp:useBean id="lMgr" class="login.LoginMgr" />
+<%
+	String account = request.getParameter("id");
+	String answer = request.getParameter("answer");
+	MemberBean mBean = lMgr.getQuestionInfo(account);
+	
+	if(!answer.equals(mBean.getAnswer())){
+		%>
+		<script>
+		alert("입력하신 답과 기존의 답이 일치하지 않습니다.");
+		history.back();
+		</script>
+		<%
+	}
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +41,7 @@
           다른 사이트에서 사용한 적 없는 안전한 비밀번호로 <br/>
           변경해 주세요.
         </h3>
-        <form action="#" name="pwdResetFrm" method="post">
+        <form action="/procs/pwdUpdate" name="pwdResetFrm" method="post">
           <div id="newInput">
             <label for="newPwd">새 비밀번호</label>
             <input type="password" name="newPwd" id="newPwd">
@@ -34,8 +51,8 @@
             <label for="rePwd">새 비밀번호 확인</label>
             <input type="password" name="rePwd" id="rePwd">
           </div>
-
-          <button type="reset">초기화</button>
+		  <input type="hidden" name="account" value="<%=account%>" />
+          <button type="reset">다시쓰기</button>
           <button type="button" onclick="inputChk()">재설정</button>
         </form>
       </div>
