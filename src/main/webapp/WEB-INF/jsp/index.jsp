@@ -1,8 +1,8 @@
-<%@page import="beans.BookBean"%>
+<%@ page import="beans.BookBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8" %>
-<%@page import="beans.BoardBean"%>
-<%@page import="java.util.Vector"%>
+<%@ page import="beans.BoardBean"%>
+<%@ page import="java.util.Vector"%>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
@@ -12,6 +12,15 @@
 
 <%
 	String userId = (String) session.getAttribute("idKeyS");
+	if (userId == null) {
+		/*
+	    자바스크립트에서 인식하는 null과 자바에서 인식하는 null이 서로 다른듯 함
+	    자바의 null값을 자바스크립트 함수에 <%= 형태로 넣을 경우 문자열 "null"로 변환되어 
+	    실제 자바스크립트 함수에서는 유효성 검사를 진행하지 못함
+		*/
+	    userId = ""; // userId가 null인 경우 빈 문자열로 초기화
+	}
+
 	int ranCount = 0;
 	String category = null;
 %>

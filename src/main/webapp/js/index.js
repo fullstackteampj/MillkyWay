@@ -58,7 +58,7 @@ $pointers.forEach(($pointer,idx)=>{
 
 // 장바구니추가 버튼 클릭시 장바구니 추가 로직 & 장바구니 영역 숨김
 function addToCart(userId,ranId,title,idx) {
-    if(userId===null||userId==="") {
+    if(userId=="") {
         if(confirm("장바구니 추가를 위해 로그인 페이지로 이동하시겠습니까?")) {
             location.href="/login/login01";
         }
