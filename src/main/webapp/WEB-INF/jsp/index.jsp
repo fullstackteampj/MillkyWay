@@ -35,7 +35,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/index.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/index.js?after"></script>
 
 </head>
 
@@ -160,7 +160,7 @@
 	        	  BoardBean bean = latestList.get(i);
 	        	  %>
 	        	  <li id="latest0<%= i %>">
-		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
+		        	  <a href="/board/board02?num=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
 		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
@@ -180,7 +180,7 @@
 	        	  BoardBean bean = bestList.get(i);
 	        	  %>
 	        	  <li id="best0<%= i %>">
-		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
+		        	  <a href="/board/board02?num=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
 		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%

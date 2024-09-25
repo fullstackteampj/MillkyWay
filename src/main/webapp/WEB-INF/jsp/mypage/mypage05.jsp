@@ -136,7 +136,8 @@
         <form name="cartFrm" method="post" action="/procs/moveToWish">
 	        <ul class="shoppingCart list visible">
 	        	<li>
-	        		<input type="checkbox" name="cartAll" />일관선택
+	        		<input type="checkbox" name="cartAll" />
+	        		일괄선택
 	        	</li>
 		        <%
 		        Vector<CartBean> myCartList = myMgr.getMyCartList(Integer.parseInt(userId), startCart, endCart);
@@ -157,7 +158,7 @@
 			           <div class="content">
 			             <button type="button" onClick="delCartCheck(<%=myCBean.getCartid()%>)">삭제하기</button>
 			             <button type="button" class="buyNow cart" onClick="javascript:location.href='/buy/buy01?bookId=<%=bookId%>'">바로구매</button>
-			             <button type="button" onClick="javascript:location.href='/shop/shop02?bookId=<%=bookId%>'">
+			             <button type="button" onClick="javascript:location.href='/shop/shop02?bookid=<%=bookId%>'">
 			               <i class="fa-solid fa-magnifying-glass"></i>
 			               상세보기
 			             </button>
@@ -232,7 +233,7 @@
    	    <form name="wishFrm"  method="get" action="/procs/moveToCart">
 	        <ul class="wishList list">
 				<li>
-	        		<input type="checkbox" name="wishAll" />일관선택
+	        		<input type="checkbox" name="wishAll" />일괄선택
 	        	</li>
 	       		<%
 	       		Vector<WishBean> myWishList = myMgr.getMyWishList(Integer.parseInt(userId), startWish, endWish);       		       			        
@@ -253,7 +254,7 @@
 			            <div class="content">
 			            <button type="button" onClick="delWishCheck(<%=myWBean.getWishid()%>)">삭제하기</button>
 			             <button type="button" class="buyNow wish" onClick="javascript:location.href='/buy/buy01?bookId=<%=bookId %>'">바로구매</button>
-			              <button type="button" onClick="javascript:location.href='/shop/shop02?bookId=<%=bookId %>'">
+			              <button type="button" onClick="javascript:location.href='/shop/shop02?bookid=<%=bookId %>'">
 			                <i class="fa-solid fa-magnifying-glass"></i>
 			                상세보기
 			              </button>

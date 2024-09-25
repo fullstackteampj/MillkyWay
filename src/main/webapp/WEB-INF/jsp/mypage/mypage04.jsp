@@ -59,7 +59,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/myPage04.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/myPage04.js?after"></script>
 
 </head>
 

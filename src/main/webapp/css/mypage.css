@@ -990,8 +990,11 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
 }
 #wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li:first-of-type,
 #wrap > section.myPage05 > .mainContainer > form .wishList > li:first-of-type {
-  display: block;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   height: 40px;
+  line-height: 20px;
 }
 #wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li,
 #wrap > section.myPage05 > .mainContainer > form .wishList > li {
@@ -1007,6 +1010,8 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
 }
 #wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > input[type=checkbox],
 #wrap > section.myPage05 > .mainContainer > form .wishList > li > input[type=checkbox] {
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
 }
 #wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > img,

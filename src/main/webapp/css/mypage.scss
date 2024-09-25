@@ -524,8 +524,11 @@ $priWhite: #b6e2f7;
                     }
 
                     >li:first-of-type {
-                        display: block;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
                         height: 40px;
+                        line-height: 20px;
                     }
     
                     >li{
@@ -540,6 +543,8 @@ $priWhite: #b6e2f7;
                         box-sizing: border-box;
     
                         >input[type = checkbox]{
+                            width: 20px;
+                            height: 20px;
                             margin-right: 10px;
                         }
     
