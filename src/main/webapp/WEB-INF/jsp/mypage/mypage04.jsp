@@ -5,7 +5,7 @@
 <%@ page import="beans.BoardBean" %>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr" />
 <%
-	String userId = (String) session.getAttribute("idKey");
+	String userId = (String) session.getAttribute("idKeyS");
 %>
 
 <%

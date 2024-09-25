@@ -11,7 +11,7 @@
 <jsp:useBean id="iMgr" class="index.IndexMgr" /> 
 
 <%
-	String userId = (String) session.getAttribute("idKey");
+	String userId = (String) session.getAttribute("idKeyS");
 	int ranCount = 0;
 	String category = null;
 %>

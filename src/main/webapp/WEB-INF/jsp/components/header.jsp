@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <jsp:useBean id="cMgr" class="components.ComponentsMthod" />
 <%
-String userId = (String) session.getAttribute("idKey");//인트로바꿔
+String userId = (String) session.getAttribute("idKeyS");
 String nickName = cMgr.getNickName(userId);
 %>
 <!DOCTYPE html>

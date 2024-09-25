@@ -6,7 +6,7 @@
 <%@page import="java.util.Vector"%>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr"/>
 <%
-	String userId = (String) session.getAttribute("idKey");
+	String userId = (String) session.getAttribute("idKeyS");
 %>
 
 <%

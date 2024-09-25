@@ -76,6 +76,7 @@ $cartChkBoxs.forEach(($cartChkBox)=>{
 //일관선택 클릭시 전체 체크 및 해제
 $cartchkAllBox.addEventListener('click',()=>{
     $cartChkBoxs.forEach(($cartChkBox)=>{
+        $cartChkBox.checked = !$cartchkAllBox.checked;
         $cartChkBox.click();
     });
 });
@@ -114,6 +115,7 @@ $wishChkBoxs.forEach(($wishChkBox)=>{
 //일관선택 클릭시 전체 체크 및 해제
 $wishchkAllBox.addEventListener('click',()=>{
     $wishChkBoxs.forEach(($wishChkBox)=>{
+        $wishChkBox.checked = !$wishchkAllBox.checked;
         $wishChkBox.click();
     });
 });
