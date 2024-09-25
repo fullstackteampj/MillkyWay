@@ -55,7 +55,7 @@
       </div>
 
       <div class="bestSlide">
-	  <h2><a href="#">국내도서 <span>바로가기</span></a></h2>
+	  <h2><a href="shop/shop01?category=국내도서">국내도서 <span>바로가기</span></a></h2>
 		<%
 		// 국내도서 총 갯수중 랜덤 5개 추출
 		category = "국내도서";
@@ -103,7 +103,7 @@
 	  
       
       <div class="bestSlide">
-   	  <h2><a href="#">해외도서 <span>바로가기</span></a></h2>
+   	  <h2><a href="shop/shop01?category=해외도서">해외도서 <span>바로가기</span></a></h2>
 		<%
 		// 국내도서 총 갯수중 랜덤 5개 추출
 		category = "해외도서";

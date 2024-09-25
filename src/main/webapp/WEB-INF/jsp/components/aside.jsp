@@ -137,7 +137,6 @@
 					description = data.items[i].description;
 				}
 
-
 				const $li = document.createElement('li');
 				const $a = document.createElement('a');
 				const $image = document.createElement('img');

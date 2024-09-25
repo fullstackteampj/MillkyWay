@@ -1,25 +1,12 @@
-const $mainH3s = document.querySelectorAll(".mainContainer>h3");
-const $mainLists = document.querySelectorAll(".mainContainer>.list");
-const $listSeletors = document.querySelectorAll(".mainContainer > .listSeletor");
+const $mainH3s = document.querySelectorAll(".mainContainer h3");
+const $mainLists = document.querySelectorAll(".mainContainer .list");
+const $listSeletors = document.querySelectorAll(".mainContainer   .listSeletor");
 
 // 장바구니/관심목록 클릭시 화면에 표시/숨김
 $mainH3s.forEach(($mainH3, idx) => {
     $mainH3.addEventListener('click', () => {
-        if ($mainH3.classList.contains('visible')) {
-            return;
-        } else {
-            $mainH3s[0].classList.remove('visible');
-            $mainH3s[1].classList.remove('visible');
-            $mainH3.classList.add('visible');
-
-            $mainLists[0].classList.remove('visible');
-            $mainLists[1].classList.remove('visible');
-            $mainLists[idx].classList.add('visible');
-			
-			$listSeletors[0].classList.remove('visible');
-			$listSeletors[1].classList.remove('visible');
-			$listSeletors[idx].classList.add('visible');
-        }
+    $mainH3s[0].classList.toggle('visible');
+    $mainH3s[1].classList.toggle('visible');
     });
 });
 
@@ -56,10 +43,10 @@ if(pageVisible==="cart"){
 }
 
 
-
-const $cartChkBoxs = document.querySelectorAll('.shoppingCart input[type=checkbox]');
+const $cartChkBoxs = document.querySelectorAll('.shoppingCart input[name=cart]');
 const $cartChkPrinter = document.querySelector('.shoppingCart>.chkPrinter');
 const $cartTotalPrice = document.querySelector('.shoppingCart>.chkPrinter>.totalPrice');
+const $cartchkAllBox = document.querySelector('.shoppingCart input[name=cartAll]');
 
 //장바구니 체크박스 선택시 선택된 모든 가격의 합 화면에 표시
 $cartChkBoxs.forEach(($cartChkBox)=>{
@@ -86,10 +73,18 @@ $cartChkBoxs.forEach(($cartChkBox)=>{
     });
 });
 
+//일관선택 클릭시 전체 체크 및 해제
+$cartchkAllBox.addEventListener('click',()=>{
+    $cartChkBoxs.forEach(($cartChkBox)=>{
+        $cartChkBox.click();
+    });
+});
 
-const $wishChkBoxs = document.querySelectorAll('.wishList input[type=checkbox]');
+
+const $wishChkBoxs = document.querySelectorAll('.wishList input[name=wish]');
 const $wishChkPrinter = document.querySelector('.wishList>.chkPrinter');
 const $widhTotalPrice = document.querySelector('.wishList>.chkPrinter>.totalPrice');
+const $wishchkAllBox = document.querySelector('.wishList input[name=wishAll]');
 
 //관심목록 체크박스 선택시 선택된 모든 가격의 합 화면에 표시
 $wishChkBoxs.forEach(($wishChkBox)=>{
@@ -113,5 +108,12 @@ $wishChkBoxs.forEach(($wishChkBox)=>{
         }
 
         $widhTotalPrice.textContent = totalprice + "원";
+    });
+});
+
+//일관선택 클릭시 전체 체크 및 해제
+$wishchkAllBox.addEventListener('click',()=>{
+    $wishChkBoxs.forEach(($wishChkBox)=>{
+        $wishChkBox.click();
     });
 });
