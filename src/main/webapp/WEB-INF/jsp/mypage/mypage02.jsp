@@ -6,7 +6,16 @@
 <%@page import="java.util.Vector"%>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr"/>
 <%
-String userId = (String) session.getAttribute("idKeyS");
+	if (session.getAttribute("idKeyS") == null) {
+	    %>
+	    <script>
+	        alert("세션이 만료되었습니다. 로그인 페이지로 이동합니다.");
+	        location.href="/login/login01";
+	    </script>
+	    <%
+	    return;
+	}
+	String userId = (String) session.getAttribute("idKeyS");
 %>
 
 <%

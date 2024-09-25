@@ -8,9 +8,20 @@
     pageEncoding="UTF-8"%>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr" />
 <%
-	String userId = (String) session.getAttribute("idKeyS");
-	String pageVisible = (String) request.getParameter("pageVisible");
+    if (session.getAttribute("idKeyS") == null) {
+        %>
+        <script>
+            alert("세션이 만료되었습니다. 로그인 페이지로 이동합니다.");
+            location.href="/login/login01";
+        </script>
+        <%
+        return;
+    }
+
+    String userId = (String) session.getAttribute("idKeyS");
+    String pageVisible = (String) request.getParameter("pageVisible");
 %>
+
 
 	<%
 	//페이징 기법
@@ -157,7 +168,7 @@
 			           
 			           <div class="content">
 			             <button type="button" onClick="delCartCheck(<%=myCBean.getCartid()%>)">삭제하기</button>
-			             <button type="button" class="buyNow cart" onClick="javascript:location.href='/buy/buy01?bookId=<%=bookId%>'">바로구매</button>
+			             <button type="button" class="buyNow cart" onClick="javascript:location.href='/buy/buy01?bookid=<%=bookId%>'">바로구매</button>
 			             <button type="button" onClick="javascript:location.href='/shop/shop02?bookid=<%=bookId%>'">
 			               <i class="fa-solid fa-magnifying-glass"></i>
 			               상세보기
@@ -253,7 +264,7 @@
 			           
 			            <div class="content">
 			            <button type="button" onClick="delWishCheck(<%=myWBean.getWishid()%>)">삭제하기</button>
-			             <button type="button" class="buyNow wish" onClick="javascript:location.href='/buy/buy01?bookId=<%=bookId %>'">바로구매</button>
+			             <button type="button" class="buyNow wish" onClick="javascript:location.href='/buy/buy01?bookid=<%=bookId %>'">바로구매</button>
 			              <button type="button" onClick="javascript:location.href='/shop/shop02?bookid=<%=bookId %>'">
 			                <i class="fa-solid fa-magnifying-glass"></i>
 			                상세보기

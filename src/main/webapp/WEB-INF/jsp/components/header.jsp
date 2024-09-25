@@ -64,7 +64,7 @@ String nickName = cMgr.getNickName(userId);
           	}else{
           		%>
 	            <li style="width:200px;"><a href="/mypage/mypage01"><%=nickName%>님<br /> 환영합니다.</a></li>
-	            <li><a href="/signup/signup01">회원가입</a></li>
+	            <li><a href="/login/logout">회원가입</a></li>
 	            <li>
 	              <a href="/mypage/mypage01">
 	                마이페이지

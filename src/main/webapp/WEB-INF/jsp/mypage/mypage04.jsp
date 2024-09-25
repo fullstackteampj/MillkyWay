@@ -5,6 +5,15 @@
 <%@ page import="beans.BoardBean" %>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr" />
 <%
+	if (session.getAttribute("idKeyS") == null) {
+	    %>
+	    <script>
+	        alert("세션이 만료되었습니다. 로그인 페이지로 이동합니다.");
+	        location.href="/login/login01";
+	    </script>
+	    <%
+	    return;
+	}
 	String userId = (String) session.getAttribute("idKeyS");
 %>
 

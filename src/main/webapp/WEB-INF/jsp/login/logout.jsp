@@ -13,6 +13,8 @@
 		session.invalidate();
 		%>
 		alert("로그아웃되었습니다."); // 로그아웃 완료 메시지
+	}else{
+		history.back();
 	}
 	location.href="/login/login01";
 </script>
