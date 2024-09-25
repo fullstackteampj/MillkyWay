@@ -27,19 +27,7 @@ section.buy{
   margin: 0 auto;
   button{@include basicBtnRemove();}
   h2{padding: 20px 0 10px;}
-  >.check-member{
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 250px;
-    >a{
-      &:hover{
-        color: $point-color;
-        text-decoration: underline;
-      }//a:hover
-    }//a
-  }//.check-member
+
   >form{
     display: flex;
     flex-flow: row nowrap;
@@ -169,7 +157,7 @@ section.buy{
         top: 100px;
         left: 1000px;
         right: 50px;
-      }//.fixed
+      }//.sticky
       >li{
         margin: 15px 5px;
         font-size: 16px;

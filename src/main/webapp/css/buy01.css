@@ -305,17 +305,6 @@ section.buy button {
 section.buy h2 {
   padding: 20px 0 10px;
 }
-section.buy > .check-member {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  width: 250px;
-}
-section.buy > .check-member > a:hover {
-  color: rgb(100, 130, 173);
-  text-decoration: underline;
-}
 section.buy > form {
   display: flex;
   flex-flow: row nowrap;

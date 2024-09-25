@@ -1,5 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<% request.setCharacterEncoding("UTF-8"); %>
+<%@ page import="beans.BookBean" %>
+
+<%
+	int userid = 0;
+
+	if(session.getAttribute("idKey") != null){
+		userid = (int)session.getAttribute("idKey");
+	}
+
+	
+	int bookid = Integer.parseInt(request.getParameter("bookid"));
+	int orderNum = Integer.parseInt(request.getParameter("orderNum"));
+%>
+<script>
+	//const userid = '<%=userid%>';
+	const userid = 1;
+	if(userid === '0'){
+		//비로그인 상태일 경우 팝업창 생성
+		const url = '/buy/buy02';
+		window.open(url, 'checkMember', 'width=400, height=200');
+		
+	}
+</script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,11 +39,6 @@
 		<jsp:include page="../components/header.jsp" />
         <section class="buy">
             <h2>회원 주문/결제</h2>
-            <div class="check-member">
-                <p>아직 회원이 아니시라면?</p>
-                <a href="/signup/signup01">회원가입</a>
-                <a href="/login/login01">로그인</a>
-            </div>
             <form action="#" name="buyFrm">
                 <ul class="payment-info">
                     <li>
@@ -62,18 +81,19 @@
                     <li>
                         <h3>주문 상품 (<span>총 2개</span>)</h3>
                         <ol class="buy-products">
-                            <li class="more-two">
-                                <img src="${pageContext.request.contextPath}/images/basicofjava.jpg" alt="basicofjava" />
-                                <h4>자바의 정석</h4>
-                                <p>1개</p>
-                                <p>27000원</p>
-                            </li>
                             <li>
                                 <img src="${pageContext.request.contextPath}/images/basicofjava.jpg" alt="basicofjava" />
                                 <h4>자바의 정석</h4>
                                 <p>1개</p>
                                 <p>27000원</p>
                             </li>
+                            <!--  
+                            <li>
+                                <img src="${pageContext.request.contextPath}/images/basicofjava.jpg" alt="basicofjava" />
+                                <h4>자바의 정석</h4>
+                                <p>1개</p>
+                                <p>27000원</p>
+                            </li>-->
                         </ol>
                     </li>
                     <li>

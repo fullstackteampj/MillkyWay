@@ -51,12 +51,13 @@
 	      <div>
 	        <p><%=tit%></p>
 	        <p>총 금액&nbsp;<span class="quick-total"></span></p>
+	        <!-- formaction 속성에 설정한 url으로 action 주소 각각 다르게 재정의 -->
 	        <button formaction="/buy/buy01">바로구매</button>
 	        <button formaction="/mypage/mypage05">장바구니</button>
 	        <button formaction="/mypage/mypage05">관심목록</button>
 	      </div>
 	      <input type="hidden" name="bookid" value="<%=bookid%>" />
-	    </form><!--form name="quick-order"-->
+	    </form><!--form name="quickFrm"-->
 	
 	    <h2>
 	      <i class="fa-solid fa-chevron-left"></i>
@@ -75,7 +76,7 @@
 	        <p>배송료 : 2000원&nbsp;<span>(5만원 이상 무료배송)</span></p>
 	        <p>
 	          <%
-	        		for(int c=0; c<score; c++){
+	        		for(int c=0; c<score; c++){//별생성
 	        			%>
 	        			<i class="fa-solid fa-star"></i>
 	        			<%
@@ -190,7 +191,7 @@
 	        <h3>목차</h3>
 	        <ol>
 	        <%
-	        	//DB저장된 목차 문자열 -> 쉼표 and 띄어쓰기 별로 나누기
+	        	//DB저장된 목차: 문자열 -> 쉼표 and 띄어쓰기 별로 나누기
 	        	String[] ctableArr = ctable.split(",|\\n");
 	        	
 	        
@@ -215,7 +216,7 @@
 	          <h4>평균<br />별점</h4>
 	          <p>
 	          	<%
-	          		for(int c=0; c<score; c++){
+	          		for(int c=0; c<score; c++){//별생성
 	          			%>
 	          			<i class="fa-solid fa-star"></i>
 	          			<%
@@ -256,7 +257,7 @@
 	        		%>
 	        		<li>     
 	        		<%
-	        		for(int c=0; c<rScore; c++){
+	        		for(int c=0; c<rScore; c++){//별 생성
 	        			%>
 	        			<i class="fa-solid fa-star"></i>
 	        			<%
@@ -297,6 +298,7 @@
 	    }
 	  });
 	
+	  //해당 별점 - 클릭이벤트
 	  $star.addEventListener('click', ()=>{
 	    for(let i=0; i<=idx; i++){
 	      $stars[i].style.color = 'rgb(100, 130, 173)';/******* 포인트 컬러에 따라 변경 필요********/
@@ -309,11 +311,11 @@
 	});
 	
 	//한줄평 등록 확인창
-	const sidKey = '<%=session.getAttribute("idKey")%>';//문자열로 받음
+	const sidKey = '<%=session.getAttribute("idKey")%>'; //문자열로 받음
 	const frm = document.reviewFrm;
 
-	console.log(sidKey);
 	const checkReview = () => {
+	  //쿼리스트링으로 JS에서 클릭했던 별점 inputScore 값 보내줌
 	  //const url = '/shop/shop03?inputScore='+ inputScore + ',idKey=' + sidKey; 로그인 상태 되면 다시 확인해보기
 	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=1'; //임의 아이디키 넣음
 	  window.open(url, "review", "width=400, height=300");

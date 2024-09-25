@@ -3,7 +3,7 @@
 -- ctrl + a (전체선택) 후 ctrl + shift + enter  => 쿼리문 전체 실행
 
 
-INSERT INTO boardtbl (title, author, genre, content, ref, pos, depth, count, regdate, photo, userid, bookid, liked, ip, update_date, comment_count, status) VALUES 
+INSERT INTO boardtbl (title, nickname, genre, content, ref, pos, depth, count, regdate, photo, userid, bookid, liked, ip, update_date, comment_count, status) VALUES 
 ('우리들의 일그러진 영웅 리뷰', '이문열', '소설', '한국 현대문학의 대표작인 이문열의 작품을 리뷰합니다.', 1, 0, 0, 12, NOW(), NULL, 1, 1, 45, '192.168.1.1', NULL, 0, 'active'),
 ('태백산맥에 대한 생각', '조정래', '역사', '한국 역사소설의 정수라 불리는 태백산맥에 대한 나의 생각.', 2, 0, 0, 25, NOW(), NULL, 2, 2, 30, '192.168.1.2', NULL, 0, 'active'),
 ('오직 두 사람의 이야기', '김영하', '소설', '김영하의 단편 소설집, 오직 두 사람에 대한 서평.김영하의 단편 소설집, 오직 두 사람에 대한 서평.김영하의 단편 소설집, 오직 두 사람에 대한 서평.김영하의 단편 소설집, 오직 두 사람에 대한 서평.', 3, 0, 0, 30, NOW(), NULL, 3, 3, 75, '192.168.1.3', NULL, 0, 'active'),

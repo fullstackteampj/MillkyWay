@@ -8,11 +8,11 @@ import java.util.Vector;
 import DBConnection.DBConnectionMgr;
 import beans.BookBean;
 
-public class IndexMgr {
+public class IndexMethod {
 	
 	private DBConnectionMgr pool;
 	
-	public IndexMgr() {
+	public IndexMethod() {
 		try {
 			pool = DBConnectionMgr.getInstance();
 		}catch(Exception e) {
@@ -30,13 +30,13 @@ public class IndexMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select nickname,content,boardid from boardtbl order by boardid desc limit 10";
+			sql = "select author,content,boardid from boardtbl order by boardid desc limit 10";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				beans.BoardBean bean = new beans.BoardBean();
-				bean.setNickname(rs.getString("nickname"));
+				bean.setAuthor(rs.getString("author"));
 				bean.setContent(rs.getString("content"));
 				bean.setBoardid(rs.getInt("boardid"));
 				latestList.add(bean);
@@ -62,13 +62,13 @@ public class IndexMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select nickname,content,boardid from boardtbl order by liked desc limit 10";
+			sql = "select author,content,boardid from boardtbl order by liked desc limit 10";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				beans.BoardBean bean = new beans.BoardBean();
-				bean.setNickname(rs.getString("nickname"));
+				bean.setAuthor(rs.getString("author"));
 				bean.setContent(rs.getString("content"));
 				bean.setBoardid(rs.getInt("boardid"));
 				bestList.add(bean);
@@ -85,7 +85,7 @@ public class IndexMgr {
 	}//Vector<BoardBean> getBestBoardList()
 	
 	
-	public BookBean getRanBook(int ranId, String category) {
+	public BookBean getRanBook(int ranId) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -94,17 +94,15 @@ public class IndexMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select title,author,bookid from booktbl where category = ? limit 1 offset ?";
+			sql = "select title,author from booktbl where bookid = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, category);
-			pstmt.setInt(2, ranId);
+			pstmt.setInt(1, ranId);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				ranBBean = new BookBean();
 				ranBBean.setTitle(rs.getString("title"));
 				ranBBean.setAuthor(rs.getString("author"));
-				ranBBean.setBookid(rs.getInt("bookid"));
 			}
 			
 		}catch(Exception e) {
@@ -115,35 +113,6 @@ public class IndexMgr {
 		
 		return ranBBean;
 	}//Bookbean getRanBook(int ranId)
-	
-	
-	public int getCatCount(String category) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int ranCount = 0;
-		
-		try {
-			conn = pool.getConnection();
-			sql = "select count(*) from booktbl where category = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, category);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				ranCount = rs.getInt(1);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			pool.freeConnection(conn, pstmt, rs);
-		}
-		
-		return ranCount;
-	}//getCatCount(String category)
-	
 	
 }//class IndexMethod
 

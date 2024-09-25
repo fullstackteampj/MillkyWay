@@ -45,10 +45,20 @@
 	}
 	
 	start = (nowPage * numPerPage) - numPerPage;
-	end = start + numPerPage;
+	end = numPerPage;
 	
-	totalRecord = bMgr.getTotalCount(category, genre, tap);
-	if(end>totalRecord) end = totalRecord;
+	System.out.println("tap = " + tap);
+	
+	if(tap == null || tap.equals("null")){
+		totalRecord = bMgr.getTotalCount(category, genre);
+	}else{
+		totalRecord = bMgr.getTotalTap(tap);
+	}
+	
+	if(end>totalRecord) 
+		end = totalRecord;
+
+	
 	totalPage = (int)Math.ceil((double)totalRecord / numPerPage); //전체 페이지수
 	
 	nowBlock = (int)Math.ceil((double)nowPage / pagePerBlock);//현재 블럭 계산
@@ -1035,8 +1045,9 @@
 		  <ol>
 		  	<%
 		  		blist = bMgr.getBookList(category, genre, start, end, tap);
+		  		
 		  		listSize = blist.size();
-		  		System.out.println("listSize" + listSize);
+	
 		  		if(blist.isEmpty()){
 		  			%>
 		  			<li>
@@ -1051,7 +1062,7 @@
 		  				String author = bean.getAuthor();
 		  				String title = bean.getTitle();
 		  				String contents = bean.getContents();
-		  				String[] contArr = contents.split("다."); //.구분자사용, [.]도 가능
+		  				String[] contArr = contents.split("다\\."); //.구분자사용, [.]도 가능
 		  				int price = bean.getPrice();
 		  				int score = bean.getScore();
 		  				String imgUrl = "/image?bookid="+bookid;
