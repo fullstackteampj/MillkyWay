@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import board.BoardMgr;
@@ -38,8 +39,9 @@ public class BoardServlet extends HttpServlet {
     	if("/boardPost".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		boolean insertOk = bMgr.insertBoard(request);
+    		String category = URLEncoder.encode(request.getParameter("category"),"UTF-8");
     		if(insertOk) {
-    			response.sendRedirect("board01");    			
+    			response.sendRedirect("board01?category="+category);
     		} else {
     			response.sendRedirect("boardError?error=failPost");
     		}
@@ -49,9 +51,10 @@ public class BoardServlet extends HttpServlet {
     	if("/boardDelete".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		boolean deleteOk = bMgr.deleteBoard(request);
+    		String category = URLEncoder.encode(request.getParameter("category"),"UTF-8");
     		String boardid = request.getParameter("boardid");
     		if(deleteOk) {
-    			response.sendRedirect("board01");    			
+    			response.sendRedirect("boardSuccess?event=delPost&category="+category);    			
     		} else {
     			response.sendRedirect("boardError?error=failDelete&num="+boardid);
     		}
@@ -61,10 +64,12 @@ public class BoardServlet extends HttpServlet {
     	if("/boardEdit".equals(path)) {
     		BoardMgr bMgr = new BoardMgr();
     		boolean editOk = bMgr.editBoard(request);
+    		String category = URLEncoder.encode(request.getParameter("category"),"UTF-8");
+    		String boardid = request.getParameter("boardid");
     		if(editOk) {
-    			response.sendRedirect("board01");
+    			response.sendRedirect("boardSuccess?event=editPost&category="+category);
     		} else {
-    			response.sendRedirect("boardError?error=failEdit");
+    			response.sendRedirect("boardError?error=failEdit&num="+boardid);
     		}
     	}
     	
@@ -112,6 +117,43 @@ public class BoardServlet extends HttpServlet {
             out.flush();
     	}
     	
+    	// 대댓글(답글) 작성 요청
+    	if("/boardCommentReply".equals(path)) {
+    		response.setContentType("application/json");
+    		BoardMgr bMgr = new BoardMgr();
+    		
+    		// 요청데이터를 문자열로 읽기
+    		StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+            
+            // URL디코딩으로 fetch문에서 body로 받은 parameter를 추출
+            String[] params = sb.toString().split("&");
+            int userid = Integer.parseInt(URLDecoder.decode(params[0].split("=")[1], StandardCharsets.UTF_8));
+            String nickname = URLDecoder.decode(params[1].split("=")[1], StandardCharsets.UTF_8);
+            int ref = Integer.parseInt(URLDecoder.decode(params[2].split("=")[1], StandardCharsets.UTF_8));
+            String userip = URLDecoder.decode(params[3].split("=")[1], StandardCharsets.UTF_8);
+            String commentMsg = URLDecoder.decode(params[4].split("=")[1], StandardCharsets.UTF_8);
+            String regDate = URLDecoder.decode(params[5].split("=")[1], StandardCharsets.UTF_8);
+            int parenttId = Integer.parseInt(URLDecoder.decode(params[6].split("=")[1], StandardCharsets.UTF_8));
+            int depth = Integer.parseInt(URLDecoder.decode(params[7].split("=")[1], StandardCharsets.UTF_8));
+            int pos = Integer.parseInt(URLDecoder.decode(params[8].split("=")[1], StandardCharsets.UTF_8));
+            
+            // DB에 댓글저장
+            // bMgr.updatePos();
+            bMgr.insertReply(userid, nickname, ref, userip, commentMsg, regDate, parenttId, depth, pos);
+            
+            // 응답
+            PrintWriter out = response.getWriter();
+            out.write("{\"commentMsg\":\"" + commentMsg + "\"}");
+            out.flush();
+    	}
+    	
+    	// 댓글 수정 요청
+    	
+    	
     	// 댓글 삭제 요청
     	if("/boardCommentDel".equals(path)) {
     		response.setContentType("application/json");
@@ -131,6 +173,7 @@ public class BoardServlet extends HttpServlet {
             bMgr.deleteComment(commentId);
             
     	}
+    	
     	
     }
 

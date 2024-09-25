@@ -7,6 +7,12 @@ function goLogin() {
 	}
 }
 
+// 페이지버튼 href로 실행되는 함수 : 현재 글페이지값, 글검색값 등의 값을 전송하는 폼 submit
+function goPageFn(page) {
+	document.pageFrm.nowPage.value = page;
+	document.pageFrm.submit();
+}
+
 // 시각데이터 가공('10'미만일시 '06'와 같은 형태)
 function zeroDate(thing) {
 	let obj;
@@ -29,7 +35,7 @@ function zeroDate(thing) {
 }
 
 // 댓글작성
-async function comSubmit(userid, nickname, ref, userip, postuser) {
+async function comSubmit(userid, nickname, boardid, userip, postuser) {
 	// 댓글작성 유효성 검사
 	const frm = document.commentFrm;
 	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
@@ -39,7 +45,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 	}
 	
 	// 댓글작성 비동기 요청
-	const commentMsg = frm.inputComment.value;
+	const commentMsg = frm.inputComment.value.replace(/\n/g, '<br>');
 	
 	const regdate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
 	const response = await fetch('boardComment', {
@@ -47,7 +53,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded;'
 		},
-		body: 'userid='+userid+'&nickname='+nickname+'&ref='+ref+'&userip='+userip+'&commentMsg='+commentMsg+'&regdate='+regdate
+		body: 'userid='+userid+'&nickname='+nickname+'&boardid='+boardid+'&userip='+userip+'&commentMsg='+commentMsg+'&regdate='+regdate
 	});
 	
 	if(response.ok) {
@@ -56,7 +62,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		
 		// 댓글 노드 생성
 		const $comment = document.createElement('div');
-		$comment.setAttribute('class','comment comment-'+ref);
+		$comment.setAttribute('class','comment comment-'+boardid);
 		const $commentInfo = document.createElement('div');
 		$commentInfo.setAttribute('class','commentInfo');
 		const $author = document.createElement('span');
@@ -82,6 +88,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		$editIcon.setAttribute('class', 'fa-solid fa-pencil');
 		$editIcon.setAttribute('title', '댓글수정');
 		const $delBtn = document.createElement('span');
+		$delBtn.setAttribute('onclick', 'commentDelete(<%=commentId%>, <%=bMgr.hasComReply(commentId)%>,this);');
 		const $delIcon = document.createElement('i');
 		$delIcon.setAttribute('class', 'fa-solid fa-trash-can');
 		$delIcon.setAttribute('title', '댓글삭제');
@@ -109,7 +116,8 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		
 		$comment.append($commentMsg);
 		$commentMsg.append($text);
-		$text.textContent = result.commentMsg;
+		const resultMsg = result.commentMsg;
+		$text.innerHTML = resultMsg.replace(/\n/g, '<br>');
 
 		// 수정폼 노드 생성
 		const $editFrm = document.createElement('form');
@@ -138,7 +146,7 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		$commentAuthor.append($span, nickname);
 		$span.textContent = '수정';
 		$writeComment.append($inputComment);
-		$inputComment.textContent = result.commentMsg;
+		$inputComment.innerHTML = result.commentMsg;
 		$writeComment.append($replySubmit);
 		$replySubmit.textContent = '수정';
 
@@ -173,6 +181,11 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 		$editSubmit.textContent = '작성';
 		
 		frm.inputComment.value = '';
+		
+		// 총 댓글 수 업데이트
+		const commentCount = document.querySelector('#commentOpt>h3>span');
+		commentCount.textContent = parseInt(commentCount.textContent)+1;
+		
 	} else {
 		alert("댓글 작성에 실패했습니다.");
 	}
@@ -180,31 +193,195 @@ async function comSubmit(userid, nickname, ref, userip, postuser) {
 
 // 답글버튼 클릭시 대댓글 폼 노출
 function toggleReply(element) {
-	console.log(element);
 	const $replyFrm = element.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
 	$replyFrm.classList.toggle('off');
+	$replyFrm.inputComment.value = '';
 	$replyFrm.inputComment.focus();
 }
 
 // 답글 유효성검사 후 비동기요청
-function replySubmit() {
-	
+async function replySubmit(element, userid, nickname, boardid, userip, postuser, parenttId, depth, pos) {
+	const frm = element.parentElement.parentElement;
+	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
+		alert("내용을 입력해주세요.");
+		frm.inputComment.focus();
+		return;
+	}
+	// 댓글작성 비동기 요청
+		const commentMsg = frm.inputComment.value.replace(/\n/g, '<br>');
+		
+		const regdate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
+		const response = await fetch('boardCommentReply', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded;'
+			},
+			body: 'userid='+userid+'&nickname='+nickname+'&boardid='+boardid+'&userip='+userip+'&commentMsg='+commentMsg+'&regdate='+regdate+'&parenttId='+parenttId+'&depth='+depth+'&pos='+pos
+		});
+		
+		if(response.ok) {
+			const result = await response.json();
+			const $commentCont = document.getElementById('commentCont');
+			
+			// 댓글 노드 생성
+			const $comment = document.createElement('div');
+			$comment.setAttribute('class','comment comment-'+boardid);
+			const $commentInfo = document.createElement('div');
+			$commentInfo.setAttribute('class','commentInfo');
+			const $author = document.createElement('span');
+			if(userid == postuser) {
+				$author.setAttribute('class','author same');	
+			} else {
+				$author.setAttribute('class','author');			
+			}
+			const $commentAdd = document.createElement('div');
+			$commentAdd.setAttribute('class','commentAdd');
+			const $commentDate = document.createElement('span');
+			$commentDate.setAttribute('class','commentDate');
+			const $authorAddOns = document.createElement('div');
+			$authorAddOns.setAttribute('class','author-addOns');
+			const $replyBtn = document.createElement('span');
+			$replyBtn.setAttribute('onclick', 'toggleReply(this);');
+			const $replyIcon = document.createElement('i');
+			$replyIcon.setAttribute('class', 'fa-solid fa-reply');
+			$replyIcon.setAttribute('title', '답글');
+			const $editBtn = document.createElement('span');
+			$editBtn.setAttribute('onclick', 'toggleEdit(this);');
+			const $editIcon = document.createElement('i');
+			$editIcon.setAttribute('class', 'fa-solid fa-pencil');
+			$editIcon.setAttribute('title', '댓글수정');
+			const $delBtn = document.createElement('span');
+			$delBtn.setAttribute('onclick', 'commentDelete(<%=commentId%>, <%=bMgr.hasComReply(commentId)%>,this);');
+			const $delIcon = document.createElement('i');
+			$delIcon.setAttribute('class', 'fa-solid fa-trash-can');
+			$delIcon.setAttribute('title', '댓글삭제');
+			
+			const $commentMsg = document.createElement('div');
+			$commentMsg.setAttribute('class', 'commentMsg');
+			const $text = document.createElement('p');
+			$text.setAttribute('class', 'text');
+			
+			// 댓글 노드 결합
+			$commentCont.append($comment);
+			$comment.append($commentInfo);
+			$commentInfo.append($author);
+			$author.textContent = nickname;
+			$commentInfo.append($commentAdd);
+			$commentAdd.append($commentDate);
+			$commentDate.textContent = regdate;
+			$commentAdd.append($authorAddOns);
+			$authorAddOns.append($replyBtn);
+			$replyBtn.append($replyIcon);
+			$authorAddOns.append($editBtn);
+			$editBtn.append($editIcon);
+			$authorAddOns.append($delBtn);
+			$delBtn.append($delIcon);
+			
+			$comment.append($commentMsg);
+			$commentMsg.append($text);
+			const resultMsg = result.commentMsg;
+			$text.innerHTML = resultMsg.replace(/\n/g, '<br>');
+
+			// 수정폼 노드 생성
+			const $editFrm = document.createElement('form');
+			$editFrm.setAttribute('action', 'commentEdit');
+			$editFrm.setAttribute('name', 'comEditFrm');
+			$editFrm.setAttribute('id', 'comEditFrm');
+			$editFrm.setAttribute('method', 'post');
+			$editFrm.setAttribute('autocomplete', 'off');
+			$editFrm.setAttribute('class', 'off');
+			const $writeComment = document.createElement('div');
+			$writeComment.setAttribute('id', 'writeComment');
+			const $commentAuthor = document.createElement('p');
+			$commentAuthor.setAttribute('class', 'commentAuthor');
+			const $span = document.createElement('span');
+			const $inputComment = document.createElement('textarea');
+			$inputComment.setAttribute('name', 'inputComment');
+			$inputComment.setAttribute('placeholder', '댓글을 작성해보세요!');
+			const $replySubmit = document.createElement('button');
+			$replySubmit.setAttribute('type', 'button');
+			$replySubmit.setAttribute('onclick', 'replySubmit()');
+			
+			// 결합
+			$commentCont.append($editFrm);
+			$editFrm.append($writeComment);
+			$writeComment.append($commentAuthor);
+			$commentAuthor.append($span, nickname);
+			$span.textContent = '수정';
+			$writeComment.append($inputComment);
+			$inputComment.innerHTML = result.commentMsg;
+			$writeComment.append($replySubmit);
+			$replySubmit.textContent = '수정';
+
+			// 답글폼 노드 생성
+			const $replyFrm = document.createElement('form');
+			$replyFrm.setAttribute('action', 'commentReply');
+			$replyFrm.setAttribute('name', 'replyFrm');
+			$replyFrm.setAttribute('id', 'replyFrm');
+			$replyFrm.setAttribute('method', 'post');
+			$replyFrm.setAttribute('autocomplete', 'off');
+			$replyFrm.setAttribute('class', 'off');
+			const $rewriteComment = document.createElement('div');
+			$rewriteComment.setAttribute('id', 'writeComment');
+			const $recommentAuthor = document.createElement('p');
+			$recommentAuthor.setAttribute('class', 'commentAuthor');
+			const $respan = document.createElement('span');
+			const $reinputComment = document.createElement('textarea');
+			$reinputComment.setAttribute('name', 'inputComment');
+			$reinputComment.setAttribute('placeholder', '답글을 작성해보세요!');
+			const $editSubmit = document.createElement('button');
+			$editSubmit.setAttribute('type', 'button');
+			$editSubmit.setAttribute('onclick', 'replySubmit()');
+
+			// 결합
+			$commentCont.append($replyFrm);
+			$replyFrm.append($rewriteComment);
+			$rewriteComment.append($recommentAuthor);
+			$recommentAuthor.append($respan, nickname);
+			$respan.textContent = '답글';
+			$rewriteComment.append($reinputComment);
+			$rewriteComment.append($editSubmit);
+			$editSubmit.textContent = '작성';
+			
+			frm.inputComment.value = '';
+			frm.classList.toggle('off');
+			
+			// 총 댓글 수 업데이트
+			const commentCount = document.querySelector('#commentOpt>h3>span');
+			commentCount.textContent = parseInt(commentCount.textContent)+1;
+			} else {
+				alert("답글 작성에 실패했습니다.");
+			}
 }
 
 // 수정버튼 클릭시 댓글수정 폼 노출
 function toggleEdit(element) {
 	const $editFrm = element.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
 	$editFrm.classList.toggle('off');
+	$editFrm.inputComment.value = $editFrm.inputComment.textContent;
 	$editFrm.inputComment.focus();
 }
 
 // 수정 유효성검사 후 비동기요청
-function editSubmit() {
+async function editSubmit(element) {
+	const frm = element.parentElement.parentElement;
+	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
+		alert("내용을 입력해주세요.");
+		frm.inputComment.focus();
+		return;
+	}
 	
+	const response = await fetch('boardCommentEdit', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded;'
+		},
+		body: ''
+	});
 }
 
 // 댓글삭제 비동기요청
-async function commentDelete(commentId, element) {
+async function commentDelete(commentId, hasReply, element) {
 	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
 		if(confirmtrue) {
 			const response = await fetch('boardCommentDel', {
@@ -216,10 +393,21 @@ async function commentDelete(commentId, element) {
 			});
 				
 			if(response.ok) {
-				//const deleteComment = element.parentElement.parentElement.parentElement.parentElement.lastElementChild;
-				//deleteComment.textContent = '삭제된 댓글입니다.';
-				const deleteComment = element.parentElement.parentElement.parentElement.parentElement;
-				deleteComment.remove();
+				// 이 댓글에 대댓글이 존재하면 내용대체
+				if(hasReply) {
+					const deleteComment = element.parentElement.parentElement.parentElement.parentElement.lastElementChild;
+					deleteComment.textContent = '삭제된 댓글입니다.';
+					console.log("대댓글 존재 !");
+				// 대댓글이 없으면 노드 삭제
+				} else {
+					const deleteComment = element.parentElement.parentElement.parentElement.parentElement;
+					deleteComment.remove();
+					console.log("대댓글 없음 !");
+				}
+
+				// 총 댓글 수 업데이트
+				const commentCount = document.querySelector('#commentOpt>h3>span');
+				commentCount.textContent = parseInt(commentCount.textContent)-1;
 			}
 		}
 }
@@ -243,6 +431,12 @@ async function uplike(boardid, userid, element) {
 	}
 }
 
-
+// 답댓글 들여쓰기
+const replys = document.querySelectorAll('.depth');
+replys.forEach((reply)=>{
+	reply.classList.item(3);
+	const depth = reply.classList.item(3).substring(6,7);
+	reply.style.marginLeft = '50'*depth+'px';
+})
 
 

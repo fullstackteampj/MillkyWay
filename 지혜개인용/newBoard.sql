@@ -152,23 +152,18 @@ DELETE FROM membertbl WHERE userid > 0;
 ### 글목록 추출 쿼리문 (실제 활용 쿼리문 작성시 참고용)
 -- 전체글
 SELECT * FROM boardtbl WHERE status=0 ORDER BY regdate DESC LIMIT 0, 10;
-
 -- 글 추출 (제목+내용)
 SELECT * FROM boardtbl WHERE status=0 AND (title LIKE '%경제%' OR content LIKE '%경제%')
 ORDER BY regdate DESC LIMIT 0, 10;
-
 -- 글 추출 (작성자)
 SELECT * FROM boardtbl WHERE status=0 AND nickname LIKE '%희%'
 ORDER BY regdate DESC LIMIT 0, 10;
-
 -- 글 추출 (카테고리)
 SELECT * FROM boardtbl WHERE status=0 AND genre="경제경영"
 ORDER BY regdate DESC LIMIT 0, 10;
-
 -- 글 추출 (탭)
 SELECT * FROM boardtbl WHERE status=0 AND tab="질문"
 ORDER BY regdate DESC LIMIT 0, 10;
-
 -- 글 추출 (인기글 영역)
 SELECT * FROM boardtbl WHERE status=0 AND best='Y' ORDER BY regdate DESC LIMIT 0, 10;
 
@@ -187,32 +182,29 @@ UPDATE boardtbl SET best = 'Y' WHERE boardid=1;
 ### 글상세 추출 쿼리문
 # 클릭한 글 추출
 INSERT * FROM boardtbl WHERE boardid = 1;
-
 # 클릭한 글 추출
 SELECT * FROM boardtbl WHERE boardid = 1;
-
 # 클릭한 글의 댓글 추출
-select * from commenttbl where ref = 127;
-select count(commentid) from commenttbl where ref = 127;
-
-# 댓글 등록
-insert into commenttbl (userid, nickname, content, ref, pos, depth, parent_commentid, regdate, ip)
-values (1, "밀키", "내가일빠당", 3, 0, 0, null, now(), "127.0.0.1");
+SELECT * FROM commenttbl WHERE REF = 127;
+SELECT count(commentid) FROM commenttbl WHERE ref = 127;
 
 # 조회수증가
-update boardtbl set count = count+1 where boardid = 1;
-
+UPDATE boardtbl SET count = count+1 WHERE boardid = 1;
 # 추천수증가
-update boardtbl set liked = liked+1 where boardid = 1;
-select liked from boardtbl where boardid = 1;
+UPDATE boardtbl SET liked = liked+1 WHERE boardid = 1;
+SELECT liked FROM boardtbl WHERE boardid = 1;
 
 # 글삭제(status 값 변경)
-select * from boardtbl where status=0;
-update boardtbl set status = 9 where boardid=1;
-
+SELECT * FROM boardtbl WHERE status=0;
+UPDATE boardtbl SET status = 9 WHERE boardid=1;
 # 글수정
-update boardtbl set nickname="또또밍기", title="디비로수정", content="제발잘되길ㅜㅜㅜㅜ", 
+UPDATE boardtbl SET nickname="또또밍기", title="디비로수정", content="제발잘되길ㅜㅜㅜㅜ", 
 photo=null, genre="역사", tab="추천", ip="127.0.0.1", update_date=now() 
-where boardid=1;
+WHERE boardid=1;
 
-
+# 댓글 등록
+INSERT INTO commenttbl (userid, nickname, content, ref, pos, depth, parent_commentid, regdate, ip)
+VALUES (1, "밀키", "내가일빠당", 3, 0, 0, null, now(), "127.0.0.1");
+# 댓글 삭제
+SELECT * FROM commenttbl WHERE commentid=31;
+UPDATE commenttbl SET status = 9 WHERE commentid=31;

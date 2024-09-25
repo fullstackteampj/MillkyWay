@@ -7,11 +7,12 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	int num = Integer.parseInt(request.getParameter("num"));
+	String category = request.getParameter("category");
 		
 	// 글정보 추출
 	BoardBean post = bMgr.getPost(num);
 	int userid = post.getUserid();
-	String category = post.getGenre();
+	String genre = post.getGenre();
 	String tab = post.getTab();
 	String title = post.getTitle();
 	String content = post.getContent();
@@ -60,6 +61,7 @@
       	<input type="hidden" name="boardid" value="<%=num%>" />
       	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
 		<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+		<input type="hidden" name="category" value="<%=category%>" />
         <div id="writeArea">
           <select name="postGenre" id="postGenre" required>	          
 	        <!-- 카테고리목록 출력 -->
@@ -67,7 +69,7 @@
 	        	for(int i=1; i<cList.size(); i++) {%>
 	           	<option value="<%=cList.get(i)%>"
 	           	<% // 선택했던 카테고리에 selected
-	           		if(cList.get(i).equals(category)) { %> selected <% } %>
+	           		if(cList.get(i).equals(genre)) { %> selected <% } %>
 	           	><%=cList.get(i)%></option>
 	        <% } %>
           </select>
@@ -80,7 +82,7 @@
 	        	for(int i=2; i<tList.size(); i++) {%>
 	           	<option value="<%=tList.get(i)%>"
 	           	<% // 선택했던 카테고리에 selected
-	           		if(cList.get(i).equals(category)) { %> selected <% } %>
+	           		if(cList.get(i).equals(genre)) { %> selected <% } %>
 	           	><%=tList.get(i)%></option>
 	        <% } %>
             </select>

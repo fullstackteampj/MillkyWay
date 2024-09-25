@@ -5,10 +5,10 @@ public class CommentBean {
 	private int userid;
 	private String nickname;
 	private String content;
-	private int ref;
+	private int boardid;
 	private int pos;
 	private int depth;
-	private int parentCommentid;
+	private int ref;
 	private String regdate;
 	private String updateDate;
 	private String ip;
@@ -38,11 +38,11 @@ public class CommentBean {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getRef() {
-		return ref;
+	public int getBoardid() {
+		return boardid;
 	}
-	public void setRef(int ref) {
-		this.ref = ref;
+	public void setBoardid(int boardid) {
+		this.boardid = boardid;
 	}
 	public int getPos() {
 		return pos;
@@ -56,11 +56,11 @@ public class CommentBean {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	public int getParentCommentid() {
-		return parentCommentid;
+	public int getRef() {
+		return ref;
 	}
-	public void setParentCommentid(int parentCommentid) {
-		this.parentCommentid = parentCommentid;
+	public void setRef(int ref) {
+		this.ref = ref;
 	}
 	public String getRegdate() {
 		return regdate;

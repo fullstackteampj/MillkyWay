@@ -312,6 +312,7 @@ section > #post > #searchInfo > span {
 section > #post > #list {
   border: 1px solid #ccc;
   padding: 0 10px;
+  margin-bottom: 24px;
 }
 section > #post > #list > p {
 	display: flex;
@@ -389,7 +390,7 @@ section > #post > #pagination {
   justify-content: center;
   align-items: center;
   height: 35px;
-  margin: 24px auto;
+  margin: 0 auto;
   font-size: 15px;
 }
 section > #post > #pagination > li {
@@ -418,6 +419,9 @@ section > #post > #pagination > li.on > a {
   background-color: #edf5f8;
   box-shadow: 0px 0px 1px 1px #33afe9;
   border: 1px solid #33afe9;
+}
+section > #post #postSearch {
+	margin-top: 24px;
 }
 section > #post #postSearch > form {
   display: flex;
@@ -553,18 +557,6 @@ section > form#FrmPost > #writeArea > #postEditor > #writeSet > button {
   border-right: 1px solid #000;
   background-color: #eee;
 }
-section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.boldBtn {
-  font-family: "Pretendard-Bold";
-}
-section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.italicBtn {
-  font-style: italic;
-}
-section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.underLineBtn {
-  text-decoration: underline;
-}
-section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.throughBtn {
-  text-decoration: line-through;
-}
 section > form#FrmPost > #writeArea > #postEditor > #writeSet > button:hover {
   background-color: #ddd;
 }
@@ -641,11 +633,6 @@ section > #postBox, section #commentBox {
   margin-bottom: 12px;
   padding: 20px;
   border: 1px solid #ccc;
-}
-section #commentBox > p {
-	padding: 30px 0;
-	font-size: 14px;
-	text-align: center;
 }
 section > #postBox {
   position: relative;
@@ -798,6 +785,7 @@ section > #commentBox > #commentCont {
   margin: 16px 0;
 }
 section > #commentBox > #commentCont > .comment {
+  position: relative;
   padding: 5px 10px;
   border-bottom: 1px solid #ccc;
   border: 1px solid #ccc;
@@ -849,7 +837,14 @@ section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .
 section > #commentBox > #commentCont > .comment > .commentMsg {
   padding: 10px 0;
 }
-
+section > #commentBox > #commentCont > .depth:after {
+	position: absolute;
+	top: 10px;
+	left: -25px;
+	width: 10px;
+	height: 10px;
+	content: '👉';
+}
 section > #commentBox > form {
   margin-top: 30px;
 }
@@ -917,17 +912,51 @@ section > #commentBox > #commentCont > form > #writeComment > button {
   border-radius: 3px;
   background: none;
 }
-
 section > #commentBox > form > #writeComment > button:hover,
 section > #commentBox > #commentCont > form > #writeComment > button:hover {
 	color: #fff;
 	background-color: #33afe9;
 	border-color: #33afe9;
 }
-
-
 section > #commentBox > #commentCont > form.off {
 	display: none;
+}
+section #commentBox > p {
+	margin: 30px 0;
+	padding: 30px 0;
+	font-size: 14px;
+	text-align: center;
+}
+/*임시*/
+section > #commentBox > #commentCont {
+	/*outline: 1px solid blue;*/
+}
+section > #commentBox > #comPagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+	/*outline: 1px solid red;*/
+}
+section > #commentBox > #comPagination > li {
+	margin-right: 5px;
+}
+section > #commentBox > #comPagination > li > a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px;
+	height: 30px;
+	font-size: 14px;
+	/*outline: 1px solid pink;*/
+}
+section > #commentBox > #comPagination > li:last-child {
+	margin-right: 0px;
+}
+section > #commentBox > #comPagination > li:hover > a,
+section > #commentBox > #comPagination > li.on > a {
+	font-family: "Pretendard-Bold";
+	color: #33afe9;
 }
 section > #btns {
   display: flex;
