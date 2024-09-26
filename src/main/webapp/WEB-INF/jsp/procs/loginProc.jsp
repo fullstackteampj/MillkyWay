@@ -9,7 +9,8 @@
 	String saveId = request.getParameter("saveId");
 	
 	MemberBean mBean = lMgr.getLoginInfo(account);
-	String userId = Integer.toString(mBean.getUserid());
+	int userId = mBean.getUserid();
+	String userIdS = Integer.toString(mBean.getUserid());
 	
 	if(!pwd.equals(mBean.getPwd())){
 		%>
@@ -20,6 +21,7 @@
 		<%
 	}else{
 		session.setAttribute("idKey", userId);
+		session.setAttribute("idKeyS", userIdS);
 		
 		if(saveId != null){
 		    Cookie cookie = new Cookie("saveId", account);

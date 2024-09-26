@@ -8,8 +8,6 @@ show tables;
 
 select * from membertbl;
 
--- partnertbl;
-
 select * from booktbl;
 
 select * from boardtbl;
@@ -44,7 +42,9 @@ select count(*) from wishtbl WHERE userid = 3;
 
 SHOW VARIABLES LIKE 'secure_file_priv';
 
+select title,author from booktbl where category = "국내도서" limit 1 offset 0;
 
+select title,author from booktbl where category = "국내도서";
 
 
 

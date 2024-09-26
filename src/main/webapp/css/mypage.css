@@ -266,6 +266,14 @@
   width: 100px;
   height: 50px;
 }
+#wrap header.scrolled > .headTop {
+  position: absolute;
+  top: -100%;
+}
+#wrap header.scrolled > .headMiddle {
+  height: 50px;
+  margin-top: 0px;
+}
 
 aside {
   display: flex;
@@ -273,11 +281,114 @@ aside {
   bottom: 50px;
   right: 50px;
   align-items: center;
-  width: 100px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   margin: 0 auto;
   margin-top: 40px;
-  border: 1px solid #000;
+}
+aside > i {
+  display: none;
+  width: 0;
+  height: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 0;
+  background-color: #b6e2f7;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+aside > i.on {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 30px;
+}
+aside > .searchAPIFrame {
+  display: none;
+  position: fixed;
+  right: 50px;
+  bottom: 100px;
+  width: 400px;
+  height: auto;
+  padding: 10px;
+  background-color: #03c75a;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame.on {
+  display: block;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > input {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  background-color: #fff;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 40px;
+}
+aside > .searchAPIFrame > .APISearchedList > li {
+  width: 380px;
+  height: 100px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > img {
+  width: 60px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: space-around;
+  width: 300px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  font-weight: 600;
+  text-align: center;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > .description {
+  width: 300px;
+  height: 40px;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 footer {
@@ -846,7 +957,7 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
 }
 #wrap > section.myPage05 > .mainContainer {
   width: 100%;
-  height: 900px;
+  height: 940px;
   margin-top: -20px;
   padding: 50px;
   box-sizing: border-box;
@@ -867,18 +978,26 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   color: #fff;
   background-color: #1a6080;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart,
-#wrap > section.myPage05 > .mainContainer .wishList {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart,
+#wrap > section.myPage05 > .mainContainer > form .wishList {
   display: none;
   border-radius: 0 10px 10px 10px;
   background-color: #eee;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart.visible,
-#wrap > section.myPage05 > .mainContainer .wishList.visible {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart.visible,
+#wrap > section.myPage05 > .mainContainer > form .wishList.visible {
   display: block;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li,
-#wrap > section.myPage05 > .mainContainer .wishList > li {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li:first-of-type,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li:first-of-type {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 40px;
+  line-height: 20px;
+}
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
@@ -889,16 +1008,18 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   border-bottom: 1px solid #ddd;
   box-sizing: border-box;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > input[type=checkbox],
-#wrap > section.myPage05 > .mainContainer .wishList > li > input[type=checkbox] {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > input[type=checkbox],
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > input[type=checkbox] {
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > img,
-#wrap > section.myPage05 > .mainContainer .wishList > li > img {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > img,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > img {
   height: 100%;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .bookInfo,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .bookInfo {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-evenly;
@@ -907,24 +1028,24 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   padding-left: 50px;
   box-sizing: border-box;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .buydate,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .buydate {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .bookInfo > .buydate,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .bookInfo > .buydate {
   color: #aaa;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .title,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .title {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .bookInfo > .title,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .bookInfo > .title {
   font-size: 20px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .author,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .author {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .bookInfo > .author,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .bookInfo > .author {
   font-size: 14px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .bookInfo > .price,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .bookInfo > .price {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .bookInfo > .price,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .bookInfo > .price {
   font-weight: 800;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .content {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .content,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .content {
   display: flex;
   flex-flow: column wrap;
   justify-content: space-around;
@@ -935,8 +1056,8 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   border-radius: 10px;
   box-sizing: border-box;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content > button,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .content > button {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .content > button,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .content > button {
   background: none;
   border: none;
   outline: none;
@@ -945,13 +1066,13 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   border: 1px solid #33afe9;
   border-radius: 10px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > li > .content > button:hover,
-#wrap > section.myPage05 > .mainContainer .wishList > li > .content > button:hover {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > li > .content > button:hover,
+#wrap > section.myPage05 > .mainContainer > form .wishList > li > .content > button:hover {
   color: #fff;
   background-color: #33afe9;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter {
   display: none;
   justify-content: center;
   align-items: center;
@@ -963,22 +1084,22 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   background-color: #fff;
   border-top: 1px solid #000;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter.checked,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter.checked {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter.checked,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter.checked {
   display: flex;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > .mainDescript,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > .mainDescript {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter > .mainDescript,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter > .mainDescript {
   font-size: 24px;
   width: 300px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > .totalPrice,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > .totalPrice {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter > .totalPrice,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter > .totalPrice {
   font-size: 20px;
   width: 300px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > button,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > button {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter > button,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter > button {
   background: none;
   border: none;
   outline: none;
@@ -990,10 +1111,14 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   border: 1px solid #33afe9;
   border-radius: 5px;
 }
-#wrap > section.myPage05 > .mainContainer > .shoppingCart > .chkPrinter > button.buying,
-#wrap > section.myPage05 > .mainContainer .wishList > .chkPrinter > button.buying {
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter > button.buying,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter > button.buying {
   color: #fff;
   background-color: #33afe9;
+}
+#wrap > section.myPage05 > .mainContainer > form > .shoppingCart > .chkPrinter > button.moveTo,
+#wrap > section.myPage05 > .mainContainer > form .wishList > .chkPrinter > button.moveTo {
+  width: 150px;
 }
 #wrap > section.myPage05 > .mainContainer > .listSeletor {
   display: none;

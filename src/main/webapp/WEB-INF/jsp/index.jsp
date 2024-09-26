@@ -1,8 +1,8 @@
-<%@page import="beans.BookBean"%>
+<%@ page import="beans.BookBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8" %>
-<%@page import="beans.BoardBean"%>
-<%@page import="java.util.Vector"%>
+<%@ page import="beans.BoardBean"%>
+<%@ page import="java.util.Vector"%>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
@@ -11,7 +11,16 @@
 <jsp:useBean id="iMgr" class="index.IndexMgr" /> 
 
 <%
-	String userId = (String) session.getAttribute("idKey");
+	String userId = (String) session.getAttribute("idKeyS");
+	if (userId == null) {
+		/*
+	    자바스크립트에서 인식하는 null과 자바에서 인식하는 null이 서로 다른듯 함
+	    자바의 null값을 자바스크립트 함수에 <%= 형태로 넣을 경우 문자열 "null"로 변환되어 
+	    실제 자바스크립트 함수에서는 유효성 검사를 진행하지 못함
+		*/
+	    userId = ""; // userId가 null인 경우 빈 문자열로 초기화
+	}
+
 	int ranCount = 0;
 	String category = null;
 %>
@@ -35,7 +44,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/index.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/index.js?after"></script>
 
 </head>
 
@@ -55,7 +64,7 @@
       </div>
 
       <div class="bestSlide">
-	  <h2><a href="#">국내도서 <span>바로가기</span></a></h2>
+	  <h2><a href="shop/shop01?category=국내도서">국내도서 <span>바로가기</span></a></h2>
 		<%
 		// 국내도서 총 갯수중 랜덤 5개 추출
 		category = "국내도서";
@@ -103,7 +112,7 @@
 	  
       
       <div class="bestSlide">
-   	  <h2><a href="#">해외도서 <span>바로가기</span></a></h2>
+   	  <h2><a href="shop/shop01?category=해외도서">해외도서 <span>바로가기</span></a></h2>
 		<%
 		// 국내도서 총 갯수중 랜덤 5개 추출
 		category = "해외도서";
@@ -160,7 +169,7 @@
 	        	  BoardBean bean = latestList.get(i);
 	        	  %>
 	        	  <li id="latest0<%= i %>">
-		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
+		        	  <a href="/board/board02?num=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
 		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
@@ -180,7 +189,7 @@
 	        	  BoardBean bean = bestList.get(i);
 	        	  %>
 	        	  <li id="best0<%= i %>">
-		        	  <a href="/board/board02?boardId=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
+		        	  <a href="/board/board02?num=<%= bean.getBoardid() %>"><%= bean.getContent() %></a>
 		        	  <span class="author"><%= bean.getNickname() %></span>
 	        	  </li>
 	        	  <%
@@ -194,6 +203,8 @@
     </section>
 
 	<jsp:include page="./components/footer.jsp" />
+	
+	<jsp:include page="./components/aside.jsp" />
 
   </div>
 
