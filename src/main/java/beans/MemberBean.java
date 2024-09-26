@@ -27,6 +27,7 @@ public class MemberBean {
 	private String month;
 	private String date;
 	private String[] agree;
+	private String salt;
 	
 	public String[] getAgree() {
 		return agree;
@@ -179,6 +180,12 @@ public class MemberBean {
 	}
 	public void setProfile_photo(byte[] profile_photo) {
 		this.profile_photo = profile_photo;
+	}
+	public String getSalt() {
+		return salt;
+	}
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 }//class MemberBean
