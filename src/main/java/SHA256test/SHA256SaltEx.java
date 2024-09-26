@@ -3,21 +3,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class SHA256SALT {
+public class SHA256SaltEx {
 
 	public static void main(String[] args) {
-		SHA256SALT en = new SHA256SALT();
+		SHA256SaltEx SHA256SALT = new SHA256SaltEx();
 		
 		String pwd = "1234";
 		System.out.println("pwd : "+ pwd);
 		
 		//Salt 생성
         // 현재 랜덤으로 Salt값을 생성하였지만, 실제 구현시 고정시키거나 Salt값을 저장해 두어야합니다.
-		String salt = en.getSalt();
+		String salt = SHA256SALT.getSalt();//salt를 생성하는 코드
+		
 		System.out.println("salt : "+salt);
 		
 		//최종 비밀번호 생성
-		String res = en.getEncrypt(pwd, salt);
+		String res = SHA256SALT.getEncrypt(pwd, "3b7aa5df8bd3367b870fde6815d07b78190031d5");//
 	}
 
 	public String getSalt() {
@@ -38,6 +39,13 @@ public class SHA256SALT {
 		// 내용추가
 		// salt값이 고정되어있으면 내부자로부터 유출될 보안위험이 있으므로
 		// 회원가입시마다 salt를 랜덤 생성하고 회원 정보와 함께 DB에 저장하는것이 보다 올바른 방법이다.
+		//
+		// 추가의 추가
+		// salt값이 유출되더라도 실재로 레인보우테이블을 새롭게 생성하는것은 현실상 리소스가 무한대의 경우의수로
+		// 발생하기때문에 sha256에 대한 레인보우테이블 공격을 방어하는 수단으로서의 의미가 있다.
+		// bCrypt 또한 해시화된 비밀번호에 salt를 같이 저장하는 방식으로 salt값을 관리하므로
+		// 실재 비밀번호 정보가 탈취되었을때의 리스크는 같다.
+		// 고로 bCrypt를 적용하지 않더라도 salt 방식을 포기할 필요는 없다.
 		// 
 		// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 		
@@ -59,7 +67,9 @@ public class SHA256SALT {
 			
 			//2. 비밀번호와 salt 합친 문자열에 SHA 256 적용
 			// System.out.println("비밀번호 + salt 적용 전 : " + pwd+salt); //이러면 기존과 비교가 힘들지,
-			System.out.println("비밀번호 + salt 적용 전 : " + SHA256.encrypt(pwd));
+			System.out.println("비밀번호 + salt 적용 전 : " + SHA256.encrypt(pwd));//
+			
+			
 			md.update((pwd+salt).getBytes());
 			byte[] pwdsalt = md.digest();
 			
