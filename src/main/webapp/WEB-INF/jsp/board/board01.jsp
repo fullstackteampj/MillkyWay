@@ -90,8 +90,8 @@
       <h2 class="sr-only">은하수 광장✨</h2>
       <!-- 임시: 개발자용 로그인/로그아웃 -->
       <div>
-      	<button type="button" onclick="location.href='forDev/loginMilky'">밀키 로그인</button>
-      	<button type="button" onclick="location.href='forDev/loginToto'">또또 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginJihey'">지혜 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginSujin'">수진 로그인</button>
       	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
       </div>
       <article id="category">

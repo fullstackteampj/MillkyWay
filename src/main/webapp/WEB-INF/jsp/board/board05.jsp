@@ -33,7 +33,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>글 삭제 | 은하수책방</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -80,6 +80,9 @@
 		alert("권한이 없습니다.");
 		location.href = "board02?num=" + <%=num%>;
       	}
+		
+		// 입력창에 포커스
+		$frm.pwd.focus();
     }
  	
  	// 유효성 검사 후 submit

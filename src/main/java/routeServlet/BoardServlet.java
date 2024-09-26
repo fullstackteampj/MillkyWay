@@ -9,13 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 import board.BoardMgr;
+import beans.BoardBean;
 import beans.CommentBean;
 
 @WebServlet("/board/*")
@@ -89,70 +92,148 @@ public class BoardServlet extends HttpServlet {
     	
     	// 댓글 작성 요청
     	if("/boardComment".equals(path)) {
-    		response.setContentType("application/json");
-    		BoardMgr bMgr = new BoardMgr();
-    		
-    		// 요청데이터를 문자열로 읽기
     		StringBuilder sb = new StringBuilder();
-            String line;
+    		String line;
             while ((line = request.getReader().readLine()) != null) {
                 sb.append(line);
             }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
             
-            // URL디코딩으로 fetch문에서 body로 받은 parameter를 추출
-            String[] params = sb.toString().split("&");
-            int userid = Integer.parseInt(URLDecoder.decode(params[0].split("=")[1], StandardCharsets.UTF_8));
-            String nickname = URLDecoder.decode(params[1].split("=")[1], StandardCharsets.UTF_8);
-            int ref = Integer.parseInt(URLDecoder.decode(params[2].split("=")[1], StandardCharsets.UTF_8));
-            String userip = URLDecoder.decode(params[3].split("=")[1], StandardCharsets.UTF_8);
-            String commentMsg = URLDecoder.decode(params[4].split("=")[1], StandardCharsets.UTF_8);
-            String regDate = URLDecoder.decode(params[5].split("=")[1], StandardCharsets.UTF_8);
             
-            // DB에 댓글저장
-            bMgr.insertComment(userid, nickname, ref, userip, commentMsg, regDate);
+            int userid = jsonObj.get("userid").getAsInt();
+            String nickname = jsonObj.get("nickname").getAsString();
+            int boardid = jsonObj.get("boardid").getAsInt();
+            String ip = jsonObj.get("userip").getAsString();
+            String content = jsonObj.get("commentMsg").getAsString();
+            String regdate = jsonObj.get("regdate").getAsString();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
             
-            // 응답
-            PrintWriter out = response.getWriter();
-            out.write("{\"commentMsg\":\"" + commentMsg + "\"}");
-            out.flush();
+            //필요한 데이터 추가
+            BoardMgr bMgr = new BoardMgr();
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// DB에 댓글 저장
+    		bMgr.insertComment(userid, nickname, boardid, ip, content, regdate);
+    		
+    		// 댓글창에 필요한 데이터 담기
+    		int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
     	}
+    	
     	
     	// 대댓글(답글) 작성 요청
     	if("/boardCommentReply".equals(path)) {
-    		response.setContentType("application/json");
-    		BoardMgr bMgr = new BoardMgr();
-    		
-    		// 요청데이터를 문자열로 읽기
     		StringBuilder sb = new StringBuilder();
-            String line;
+    		String line;
             while ((line = request.getReader().readLine()) != null) {
                 sb.append(line);
             }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
             
-            // URL디코딩으로 fetch문에서 body로 받은 parameter를 추출
-            String[] params = sb.toString().split("&");
-            int userid = Integer.parseInt(URLDecoder.decode(params[0].split("=")[1], StandardCharsets.UTF_8));
-            String nickname = URLDecoder.decode(params[1].split("=")[1], StandardCharsets.UTF_8);
-            int ref = Integer.parseInt(URLDecoder.decode(params[2].split("=")[1], StandardCharsets.UTF_8));
-            String userip = URLDecoder.decode(params[3].split("=")[1], StandardCharsets.UTF_8);
-            String commentMsg = URLDecoder.decode(params[4].split("=")[1], StandardCharsets.UTF_8);
-            String regDate = URLDecoder.decode(params[5].split("=")[1], StandardCharsets.UTF_8);
-            int parenttId = Integer.parseInt(URLDecoder.decode(params[6].split("=")[1], StandardCharsets.UTF_8));
-            int depth = Integer.parseInt(URLDecoder.decode(params[7].split("=")[1], StandardCharsets.UTF_8));
-            int pos = Integer.parseInt(URLDecoder.decode(params[8].split("=")[1], StandardCharsets.UTF_8));
+            int userid = jsonObj.get("userid").getAsInt();
+            String nickname = jsonObj.get("nickname").getAsString();
+            int boardid = jsonObj.get("boardid").getAsInt();
+            String ip = jsonObj.get("userip").getAsString();
+            String content = jsonObj.get("commentMsg").getAsString();
+            String regdate = jsonObj.get("regdate").getAsString();
+            int parentid = jsonObj.get("parentid").getAsInt();
+            int depth = jsonObj.get("depth").getAsInt();
+            int pos = jsonObj.get("pos").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
             
-            // DB에 댓글저장
-            // bMgr.updatePos();
-            bMgr.insertReply(userid, nickname, ref, userip, commentMsg, regDate, parenttId, depth, pos);
-            
-            // 응답
-            PrintWriter out = response.getWriter();
-            out.write("{\"commentMsg\":\"" + commentMsg + "\"}");
-            out.flush();
+            //필요한 데이터 추가
+            BoardMgr bMgr = new BoardMgr();
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// DB에 댓글 저장
+    		bMgr.insertReply(userid, nickname, boardid, ip, content, regdate, parentid, depth, pos);
+    		
+    		// 댓글창에 필요한 데이터 담기
+    		int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
     	}
     	
     	// 댓글 수정 요청
-    	
+    	if("/boardCommentEdit".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            int commentid = jsonObj.get("commentid").getAsInt();
+            int userid = jsonObj.get("userid").getAsInt();
+            String nickname = jsonObj.get("nickname").getAsString();
+            String ip = jsonObj.get("userip").getAsString();
+            String content = jsonObj.get("commentMsg").getAsString();
+            String regdate = jsonObj.get("regdate").getAsString();
+            
+
+            int boardid = jsonObj.get("boardid").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
+            
+            //필요한 데이터 추가
+            BoardMgr bMgr = new BoardMgr();
+            int commentUser = bMgr.getCommentUser(commentid);
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// userid와 댓글작성자id가 같으면 DB에 댓글 수정
+            if(userid == commentUser) {
+            	bMgr.editComment(commentid, nickname, ip, content, regdate);
+            } else {
+            	response.sendRedirect("boardError?error=failCommentEdit");
+            }
+    		
+    		// 댓글창에 필요한 데이터 담기
+    		int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
+    	}
     	
     	// 댓글 삭제 요청
     	if("/boardCommentDel".equals(path)) {
@@ -167,13 +248,12 @@ public class BoardServlet extends HttpServlet {
             }
             
             // fetch에서 body로 받은 parameter 데이터 추출
-            int commentId = Integer.parseInt(URLDecoder.decode(sb.toString().split("=")[1], StandardCharsets.UTF_8));
+            //int commentId = Integer.parseInt(URLDecoder.decode(sb.toString().split("=")[1], StandardCharsets.UTF_8));
             
             // DB에 댓글 status 업데이트
-            bMgr.deleteComment(commentId);
+            //bMgr.deleteComment(commentId);
             
     	}
-    	
     	
     }
 

@@ -471,7 +471,7 @@ public class BoardMgr {
 		return count;
 	}
 	
-	// 댓글 내용 반환
+	// 댓글 목록 반환
 	public ArrayList<CommentBean> getCommentList(int boardid, int start, int end) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -510,6 +510,30 @@ public class BoardMgr {
 		return clist;
 	}
 	
+	// 댓글작성자 반환
+	public int getCommentUser(int commentId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int userid = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT userid FROM commenttbl WHERE commentid = "+commentId;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				userid = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return userid;
+	}
+	
 	// 마지막댓글의 id추출
 	public int getLastComId() {
 		Connection con = null;
@@ -533,8 +557,8 @@ public class BoardMgr {
 		return lastId;
 	}
 	
-	// 부모댓글의 parenttId 추출
-	public int getGrandId(int parenttId) {
+	// 부모댓글의 parentId 추출
+	public int getGrandId(int parentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -542,7 +566,7 @@ public class BoardMgr {
 		int parentPos = 1;
 		try {
 			con = pool.getConnection();
-			sql = "SELECT ref FROM commenttbl WHERE commentid="+parenttId;
+			sql = "SELECT ref FROM commenttbl WHERE commentid="+parentId;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -706,25 +730,6 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt);
 		}
 	}
-	
-	// 댓글 삭제
-	public void deleteComment(int commentid) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		String sql = null;
-		
-		try {
-			con = pool.getConnection();
-			sql = "UPDATE commenttbl SET status = 9 WHERE commentid="+commentid;
-			pstmt = con.prepareStatement(sql);
-			pstmt.executeUpdate();
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt);
-		}
-		
-	}
 
 	// 댓글의 대댓글 유무 반환
 	public boolean hasComReply(int commentId) {
@@ -747,6 +752,45 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		return flag;
+	}
+	
+	// 댓글 삭제
+	public void deleteComment(int commentid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE commenttbl SET status = 9 WHERE commentid="+commentid;
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 댓글 수정
+	public void editComment(int commentid, String loginNickname, String userip, String commentMsg, String updateDate) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;		
+		try {
+			con = pool.getConnection();
+			sql = "UPDATE commenttbl SET nickname=?, content=?, update_date=?, ip=? WHERE commentid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(2, commentMsg);
+			pstmt.setString(3, updateDate);
+			pstmt.setString(4, userip);
+			pstmt.setInt(5, commentid);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
 	}
 	
 	/* board03(글수정페이지) 활용메서드 */

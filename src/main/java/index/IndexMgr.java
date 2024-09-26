@@ -30,7 +30,7 @@ public class IndexMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select author,content,boardid from boardtbl order by boardid desc limit 10";
+			sql = "select nickname,content,boardid from boardtbl order by boardid desc limit 10";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -62,7 +62,7 @@ public class IndexMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select author,content,boardid from boardtbl order by liked desc limit 10";
+			sql = "select nickname,content,boardid from boardtbl where status=0 and best='Y' order by boardid desc limit 10";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			

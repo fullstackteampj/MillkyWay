@@ -74,7 +74,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>글제목 | 은하수책방</title>
+  <title><%=title%> | 은하수책방</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -111,6 +111,7 @@
 	          <div id="feedback">
 	            <p>조회 <span><%=count%></span></p>
 	            <p>추천 <span><%=liked%></span></p>
+	            <p>댓글 <span><%=bMgr.getCommentCount(num)%></span></p>
 	          </div>
 	        </div> <!--readHead-bottom-->
 	      </div> <!--readHead-->
@@ -167,7 +168,6 @@
 	
 	        <div id="commentMng">
 	          <span onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">본문보기</span>
-	          <span>새로고침</span> <!--임시:비동기로 새로고침하는거추가-->
 	        </div> <!-- div#commentMng -->
 	      </div> <!--commentHead-->
 	
@@ -181,9 +181,9 @@
           else {forCount = listSize;}
           %>
 		
+      	<div id="commentCont"> 
 		<%// 추출된 댓글이 있을경우 >
           if(!clist.isEmpty()) { %>
-        	 <div id="commentCont"> 
 		  <% for(int i=0; i<forCount; i++) {
 				CommentBean bean = clist.get(i);
 				int commentId = bean.getCommentid();
@@ -198,7 +198,7 @@
 				//status==0인건 정상출력/status=9면서 대댓이있는건 내용대체출력+버튼미출력
 				// 만약 depth가 있으면 class에 depth-뎁스값 부여
 		        if(comStatus==0) { %>
-	    	<div class="comment comment-<%=num%> <%if(comDepth > 0) {%> depth depth-<%=comDepth%><%}%>" >
+	    	<div class="comment comment-<%=num%> comid-<%=commentId%> <%if(comDepth > 0) {%> depth depth-<%=comDepth%><%}%>" >
 	    	
 	          <div class="commentInfo">
 	            <% // 글작성자와 댓글작성자가 같을경우 작성자표시
@@ -242,7 +242,7 @@
 		            <span>수정</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"><%=comContent%></textarea>
-		          <button type="button" onclick="editSubmit(this, <%=loginId%>, <%=loginNickname%>, <%=num%>, <%=commentId%>, <%=request.getRemoteAddr()%>)">수정</button>
+		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>)">수정</button>
 		        </div>
 			</form>
 	        
@@ -253,7 +253,7 @@
 		            <span>답글</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="답글을 작성해보세요!"></textarea>
-		          <button type="button" onclick="replySubmit(this, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>)">작성</button>
+		          <button type="button" onclick="replySubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>, <%=start%>, <%=end%>)">작성</button>
 		        </div>
 			</form>
 			
@@ -273,16 +273,17 @@
 		            <div class="commentAdd">
 		              <span class="commentDate"><%=comRegdate%></span>
 		            </div> <!-- commentAdd -->
+		            
 		          </div> <!-- commentInfo -->
 		          
 		          <div class="commentMsg">
 		            <p class="text">삭제된 댓글입니다.</p>
 		          </div>
-	        	</div>
+	        	</div> <!-- comment -->
 	        <% } // else if(status==9)
 	     	} //for(int i=0; i<forCount; i++) %>
-		  </div> <!--commentCont-->
-	     <% } // if(!clist.isEmpty())%>
+     <% } // if(!clist.isEmpty())%>
+	  	</div> <!--commentCont-->
 		
 		
 		<!-- 페이지네이션 -->
@@ -335,14 +336,16 @@
 			            <%=loginNickname%>
 			          </p>
 			          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
-			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>')">작성</button>
+			          <!-- <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>')">작성</button> -->
+			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>)">작성</button>
 			        </div>
 				</form>
 		<% } else { %>
-			<p>로그인 이후에 댓글을 작성할 수 있습니다.</p>
+			<p id="loginNotice">로그인 이후에 댓글을 작성할 수 있습니다.</p>
 		<% } %>
 	      
 	    </div> <!--commentBox-->
+	    
 	
 	    <div id="btns"> <!--임시-->
 	      <a href="./board01">목록</a>

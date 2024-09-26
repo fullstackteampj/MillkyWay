@@ -629,7 +629,7 @@ section > form#FrmPost > #postBtn > button:last-of-type {
   margin-left: 5px;
   background-color: #33afe9;
 }
-section > #postBox, section #commentBox {
+section > #postBox, #commentBox {
   margin-bottom: 12px;
   padding: 20px;
   border: 1px solid #ccc;
@@ -678,17 +678,18 @@ section > #postBox > #readHead > #readHead-bottom > #feedback {
 section > #postBox > #readHead > #readHead-bottom > #feedback > p {
   font-size: 15px;
 }
-section > #postBox > #readHead > #readHead-bottom > #feedback > p:first-of-type {
-  padding-right: 10px;
+section > #postBox > #readHead > #readHead-bottom > #feedback > p {
+  padding: 0 10px;
   border-right: 1px solid #ccc;
 }
 section > #postBox > #readHead > #readHead-bottom > #feedback > p:last-of-type {
-  padding-left: 10px;
+  border-right: none;
 }
 section > #postBox > #readContent {
-  padding: 40px 0;
+  padding: 40px 10px;
 }
 section > #postBox > #readContent > #contentDetail {
+  min-height: 150px;
   padding-bottom: 40px;
   font-size: 15px;
   line-height: 1.5;
@@ -751,93 +752,94 @@ section > #postBox > #postMng > .readBtn:last-child {
   border: 1px solid #ccc;
   margin: 0;
 }
-section > #commentBox > #commentHead {
+#commentHead {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 16px;
 }
-section > #commentBox > #commentHead > #commentOpt {
+#commentHead > #commentOpt {
   display: flex;
 }
-section > #commentBox > #commentHead > #commentOpt > h3 {
+#commentHead > #commentOpt > h3 {
   font-size: 18px;
   margin-right: 12px;
 }
-section > #commentBox > #commentHead > #commentOpt > select {
+#commentHead > #commentOpt > select {
   text-align: center;
   outline: none;
   border: 1px solid #ccc;
 }
-section > #commentBox > #commentHead > #commentMng {
+#commentHead > #commentMng {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 15px;
 }
-section > #commentBox > #commentHead > #commentMng > span {
+#commentHead > #commentMng > span {
   margin-right: 10px;
   cursor: pointer;
 }
-section > #commentBox > #commentHead > #commentMng > span:last-of-type {
+#commentHead > #commentMng > span:last-of-type {
   margin: 0;
 }
-section > #commentBox > #commentCont {
+#commentCont {
   font-size: 14px;
   margin: 16px 0;
 }
-section > #commentBox > #commentCont > .comment {
+#commentCont > .comment {
   position: relative;
   padding: 5px 10px;
   border-bottom: 1px solid #ccc;
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo {
+#commentCont > .comment > .commentInfo {
   display: flex;
   justify-content: space-between;
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .author {
+#commentCont > .comment > .commentInfo > .author {
   font-family: "Pretendard-Bold";
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .same {
+#commentCont > .comment > .commentInfo > .same {
 	display: inline;
     /*box-shadow: inset 0 -10px 0 #D9FCDB;*/
     box-shadow: inset 0 -10px 0 #b0dbe3;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd {
+#commentCont > .comment > .commentInfo > .commentAdd {
   display: flex;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
+#commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
   margin-right: 12px;
   color: #aaa;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
   font-size: 0;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
   display: inline-block;
   margin-top: 3px;
   margin-right: 12px;
   font-size: 12px;
   cursor: pointer;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child {
   margin: 0;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
   display: block;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
   color: #33afe9;
 }
-section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
+#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
   color: rgb(205, 92, 92);
 }
-section > #commentBox > #commentCont > .comment > .commentMsg {
+#commentCont > .comment > .commentMsg {
   padding: 10px 0;
 }
-section > #commentBox > #commentCont > .depth:after {
+#commentCont > .depth:after {
 	position: absolute;
 	top: 10px;
 	left: -25px;
@@ -845,17 +847,18 @@ section > #commentBox > #commentCont > .depth:after {
 	height: 10px;
 	content: '👉';
 }
-section > #commentBox > form {
+#commentBox form {
   margin-top: 30px;
 }
-section > #commentBox > #commentCont > form {
-  margin-bottom: 10px;
+#commentCont > form {
+  margin-top: 0;
+  margin-bottom: 20px;
 }
-section > #commentBox > #commentCont > #replyFrm {
+#commentCont > #replyFrm {
   position: relative;
   margin-left: 50px;
 }
-section > #commentBox > #commentCont > #replyFrm:after {
+#commentCont > #replyFrm:after {
 	position: absolute;
 	top: 10px;
 	left: -25px;
@@ -863,33 +866,33 @@ section > #commentBox > #commentCont > #replyFrm:after {
 	height: 10px;
 	content: '👉';
 }
-section > #commentBox > form > #writeComment,
-section > #commentBox > #commentCont > form > #writeComment {
+#commentBox  form > #writeComment,
+#commentCont > form > #writeComment {
   position: relative;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;
 }
-section > #commentBox > form > #writeComment:focus-within,
-section > #commentBox > #commentCont > form > #writeComment:focus-within {
+#commentBox  form > #writeComment:focus-within,
+#commentCont > form > #writeComment:focus-within {
   border-color: #33afe9;
   outline: 1px solid #33afe9;
 }
-section > #commentBox > form > #writeComment > .commentAuthor,
-section > #commentBox > #commentCont > form > #writeComment > .commentAuthor {
+#commentBox  form > #writeComment > .commentAuthor,
+#commentCont > form > #writeComment > .commentAuthor {
   font-size: 14px;
   font-family: "Pretendard-Bold";
   padding: 10px;
   color: #ccc;
   border-bottom: 1px solid #ccc;
 }
-section > #commentBox > #commentCont > form > #writeComment > .commentAuthor > span {
+#commentCont > form > #writeComment > .commentAuthor > span {
 	font-size: 12px;
 	margin-right: 10px;
 }
-section > #commentBox > form > #writeComment > textarea,
-section > #commentBox > #commentCont > form > #writeComment > textarea {
+#commentBox  form > #writeComment > textarea,
+#commentCont > form > #writeComment > textarea {
   display: block;
   width: 100%;
   min-height: 130px;
@@ -900,8 +903,8 @@ section > #commentBox > #commentCont > form > #writeComment > textarea {
   border: none;
   outline: none;
 }
-section > #commentBox > form > #writeComment > button,
-section > #commentBox > #commentCont > form > #writeComment > button {
+#commentBox  form > #writeComment > button,
+#commentCont > form > #writeComment > button {
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -912,36 +915,32 @@ section > #commentBox > #commentCont > form > #writeComment > button {
   border-radius: 3px;
   background: none;
 }
-section > #commentBox > form > #writeComment > button:hover,
-section > #commentBox > #commentCont > form > #writeComment > button:hover {
+#commentBox  form > #writeComment > button:hover,
+#commentCont > form > #writeComment > button:hover {
 	color: #fff;
 	background-color: #33afe9;
 	border-color: #33afe9;
 }
-section > #commentBox > #commentCont > form.off {
+#commentCont form.off {
 	display: none;
 }
-section #commentBox > p {
+#loginNotice {
 	margin: 30px 0;
 	padding: 30px 0;
 	font-size: 14px;
 	text-align: center;
 }
-/*임시*/
-section > #commentBox > #commentCont {
-	/*outline: 1px solid blue;*/
-}
-section > #commentBox > #comPagination {
+#comPagination {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 30px;
 	/*outline: 1px solid red;*/
 }
-section > #commentBox > #comPagination > li {
+#comPagination > li {
 	margin-right: 5px;
 }
-section > #commentBox > #comPagination > li > a {
+#comPagination > li > a {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -950,11 +949,11 @@ section > #commentBox > #comPagination > li > a {
 	font-size: 14px;
 	/*outline: 1px solid pink;*/
 }
-section > #commentBox > #comPagination > li:last-child {
+#comPagination > li:last-child {
 	margin-right: 0px;
 }
-section > #commentBox > #comPagination > li:hover > a,
-section > #commentBox > #comPagination > li.on > a {
+#comPagination > li:hover > a,
+#comPagination > li.on > a {
 	font-family: "Pretendard-Bold";
 	color: #33afe9;
 }

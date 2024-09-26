@@ -9,6 +9,7 @@ public class CommentBean {
 	private int pos;
 	private int depth;
 	private int ref;
+	private int parentid;
 	private String regdate;
 	private String updateDate;
 	private String ip;
@@ -60,6 +61,12 @@ public class CommentBean {
 		return ref;
 	}
 	public void setRef(int ref) {
+		this.ref = ref;
+	}
+	public int getParentid() {
+		return ref;
+	}
+	public void setParentid(int ref) {
 		this.ref = ref;
 	}
 	public String getRegdate() {
