@@ -25,7 +25,7 @@ $genreCategoryAs.forEach($genreCategoryA => {
 
 let nowIdx = 0;
 //목록 위 탭 네비게이션 클릭 이벤트
-const $containerTapAs = document.querySelectorAll('.shop-list .container>nav>ul>li>a');
+const $containerTapAs = document.querySelectorAll('.shop-list .container>.content>nav>ul>li>a');
 
 (function(){
   $containerTapAs.forEach(($containerTapA, idx) => {
@@ -64,7 +64,6 @@ window.addEventListener('load', ()=>{
       $genreCategoryA.firstElementChild.classList.add('fa-minus');
       $genreCategoryA.nextElementSibling.classList.add('on');
 
-      console.log( );
       //해당 카테고리도 on상태
       $genreCategoryA.parentElement.parentElement.previousElementSibling.firstElementChild.classList.add('fa-minus');
       $genreCategoryA.parentElement.parentElement.classList.add('on');
@@ -84,6 +83,9 @@ window.addEventListener('load', ()=>{
     }
   });
 });
+
+//폼 요소안에 submit 요소 있는 경우 form.submit() 방식 불가능!
+
 
 
 

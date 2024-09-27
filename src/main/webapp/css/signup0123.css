@@ -276,6 +276,33 @@
   margin-top: 0px;
 }
 
+aside {
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  align-items: center;
+  width: 100px;
+  height: 80px;
+  margin: 0 auto;
+  margin-top: 40px;
+  border: 1px solid #000;
+}
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 section.sign-up {
   width: 1200px;
   margin: 120px auto;
@@ -300,6 +327,7 @@ section.sign-up input[type=checkbox]:checked {
 }
 section.sign-up .btns {
   display: flex;
+  flex-flow: row nowrap;
   justify-content: center;
   width: 600px;
   margin: 50px auto 30px;
@@ -405,9 +433,6 @@ section.sign-up > .agreement {
   padding: 10px 20px;
   text-align: center;
 }
-section.sign-up > .agreement.hide {
-  display: none;
-}
 section.sign-up > .agreement > h3 {
   padding: 5px;
 }
@@ -431,12 +456,9 @@ section.sign-up > .agreement > form > ul > li input[type=checkbox] {
   height: 25px;
 }
 section.sign-up > .enterInfo {
-  display: none;
+  display: block;
   width: 800px;
   margin: 0 auto;
-}
-section.sign-up > .enterInfo.on {
-  display: block;
 }
 section.sign-up > .enterInfo input, section.sign-up > .enterInfo select {
   box-sizing: border-box;
@@ -475,9 +497,6 @@ section.sign-up > .enterInfo > form ul > li {
 section.sign-up > .enterInfo > form ul > li input:focus, section.sign-up > .enterInfo > form ul > li select:focus {
   border-color: rgb(127, 161, 195);
 }
-section.sign-up > .enterInfo > form ul > li #question {
-  width: 80%;
-}
 section.sign-up > .enterInfo > form ul > li #account, section.sign-up > .enterInfo > form ul > li #nickname {
   width: 68%;
   margin-right: 5px;
@@ -485,23 +504,26 @@ section.sign-up > .enterInfo > form ul > li #account, section.sign-up > .enterIn
 section.sign-up > .enterInfo > form ul > li #account + button, section.sign-up > .enterInfo > form ul > li #nickname + button {
   width: calc(12% - 5px);
 }
-section.sign-up > .enterInfo > form ul > li #mobileCarrier {
+section.sign-up > .enterInfo > form ul > li #phone {
   width: calc(20% - 5px);
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #mobileCarrier + input {
+section.sign-up > .enterInfo > form ul > li #phone + input {
   width: 60%;
 }
 section.sign-up > .enterInfo > form ul > li #zipcode {
   width: 13%;
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #basicAddress {
+section.sign-up > .enterInfo > form ul > li #address {
   width: 58%;
   margin-right: 5px;
 }
-section.sign-up > .enterInfo > form ul > li #basicAddress + button {
+section.sign-up > .enterInfo > form ul > li #address + button {
   width: calc(9% - 10px);
+}
+section.sign-up > .enterInfo > form ul > li #question {
+  width: 80%;
 }
 section.sign-up > .enterInfo > form ul > li #email {
   width: 65%;
@@ -598,6 +620,11 @@ section.sign-up > .enterInfo > form ul > li > input[type=radio]:checked {
 section.sign-up > .enterInfo > form ul > li > input[type=radio]:checked:after {
   color: #fdfdfd;
 }
+section.sign-up > .enterInfo > form ul > li > input[type=checkbox] {
+  width: 20px;
+  height: 20px;
+  margin: 0 20px 0 1px;
+}
 section.sign-up > .enterInfo > form ul > li > select {
   -webkit-appearance: none;
      -moz-appearance: none;
@@ -626,23 +653,15 @@ section.sign-up > .enterInfo > form ul > li > select:focus {
 section.sign-up > .enterInfo > form ul > li > select#date {
   margin-right: 0;
 }
-section.sign-up > .enterInfo > form ul > li > input[type=checkbox] {
-  width: 20px;
-  height: 20px;
-  margin: 0 20px 0 1px;
-}
-section.sign-up .finish {
-  display: none;
+section.sign-up > .finish {
+  display: block;
   text-align: center;
 }
-section.sign-up .finish.on {
-  display: block;
-}
-section.sign-up .finish > h2 {
+section.sign-up > .finish > h2 {
   padding: 20px;
   color: rgb(100, 130, 173);
 }
-section.sign-up .finish > h2 + p {
+section.sign-up > .finish > h2 + p {
   padding: 10px;
   font-weight: 600;
-}/*# sourceMappingURL=signup01.css.map */
+}/*# sourceMappingURL=signup0123.css.map */

@@ -1,11 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.Vector" %>
 <%@ page import="beans.BookBean" %>
 <%@ page import="beans.ReviewBean" %>
-<jsp:useBean id="bMgr" class="bookInfo.BookInfoMgr" />
+<jsp:useBean id="bMgr" class="book.BookInfoMgr" />
 <%
 	request.setCharacterEncoding("UTF-8");
+
+	//로그인 상태 확인
+	int userid = 0; 
+	
+	if(session.getAttribute("idKey") !=null){
+		//세션값 int로 저장 
+		Object sessionValue = session.getAttribute("idKey");
+		
+		// 타입 확인 후 변환
+		if (sessionValue instanceof String) {
+		    String strValue = (String) sessionValue; // String으로 캐스팅
+		    try {
+		        userid = Integer.parseInt(strValue);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace(); // 변환 실패 시 예외 처리
+		    }
+		} else if (sessionValue instanceof Integer) {
+		    // 만약 세션에 직접 Integer로 저장되어 있다면
+		    userid = (Integer) sessionValue; 
+		} 
+	} 
+	
+	
+
 	int bookid = Integer.parseInt(request.getParameter("bookid"));
 	Vector<BookBean> vlist = null;
 	vlist = bMgr.getBook(bookid);
@@ -29,8 +53,6 @@
 	//한줄평 총 개수 
 	int totalReview = bMgr.totalReview(bookid);
 %>
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,7 +62,7 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/shop02.css?after" />
   <title>상품 상세 페이지</title>
   <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/shop02.js?ver100"></script>
+  <script defer src="${pageContext.request.contextPath}/js/shop02.js"></script>
 </head>
 
 <body>
@@ -50,13 +72,13 @@
 	    <form name="quickFrm" method="post">
 	      <div>
 	        <p><%=tit%></p>
-	        <p>총 금액&nbsp;<span class="quick-total"></span></p>
-	        <button formaction="/buy/buy01">바로구매</button>
-	        <button formaction="/mypage/mypage05">장바구니</button>
-	        <button formaction="/mypage/mypage05">관심목록</button>
+	        <p>총 금액<span class="quick-total"></span></p>
+	        <button onclick="toBuy(event)">바로구매</button>
+	        <button onclick="toCart(event)">장바구니</button>
+	        <button onclick="toWish(event)">관심목록</button>
 	      </div>
 	      <input type="hidden" name="bookid" value="<%=bookid%>" />
-	    </form><!--form name="quick-order"-->
+	    </form><!--form name="quickFrm"-->
 	
 	    <h2>
 	      <i class="fa-solid fa-chevron-left"></i>
@@ -66,16 +88,17 @@
 	    <p><%=pdate%> 출판</p>
 	    <div class="headbook">
 	      <img src="<%=imgUrl%>" alt="<%=tit%>">
+	      
 	      <form name="orderFrm" method="post">
-	        <h3>가격 :&nbsp; <span><%=price%></span>원</h3>
+	        <h3>가격 :<span><%=price%></span>원</h3>
 	        <p>
 	          포인트 : &nbsp;
 	          <span class="point"></span>원 적립 (판매가의 10% 적립)
 	        </p>
-	        <p>배송료 : 2000원&nbsp;<span>(5만원 이상 무료배송)</span></p>
+	        <p>배송료 : 2000원<span>(5만원 이상 무료배송)</span></p>
 	        <p>
 	          <%
-	        		for(int c=0; c<score; c++){
+	        		for(int c=0; c<score; c++){//별생성
 	        			%>
 	        			<i class="fa-solid fa-star"></i>
 	        			<%
@@ -99,23 +122,24 @@
 	              <button type="button">-</button>
 	            </div><!--btn-updown-->
 	          </div><!--updown-qty-->
-	          <p>도서 가격&nbsp;
-	            <span class="pretotal"></span>&nbsp;
-	            <span></span>&nbsp;
+	          <p>도서 가격
+	            <span class="pretotal"></span>
+	            <span></span>
 	            <i class="fa-solid fa-arrow-right"></i>
-	            &nbsp;&nbsp;총 금액&nbsp;
+	          총 금액
 	            <span class="total-price"></span>
 	          </p>
 	        </div><!--order-qty-->
+	        <input type="hidden" name="bookid" value="<%=bookid%>" />
 	        <button>매장 위치 확인</button>
 	        <div class="btns-quickbuy">
-	          <button formaction="/buy/buy01">바로구매</button>
-	          <button formaction="/mypage/mypage05">장바구니</button>
-	          <button formaction="/mypage/mypage05">관심목록</button>
+	          <button onclick="toBuy(event)">바로구매</button>
+	          <button onclick="toCart(event)">장바구니</button>
+	          <button onclick="toWish(event)">관심목록</button>
 	        </div><!--.btns-quickbuy-->
 	        <input type="hidden" name="bookid" value="<%=bookid%>" />
 	      </form>
-	
+
 	    </div><!--.headbook-->
 	
 	    <ul>
@@ -125,7 +149,8 @@
 	          전체 페이지 수 : <%=pages%>쪽<br />
 	          1942gISBN : <%=isbn%><br />
 	          주제 분류<br />
-	          <a href="#"><%=category%></a> > <a href="#"><%=genre%></a>
+	          <a href="/shop/shop01?category=<%=category%>"><%=category%></a> > 
+	          <a href="/shop/shop01?category=<%=category%>&genre=<%=genre%>"><%=genre%></a>
 	        </p>
 	      </li>
 	      <li>
@@ -190,7 +215,7 @@
 	        <h3>목차</h3>
 	        <ol>
 	        <%
-	        	//DB저장된 목차 문자열 -> 쉼표 and 띄어쓰기 별로 나누기
+	        	//DB저장된 목차: 문자열 -> 쉼표 and 띄어쓰기 별로 나누기
 	        	String[] ctableArr = ctable.split(",|\\n");
 	        	
 	        
@@ -215,7 +240,7 @@
 	          <h4>평균<br />별점</h4>
 	          <p>
 	          	<%
-	          		for(int c=0; c<score; c++){
+	          		for(int c=0; c<score; c++){//별생성
 	          			%>
 	          			<i class="fa-solid fa-star"></i>
 	          			<%
@@ -256,7 +281,7 @@
 	        		%>
 	        		<li>     
 	        		<%
-	        		for(int c=0; c<rScore; c++){
+	        		for(int c=0; c<rScore; c++){//별 생성
 	        			%>
 	        			<i class="fa-solid fa-star"></i>
 	        			<%
@@ -278,9 +303,7 @@
 	      </li>
 	    </ul>
 	  </section>
-	  <footer>
-      	<address>&copy;Designed by teamMillkyWay</address>
-      </footer>
+	  <jsp:include page="../components/footer.jsp" />
 	</div>
 <script>
 //한줄평 별 호버시 색변화
@@ -299,6 +322,7 @@
 	    }
 	  });
 	
+	  //해당 별점 - 클릭이벤트
 	  $star.addEventListener('click', ()=>{
 	    for(let i=0; i<=idx; i++){
 	      $stars[i].style.color = 'rgb(100, 130, 173)';/******* 포인트 컬러에 따라 변경 필요********/
@@ -311,13 +335,12 @@
 	});
 	
 	//한줄평 등록 확인창
-	const sidKey = '<%=session.getAttribute("idKey")%>';//문자열로 받음
+	const userid = '<%=userid%>';
 	const frm = document.reviewFrm;
 
-	console.log(sidKey);
 	const checkReview = () => {
-	  //const url = '/shop/shop03?inputScore='+ inputScore + ',idKey=' + sidKey; 로그인 상태 되면 다시 확인해보기
-	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=1'; //임의 아이디키 넣음
+	  //쿼리스트링으로 JS에서 클릭했던 별점 inputScore 값 보내줌
+	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=<%=userid%>'; //임의 아이디키 넣음
 	  window.open(url, "review", "width=400, height=300");
 	  frm.action = url;
 	  frm.target = "review";
@@ -331,21 +354,62 @@
 			document.frm.content.focus();
 			return;
 		}
-		
-		checkReview();
-		
-		//세션 값에 따라 다르게 출력
-		/*
-		if(sidKey === 'null'){//비로그인 상태
-			const loginAnswer = confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?')
+	
+		if(userid === '0'){//비로그인 상태
+			const loginAnswer = confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?');
 			if(loginAnswer){
 				location.href = 'login/login01';
+			}else{
+				checkReview();
 			}
-		}else{
-			checkReview();
-			
-		}*/
+		}
+	}//reviewFn()
+	
+    
+	//로그인 상태 확인 - 팝업창/shopProc이동
+	makePopup = (save) => {
+		
+	    const popupWidth = 500;
+	    const popupHeight = 350;
+	    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
+	    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
+		
+	    if (userid === '0') {
+	        //비로그인 상태일 경우 팝업창 생성
+	        const url = '/buy/buy02';
+	        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
+	    }else{
+	    	//장바구니/관심목록 구분
+			if(save==='cart'){
+				document.orderFrm.action = '/shop/shopProc?save=cart';
+			}else if(save==='wish'){
+				document.orderFrm.action = '/shop/shopProc?save=wish';
+			}else{
+				document.orderFrm.action = '/buy/buy01';
+			}
+		    document.orderFrm.submit();
+		}
 	}
+	//바로 구매 클릭시
+    const toBuy = (event) => {
+	    event.preventDefault();
+	    makePopup('buy');
+
+	}
+	
+    //관심목록 클릭시
+	const toWish = (event) => {
+	    event.preventDefault();
+	    makePopup('wish');
+
+	}
+	
+	//장바구니 클릭시
+	const toCart = (event) => {
+		event.preventDefault();
+		makePopup('cart');
+	}
+
 </script>
 </body>
 

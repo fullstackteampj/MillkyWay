@@ -6,6 +6,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	int num = Integer.parseInt(request.getParameter("num"));
+	String category = request.getParameter("category");
 	
 	MemberBean loginBean = null;
 	Integer loginId = null;
@@ -26,12 +27,13 @@
 	
 	// 로그인유무로 접근제한
 	boolean loginOk = (session != null && loginBean != null);
+	
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>글 삭제 | 은하수책방</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset copy 2.css?after">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -50,6 +52,7 @@
 					<form action="boardDelete" method="post" name="delFrm" id="delFrm" autocomplete="off">
 						<input type="hidden" name="userid" value="<%=userid%>" />
 						<input type="hidden" name="boardid" value="<%=num%>" />
+						<input type="hidden" name="category" value="<%=category%>" />
 						<p>회원 비밀번호를 입력해주세요.</p>
 						<input type="password" id="pwd" name="pwd" />
 					</form>
@@ -70,12 +73,16 @@
 	<script>
 	
 	const $frm = document.delFrm;
+	
 	// 페이지 로드 시, 로그인이 안되어있거나 글작성자와 로그인유저가 다를시 접근제한 (직접 주소창으로 접근 시 제한)
 	window.onload = function() {
 		if(!<%=loginOk%> || !<%=identify%>) {
 		alert("권한이 없습니다.");
 		location.href = "board02?num=" + <%=num%>;
-      }
+      	}
+		
+		// 입력창에 포커스
+		$frm.pwd.focus();
     }
  	
  	// 유효성 검사 후 submit

@@ -1,10 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
 <%@ page import="beans.BookBean" %>
-<jsp:useBean id="bMgr" class="bookInfo.BookInfoMgr" />
+<jsp:useBean id="bMgr" class="book.BookInfoMgr" />
+<jsp:useBean id="oMgr" class="book.BookOrderMgr" />
 <% 
-	request.setCharacterEncoding("UTF-8"); Vector<BookBean> vlist = null;
+	request.setCharacterEncoding("UTF-8");
+	
+	//로그인 상태 확인
+	int userid = 0; 
+	
+	if(session.getAttribute("idKey") !=null){
+		//세션값 int로 저장 
+		Object sessionValue = session.getAttribute("idKey");
+			
+		// 타입 확인 후 변환
+		if (sessionValue instanceof String) {
+		    String strValue = (String) sessionValue; // String으로 캐스팅
+		    try {
+		        userid = Integer.parseInt(strValue);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace(); // 변환 실패 시 예외 처리
+		    }
+		} else if (sessionValue instanceof Integer) {
+		    // 만약 세션에 직접 Integer로 저장되어 있다면
+		    userid = (Integer) sessionValue; 
+		} 
+	} 
 
+	Vector<BookBean> vlist = null;
 
 	//1~87 범위안의 무작위 수 4개 -> 추천할 bookid
 	Random r = new Random();
@@ -95,11 +118,11 @@
 							<h4>"<%=mini%>"</h4>
 							<img src="<%=imgUrl%>" alt="<%=tit%>">
 							<div>
-								<a href="/mypage/mypage05?bookid=<%=bookid%>"><i
-										class="fa-solid fa-cart-shopping"></i></a>
 								<a href="/shop/shop02?bookid=<%=bookid%>"><i
-										class="fa-solid fa-magnifying-glass"></i></a>
-								<a href="/mypage/mypage05?bookid=<%=bookid%>"><i
+										class="fa-solid fa-magnifying-glass" "></i></a>
+								<a href="/mypage/mypage05" onclick="toCart(event, <%=bookid%>)"><i
+										class="fa-solid fa-cart-shopping"></i></a>
+								<a href="/mypage/mypage05" onclick="toWish(event, <%=bookid%>)"><i
 										class="fa-solid fa-heart-circle-plus"></i></a>
 							</div>
 							<h5>독자의 한 마디</h5>
@@ -120,10 +143,44 @@
 			</div><!--.container-->
 		</section>
 
-		<footer>
-			<address>&copy;Designed by teamMillkyWay</address>
-		</footer>
+		<jsp:include page="../components/footer.jsp" />
 	</div>
+<script>
+	//로그인 상태 확인 - 팝업창 생성
+	const userid = '<%=userid%>';
+	
+	const makePopup = (save, bookid) => {
+	   
+	    const popupWidth = 500;
+	    const popupHeight = 350;
+	    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
+	    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
+	
+	    if (userid === '0') {
+	        //비로그인 상태일 경우 팝업창 생성
+	        const url = '/buy/buy02';
+	        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
+	    }else{
+	    	//장바구니/관심목록 구분
+			if(save === 'cart'){
+				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
+			}else{
+				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+			}
+	    }
+	}
+		
+	const toWish = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('wish',bookid);
+	}
+	
+	const toCart = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('cart', bookid);
+	}
+
+</script>
 </body>
 
 </html>

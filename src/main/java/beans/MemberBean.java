@@ -15,6 +15,7 @@ public class MemberBean {
 	private String gender;
 	private String zipcode;
 	private String address;
+	private String detailAddress; //추가
 	private String phoneNum;
 	private String phone;
 	private String email;
@@ -29,10 +30,10 @@ public class MemberBean {
 	private String[] agree;
 	private String salt;
 	
-	public String[] getAgree() {
+	public String getAgree() {
 		return agree;
 	}
-	public void setAgree(String[] agree) {
+	public void setAgree(String agree) {
 		this.agree = agree;
 	}
 	public String getPhoneNum() {

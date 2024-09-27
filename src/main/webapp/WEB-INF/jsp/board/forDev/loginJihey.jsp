@@ -5,8 +5,8 @@
 	//임시로 로그인 세션 저장
 	MemberBean mBean = new MemberBean();
 	mBean.setUserid(2);
-	mBean.setAccount("toto@naver.com");
-	mBean.setNickname("또또밍기");
+	mBean.setAccount("jihye@gmail.com");
+	mBean.setNickname("지혜");
 	session.setAttribute("mBean", mBean);
 %>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
-	alert("또또밍기 로그인\n비번 1111");
+	alert("지혜 로그인\n비번 1234");
 	location.href="../board01";
 </script>
 </head>
