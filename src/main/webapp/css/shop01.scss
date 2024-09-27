@@ -17,228 +17,217 @@ $priStrong: #1a6080;
 $priWhite: #b6e2f7;
 
 @import "_header";
+@import "_aside";
+@import "_footer";
 
 section.shop-list{
-  position: relative;
   width: 1200px;
-  height: 1700px;
   margin: 120px auto 0;
   >h2{
     padding: 20px 0;
   }//h2
-  >nav{
-    position: absolute;
-    left: 0;
-    width: 200px;
-    padding: 5px;
-    box-sizing: border-box;
-    >ul{
-       i{
-        margin-right: 5px;
-        padding: 3px;
-        color: #fdfdfd;
-        font-size: 14px;
-        background-color: $point-color;
-        border-radius: 50%;
-      }//i
-      >li{
-        font-size: 20px;
-        line-height: 1.8;
-        &:last-child{
-          >ul{
-            
-            >li{>a{
-              font-weight: 500;
-              &:hover{
-              color: #222; 
-              text-decoration: underline;
-            }}}
-          }
-        }
-        >a{
-          display: flex;
-          align-items: center;
-          font-weight: 700;
-          &:hover{color: $point-color;}
-        }//a
-        >ul{
-          display: none;
-          &.on{display: block;}
-          >li{
-            font-size: 15px;
-            >a{
-              display: flex;
-              align-items: center;
-              padding-left: 25px;
-              font-weight: 600;
-              &:hover{color: $point-color;}
-              >i{font-size: 10px;}
-            }//a
-          
-            >ol{
-              display: none;
-              padding-left: 45px;
-              border-radius: 5px;
-              box-sizing: border-box;
-              &.on{display: block;}
-              >li{
-                &:hover{text-decoration: underline;}
-                >a{font-weight: 500;}
-              }//li
-            }//ol(장르분야 내부)
-          }//in 2nd ul-li
-        }//.book-genreCategory
-      }//li(국내/국외/eBook)
-    }//.book-broadCategory
-  }//nav
- 
   >.container{
-    position: absolute;
-    right: 0;
-    width: 1000px;
-    padding: 10px 10px 10px 20px;
-    border-left: 1px solid $sec-color;
-    box-sizing: border-box;
-
+    display: flex;
+    flex-flow: row nowrap;
     >nav{
+      width: 200px;
+      padding: 5px;
+      box-sizing: border-box;
       >ul{
-        display: flex;
+         i{
+          margin-right: 5px;
+          padding: 3px;
+          color: #fdfdfd;
+          font-size: 14px;
+          background-color: $point-color;
+          border-radius: 50%;
+        }//i
         >li{
-          width: 200px;
-          &.on{
-            >a{
-              position: absolute;
-              top: 10px;
-              z-index: 100;
-              width: 200px;
-              color: $point-color;
-              border-color: $point-color;
-              background-color: #fdfdfd;
-              border-bottom: 1px solid #fdfdfd;
-              &:hover{color: $point-color;}
+          font-size: 20px;
+          line-height: 1.8;
+          &:last-child{
+            >ul{
+              
+              >li{>a{
+                font-weight: 500;
+                &:hover{
+                color: #222; 
+                text-decoration: underline;
+              }}}
             }
-          }//li.on
+          }
           >a{
-            display: block;
-            height: 50px;
-            color: $sec-color;
-            font-size: 16px;
-            font-weight: 600;
-            text-align: center;
-            line-height: 50px;
-            background-color: #fdfdfd;
-            border: 1px solid #ddd;
-            border-bottom: none;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            &:hover{color: $pri-color;}
-            
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            &:hover{color: $point-color;}
           }//a
-        }//li
-      }//ul
+          >ul{
+            display: none;
+            &.on{display: block;}
+            >li{
+              font-size: 15px;
+              >a{
+                display: flex;
+                align-items: center;
+                padding-left: 25px;
+                font-weight: 600;
+                &:hover{color: $point-color;}
+                >i{font-size: 10px;}
+              }//a
+            
+              >ol{
+                display: none;
+                padding-left: 45px;
+                border-radius: 5px;
+                box-sizing: border-box;
+                &.on{display: block;}
+                >li{
+                  &:hover{text-decoration: underline;}
+                  >a{font-weight: 500;}
+                }//li
+              }//ol(장르분야 내부)
+            }//in 2nd ul-li
+          }//.book-genreCategory
+        }//li(국내/국외/eBook)
+      }//.book-broadCategory
     }//nav
-    >ol{
-      
-      border-top: 1px solid $point-color ;
-      padding: 0 10px;
-      background-color: #fdfdfd;
-      
-      >li{
-        &:nth-of-type(1){margin-top: 0;}
-        >a{
+   
+    >.content{
+      width: 1000px;
+      padding: 10px 10px 10px 20px;
+      border-left: 1px solid $sec-color;
+      box-sizing: border-box;
+      >nav{
+        >ul{
           display: flex;
           flex-flow: row nowrap;
-          padding: 30px 0;
-          border-bottom: 1px solid $sec-color;
-          &:hover{
-            &>.text{
-              >p:last-of-type{text-decoration: underline;}
-            }//a:hover>.text
-          }//a:hover
-          >img{
-            display: block;
-            width: 150px;
-            box-shadow: 1px 1px 2px $sec-color;
-          }//img
-          >.text{
-            flex: 1 1 0;
-            margin-left: 10px;
-            padding: 0 20px;
-            font-weight: 500;
-            line-height: 1.8;
-            box-sizing: border-box;
-            >h3{
-              padding: 10px 0;
-              font-size: 20px;
-            }
-            >p{
-              font-size: 16px;
-              &:nth-of-type(3){font-size: 13px;}
-              >i{color: $pri-color;}
-            }
-          }//.text
-          >form{
-            display: flex;
-            flex-flow: column nowrap;
-            justify-content: center;
-            align-items: center;
-            >button{
-              background: none;
-              border: none;
-              outline: none;
+          position: relative;
+          >li{
+            width: 200px;
+            &.on{
+              >a{
+                position: absolute;
+                top: 0px;
+                z-index: 100;
+                width: 200px;
+                color: $point-color;
+                border-color: $point-color;
+                background-color: #fdfdfd;
+                border-bottom: 1px solid #fdfdfd;
+                &:hover{color: $point-color;}
+              }
+            }//li.on
+            >a{
               display: block;
-              width: 100px;
-              height: 40px;
-              margin: 10px;
-              color: #fdfdfd;
+              height: 50px;
+              color: $sec-color;
+              font-size: 16px;
               font-weight: 600;
-              background-color: $pri-color;
-              border-radius: 5px;
-              &:hover{background-color: $point-color;}
-            }//button
-          }//form
-        }//a
-      }//li
-    }//ol-도서목록
-
-    >.pagination{
-      @include flexCenter();
-      flex-flow: row nowrap;
-      height: 100px;
-        >a{
-          display: block;
-          font-size: 20px;
-          &:hover{color: $point-color;}
-        }//a
-      >button{
+              text-align: center;
+              line-height: 50px;
+              background-color: #fdfdfd;
+              border: 1px solid #ddd;
+              border-bottom: none;
+              border-top-left-radius: 10px;
+              border-top-right-radius: 10px;
+              &:hover{color: $pri-color;}
+              
+            }//a
+          }//li
+        }//ul
+      }//nav
+      >ol{
+        border-top: 1px solid $point-color ;
+        padding: 0 10px;
+        background-color: #fdfdfd;
+        >li{
+          &:nth-of-type(1){margin-top: 0;}
+          >a{
+            display: flex;
+            flex-flow: row nowrap;
+            padding: 30px 0;
+            border-bottom: 1px solid $sec-color;
+            &:hover{
+              &>.text{
+                >p:last-of-type{text-decoration: underline;}
+              }//a:hover>.text
+            }//a:hover
+            >img{
+              display: block;
+              width: 150px;
+              box-shadow: 1px 1px 2px $sec-color;
+            }//img
+            >.text{
+              flex: 1 1 0;
+              margin-left: 10px;
+              padding: 0 20px;
+              font-weight: 500;
+              line-height: 1.8;
+              box-sizing: border-box;
+              >h3{
+                padding: 10px 0;
+                font-size: 20px;
+              }
+              >p{
+                font-size: 16px;
+                &:nth-of-type(3){font-size: 13px;}
+                >i{color: $pri-color;}
+              }
+            }//.text
+            >form{
+              display: flex;
+              flex-flow: column nowrap;
+              justify-content: center;
+              align-items: center;
+              >button{
+                background: none;
+                border: none;
+                outline: none;
+                display: block;
+                width: 100px;
+                height: 40px;
+                margin: 5px 10px;
+                color: #fdfdfd;
+                font-weight: 600;
+                background-color: $pri-color;
+                border-radius: 5px;
+                z-index: 100;
+                &:hover{background-color: $point-color;}
+              }//button
+            }//form
+          }//a
+        }//li
+      }//ol-도서목록
+  
+      >.pagination{
         @include flexCenter();
-          background: none;
-          outline: none;
-          width: 20px;
-          height: 20px;
-          margin: 0 10px;
-          border: 1px solid $pri-color;
-          border-radius: 5px;
-          &.on{
-            color: $white;
-            background-color: $pri-color;
-          }
-          &:hover{
-            color: $white;
-            background-color: $point-color;
-          }
-        }//button
-    }//.pagination
+        flex-flow: row nowrap;
+        height: 100px;
+          >a{
+            display: block;
+            font-size: 20px;
+            &:hover{color: $point-color;}
+          }//a
+        >button{
+          @include flexCenter();
+            background: none;
+            outline: none;
+            width: 20px;
+            height: 20px;
+            margin: 0 10px;
+            border: 1px solid $pri-color;
+            border-radius: 5px;
+            &.on{
+              color: $white;
+              background-color: $pri-color;
+            }
+            &:hover{
+              color: $white;
+              background-color: $point-color;
+            }
+          }//button
+      }//.pagination
+    }//.content
   }//.container
 }//section.shop-list
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-  >address{
-      height: 100px;
-      @include flexCenter();
-  }
-}

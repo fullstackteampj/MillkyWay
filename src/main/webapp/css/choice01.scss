@@ -6,6 +6,8 @@ $sec-color : rgb(226, 218, 214);
 $white : #fdfdfd;
 
 @import "_header";
+@import "_aside";
+@import "_footer";
 
 section.choice{
   position: relative;
