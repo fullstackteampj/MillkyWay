@@ -57,7 +57,9 @@ $priWhite: #b6e2f7;
                         }
 
                         > a {
-                            @include flexCenter();
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
                             width: 100%;
                             height: 100%;
                             color: #fff;
@@ -90,7 +92,9 @@ $priWhite: #b6e2f7;
                     width: 35%;
 
                     > li {
-                        @include flexCenter();
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                         position: relative;
                         width: 150px;
                         height: 40px;
@@ -100,6 +104,7 @@ $priWhite: #b6e2f7;
                             color: #fff;
                             font-weight: 500;
                             font-size: 14px;
+                            text-align: center;
 
                             >.arrow{
                                 position: relative;
@@ -317,4 +322,17 @@ $priWhite: #b6e2f7;
 
         } //.headMiddle
     } //header
+
+    header.scrolled {
+
+        > .headTop {
+            position: absolute;
+            top: -100%;
+        } //.headTop
+      
+        > .headMiddle {
+            height: 50px;
+            margin-top: 0px;
+        }
+      } //header.scrolled
 }//#wrap

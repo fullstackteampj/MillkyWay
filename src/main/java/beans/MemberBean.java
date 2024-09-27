@@ -27,7 +27,8 @@ public class MemberBean {
 	private String year;
 	private String month;
 	private String date;
-	private String agree;
+	private String[] agree;
+	private String salt;
 	
 	public String getAgree() {
 		return agree;
@@ -181,11 +182,11 @@ public class MemberBean {
 	public void setProfile_photo(byte[] profile_photo) {
 		this.profile_photo = profile_photo;
 	}
-	public String getDetailAddress() {
-		return detailAddress;
+	public String getSalt() {
+		return salt;
 	}
-	public void setDetailAddress(String detailAddress) {
-		this.detailAddress = detailAddress;
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	
 }//class MemberBean

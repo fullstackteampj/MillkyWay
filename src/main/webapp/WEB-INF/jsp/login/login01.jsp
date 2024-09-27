@@ -37,7 +37,7 @@ String userId = (String) session.getAttribute("idKey");
         <div id="idInput">
           <label for="id">아이디</label>
           <%
-          if(saveId==null||saveId.equals("")){
+          if(saveId.equals("")){
         	  %>
         	  <input type="text" name="id" id="id">
         	  <%
@@ -54,7 +54,7 @@ String userId = (String) session.getAttribute("idKey");
         </div>
         <div>
           <%
-          if(saveId==null||saveId.equals("")){
+          if(saveId.equals("")){
         	  %>
         	  <input type="checkbox" name="saveId" id="saveId" value="saveId" />
         	  <%

@@ -5,7 +5,16 @@
 <%@ page import="beans.BoardBean" %>
 <jsp:useBean id="myMgr" class="myPage.MyPageMgr" />
 <%
-	String userId = (String) session.getAttribute("idKey");
+	if (session.getAttribute("idKeyS") == null) {
+	    %>
+	    <script>
+	        alert("세션이 만료되었습니다. 로그인 페이지로 이동합니다.");
+	        location.href="/login/login01";
+	    </script>
+	    <%
+	    return;
+	}
+	String userId = (String) session.getAttribute("idKeyS");
 %>
 
 <%
@@ -56,10 +65,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>mypage04</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-  <script defer src="${pageContext.request.contextPath}/js/myPage04.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/myPage04.js?after"></script>
 
 </head>
 
@@ -164,6 +173,8 @@
 
 
 	<jsp:include page="../components/footer.jsp" />
+
+	<jsp:include page="../components/aside.jsp" />
 
   </div>
 

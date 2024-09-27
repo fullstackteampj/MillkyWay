@@ -10,9 +10,131 @@ aside {
     bottom: 50px;
     right: 50px;
     align-items: center;
-    width: 100px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     margin: 0 auto;
     margin-top: 40px;
-    border: 1px solid #000;
+
+    >i{
+        display: none;
+        width: 0;
+        height: 0;
+        padding: 0;
+        color: #fff;
+        font-size: 0;
+        background-color: $priWhite;
+        border-radius: 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+
+        &.on{
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            font-size: 30px;
+        }
+    }//i
+
+    >.searchAPIFrame{
+        display: none;
+        position: fixed;
+        right: 50px;
+        bottom: 100px;
+        width: 400px;
+        height: auto;
+        padding: 10px;
+        background-color: #03c75a;
+        border-radius: 5px;
+        box-sizing: border-box;
+
+        &.on{
+            display: block;
+        }
+        
+        >form[name=bookSearchAPIFrm]{
+            display: flex;
+            flex-flow: column nowrap;
+            justify-content: space-between;
+
+            >input{
+                background: none;
+                border: none;
+                outline: none;
+    
+                display: block;
+                width: 100%;
+                height: 20px;
+                background-color: #fff;
+            }
+    
+            >button{
+                background: none;
+                border: none;
+                outline: none;
+                
+                display: block;
+                width: 100%;
+                height: 40px;
+                color: #fff;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 40px;
+            }
+        }//.bookSearchAPIFrm
+
+        >.APISearchedList{
+            >li{
+                width: 380px;
+                height: 100px;
+                margin-bottom: 5px;
+                padding: 5px;
+                background-color: #fff;
+                border-radius: 5px;
+                box-sizing: border-box;
+
+                >a{
+                    display: flex;
+                    justify-content: space-between;
+
+                    >img{
+                        width: 60px;
+                        height: 90px;
+                    }
+
+                    >div{
+                        display: flex;
+                        flex-flow: row wrap;
+                        justify-content: space-between;
+                        align-content: space-around;
+                        width: 300px;
+                        height: 90px;
+
+                        >p{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 90px;
+                            height: 40px;
+                            font-weight: 600;
+                            text-align: center;
+                        }
+    
+                        >.description{
+                            width: 300px;
+                            height: 40px;
+                            font-weight: 400;
+                            line-height: 40px;
+                            text-align: center;
+
+                            //말줄임
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                        }
+                    }//div
+                }//a
+            }//li
+        }//.APISearchedList
+    }//.searchAPIFrame
 } //aside

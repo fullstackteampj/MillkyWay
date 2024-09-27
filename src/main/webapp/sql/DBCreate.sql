@@ -54,6 +54,7 @@ CREATE TABLE membertbl (
     userid INT PRIMARY KEY AUTO_INCREMENT,  -- 회원 ID, 기본 키 및 자동 증가
     account VARCHAR(100) NOT NULL unique,   -- 회원 계정 (이메일 또는 사용자 이름)
     pwd VARCHAR(100) NOT NULL,              -- 비밀번호
+	salt VARCHAR(100) NOT NULL,             -- salt값
     question VARCHAR(100) NOT NULL,         -- 질문
     answer VARCHAR(100) NOT NULL,           -- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름

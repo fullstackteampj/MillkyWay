@@ -28,13 +28,14 @@ public class LoginMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select userid, pwd from membertbl where account = ?";
+			sql = "select userid, pwd, salt from membertbl where account = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, account);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				bean.setPwd(rs.getString("pwd"));
+				bean.setSalt(rs.getString("salt"));
 				bean.setUserid(rs.getInt("userid"));
 			}
 			

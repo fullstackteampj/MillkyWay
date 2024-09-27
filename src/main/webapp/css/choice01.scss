@@ -144,3 +144,15 @@ section.choice{
   }//.container
 }//section.choice
 
+footer {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+  >address{
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+}
