@@ -129,7 +129,7 @@ public class ProcsMgr {
 	}//boolean addToCart(int userId, int bookId)
 	
 	
-	public boolean updatePwd(String account, String newPwd) {
+	public boolean updatePwd(String account, String newPwd, String newSalt) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -137,10 +137,11 @@ public class ProcsMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "update membertbl set pwd = ? where account = ?";
+			sql = "update membertbl set pwd = ?, salt = ? where account = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, newPwd);
-			pstmt.setString(2, account);
+			pstmt.setString(2, newSalt);
+			pstmt.setString(3, account);
 			
 			int j = pstmt.executeUpdate();
 			if(j>0)

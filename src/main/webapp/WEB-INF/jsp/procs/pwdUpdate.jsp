@@ -6,17 +6,18 @@
 <jsp:useBean id="pMgr" class="procs.ProcsMgr" />
 <jsp:useBean id="lMgr" class="login.LoginMgr" />
 <%
-String newPwd = request.getParameter("newPwd");
+	String newPwd = request.getParameter("newPwd");
 	String account = request.getParameter("account");
 	String msg="비밀번호 변경에 실패하였습니다";
 	
 	// shaSalt로 생성된 비밀번호 입력
 	MemberBean mBean = lMgr.getLoginInfo(account);
 	SHASalt SHASalt = new SHASalt();
-	String salt = mBean.getSalt();
-	String CrPwd = SHASalt.getEncrypt(newPwd, salt);
 	
-	boolean flag = pMgr.updatePwd(account, CrPwd);
+	String newSalt = SHASalt.genSalt();
+	String CrPwd = SHASalt.getEncrypt(newPwd, newSalt);
+	
+	boolean flag = pMgr.updatePwd(account, CrPwd, newSalt);
 	
 	if(flag){
 		msg="비밀번호 변경에 성공하였습니다";
