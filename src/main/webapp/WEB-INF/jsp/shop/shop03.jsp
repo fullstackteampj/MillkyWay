@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:useBean id="bMgr" class="bookInfo.BookInfoMgr" />
+<jsp:useBean id="bMgr" class="book.BookInfoMgr" />
 <jsp:useBean id="bean" class="beans.ReviewBean" />
 <%request.setCharacterEncoding("UTF-8");%>
 	

@@ -15,6 +15,7 @@
 	SHASalt SHASalt = new SHASalt();
 	
 	String newSalt = SHASalt.genSalt();
+	
 	String CrPwd = SHASalt.getEncrypt(newPwd, newSalt);
 	
 	boolean flag = pMgr.updatePwd(account, CrPwd, newSalt);

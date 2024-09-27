@@ -275,23 +275,153 @@
   margin-top: 0px;
 }
 
+aside {
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+aside > i {
+  display: none;
+  width: 0;
+  height: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 0;
+  background-color: #b6e2f7;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+aside > i.on {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 30px;
+}
+aside > .searchAPIFrame {
+  display: none;
+  position: fixed;
+  right: 50px;
+  bottom: 100px;
+  width: 400px;
+  height: auto;
+  padding: 10px;
+  background-color: #03c75a;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame.on {
+  display: block;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > input {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  background-color: #fff;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 40px;
+}
+aside > .searchAPIFrame > .APISearchedList > li {
+  width: 380px;
+  height: 100px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > img {
+  width: 60px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: space-around;
+  width: 300px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  font-weight: 600;
+  text-align: center;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > .description {
+  width: 300px;
+  height: 40px;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 section.shop-list {
-  position: relative;
   width: 1200px;
-  height: 1700px;
   margin: 120px auto 0;
 }
 section.shop-list > h2 {
   padding: 20px 0;
 }
-section.shop-list > nav {
-  position: absolute;
-  left: 0;
+section.shop-list > .container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+section.shop-list > .container > nav {
   width: 200px;
   padding: 5px;
   box-sizing: border-box;
 }
-section.shop-list > nav > ul i {
+section.shop-list > .container > nav > ul i {
   margin-right: 5px;
   padding: 3px;
   color: #fdfdfd;
@@ -299,78 +429,78 @@ section.shop-list > nav > ul i {
   background-color: rgb(100, 130, 173);
   border-radius: 50%;
 }
-section.shop-list > nav > ul > li {
+section.shop-list > .container > nav > ul > li {
   font-size: 20px;
   line-height: 1.8;
 }
-section.shop-list > nav > ul > li:last-child > ul > li > a {
+section.shop-list > .container > nav > ul > li:last-child > ul > li > a {
   font-weight: 500;
 }
-section.shop-list > nav > ul > li:last-child > ul > li > a:hover {
+section.shop-list > .container > nav > ul > li:last-child > ul > li > a:hover {
   color: #222;
   text-decoration: underline;
 }
-section.shop-list > nav > ul > li > a {
+section.shop-list > .container > nav > ul > li > a {
   display: flex;
   align-items: center;
   font-weight: 700;
 }
-section.shop-list > nav > ul > li > a:hover {
+section.shop-list > .container > nav > ul > li > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > nav > ul > li > ul {
+section.shop-list > .container > nav > ul > li > ul {
   display: none;
 }
-section.shop-list > nav > ul > li > ul.on {
+section.shop-list > .container > nav > ul > li > ul.on {
   display: block;
 }
-section.shop-list > nav > ul > li > ul > li {
+section.shop-list > .container > nav > ul > li > ul > li {
   font-size: 15px;
 }
-section.shop-list > nav > ul > li > ul > li > a {
+section.shop-list > .container > nav > ul > li > ul > li > a {
   display: flex;
   align-items: center;
   padding-left: 25px;
   font-weight: 600;
 }
-section.shop-list > nav > ul > li > ul > li > a:hover {
+section.shop-list > .container > nav > ul > li > ul > li > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > nav > ul > li > ul > li > a > i {
+section.shop-list > .container > nav > ul > li > ul > li > a > i {
   font-size: 10px;
 }
-section.shop-list > nav > ul > li > ul > li > ol {
+section.shop-list > .container > nav > ul > li > ul > li > ol {
   display: none;
   padding-left: 45px;
   border-radius: 5px;
   box-sizing: border-box;
 }
-section.shop-list > nav > ul > li > ul > li > ol.on {
+section.shop-list > .container > nav > ul > li > ul > li > ol.on {
   display: block;
 }
-section.shop-list > nav > ul > li > ul > li > ol > li:hover {
+section.shop-list > .container > nav > ul > li > ul > li > ol > li:hover {
   text-decoration: underline;
 }
-section.shop-list > nav > ul > li > ul > li > ol > li > a {
+section.shop-list > .container > nav > ul > li > ul > li > ol > li > a {
   font-weight: 500;
 }
-section.shop-list > .container {
-  position: absolute;
-  right: 0;
+section.shop-list > .container > .content {
   width: 1000px;
   padding: 10px 10px 10px 20px;
   border-left: 1px solid rgb(226, 218, 214);
   box-sizing: border-box;
 }
-section.shop-list > .container > nav > ul {
+section.shop-list > .container > .content > nav > ul {
   display: flex;
+  flex-flow: row nowrap;
+  position: relative;
 }
-section.shop-list > .container > nav > ul > li {
+section.shop-list > .container > .content > nav > ul > li {
   width: 200px;
 }
-section.shop-list > .container > nav > ul > li.on > a {
+section.shop-list > .container > .content > nav > ul > li.on > a {
   position: absolute;
-  top: 10px;
+  top: 0px;
   z-index: 100;
   width: 200px;
   color: rgb(100, 130, 173);
@@ -378,10 +508,10 @@ section.shop-list > .container > nav > ul > li.on > a {
   background-color: #fdfdfd;
   border-bottom: 1px solid #fdfdfd;
 }
-section.shop-list > .container > nav > ul > li.on > a:hover {
+section.shop-list > .container > .content > nav > ul > li.on > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > .container > nav > ul > li > a {
+section.shop-list > .container > .content > nav > ul > li > a {
   display: block;
   height: 50px;
   color: rgb(226, 218, 214);
@@ -395,32 +525,32 @@ section.shop-list > .container > nav > ul > li > a {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-section.shop-list > .container > nav > ul > li > a:hover {
+section.shop-list > .container > .content > nav > ul > li > a:hover {
   color: rgb(127, 161, 195);
 }
-section.shop-list > .container > ol {
+section.shop-list > .container > .content > ol {
   border-top: 1px solid rgb(100, 130, 173);
   padding: 0 10px;
   background-color: #fdfdfd;
 }
-section.shop-list > .container > ol > li:nth-of-type(1) {
+section.shop-list > .container > .content > ol > li:nth-of-type(1) {
   margin-top: 0;
 }
-section.shop-list > .container > ol > li > a {
+section.shop-list > .container > .content > ol > li > a {
   display: flex;
   flex-flow: row nowrap;
   padding: 30px 0;
   border-bottom: 1px solid rgb(226, 218, 214);
 }
-section.shop-list > .container > ol > li > a:hover > .text > p:last-of-type {
+section.shop-list > .container > .content > ol > li > a:hover > .text > p:last-of-type {
   text-decoration: underline;
 }
-section.shop-list > .container > ol > li > a > img {
+section.shop-list > .container > .content > ol > li > a > img {
   display: block;
   width: 150px;
   box-shadow: 1px 1px 2px rgb(226, 218, 214);
 }
-section.shop-list > .container > ol > li > a > .text {
+section.shop-list > .container > .content > ol > li > a > .text {
   flex: 1 1 0;
   margin-left: 10px;
   padding: 0 20px;
@@ -428,56 +558,57 @@ section.shop-list > .container > ol > li > a > .text {
   line-height: 1.8;
   box-sizing: border-box;
 }
-section.shop-list > .container > ol > li > a > .text > h3 {
+section.shop-list > .container > .content > ol > li > a > .text > h3 {
   padding: 10px 0;
   font-size: 20px;
 }
-section.shop-list > .container > ol > li > a > .text > p {
+section.shop-list > .container > .content > ol > li > a > .text > p {
   font-size: 16px;
 }
-section.shop-list > .container > ol > li > a > .text > p:nth-of-type(3) {
+section.shop-list > .container > .content > ol > li > a > .text > p:nth-of-type(3) {
   font-size: 13px;
 }
-section.shop-list > .container > ol > li > a > .text > p > i {
+section.shop-list > .container > .content > ol > li > a > .text > p > i {
   color: rgb(127, 161, 195);
 }
-section.shop-list > .container > ol > li > a > form {
+section.shop-list > .container > .content > ol > li > a > form {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
 }
-section.shop-list > .container > ol > li > a > form > button {
+section.shop-list > .container > .content > ol > li > a > form > button {
   background: none;
   border: none;
   outline: none;
   display: block;
   width: 100px;
   height: 40px;
-  margin: 10px;
+  margin: 5px 10px;
   color: #fdfdfd;
   font-weight: 600;
   background-color: rgb(127, 161, 195);
   border-radius: 5px;
+  z-index: 100;
 }
-section.shop-list > .container > ol > li > a > form > button:hover {
+section.shop-list > .container > .content > ol > li > a > form > button:hover {
   background-color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination {
+section.shop-list > .container > .content > .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: row nowrap;
   height: 100px;
 }
-section.shop-list > .container > .pagination > a {
+section.shop-list > .container > .content > .pagination > a {
   display: block;
   font-size: 20px;
 }
-section.shop-list > .container > .pagination > a:hover {
+section.shop-list > .container > .content > .pagination > a:hover {
   color: rgb(100, 130, 173);
 }
-section.shop-list > .container > .pagination > button {
+section.shop-list > .container > .content > .pagination > button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -489,24 +620,11 @@ section.shop-list > .container > .pagination > button {
   border: 1px solid rgb(127, 161, 195);
   border-radius: 5px;
 }
-section.shop-list > .container > .pagination > button.on {
+section.shop-list > .container > .content > .pagination > button.on {
   color: #fdfdfd;
   background-color: rgb(127, 161, 195);
 }
-section.shop-list > .container > .pagination > button:hover {
+section.shop-list > .container > .content > .pagination > button:hover {
   color: #fdfdfd;
   background-color: rgb(100, 130, 173);
-}
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-}
-footer > address {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }/*# sourceMappingURL=shop01.css.map */

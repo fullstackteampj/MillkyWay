@@ -3,9 +3,30 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <%@ page import="beans.BookBean" %>
 <%@ page import="java.util.Vector" %>
-<jsp:useBean id="bMgr" class="bookInfo.BookListMgr" />
+<jsp:useBean id="bMgr" class="book.BookListMgr" />
 <%
+	//로그인 상태 확인
+	int userid = 0; 
+	
+	if(session.getAttribute("idKey") !=null){
+		//세션값 int로 저장 
+		Object sessionValue = session.getAttribute("idKey");
+		
+		// 타입 확인 후 변환
+		if (sessionValue instanceof String) {
+		    String strValue = (String) sessionValue; // String으로 캐스팅
+		    try {
+		        userid = Integer.parseInt(strValue);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace(); // 변환 실패 시 예외 처리
+		    }
+		} else if (sessionValue instanceof Integer) {
+		    // 만약 세션에 직접 Integer로 저장되어 있다면
+		    userid = (Integer) sessionValue; 
+		} 
+	} 
 
+	//pagination
 	int totalRecord = 0; //전체 레코드 수
 	int numPerPage = 5; //페이지당 레코드 수
 	int pagePerBlock = 5; //블럭당 페이지 수
@@ -47,7 +68,18 @@
 	start = (nowPage * numPerPage) - numPerPage;
 	end = numPerPage;
 	
-	totalRecord = bMgr.getTotalCount(category, genre);
+	System.out.println("tap = " + tap);
+	
+	if(tap == null || tap.equals("null")){
+		totalRecord = bMgr.getTotalCount(category, genre);
+	}else{
+		totalRecord = bMgr.getTotalTap(tap);
+	}
+	
+	if(end>totalRecord) 
+		end = totalRecord;
+
+	
 	totalPage = (int)Math.ceil((double)totalRecord / numPerPage); //전체 페이지수
 	
 	nowBlock = (int)Math.ceil((double)nowPage / pagePerBlock);//현재 블럭 계산
@@ -73,7 +105,9 @@
   		document.readFrm.nowPage.value = <%=pagePerBlock%>*(value-1)+1;
   		document.readFrm.submit();
   	}
-  </script>
+  	
+</script>
+
 </head>
 
 <body>
@@ -82,6 +116,7 @@
 
 	  <section class="shop-list">
 	    <h2>도서 목록</h2>
+	    <div class="container" >
 	    <nav>
 	      <ul class="book-broadCategory">
 	        <li>
@@ -1021,7 +1056,7 @@
 	      </ul>
 	    </nav>
 	
-	    <div class="container">
+	    <div class="content">
 	      <nav>
 	        <ul>
 	          <li class="on"><a href="/shop/shop01?tap=도서 모두보기">도서 모두보기</a></li>
@@ -1033,7 +1068,9 @@
 		  <ol>
 		  	<%
 		  		blist = bMgr.getBookList(category, genre, start, end, tap);
+		  		
 		  		listSize = blist.size();
+	
 		  		if(blist.isEmpty()){
 		  			%>
 		  			<li>
@@ -1048,10 +1085,11 @@
 		  				String author = bean.getAuthor();
 		  				String title = bean.getTitle();
 		  				String contents = bean.getContents();
-		  				String[] contArr = contents.split("\\."); //.구분자사용, [.]도 가능
+		  				String[] contArr = contents.split("다\\."); //.구분자사용, [.]도 가능
 		  				int price = bean.getPrice();
 		  				int score = bean.getScore();
 		  				String imgUrl = "/image?bookid="+bookid;
+		  				
 		  			%>
 		  			<li>
 			            <a href="/shop/shop02?bookid=<%=bookid%>">
@@ -1077,13 +1115,15 @@
 			                </p>
 			                <br />
 			                <p>
-			                  <%=contArr[0]%>
+			                  <%=contArr[0] + "다."%>
 			                </p>
 			              </div>
 			              <form method="post" name="listFrm">
-			                <button formaction="/mypage/mypage05">장바구니</button>
-			                <button formaction="/buy/buy01">바로구매</button>
+			                <button type="button" onclick="toBuy(event, <%=bookid%>)">바로구매</button>
+			                <button type="button" onclick="toCart(event, <%=bookid%>)">장바구니</button>
+			                <button type="button" onclick="toWish(event, <%=bookid%>)">관심목록</button>
 			                <input type="hidden" name="bookid" value="<%=bookid%>"/>
+
 			              </form>
 			            </a>
 		          	</li>
@@ -1091,27 +1131,6 @@
 		  			}//for
 		  		}//else
 		  	%>
-	          <!--동적생성
-	          <li>
-	            <a href="#">
-	              <div class="cover"></div>
-	              <div class="text">
-	                <h3>자바의 정석</h3>
-	                <p>남궁성</p>
-	                <p>가격 : <span>27000</span>원</p>
-	                <br />
-	                <p>
-	                  자바 프로그래머로써 반드시 알아야하는 것을 모두 담은책. 저자는 자바를 소개하는데 그치지 않고 프로그래머로써 꼭 알아야하는 내용들을 체계적으로 정리하였다.
-	                </p>
-	              </div>
-	              <form action="#" method="post" name="listFrm">
-	                <input type="hidden" name="bookid">
-	                <button>장바구니</button>
-	                <button>바로구매</button>
-	              </form>
-	            </a>
-	          </li>
-	          -->
 	        </ol>
 	    
 	          <div class="pagination">
@@ -1119,9 +1138,7 @@
 	          		int pageStart = (nowBlock - 1) * pagePerBlock + 1;
 	          		int pageEnd = ((pageStart + pagePerBlock) <= totalPage) ? (pageStart + pagePerBlock) : totalPage+1 ;
 	          		//하단 페이지 끝 
-	          		if(tap != null){
-	          			totalRecord = 10;
-	          		}
+	          		
 	          		if(totalPage != 0){
 						if(nowBlock > 1){%>
 	          			<a href="javascript:block('<%=nowBlock-1%>')"><i class="fa-solid fa-caret-left"></i></a>
@@ -1140,11 +1157,12 @@
 	          	%>
 	          
 	          </div><!-- .pagination -->
+	    </div><!--.content-->
 	    </div><!--.container-->
 	  </section>
-	  <footer>
-      	<address>&copy;Designed by teamMillkyWay</address>
-      </footer>
+	  
+	  <jsp:include page="../components/footer.jsp" />
+	  
       <form name="readFrm" method="get">
 		  <input type="hidden" name="nowPage" value="<%=nowPage%>" />
 	      <input type="hidden" name="category" value="<%=category%>" />
@@ -1152,6 +1170,51 @@
 	      <input type="hidden" name="tap" value="<%=tap%>" />
       </form>
 	</div>
+<script>
+	//로그인 상태 확인 - 팝업창 생성
+	//중복 선언 떠서 이름 변경
+	const id = '<%=userid%>'; 
+	
+	const makePopup = (save, bookid) => {
+	   
+	    const popupWidth = 500;
+	    const popupHeight = 350;
+	    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
+	    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
+	
+	    if (id === '0') {
+	        //비로그인 상태일 경우 팝업창 생성
+	        const url = '/buy/buy02';
+	        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
+	    }else{
+	    	//장바구니/관심목록 구분
+			if(save === 'cart'){
+				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
+			}else if(save==='wish'){
+				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+			}else{
+				location.href = '/buy/buy01?orderNum=1&save=buy&bookid=' + bookid;
+			}
+	    	
+	    }
+	}
+	
+	const toBuy = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('buy',bookid);
+	}
+		
+	const toWish = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('wish',bookid);
+	}
+	
+	const toCart = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('cart', bookid);
+	}
+
+</script>
 </body>
 
 </html>

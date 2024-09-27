@@ -25,6 +25,32 @@ public class BoardMgr {
 		}
 	}
 	
+	// 로그인 회원 닉네임 추출
+	public String getNickname(int loginId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String userNickname = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT nickname FROM membertbl WHERE userid = "+loginId;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				userNickname = rs.getString(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return userNickname;
+	}
+	
 	/* board01(메인페이지) 활용메서드 */
 	// 게시글 목록 추출
 	public ArrayList<BoardBean> getPostList(String keyField, String keyWord, String category, String tab, int start, int end) {

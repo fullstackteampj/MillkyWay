@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #wrap > header {
   position: absolute;
   top: 0;
@@ -275,6 +276,136 @@
   margin-top: 0px;
 }
 
+aside {
+  display: flex;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+aside > i {
+  display: none;
+  width: 0;
+  height: 0;
+  padding: 0;
+  color: #fff;
+  font-size: 0;
+  background-color: #b6e2f7;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+aside > i.on {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  font-size: 30px;
+}
+aside > .searchAPIFrame {
+  display: none;
+  position: fixed;
+  right: 50px;
+  bottom: 100px;
+  width: 400px;
+  height: auto;
+  padding: 10px;
+  background-color: #03c75a;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame.on {
+  display: block;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > input {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  background-color: #fff;
+}
+aside > .searchAPIFrame > form[name=bookSearchAPIFrm] > button {
+  background: none;
+  border: none;
+  outline: none;
+  display: block;
+  width: 100%;
+  height: 40px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 40px;
+}
+aside > .searchAPIFrame > .APISearchedList > li {
+  width: 380px;
+  height: 100px;
+  margin-bottom: 5px;
+  padding: 5px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > img {
+  width: 60px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-content: space-around;
+  width: 300px;
+  height: 90px;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 40px;
+  font-weight: 600;
+  text-align: center;
+}
+aside > .searchAPIFrame > .APISearchedList > li > a > div > .description {
+  width: 300px;
+  height: 40px;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+footer {
+  width: 100%;
+  min-width: 1200px;
+  height: 100px;
+  margin-bottom: 50px;
+  background-color: #aaa;
+}
+footer > address {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 section.buy {
   width: 1200px;
   margin: 0 auto;
@@ -286,17 +417,6 @@ section.buy button {
 }
 section.buy h2 {
   padding: 20px 0 10px;
-}
-section.buy > .check-member {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-items: center;
-  width: 250px;
-}
-section.buy > .check-member > a:hover {
-  color: rgb(100, 130, 173);
-  text-decoration: underline;
 }
 section.buy > form {
   display: flex;
@@ -360,17 +480,8 @@ section.buy > form > .payment-info > li > ol.buy-products > li {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  height: inherit;
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two {
-  padding: 20px 0;
-  border-bottom: 1px solid rgb(226, 218, 214);
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two:first-of-type {
-  padding-top: 0;
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two:last-of-type {
-  border-bottom: none;
+  padding: 40px 0;
+  font-size: 16px;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li > img {
   display: block;
@@ -385,16 +496,19 @@ section.buy > form > .payment-info > li > ol > li {
 section.buy > form > .payment-info > li > ol > li:last-child {
   margin-bottom: 0;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode {
-  flex: 1 1 0;
+section.buy > form > .payment-info > li > ol > li #zipcode {
+  width: 20%;
   margin-right: 5px;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode + button {
-  background-color: rgb(226, 218, 214);
-  border-radius: 5px;
+section.buy > form > .payment-info > li > ol > li #address {
+  width: 65%;
+  margin-right: 5px;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode + button:hover {
-  background-color: #ded5d0;
+section.buy > form > .payment-info > li > ol > li #address + button {
+  width: calc(15% - 10px);
+  color: #fdfdfd;
+  background-color: rgb(127, 161, 195);
+  border-radius: 5px;
 }
 section.buy > form > .payment-info > li > ol > li input[type=text] {
   width: 100%;
@@ -425,6 +539,9 @@ section.buy > form > .payment-info > li > .btns-pay > button {
   border: 1px solid rgb(226, 218, 214);
   border-radius: 10px;
 }
+section.buy > form > .payment-info > li > .btns-pay > button.on {
+  border: 2px solid rgb(100, 130, 173);
+}
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(3n) {
   margin-right: 0;
 }
@@ -435,6 +552,9 @@ section.buy > form > .payment-info > li > .btns-pay > button:hover {
   box-shadow: 1px 1px 1px #ddd;
 }
 section.buy > form > .buy-total {
+  position: sticky;
+  top: 100px;
+  right: 50px;
   width: 32%;
   height: 300px;
   margin: 30px 20px 0 0;
@@ -442,18 +562,26 @@ section.buy > form > .buy-total {
   border: 1px solid rgb(226, 218, 214);
   border-radius: 10px;
 }
-section.buy > form > .buy-total.sticky {
-  position: sticky;
-  top: 100px;
-  left: 1000px;
-  right: 50px;
-}
 section.buy > form > .buy-total > li {
+  display: flex;
+  align-items: center;
   margin: 15px 5px;
   font-size: 16px;
 }
+section.buy > form > .buy-total > li.deleteline {
+  position: relative;
+  text-decoration: line-through;
+}
+section.buy > form > .buy-total > li.deleteline:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 110px;
+  color: rgb(100, 130, 173);
+  content: "0원";
+}
 section.buy > form > .buy-total > li > span {
-  margin-left: 10px;
+  margin-left: 8px;
 }
 section.buy > form > .buy-total > li > button {
   width: 100%;
@@ -468,16 +596,26 @@ section.buy > form > .buy-total > li > button {
 section.buy > form > .buy-total > li > button:hover {
   background-color: rgb(100, 130, 173);
 }
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
+section.buy > form > .buy-total > li > input {
+  width: 120px;
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid rgb(226, 218, 214);
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
 }
-footer > address {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+section.buy > form > .buy-total > li > input:hover {
+  box-shadow: 1px 1px 1px #ddd;
+}
+section.buy > form > .buy-total > li > input:focus {
+  border-color: rgb(100, 130, 173);
+}
+section.buy > form > .buy-total > li > input + button {
+  width: 40px;
+  height: 28px;
+  margin: 0 3px 0 10px;
+  font-size: 14px;
+  background-color: rgb(226, 218, 214);
 }/*# sourceMappingURL=buy01.css.map */

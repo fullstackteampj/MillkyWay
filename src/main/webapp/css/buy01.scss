@@ -5,7 +5,6 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 $white: #fdfdfd;
 
-@import "_header";
 
 @mixin basicBtnRemove {
   border: none;
@@ -19,24 +18,16 @@ $white: #fdfdfd;
   align-items: center;
 }
 
+@import "_header";
+@import "_aside";
+@import "_footer";
+
 section.buy{
   width: 1200px;
   margin: 0 auto;
   button{@include basicBtnRemove();}
   h2{padding: 20px 0 10px;}
-  >.check-member{
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 250px;
-    >a{
-      &:hover{
-        color: $point-color;
-        text-decoration: underline;
-      }//a:hover
-    }//a
-  }//.check-member
+
   >form{
     display: flex;
     flex-flow: row nowrap;
@@ -94,13 +85,8 @@ section.buy{
               flex-flow: row nowrap;
               justify-content: space-between;
               align-items: center;
-              height: inherit;
-              &.more-two{
-                padding: 20px 0;
-                border-bottom: 1px solid $sec-color;
-                &:first-of-type{padding-top: 0;}
-                &:last-of-type{border-bottom: none;}
-              }
+              padding: 40px 0;
+              font-size: 16px;
               >img{
                 display: block;
                 width: 90px;
@@ -113,15 +99,20 @@ section.buy{
             height: 30px;
             margin-bottom: 20px;
             &:last-child{margin-bottom: 0;}
-            #buyZipcode{
-              flex: 1 1 0;
+            #zipcode{
+              width: 20%;
+              margin-right: 5px;
+            }//#zipcode
+            #address{
+              width: 65%;
               margin-right: 5px;
               &+button{
-               background-color: $sec-color;
-               border-radius: 5px;
-               &:hover{background-color: darken($sec-color, 2);}
-              }//+button
-            }//#buyZipcode
+                width: calc(15% - 10px);
+                color: $white;
+                background-color: $pri-color;
+                border-radius: 5px;
+              }
+            }
             input[type=text]{
               width: 100%;
               height: 100%;
@@ -147,6 +138,9 @@ section.buy{
             margin: 0 15px 10px 0;
             border: 1px solid $sec-color;
             border-radius: 10px;
+            &.on{
+              border: 2px solid $point-color;
+            }
             &:nth-child(3n){margin-right: 0;}
             &:nth-child(7),&:nth-child(8){margin-bottom: 0;}
             &:hover{box-shadow: 1px 1px 1px #ddd;}
@@ -155,22 +149,33 @@ section.buy{
       }//li
     }//.payment-info
     >.buy-total{
+      position: sticky;
+      top: 100px;
+      right: 50px;
       width: 32%;
       height: 300px;
       margin: 30px 20px 0 0;
       padding: 20px;
       border: 1px solid $sec-color;
       border-radius: 10px;
-      &.sticky{
-        position: sticky;
-        top: 100px;
-        left: 1000px;
-        right: 50px;
-      }//.fixed
       >li{
+        display: flex;
+        align-items: center;
         margin: 15px 5px;
         font-size: 16px;
-        >span{margin-left: 10px;}
+        &.deleteline{
+          position: relative;
+          text-decoration: line-through;
+            &:after{
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 110px;
+              color: $point-color;
+              content: '0원';
+            }//after
+          }//.deleteline
+        >span{ margin-left: 8px;}
         >button{
           width: 100%;
           height: 50px;
@@ -182,18 +187,27 @@ section.buy{
           border-radius: 5px;
           &:hover{background-color: $point-color;}
         }//button
+        >input{//포인트사용
+          width: 120px;
+          margin: 0 5px;
+          padding: 5px;
+          font-size: 14px;
+          border: 1px solid $sec-color;
+          border-radius: 5px;
+          outline: none;
+          box-sizing: border-box;
+          &:hover{box-shadow: 1px 1px 1px #ddd;}
+          &:focus{border-color: $point-color;}
+          &+button{
+            width: 40px;
+            height: 28px;
+            margin: 0 3px 0 10px;
+            font-size: 14px;
+            background-color: $sec-color;
+            
+          }//button
+        }//input
       }//li
     }//.buy-total
   }//form
 }//section.buy
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-  >address{
-      height: 100px;
-      @include flexCenter();
-  }
-}

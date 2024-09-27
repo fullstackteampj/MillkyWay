@@ -23,20 +23,18 @@
 	boolean identify = false;
 	
 	// 로그인 상태면 필요한 데이터 추출(id, nickname)
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	String loginNickname = null; // 닉네임을 변경하였을 시 글수정 후 데이터에도 반영
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
-		loginNickname = loginBean.getNickname();
-		
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+		loginNickname = bMgr.getNickname(loginId);
+	
 		identify = (userid == loginId);
 	}
 	
 	// 로그인유무로 접근제한
-	boolean loginOk = (session != null && loginBean != null);
+	boolean loginOk = (session != null && loginId != null);
 %>
 <!DOCTYPE html>
 <html lang="ko">

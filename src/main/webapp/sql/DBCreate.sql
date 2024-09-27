@@ -62,9 +62,10 @@ CREATE TABLE membertbl (
     gender CHAR(1) default null,            -- 성별 (M, F)
     zipcode VARCHAR(10),                    -- 우편번호
     usergrade VARCHAR(100),					-- 유저등급
-	curpoint int,							-- 보유포인트
+	curpoint int default 0,					-- 보유포인트 //디폴트값 추가 
 	expectpoint int,						-- 적립예정포인트
     address TEXT,                           -- 주소
+	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
     signup_date DATE,     					-- 회원 가입 날짜, 기본값 현재 날짜
@@ -74,7 +75,7 @@ CREATE TABLE membertbl (
     profile_photo BLOB,                     -- 프로필 사진
     
     birth VARCHAR(20) default null,			-- 생년월일
-    agree CHAR(1)                           -- 동의여부
+    agree CHAR(1)                           -- 선택 사항 동의여부
 );
 
 -- 트리거는 날짜 기본값 설정에 불필요함
@@ -109,52 +110,96 @@ CREATE TABLE Booktbl (
 
 
 -- 게시판 게시물을 저장하는 테이블
+/*
 CREATE TABLE boardtbl (
     boardid INT PRIMARY KEY AUTO_INCREMENT,         -- 게시물 ID, 기본 키 및 자동 증가
-    userid INT,                            		    -- 작성자 ID(식별자)
-    nickname VARCHAR(100),                          -- 작성자 닉네임
     title VARCHAR(200),                             -- 게시물 제목
+    author VARCHAR(100),                            -- 작성자 이름
+    genre VARCHAR(50),                              -- 도서 장르 (소설, 역사, 철학 등)
+    tab VARCHAR(10),								-- 글의 탭분류 (인기, 일반, 질문, 감상)
     content TEXT,                                   -- 게시물 내용
-    photo MEDIUMBLOB,                               -- 게시물에 포함된 사진
-    genre VARCHAR(50),                              -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
-    tab VARCHAR(10),								-- 글의 탭분류 (일반, 질문, 감상, 추천)
-    regdate datetime default now(),                 -- 게시물 작성 날짜
     count INT DEFAULT 0,                            -- 조회수 (기본값 0)
-    liked INT DEFAULT 0,                            -- 추천 갯수
-    best VARCHAR(1) DEFAULT "N",					-- 인기글여부 (기본값 "N", 인기글활성화 "Y")
-    bookid INT,                             		-- 북아이디
-    ip VARCHAR(45),                                 -- 작성자 IP 주소
-    update_date datetime,                           -- 게시물 수정 날짜
-    status int DEFAULT 0                   		    -- 게시물 상태 (0 : 일반 /  9 : 삭제)
-);
+    regdate datetime default now(),                 -- 게시물 작성 날짜
+    photo BLOB,                                     -- 게시물에 포함된 사진
 
--- 댓글 테이블
-CREATE TABLE commenttbl (
-	commentid INT PRIMARY KEY AUTO_INCREMENT,		-- 댓글 ID, 기본키 및 자동 증가
-	userid INT, 							        -- 댓글 작성자
-    nickname VARCHAR(100),
-	content TEXT,									-- 댓글 내용
-    ref INT DEFAULT 0,                              -- 댓글이 속한 글 (100~127 사이에서만)
-    pos INT DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
+    -- 보드테이블 인서트문제떄문에 임시로 살려놓음(ref,pos,depth)
+    ref INT DEFAULT 0,                              -- 댓글이 속한 댓글위치(0은 최상위 댓글)
+    pos INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
     depth INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-	parent_commentid INT,							-- 대댓글이 속한 댓글
-    regdate datetime default now(),                 -- 댓글 작성 날짜
-    update_date datetime,                               -- 댓글 수정 날짜
+
+
+    userid INT,                            		    -- 작성자 ID, 외래 키로 `membertbl` 참조
+    bookid INT,                             		-- 북아이디
+
+    liked INT DEFAULT 0,                            -- 좋아요 갯수
+    
     ip VARCHAR(45),                                 -- 작성자 IP 주소
-    status int DEFAULT 0                   		    -- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    update_date DATE,                               -- 게시물 수정 날짜
+    comment_count INT DEFAULT 0,                    -- 댓글 수 (기본값 0)
+    status VARCHAR(20),                             -- 게시물 상태 (active, inactive 등)
+
+    FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 작성자 ID와 외래 키 연결
+    FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
+); */
+
+-- 게시글 테이블 생성
+CREATE TABLE boardtbl (
+    boardid INT PRIMARY KEY AUTO_INCREMENT,					-- 게시물 ID, 기본 키 및 자동 증가
+    userid INT NOT NULL,                            		-- 작성자 ID(식별자)
+    nickname VARCHAR(100) NOT NULL,                         -- 작성자 닉네임
+    title VARCHAR(200) NOT NULL,                            -- 게시물 제목
+    content TEXT NOT NULL,                                  -- 게시물 내용
+    photo MEDIUMBLOB,                               	 	-- 게시물에 포함된 사진
+    genre VARCHAR(50) NOT NULL,                             -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
+    tab VARCHAR(10) NOT NULL,							 	-- 글의 탭분류 (일반, 질문, 감상, 추천)
+    regdate datetime DEFAULT now() NOT NULL,                -- 게시물 작성 날짜
+    count INT NOT NULL DEFAULT 0,                           -- 조회수 (기본값 0)
+    best VARCHAR(1) NOT NULL DEFAULT "N",				 	-- 인기글여부 (기본값 "N", 인기글활성화 "Y")
+    bookid INT,                            				 	-- 북아이디
+    ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
+    update_date DATETIME,                            		-- 게시물 수정 날짜
+    liked VARCHAR(10),
+    status INT NOT NULL DEFAULT 0                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
--- 게시판 카테고리 테이블
+-- 댓글 테이블 생성
+CREATE TABLE commenttbl (
+	commentid INT PRIMARY KEY AUTO_INCREMENT,				-- 댓글 ID, 기본키 및 자동 증가
+	userid INT NOT NULL, 							        -- 댓글 작성자 id(식별자)
+    nickname VARCHAR(100) NOT NULL,							-- 댓글 작성자 닉네임
+	content TEXT NOT NULL,									-- 댓글 내용
+    boardid INT NOT NULL DEFAULT 0,                         -- 댓글이 속한 글 (100~127 사이에서만)
+    pos INT NOT NULL DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
+    depth INT NOT NULL DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
+	ref INT,												-- 대댓글이 속한 조상댓글
+	parentid INT,											-- 대댓글이 속한 직계부모댓글
+    regdate DATETIME NOT NULL DEFAULT now(),                -- 댓글 작성 날짜
+    update_date DATETIME,                               	-- 댓글 수정 날짜
+    delete_date DATETIME,                               	-- 댓글 삭제 날짜
+    ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
+    status INT NOT NULL DEFAULT 0							-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+);
+
+-- 추천 테이블 생성
+CREATE TABLE likedtbl (
+	likedid INT AUTO_INCREMENT PRIMARY KEY,					-- 댓글 ID, 기본키 및 자동 증가
+	ref INT NOT NULL, 										-- 좋아요가 속한 게시글 id
+	userid INT NOT NULL,									-- 좋아요 누른 유저 id(식별자)
+	UNIQUE KEY unique_like (ref, userid)					-- 글id와 유저id 조합이 유일하도록 지정 (무한추천 제한)
+);
+
+-- 카테고리 테이블 생성
 CREATE TABLE categoryForAdmintbl (
-	categoryid int primary key,						-- 마지막꺼의  +1
-	category VARCHAR(100)							-- 카테고리명
+	categoryid INT PRIMARY KEY,								-- 카테고리 ID, 기본키 및 마지막 레코드의 +1
+	category VARCHAR(100)									-- 카테고리 이름
 );
 
--- 게시판 탭 테이블
+-- 탭 테이블 생성
 CREATE TABLE tabForAdmintbl (
-	tabid int primary key,						-- 마지막꺼의  +1
-	tab VARCHAR(100)							-- 탭명
+	tabid INT PRIMARY KEY,									-- 탭 ID, 기본키 및 마지막 레코드의  +1
+	tab VARCHAR(100)										-- 탭 이름
 );
+
 
 
 -- 리뷰테이블을 만듭시다(책마다 별도관리)
@@ -199,7 +244,7 @@ CREATE TABLE wishtbl (
 -- 장바구니 항목을 저장하는 테이블
 CREATE TABLE carttbl (
 	cartid INT PRIMARY KEY AUTO_INCREMENT,
-    userid INT,                             		-- 사용자 ID, 외래 키로 `membertbl` 참조
+    userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 장바구니 상태 (active, inactive 등)
     added_date DATE,                                -- 장바구니 추가 날짜
