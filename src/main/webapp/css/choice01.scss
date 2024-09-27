@@ -149,6 +149,8 @@ footer {
   background-color: #aaa;
   >address{
       height: 100px;
-      @include flexCenter();
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
 }

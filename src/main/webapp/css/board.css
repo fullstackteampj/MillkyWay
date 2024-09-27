@@ -299,28 +299,10 @@ section > #post > #head > a {
   background-color: #33afe9;
   border-radius: 3px;
 }
-section > #post > #searchInfo {
-	margin-left: 12px;
-	padding-bottom: 12px;
-    font-family: "Pretendard-Bold";
-	font-size: 16px;
-}
-section > #post > #searchInfo > span {
-	color: #33afe9;
-    font-family: "Pretendard-Bold";
-}
 section > #post > #list {
   border: 1px solid #ccc;
   padding: 0 10px;
   margin-bottom: 24px;
-}
-section > #post > #list > p {
-	display: flex;
-	justify-content: center;
-  	align-items: center;
-  	height: 100px;
-  	font-size: 15px;
-  	color: #222;
 }
 section > #post > #list > a {
   display: flex;
@@ -331,10 +313,10 @@ section > #post > #list > a {
 section > #post > #list > a:last-of-type {
   border: none;
 }
-section > #post > #list > a > .tab {
+section > #post > #list > a > .kind {
   display: inline-block;
   flex: 0 0 auto;
-  width: 80px;
+  width: 70px;
   color: #ccc;
   text-align: center;
 }
@@ -350,16 +332,14 @@ section > #post > #list > a .content > .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  margin-bottom: 3px;
 }
 section > #post > #list > a .content > .title > span.commentCount {
   margin-left: 3px;
   color: #1a6080;
-  font-size: 14px;
 }
 section > #post > #list > a .content > .postInfo {
   display: flex;
-  color: #bbb;
+  color: #ccc;
   font-size: 12px;
 }
 section > #post > #list > a .content > .postInfo > p {
@@ -373,17 +353,18 @@ section > #post > #list > a .content > .postInfo > p:last-of-type {
   border: none;
   padding-right: 0;
 }
+section > #post > #list > a .content > .postInfo > p.over15 {
+  font-family: "Pretendard-Bold";
+  color: #1a6080;
+}
 section > #post > #list > a > .frame {
+  width: 50px;
+  height: 40px;
   flex: 0 0 auto;
-  overflow: hidden;
-  width: 60px;
-  height: 50px;
-  margin-right: 20px;
 }
 section > #post > #list > a > .frame > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 section > #post > #pagination {
   display: flex;
@@ -474,7 +455,7 @@ section > #bestPost {
   top: 0;
   right: 0;
   width: 200px;
-  max-height: 240px;
+  height: 240px;
   margin-top: 51px;
   padding: 16px;
   background-color: #fff;
@@ -484,15 +465,6 @@ section > #bestPost {
 section > #bestPost > h3 {
   font-size: 20px;
   margin-bottom: 7px;
-  /*border: 1px solid red;*/
-}
-section > #bestPost > p {
-	display: flex;
-  	align-items: center;
-  	height: 35px;
-  	font-size: 13px;
-  	color: #222;
-    /*border: 1px solid blue;*/
 }
 section > #bestPost > ul {
   font-size: 14px;
@@ -645,7 +617,7 @@ section > #postBox > #readHead {
 section > #postBox > #readHead > #readHead-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
 }
 section > #postBox > #readHead > #readHead-top > #readTit {
   font-size: 18px;
@@ -669,9 +641,6 @@ section > #postBox > #readHead > #readHead-bottom > #regInfo > span:first-of-typ
 section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type {
   padding-left: 10px;
 }
-section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type > .edited {
-	color: #aaa;
-}
 section > #postBox > #readHead > #readHead-bottom > #feedback {
   display: flex;
 }
@@ -691,14 +660,8 @@ section > #postBox > #readContent {
 section > #postBox > #readContent > #contentDetail {
   min-height: 150px;
   padding-bottom: 40px;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-}
-section > #postBox > #readContent > #contentDetail > p {
-	
-}
-section > #postBox > #readContent > #contentDetail > img {
-	max-width: 100%;
 }
 section > #postBox > #readContent > #likeBtn {
   display: flex;
@@ -784,7 +747,7 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #commentCont {
   font-size: 14px;
-  margin: 16px 0;
+  padding: 16px 0;
 }
 #commentCont > .comment {
   position: relative;
@@ -816,15 +779,12 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
   margin-right: 12px;
-  color: #aaa;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
   font-size: 0;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
   display: inline-block;
-  margin-top: 3px;
-  margin-right: 12px;
   font-size: 12px;
   cursor: pointer;
 }
@@ -833,6 +793,7 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
   display: block;
+  margin-top: 3px;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
   color: #33afe9;
@@ -876,7 +837,6 @@ section > #postBox > #postMng > .readBtn:last-child {
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 6px;
-  outline: none;
 }
 #commentBox  form > #writeComment:focus-within,
 #commentCont > form > #writeComment:focus-within {
@@ -967,8 +927,8 @@ section > #btns {
 }
 section > #btns > a {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 110px;
   height: 40px;
   margin-right: 5px;
@@ -981,63 +941,7 @@ section > #btns > a:first-child {
 section > #btns > a:last-child {
   margin: 0;
 }
-section > #postBox > #deleteArea {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin: 70px 0;
-}
-section > #postBox > #deleteArea > h3 {
-	font-size: 30px;
-	font-family: "Pretendard-Bold";
-}
-section > #postBox > #deleteArea > p {
-	font-size: 14px;
-	margin-bottom: 50px;
-}
-section > #postBox > #deleteArea > #delFrm {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
-}
-section > #postBox >#deleteArea >  #delFrm > p {
-	margin-bottom: 12px;
-	color: #222;
-	font-size: 18px;
-	font-family: "Pretendard-Bold";
-}
-section > #postBox > #deleteArea > #delFrm > input {
-	width: 400px;
-	height: 35px;
-	padding: 0 12px;
-	box-sizing: border-box;
-	border: 1px solid #222;
-	border-radius: 3px;
-	outline: none;
-}
-section > #postBox > #deleteArea > #delFrm > input:focus {
-	border-color: #33afe9;
-	outline: 1px solid #33afe9;
-}
-section > #btns > button {
-	width: 110px;
-	height: 40px;
-	margin-right: 5px;
-	color: #fff;
-	outline: none;
-	border: none;
-	background-color: #ccc;
-}
-section > #btns > button:last-child {
-	margin-right: 0;
-	background-color: #33afe9;
-}
-section > #btns > button:last-child:hover {
-	background-color: rgb(205, 92, 92);
-}
+
 footer {
   width: 100%;
   min-width: 1200px;
@@ -1047,9 +951,3 @@ footer {
   height: 130px;
   background-color: #ddd;
 }/*# sourceMappingURL=board.css.map */
-
-
-.overBestLike {
-  font-family: "Pretendard-Bold";
-  color: #42a4b9;
-}

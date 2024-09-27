@@ -4,7 +4,7 @@
 <jsp:useBean id="comMgr" class="components.ComponentsMthod" /> 
 <%
 	request.setCharacterEncoding("utf-8");
-	String userId = (String) session.getAttribute("idKey");
+	String userId = (String) session.getAttribute("idKeyS");
 	
 	// 임시로 3번 지정을 위한 코드
 	if (userId == null) {

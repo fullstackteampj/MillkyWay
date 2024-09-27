@@ -5,6 +5,11 @@ $point-color : rgb(100, 130, 173);
 $sec-color : rgb(226, 218, 214);
 
 
+
+@import "_header";
+@import "_aside";
+@import "_footer";
+
 section{
   width: 1200px;
   margin: 0 auto;
@@ -81,6 +86,8 @@ footer {
   background-color: #aaa;
   >address{
       height: 100px;
-      @include flexCenter();
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
 }

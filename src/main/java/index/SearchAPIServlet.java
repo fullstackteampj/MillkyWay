@@ -25,7 +25,7 @@ public class SearchAPIServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String subject = request.getParameter("subject");
-        String clientId = ""; // 애플리케이션 클라이언트 아이디
+        String clientId = "aTtUtH6PI0jq29wOuhuU"; // 애플리케이션 클라이언트 아이디
         String clientSecret = ""; // 애플리케이션 클라이언트 시크릿
 
         String text = null;
@@ -36,7 +36,7 @@ public class SearchAPIServlet extends HttpServlet {
         }
 
         // API URL : JSON 응답 받기
-        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=10&start=1";
+        String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=5&start=1";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);

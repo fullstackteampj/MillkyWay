@@ -489,7 +489,7 @@ $priWhite: #b6e2f7;
 
         >.mainContainer{
             width: 100%;
-            height: 900px;
+            height: 940px;
             margin-top: -20px;
             padding: 50px;
             box-sizing: border-box;
@@ -512,136 +512,155 @@ $priWhite: #b6e2f7;
                 }
             }
 
-            >.shoppingCart,
-            .wishList{
-                display: none;
-                border-radius: 0 10px 10px 10px;
-                background-color: #eee;
-
-                &.visible{
-                    display: block;
-                }
-
-                >li{
-                    display: flex;
-                    flex-flow: row wrap;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    height: 150px;
-                    padding: 10px;
-                    border-bottom: 1px solid #ddd;
-                    box-sizing: border-box;
-
-                    >input[type = checkbox]{
-                        margin-right: 10px;
+            >form{
+                >.shoppingCart,
+                .wishList{
+                    display: none;
+                    border-radius: 0 10px 10px 10px;
+                    background-color: #eee;
+    
+                    &.visible{
+                        display: block;
                     }
 
-                    >img{
-                        height: 100%;
-                    }
-
-                    >.bookInfo{
+                    >li:first-of-type {
                         display: flex;
-                        flex-flow: column nowrap;
-                        justify-content: space-evenly;
-                        flex: 1 1 0;
-                        height: 100%;
-                        padding-left: 50px;
+                        justify-content: flex-start;
+                        align-items: center;
+                        height: 40px;
+                        line-height: 20px;
+                    }
+    
+                    >li{
+                        display: flex;
+                        flex-flow: row wrap;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 100%;
+                        height: 150px;
+                        padding: 10px;
+                        border-bottom: 1px solid #ddd;
                         box-sizing: border-box;
-                        
-                        >.buydate{
-                            color: #aaa;
+    
+                        >input[type = checkbox]{
+                            width: 20px;
+                            height: 20px;
+                            margin-right: 10px;
                         }
-
-                        >.title{
-                            font-size: 20px;
+    
+                        >img{
+                            height: 100%;
                         }
-
-                        >.author{
-                            font-size: 14px;
-                        }
-
-                        >.price{
-                            font-weight: 800;
-                        }
-                    }//.bookInfo
-
-                    >.content{
-                        display: flex;
-                        flex-flow: column wrap;
-                        justify-content: space-around;
-                        width: 20%;
-                        height: 100%;
-                        padding: 10px 20px;
+    
+                        >.bookInfo{
+                            display: flex;
+                            flex-flow: column nowrap;
+                            justify-content: space-evenly;
+                            flex: 1 1 0;
+                            height: 100%;
+                            padding-left: 50px;
+                            box-sizing: border-box;
+                            
+                            >.buydate{
+                                color: #aaa;
+                            }
+    
+                            >.title{
+                                font-size: 20px;
+                            }
+    
+                            >.author{
+                                font-size: 14px;
+                            }
+    
+                            >.price{
+                                font-weight: 800;
+                            }
+                        }//.bookInfo
+    
+                        >.content{
+                            display: flex;
+                            flex-flow: column wrap;
+                            justify-content: space-around;
+                            width: 20%;
+                            height: 100%;
+                            padding: 10px 20px;
+                            background-color: #fff;
+                            border-radius: 10px;
+                            box-sizing: border-box;
+    
+                            >button{
+                                background: none;
+                                border: none;
+                                outline: none;
+    
+                                height: 25px;
+                                line-height: 25px;
+                                border: 1px solid $priColor;
+                                border-radius: 10px;
+    
+                                &:hover{
+                                    color: #fff;
+                                    background-color: $priColor;
+                                }
+                            }
+                        }//.content
+                    }//li
+    
+                    >.chkPrinter{
+                        display: none;
+                        justify-content: center;
+                        align-items: center;
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        height: 60px;
+                        // height: 0;
+                        text-align: center;
                         background-color: #fff;
-                        border-radius: 10px;
-                        box-sizing: border-box;
-
+                        border-top: 1px solid #000;
+    
+                        &.checked {
+                            display: flex;
+                        }
+    
+                        >.mainDescript{
+                            font-size: 24px;
+                            width: 300px;
+                        }
+                        >.totalPrice{
+                            font-size: 20px;
+                            width: 300px;
+                        }
+    
                         >button{
                             background: none;
                             border: none;
                             outline: none;
-
-                            height: 25px;
-                            line-height: 25px;
+    
+                            width: 100px;
+                            height: 40px;
+                            margin: 0 100px;
+                            font-weight: 400;
+                            font-size: 14px;
                             border: 1px solid $priColor;
-                            border-radius: 10px;
-
-                            &:hover{
+                            border-radius: 5px;
+    
+                            &.buying{
                                 color: #fff;
                                 background-color: $priColor;
                             }
-                        }
-                    }//.content
-                }//li
 
-                >.chkPrinter{
-                    display: none;
-                    justify-content: center;
-                    align-items: center;
-                    position: fixed;
-                    bottom: 0;
-                    left: 0;
-                    height: 60px;
-                    // height: 0;
-                    text-align: center;
-                    background-color: #fff;
-                    border-top: 1px solid #000;
+                            &.moveTo{
+                                width: 150px;
+                            }
 
-                    &.checked {
-                        display: flex;
-                    }
+                        }//button
+                    }//.chkBoxPrinter
+                }//.shoppingCart,.wishList
+            }//form
 
-                    >.mainDescript{
-                        font-size: 24px;
-                        width: 300px;
-                    }
-                    >.totalPrice{
-                        font-size: 20px;
-                        width: 300px;
-                    }
 
-                    >button{
-                        background: none;
-                        border: none;
-                        outline: none;
-
-                        width: 100px;
-                        height: 40px;
-                        margin: 0 100px;
-                        font-weight: 400;
-                        font-size: 14px;
-                        border: 1px solid $priColor;
-                        border-radius: 5px;
-
-                        &.buying{
-                            color: #fff;
-                            background-color: $priColor;
-                        }
-                    }
-                }//.chkBoxPrinter
-            }//.shoppingCart,.wishList
 
             >.listSeletor{
                 display: none;
@@ -679,8 +698,6 @@ $priWhite: #b6e2f7;
                 }
             }//.listSeletor
         }//.mainContainer
-
-
     }//section
 
 }//#wrap

@@ -86,6 +86,7 @@
   color: #fff;
   font-weight: 500;
   font-size: 14px;
+  text-align: center;
 }
 #wrap > header > .headTop > .frame .userBar > li > a > .arrow {
   position: relative;
@@ -264,6 +265,14 @@
   right: 100px;
   width: 100px;
   height: 50px;
+}
+#wrap header.scrolled > .headTop {
+  position: absolute;
+  top: -100%;
+}
+#wrap header.scrolled > .headMiddle {
+  height: 50px;
+  margin-top: 0px;
 }
 
 section.login {
