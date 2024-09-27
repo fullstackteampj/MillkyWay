@@ -26,32 +26,7 @@
 		    // 만약 세션에 직접 Integer로 저장되어 있다면
 		    userid = (Integer) sessionValue; 
 		} 
-%>	
-		<script>
-			//로그인 상태 확인
-			alert('ddd');
-		    const userid = '<%=userid%>';
-		    
-		    const popupWidth = 500;
-		    const popupHeight = 350;
-		    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
-		    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
-		
-		    console.log(userid);
-		    
-		    if (userid === '0') {
-		        //비로그인 상태일 경우 팝업창 생성
-		        const url = '/buy/buy02';
-		        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
-		    }
-		    
-		  //팝업창 닫았을 경우
-			window.addEventListener('beforeunload', ()=>{
-				window.opener.history.back();
-			});
-		</script>
-<%
-		
+
 		int bookid = Integer.parseInt(request.getParameter("bookid")); 
 		int orderNum = Integer.parseInt(request.getParameter("orderNum")); 
 		
