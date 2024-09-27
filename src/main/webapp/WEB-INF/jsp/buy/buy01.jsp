@@ -9,10 +9,24 @@
 
 	//id 기본으로 0  설정
 	int userid = 0; 
+	String name =null;
+	String phone = null;
+	String zipcode = null;
+	String address = null;
+	String detailAdress = null;
+	int point = 0;
+	String imgUrl = null;
+	String tit = null;
+	int price = 0;
+	
+	
+	int bookid = Integer.parseInt(request.getParameter("bookid")); 
+	int orderNum = Integer.parseInt(request.getParameter("orderNum")); 
+	
 	//세션에서 아이디 값 int로 가져오기
-	if(session.getAttribute("idKey") != null){
+	if(session.getAttribute("idKeyS") != null){
 		//세션값 int로 저장 
-		Object sessionValue = session.getAttribute("idKey");
+		Object sessionValue = session.getAttribute("idKeyS");
 		
 		// 타입 확인 후 변환
 		if (sessionValue instanceof String) {
@@ -27,30 +41,29 @@
 		    userid = (Integer) sessionValue; 
 		} 
 
-		int bookid = Integer.parseInt(request.getParameter("bookid")); 
-		int orderNum = Integer.parseInt(request.getParameter("orderNum")); 
 		
 		//책 정보 가져오기
 		Vector<BookBean> vlist = null;
 		vlist = iMgr.getBook(bookid);
 		BookBean bean = vlist.get(0);
 		
-		String imgUrl = "/image?bookid="+bookid;
-		String tit = bean.getTitle();
-		int price = bean.getPrice();
+		imgUrl = "/image?bookid="+bookid;
+		tit = bean.getTitle();
+		price = bean.getPrice();
 		
 		//회원 정보 가져오기
 		Vector<MemberBean> mlist = null;
 		mlist = oMgr.getMember(userid);
 		MemberBean mBean = mlist.get(0);
 		
-		String name = mBean.getName();
-		String phone = mBean.getPhoneNum();
-		String zipcode = mBean.getZipcode();
-		String address = mBean.getAddress();
-		String detailAdress = mBean.getDetailAddress();
-		int point = mBean.getCurpoint();
-	%>
+		name = mBean.getName();
+		phone = mBean.getPhoneNum();
+		zipcode = mBean.getZipcode();
+		address = mBean.getAddress();
+		detailAdress = mBean.getDetailAddress();
+		point = mBean.getCurpoint();
+	}
+%>
 	
 
 <!DOCTYPE html>
@@ -193,7 +206,3 @@
 </script>
 </body>
 </html>
-
-	<%
-	} 
-%>

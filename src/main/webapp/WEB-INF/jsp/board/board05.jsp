@@ -8,7 +8,6 @@
 	int num = Integer.parseInt(request.getParameter("num"));
 	String category = request.getParameter("category");
 	
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	
 	BoardBean post = bMgr.getPost(num);
@@ -18,15 +17,14 @@
 	boolean identify = false;
 
 	// 로그인 상태면 필요한 데이터 추출(id, nickname)
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
-		
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+	
 		identify = (userid == loginId);
 	}
 	
 	// 로그인유무로 접근제한
-	boolean loginOk = (session != null && loginBean != null);
+	boolean loginOk = (session != null && loginId != null);
 	
 %>
 <!DOCTYPE html>

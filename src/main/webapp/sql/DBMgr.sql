@@ -22,7 +22,7 @@ select * from carttbl;
 
 select * from canceltbl;
 
-select * from commenttbl;
+select * from commenttbl;-- 'd8ee97a3bd17a859e844164fd582f80c8a269367080a816c92272974ea803f5d'
 
 select count(*) from carttbl;
 

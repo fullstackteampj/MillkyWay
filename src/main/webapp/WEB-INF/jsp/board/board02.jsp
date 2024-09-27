@@ -12,14 +12,13 @@
 	// 조회수 증가
 	bMgr.upCount(num);
 	
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	String loginNickname = null;
+	
 	// 로그인 상태면 필요한 데이터 추출(id, nickname)
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
-		loginNickname = loginBean.getNickname();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+		loginNickname = bMgr.getNickname(loginId);
 	}
 	
 	BoardBean post = bMgr.getPost(num);
@@ -134,7 +133,7 @@
 	
 	        <p id="likeBtn" onclick="
 	        <% // 로그인 시에만 글 추천 가능
-	           if(loginBean != null) { %>
+	           if(loginId != null) { %>
 	        	uplike(<%=num%>, <%=loginId%>, this)
 	        <% } else { %>
 	        	alert('로그인이 필요한 서비스 입니다.')
@@ -148,7 +147,7 @@
        	 <button type="button" onclick="location.href='forDev/likebug?num=<%=num%>'">추천버그버튼(인기글은15개부터)</button>
       	
 		<% // 내글일 때만 수정/삭제버튼
-			if(loginBean != null) { 
+			if(loginId != null) { 
 				if(userid == loginId) {%>
 		  <div id="postMng">
 	        <a href="board05?category=<%=category%>&num=<%=num%>" class="readBtn">삭제 <i class="fa-solid fa-trash-can"></i></a>
@@ -227,11 +226,11 @@
 	              
 	              <div class="author-addOns">
 	              	<% // 로그인 시에만 답글버튼
-					if(loginBean != null) { %>
+					if(loginId != null) { %>
 						<span onclick="toggleReply(this);"><i class="fa-solid fa-reply" title="답글"></i></span>
 				 <% } %>
 	                <% // 내댓글일 때만 수정/삭제버튼
-					if(loginBean != null) { 
+					if(loginId != null) { 
 						if(comUserid == loginId) {%>
 	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
 	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=num%>, <%=comStart%>, <%=comEnd%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
@@ -340,7 +339,7 @@
         
 	   
 		<% // 로그인 되어있을 때만 댓글폼 노출
-			if(loginBean != null) { 
+			if(loginId != null) { 
 			 	
 			 	// 오늘날짜 추출
 			 	// String today = dMgr.getToday(); --페이지가 로드되었을 때 기준시각

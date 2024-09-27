@@ -4,9 +4,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:useBean id="lMgr" class="login.LoginMgr" />
+<jsp:useBean id="sha" class="SHA256.SHASalt" />
 <%
 	String account = request.getParameter("id");
-	String pwd = request.getParameter("pwd");
+	String inpwd = request.getParameter("pwd");
 	String saveId = request.getParameter("saveId");
 	
 	MemberBean mBean = lMgr.getLoginInfo(account);
@@ -14,11 +15,16 @@
 	int userId = mBean.getUserid();
 	String userIdS = Integer.toString(mBean.getUserid());
 	
+	
 	// SHASALT를 이용하여 해시화된 비밀번호 생성 및 비교
 	SHASalt SHASalt = new SHASalt();
 	String salt = mBean.getSalt();
-	String CrPwd = SHASalt.getEncrypt(pwd, salt);
-	if(!CrPwd.equals(mBean.getPwd())){
+	
+	String CrPwd = SHASalt.getEncrypt(inpwd, salt);
+	String dbPwd = mBean.getPwd();
+	
+	//입력된 비밀번호 해쉬값과 DB에 저장된 해시갑을 비교
+	if(!CrPwd.equals(dbPwd)){
 		%>
 		<script>
 			alert("비밀번호가 일치하지 않습니다.");

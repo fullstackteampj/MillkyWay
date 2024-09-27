@@ -7,12 +7,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
 	}
 	
 	int totalRecord=0; //전체레코드수

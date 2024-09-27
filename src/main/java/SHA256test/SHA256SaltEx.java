@@ -18,7 +18,7 @@ public class SHA256SaltEx {
 		System.out.println("salt : "+salt);
 		
 		//최종 비밀번호 생성
-		String res = SHA256SALT.getEncrypt(pwd, "3b7aa5df8bd3367b870fde6815d07b78190031d5");//
+		String res = SHA256SALT.getEncrypt(pwd, salt);//
 	}
 
 	public String getSalt() {

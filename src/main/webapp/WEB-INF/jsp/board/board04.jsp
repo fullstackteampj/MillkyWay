@@ -6,17 +6,16 @@
 <!-- 글작성 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
-	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
 	Integer loginId = 0;
 	String loginNickname = null;
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginId = loginBean.getUserid();
-		loginNickname = loginBean.getNickname();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+		loginNickname = bMgr.getNickname(loginId);
 	}
 	
 	// 로그인유무로 접근제한 하기 위한 boolean값
-	boolean loginOk = (session != null && loginBean != null);
+	boolean loginOk = (session != null && loginId != null);
 	String category = request.getParameter("category");
 %>
 <!DOCTYPE html>

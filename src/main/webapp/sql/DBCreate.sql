@@ -142,6 +142,7 @@ CREATE TABLE boardtbl (
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
 ); */
 
+-- 게시글 테이블 생성
 CREATE TABLE boardtbl (
     boardid INT PRIMARY KEY AUTO_INCREMENT,					-- 게시물 ID, 기본 키 및 자동 증가
     userid INT NOT NULL,                            		-- 작성자 ID(식별자)
@@ -157,21 +158,48 @@ CREATE TABLE boardtbl (
     bookid INT,                            				 	-- 북아이디
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     update_date DATETIME,                            		-- 게시물 수정 날짜
+    liked VARCHAR(10),
     status INT NOT NULL DEFAULT 0                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
--- 댓글 테이블
+-- 댓글 테이블 생성
 CREATE TABLE commenttbl (
-	commentid INT PRIMARY KEY AUTO_INCREMENT,		-- 댓글 ID, 기본키 및 자동 증가
-	author VARCHAR(100), 							-- 댓글 작성자
-	content TEXT,									-- 댓글 내용
-    ref INT DEFAULT 0,                              -- 댓글이 속한 댓글위치(0은 최상위 댓글)
-    depth INT DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-    regdate datetime default now(),                 -- 댓글 작성 날짜
-    update_date DATE,                               -- 댓글 수정 날짜
-    ip VARCHAR(45),                                 -- 작성자 IP 주소
-    status VARCHAR(20)                             -- 댓글 상태 (active, inactive 등) -- 이건 삭제여부인가?
+	commentid INT PRIMARY KEY AUTO_INCREMENT,				-- 댓글 ID, 기본키 및 자동 증가
+	userid INT NOT NULL, 							        -- 댓글 작성자 id(식별자)
+    nickname VARCHAR(100) NOT NULL,							-- 댓글 작성자 닉네임
+	content TEXT NOT NULL,									-- 댓글 내용
+    boardid INT NOT NULL DEFAULT 0,                         -- 댓글이 속한 글 (100~127 사이에서만)
+    pos INT NOT NULL DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
+    depth INT NOT NULL DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
+	ref INT,												-- 대댓글이 속한 조상댓글
+	parentid INT,											-- 대댓글이 속한 직계부모댓글
+    regdate DATETIME NOT NULL DEFAULT now(),                -- 댓글 작성 날짜
+    update_date DATETIME,                               	-- 댓글 수정 날짜
+    delete_date DATETIME,                               	-- 댓글 삭제 날짜
+    ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
+    status INT NOT NULL DEFAULT 0							-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
+
+-- 추천 테이블 생성
+CREATE TABLE likedtbl (
+	likedid INT AUTO_INCREMENT PRIMARY KEY,					-- 댓글 ID, 기본키 및 자동 증가
+	ref INT NOT NULL, 										-- 좋아요가 속한 게시글 id
+	userid INT NOT NULL,									-- 좋아요 누른 유저 id(식별자)
+	UNIQUE KEY unique_like (ref, userid)					-- 글id와 유저id 조합이 유일하도록 지정 (무한추천 제한)
+);
+
+-- 카테고리 테이블 생성
+CREATE TABLE categoryForAdmintbl (
+	categoryid INT PRIMARY KEY,								-- 카테고리 ID, 기본키 및 마지막 레코드의 +1
+	category VARCHAR(100)									-- 카테고리 이름
+);
+
+-- 탭 테이블 생성
+CREATE TABLE tabForAdmintbl (
+	tabid INT PRIMARY KEY,									-- 탭 ID, 기본키 및 마지막 레코드의  +1
+	tab VARCHAR(100)										-- 탭 이름
+);
+
 
 
 -- 리뷰테이블을 만듭시다(책마다 별도관리)

@@ -25,7 +25,7 @@ public class SHASalt {
 		
 		return sb.toString();
 	}
-	
+
 	public String getEncrypt(String pwd, String salt) {
 		
 		String result = "";
