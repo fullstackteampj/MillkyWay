@@ -212,7 +212,7 @@
 			 	
 			  %>
 			<a href="board02?category=<%=category%>&num=<%=boardid%>">
-	            <span class="tab"><%=kind%> / <%=genre%></span>
+	            <span class="kind"><%=kind%> / <%=genre%></span>
 	            <div class="content">
 	            	<p class="title">
 	              <% // 인기글이면 제목에 스타일 적용 
