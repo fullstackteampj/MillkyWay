@@ -1,4 +1,4 @@
-package bookInfo;
+package book;
 
 import java.sql.*;
 import java.util.Vector;

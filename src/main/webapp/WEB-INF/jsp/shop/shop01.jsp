@@ -3,9 +3,30 @@
 <% request.setCharacterEncoding("UTF-8"); %>
 <%@ page import="beans.BookBean" %>
 <%@ page import="java.util.Vector" %>
-<jsp:useBean id="bMgr" class="bookInfo.BookListMgr" />
+<jsp:useBean id="bMgr" class="book.BookListMgr" />
 <%
+	//로그인 상태 확인
+	int userid = 0; 
+	
+	if(session.getAttribute("idKey") !=null){
+		//세션값 int로 저장 
+		Object sessionValue = session.getAttribute("idKey");
+		
+		// 타입 확인 후 변환
+		if (sessionValue instanceof String) {
+		    String strValue = (String) sessionValue; // String으로 캐스팅
+		    try {
+		        userid = Integer.parseInt(strValue);
+		    } catch (NumberFormatException e) {
+		        e.printStackTrace(); // 변환 실패 시 예외 처리
+		    }
+		} else if (sessionValue instanceof Integer) {
+		    // 만약 세션에 직접 Integer로 저장되어 있다면
+		    userid = (Integer) sessionValue; 
+		} 
+	} 
 
+	//pagination
 	int totalRecord = 0; //전체 레코드 수
 	int numPerPage = 5; //페이지당 레코드 수
 	int pagePerBlock = 5; //블럭당 페이지 수
@@ -84,7 +105,23 @@
   		document.readFrm.nowPage.value = <%=pagePerBlock%>*(value-1)+1;
   		document.readFrm.submit();
   	}
-  </script>
+  	
+ 
+	//로그인 상태 확인
+    const userid = '<%=userid%>';
+    
+    const popupWidth = 500;
+    const popupHeight = 350;
+    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
+    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
+
+    if (userid === '0') {
+        //비로그인 상태일 경우 팝업창 생성
+        const url = '/buy/buy02';
+        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
+    }
+</script>
+
 </head>
 
 <body>
@@ -1096,9 +1133,11 @@
 			                </p>
 			              </div>
 			              <form method="post" name="listFrm">
-			                <button formaction="/mypage/mypage05">장바구니</button>
 			                <button formaction="/buy/buy01">바로구매</button>
+			                <button type="button" onclick="toCart(event, <%=bookid%>)">장바구니</button>
+			                <button type="button" onclick="toWish(event, <%=bookid%>)">관심목록</button>
 			                <input type="hidden" name="bookid" value="<%=bookid%>"/>
+			                <input type="hidden" name="orderNum" value="1"/>
 			              </form>
 			            </a>
 		          	</li>
@@ -1145,6 +1184,43 @@
 	      <input type="hidden" name="tap" value="<%=tap%>" />
       </form>
 	</div>
+<script>
+	//로그인 상태 확인 - 팝업창 생성
+	//중복 선언 떠서 이름 변경
+	const id = '<%=userid%>'; 
+	
+	const makePopup = (save, bookid) => {
+	   
+	    const popupWidth = 500;
+	    const popupHeight = 350;
+	    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
+	    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
+	
+	    if (id === '0') {
+	        //비로그인 상태일 경우 팝업창 생성
+	        const url = '/buy/buy02';
+	        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
+	    }else{
+	    	//장바구니/관심목록 구분
+			if(save === 'cart'){
+				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
+			}else{
+				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+			}
+	    }
+	}
+		
+	const toWish = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('wish',bookid);
+	}
+	
+	const toCart = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('cart', bookid);
+	}
+
+</script>
 </body>
 
 </html>

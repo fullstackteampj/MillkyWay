@@ -7,7 +7,8 @@
 <title>회원 확인</title>
 <style>
 	p{
-		padding: 70px;
+		margin: 50px 0 80px;
+		padding: 10px 0;
 		font-size: 18px;
 		text-align: center;
 	}
@@ -16,14 +17,14 @@
 		flex-flow: row nowrap;
 		justify-content: space-between;
 		align-items: center;
-		width: 300px;
+		width: 230px;
 		margin: 0 auto;
 	}
 	.btns>button{
 		border: none;
 		outline: none;
-		width: 120px;
-		height: 50px;
+		width: 100px;
+		height: 40px;
 		color: #fdfdfd;
 		font-size: 16px;
 		text-align: center;
@@ -37,19 +38,19 @@
 </style>
 <script>
 	const loginFn = () => {
-		window.opener.location.href = '/login/login01';
 		self.close();
+		window.opener.location.href = '/login/login01';
 	}
 	
 	const signupFn = () => {
-		window.opener.location.href = '/sign/signup01';
 		self.close();
+		window.opener.location.href = '/signup/signup01';
 	}
 	
 </script>
 </head>
 <body>
-	<p><strong>은하수 책방 회원만 이용 가능한 서비스 입니다.</strong></p>
+	<p><strong>은하수 책방 회원만 <br />이용 가능한 서비스 입니다.</strong></p>
 	<div class="btns">
 		<button type="button" onclick="loginFn()">로그인</button>
 		<button type="button" onclick="signupFn()">회원가입</button>

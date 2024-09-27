@@ -15,6 +15,7 @@ public class MemberBean {
 	private String gender;
 	private String zipcode;
 	private String address;
+	private String detailAddress; //추가
 	private String phoneNum;
 	private String phone;
 	private String email;
@@ -26,12 +27,12 @@ public class MemberBean {
 	private String year;
 	private String month;
 	private String date;
-	private String[] agree;
+	private String agree;
 	
-	public String[] getAgree() {
+	public String getAgree() {
 		return agree;
 	}
-	public void setAgree(String[] agree) {
+	public void setAgree(String agree) {
 		this.agree = agree;
 	}
 	public String getPhoneNum() {
@@ -179,6 +180,12 @@ public class MemberBean {
 	}
 	public void setProfile_photo(byte[] profile_photo) {
 		this.profile_photo = profile_photo;
+	}
+	public String getDetailAddress() {
+		return detailAddress;
+	}
+	public void setDetailAddress(String detailAddress) {
+		this.detailAddress = detailAddress;
 	}
 	
 }//class MemberBean

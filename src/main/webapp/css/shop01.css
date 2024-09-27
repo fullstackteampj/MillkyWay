@@ -472,11 +472,12 @@ section.shop-list > .container > .content > ol > li > a > form > button {
   display: block;
   width: 100px;
   height: 40px;
-  margin: 10px;
+  margin: 5px 10px;
   color: #fdfdfd;
   font-weight: 600;
   background-color: rgb(127, 161, 195);
   border-radius: 5px;
+  z-index: 100;
 }
 section.shop-list > .container > .content > ol > li > a > form > button:hover {
   background-color: rgb(100, 130, 173);

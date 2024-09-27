@@ -187,11 +187,12 @@ section.shop-list{
                 display: block;
                 width: 100px;
                 height: 40px;
-                margin: 10px;
+                margin: 5px 10px;
                 color: #fdfdfd;
                 font-weight: 600;
                 background-color: $pri-color;
                 border-radius: 5px;
+                z-index: 100;
                 &:hover{background-color: $point-color;}
               }//button
             }//form

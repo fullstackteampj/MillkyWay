@@ -84,7 +84,7 @@ public class IndexMgr {
 		
 	}//Vector<BoardBean> getBestBoardList()
 	
-	
+
 	public BookBean getRanBook(int ranId, String category) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;

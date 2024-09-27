@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #wrap > header {
   position: absolute;
   top: 0;
@@ -367,17 +368,8 @@ section.buy > form > .payment-info > li > ol.buy-products > li {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  height: inherit;
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two {
-  padding: 20px 0;
-  border-bottom: 1px solid rgb(226, 218, 214);
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two:first-of-type {
-  padding-top: 0;
-}
-section.buy > form > .payment-info > li > ol.buy-products > li.more-two:last-of-type {
-  border-bottom: none;
+  padding: 40px 0;
+  font-size: 16px;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li > img {
   display: block;
@@ -392,16 +384,19 @@ section.buy > form > .payment-info > li > ol > li {
 section.buy > form > .payment-info > li > ol > li:last-child {
   margin-bottom: 0;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode {
-  flex: 1 1 0;
+section.buy > form > .payment-info > li > ol > li #zipcode {
+  width: 20%;
   margin-right: 5px;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode + button {
-  background-color: rgb(226, 218, 214);
-  border-radius: 5px;
+section.buy > form > .payment-info > li > ol > li #address {
+  width: 65%;
+  margin-right: 5px;
 }
-section.buy > form > .payment-info > li > ol > li #buyZipcode + button:hover {
-  background-color: #ded5d0;
+section.buy > form > .payment-info > li > ol > li #address + button {
+  width: calc(15% - 10px);
+  color: #fdfdfd;
+  background-color: rgb(127, 161, 195);
+  border-radius: 5px;
 }
 section.buy > form > .payment-info > li > ol > li input[type=text] {
   width: 100%;
@@ -432,6 +427,9 @@ section.buy > form > .payment-info > li > .btns-pay > button {
   border: 1px solid rgb(226, 218, 214);
   border-radius: 10px;
 }
+section.buy > form > .payment-info > li > .btns-pay > button.on {
+  border: 2px solid rgb(100, 130, 173);
+}
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(3n) {
   margin-right: 0;
 }
@@ -442,6 +440,9 @@ section.buy > form > .payment-info > li > .btns-pay > button:hover {
   box-shadow: 1px 1px 1px #ddd;
 }
 section.buy > form > .buy-total {
+  position: sticky;
+  top: 100px;
+  right: 50px;
   width: 32%;
   height: 300px;
   margin: 30px 20px 0 0;
@@ -449,18 +450,26 @@ section.buy > form > .buy-total {
   border: 1px solid rgb(226, 218, 214);
   border-radius: 10px;
 }
-section.buy > form > .buy-total.sticky {
-  position: sticky;
-  top: 100px;
-  left: 1000px;
-  right: 50px;
-}
 section.buy > form > .buy-total > li {
+  display: flex;
+  align-items: center;
   margin: 15px 5px;
   font-size: 16px;
 }
+section.buy > form > .buy-total > li.deleteline {
+  position: relative;
+  text-decoration: line-through;
+}
+section.buy > form > .buy-total > li.deleteline:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 110px;
+  color: rgb(100, 130, 173);
+  content: "0원";
+}
 section.buy > form > .buy-total > li > span {
-  margin-left: 10px;
+  margin-left: 8px;
 }
 section.buy > form > .buy-total > li > button {
   width: 100%;
@@ -474,4 +483,27 @@ section.buy > form > .buy-total > li > button {
 }
 section.buy > form > .buy-total > li > button:hover {
   background-color: rgb(100, 130, 173);
+}
+section.buy > form > .buy-total > li > input {
+  width: 120px;
+  margin: 0 5px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid rgb(226, 218, 214);
+  border-radius: 5px;
+  outline: none;
+  box-sizing: border-box;
+}
+section.buy > form > .buy-total > li > input:hover {
+  box-shadow: 1px 1px 1px #ddd;
+}
+section.buy > form > .buy-total > li > input:focus {
+  border-color: rgb(100, 130, 173);
+}
+section.buy > form > .buy-total > li > input + button {
+  width: 40px;
+  height: 28px;
+  margin: 0 3px 0 10px;
+  font-size: 14px;
+  background-color: rgb(226, 218, 214);
 }/*# sourceMappingURL=buy01.css.map */

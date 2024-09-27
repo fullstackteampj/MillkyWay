@@ -1,42 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%> 
 <jsp:useBean id="sMgr" class="procs.SignupMgr" />
 <%
 	request.setCharacterEncoding("UTF-8");
-	String nickname = request.getParameter("nickname");
-	boolean result = sMgr.checkNickname(nickname);
+	String account = request.getParameter("account");
+	boolean result = sMgr.checkId(account);
 %>
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>별명 중복 확인</title>
+  <title>아이디 중복 확인</title>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signup024.css?after" />
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/signup045.css?after" />
 </head>
-
 <body>
-   <div class="duplication">
-	    <% if(result){
-	    	%>
-	    	 <h1>
-	    	 	<span><%=nickname%></span>을<br />
-	    	 	이미 다른 회원이 사용중입니다.
-	    	 </h1>
-	    	 <p>다시 입력해 주세요.</p>
-	    	<%
-	    }else{
-	    	%>
-	    	 <h1>
-		    	 <span><%=nickname%></span>은<br />
-		    	 사용 가능한<br />
-		    	 별명 입니다.
-	    	 </h1>
-	    	<%
-	    }%>
-	   
-	    <button type="button" onclick=self.close()>닫기</button>
-  	</div>
-
+  <div class="duplication">
+    <% 
+    	if(result){
+    		%>
+    		 <h1><span><%=account%></span>는<br />이미 존재합니다.</h1>
+    		 <p>다시 입력해 주세요.</p>
+    		<%
+    	}else{
+    		%>
+    		 <h1><span><%=account%></span>는<br />사용 가능한 <br />아이디 입니다.</h1>
+    		<%
+    	}
+    %>
+    <button type="button" onclick=self.close()>닫기</button>
+  </div>
+</body>
 </html>

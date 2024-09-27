@@ -30,7 +30,6 @@ section.sign-up{
   width: 1200px;
   margin: 120px auto;
   padding: 30px 0;
-
   button{@include basicBtnRemove();}
   input[type=checkbox]{
     appearance: none;
@@ -40,8 +39,9 @@ section.sign-up{
     cursor:pointer;
     &:checked{background-image: url(./../images/checkedcircle.png);}
   }//all chk
-  .btns{//뒤로가기, 다음페이지 버튼
+  .btns{//뒤로가기, 다음으로 버튼
     display: flex;
+    flex-flow: row nowrap;
     justify-content: center;
     width: 600px;
     margin: 50px auto 30px;
@@ -65,7 +65,6 @@ section.sign-up{
       }
     }//button
   }//btns
-
   >h2{padding: 20px 0;}
   >.progress{
     display: flex;
@@ -97,7 +96,7 @@ section.sign-up{
       background-color: $point-color;
       border-radius: 50%;
     }//.ball
-    >div{
+    >div{//가로 막대기
       width: 48%;
       height: 10px;
       background-color: $sec-color;
@@ -130,9 +129,8 @@ section.sign-up{
     display: block;
     padding: 10px 20px;
     text-align: center;
-    &.hide{display: none;}
     >h3{padding: 5px;}
-    >form{
+    >form{//agreeFrm
       >ul{
         >li{
           display: flex;
@@ -144,29 +142,27 @@ section.sign-up{
           border: 1px solid $sec-color;
           border-radius: 30px;
           box-sizing: border-box;
-          &:last-child{
+          &:last-child{//모두 동의 
             margin: 80px 10px 30px 10px;
             border: 2px solid $pri-color;
-          }//1st li
+          }//last li
           input[type=checkbox]{
             width: 25px;
             height: 25px;
           }//input[checkbox]
         }//li
       }//ul
-      
     }//form
   }//.agreement
 
   >.enterInfo{
-    display: none;
+    display: block;
     width: 800px;
     margin: 0 auto;
-    &.on{display: block;}
     input, select{box-sizing: border-box;}
     button, label{@include flexCenter();}
     >h3{padding: 5px; text-align: center;}//h3
-    >form{
+    >form{//signupFrm
       padding: 10px;
       >h4{margin-left: 60px;}
       ul{
@@ -184,34 +180,33 @@ section.sign-up{
           margin: 20px 0;
           font-size: 16px;
           input:focus, select:focus{border-color: $pri-color;}
-          #question{width: 80%;}
           #account, #nickname{
             width: 68%;
             margin-right: 5px;
             &+button{width: calc(12% - 5px);}
-          }//#userId, #nickname
-          #mobileCarrier{
+          }//#account, #nickname
+          #phone{
             width: calc(20% - 5px);
             margin-right: 5px;
             &+input{width: 60%;}
-          }//#mobileCarrier
+          }//#phone
           #zipcode{
             width: 13%;
             margin-right: 5px;
           }//#zipcode
-          #basicAddress{
+          #address{
             width: 58%;
             margin-right: 5px;
             &+button{width: calc(9% - 10px)}
-          }
+          }//#address
+          #question{width: 80%;}
           #email{
             width: 65%;
             margin-right: 5px;
             &+button{
               width: calc(15% - 5px);
-            }//#userEmail+button
-          }//#userEmail
-
+            }//#email+button
+          }//#email
           #male{
             margin: 0;
             border-top-left-radius: 5px;
@@ -224,7 +219,6 @@ section.sign-up{
             border-bottom-right-radius: 5px;
             &:after{content: '여';}
           }//#female
-
           >button{
             height: 30px;
             color: $white;
@@ -232,7 +226,7 @@ section.sign-up{
             background-color: $pri-color;
             border-radius: 5px;
             &:hover{background-color: $point-color;}
-          }//all button
+          }//li>button
           >label{
             display: block;
             width: 20%;
@@ -281,8 +275,12 @@ section.sign-up{
               border: none;
               &:after{color: #fdfdfd;}
             }//checked radio
-            
           }//input-radio
+          >input[type=checkbox]{
+            width: 20px;
+            height: 20px;
+            margin: 0 20px 0 1px;
+          }//input-chk
           >select{
             appearance: none;
             outline: none;
@@ -305,19 +303,13 @@ section.sign-up{
             }
             &#date{margin-right: 0;}
           }//select
-          >input[type=checkbox]{
-            width: 20px;
-            height: 20px;
-            margin: 0 20px 0 1px;
-          }//chk
         }//li
       }//ul
-    }//form
+    }//signupform
   }//.enterInfo
-  .finish{
-    display: none;
+  >.finish{
+    display: block;
     text-align: center;
-    &.on{display: block;}
     >h2{
       padding: 20px;
       color: $point-color;

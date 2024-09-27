@@ -61,9 +61,10 @@ CREATE TABLE membertbl (
     gender CHAR(1) default null,            -- 성별 (M, F)
     zipcode VARCHAR(10),                    -- 우편번호
     usergrade VARCHAR(100),					-- 유저등급
-	curpoint int,							-- 보유포인트
+	curpoint int default 0,					-- 보유포인트 //디폴트값 추가 
 	expectpoint int,						-- 적립예정포인트
     address TEXT,                           -- 주소
+	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
     signup_date DATE,     					-- 회원 가입 날짜, 기본값 현재 날짜
@@ -73,7 +74,7 @@ CREATE TABLE membertbl (
     profile_photo BLOB,                     -- 프로필 사진
     
     birth VARCHAR(20) default null,			-- 생년월일
-    agree CHAR(1)                           -- 동의여부
+    agree CHAR(1)                           -- 선택 사항 동의여부
 );
 
 -- 트리거는 날짜 기본값 설정에 불필요함
