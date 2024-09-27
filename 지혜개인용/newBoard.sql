@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS categoryForAdmintbl;
 DROP TABLE IF EXISTS tabForAdmintbl;
 DROP TABLE IF EXISTS likedtbl;
 
-
 ### 테이블 생성
 -- 게시글 테이블 생성
 CREATE TABLE boardtbl (
@@ -28,28 +27,30 @@ CREATE TABLE boardtbl (
     status INT NOT NULL DEFAULT 0                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
--- 추천 테이블 생성
-CREATE TABLE likedtbl (
-	likedid INT AUTO_INCREMENT PRIMARY KEY,					-- 댓글 ID, 기본키 및 자동 증가
-	ref INT NOT NULL, 										-- 좋아요가 속한 게시글 id
-	userid INT NOT NULL,									-- 좋아요 누른 유저 id(식별자)
-	UNIQUE KEY unique_like (ref, userid)					-- 글id와 유저id 조합이 유일하도록 지정 (무한추천 제한)
-);
-
 -- 댓글 테이블 생성
 CREATE TABLE commenttbl (
 	commentid INT PRIMARY KEY AUTO_INCREMENT,				-- 댓글 ID, 기본키 및 자동 증가
 	userid INT NOT NULL, 							        -- 댓글 작성자 id(식별자)
     nickname VARCHAR(100) NOT NULL,							-- 댓글 작성자 닉네임
 	content TEXT NOT NULL,									-- 댓글 내용
-    ref INT NOT NULL DEFAULT 0,                             -- 댓글이 속한 글 (100~127 사이에서만)
+    boardid INT NOT NULL DEFAULT 0,                         -- 댓글이 속한 글 (100~127 사이에서만)
     pos INT NOT NULL DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
     depth INT NOT NULL DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-	parent_commentid INT,									-- 대댓글이 속한 댓글
+	ref INT,												-- 대댓글이 속한 조상댓글
+	parentid INT,											-- 대댓글이 속한 직계부모댓글
     regdate DATETIME NOT NULL DEFAULT now(),                -- 댓글 작성 날짜
     update_date DATETIME,                               	-- 댓글 수정 날짜
+    delete_date DATETIME,                               	-- 댓글 삭제 날짜
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     status INT NOT NULL DEFAULT 0							-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+);
+
+-- 추천 테이블 생성
+CREATE TABLE likedtbl (
+	likedid INT AUTO_INCREMENT PRIMARY KEY,					-- 댓글 ID, 기본키 및 자동 증가
+	ref INT NOT NULL, 										-- 좋아요가 속한 게시글 id
+	userid INT NOT NULL,									-- 좋아요 누른 유저 id(식별자)
+	UNIQUE KEY unique_like (ref, userid)					-- 글id와 유저id 조합이 유일하도록 지정 (무한추천 제한)
 );
 
 -- 카테고리 테이블 생성
@@ -107,6 +108,7 @@ SELECT * FROM commenttbl;
 DESC commenttbl;
 -- 레코드 삭제
 DELETE FROM commenttbl WHERE commentid > 0;
+DELETE FROM commenttbl WHERE boardid =6;
 
 
 # 추천 테이블
@@ -139,72 +141,3 @@ SELECT * FROM membertbl;
 DESC membertbl;
 -- 레코드 삭제
 DELETE FROM membertbl WHERE userid > 0;
-
-
-
-
-
-
-
-
-
--- -----------------------------------
-### 글목록 추출 쿼리문 (실제 활용 쿼리문 작성시 참고용)
--- 전체글
-SELECT * FROM boardtbl WHERE status=0 ORDER BY regdate DESC LIMIT 0, 10;
--- 글 추출 (제목+내용)
-SELECT * FROM boardtbl WHERE status=0 AND (title LIKE '%경제%' OR content LIKE '%경제%')
-ORDER BY regdate DESC LIMIT 0, 10;
--- 글 추출 (작성자)
-SELECT * FROM boardtbl WHERE status=0 AND nickname LIKE '%희%'
-ORDER BY regdate DESC LIMIT 0, 10;
--- 글 추출 (카테고리)
-SELECT * FROM boardtbl WHERE status=0 AND genre="경제경영"
-ORDER BY regdate DESC LIMIT 0, 10;
--- 글 추출 (탭)
-SELECT * FROM boardtbl WHERE status=0 AND tab="질문"
-ORDER BY regdate DESC LIMIT 0, 10;
--- 글 추출 (인기글 영역)
-SELECT * FROM boardtbl WHERE status=0 AND best='Y' ORDER BY regdate DESC LIMIT 0, 10;
-
--- 추천수
-SELECT * FROM likedtbl;
--- 누적 추천 수 추출
-SELECT count(likedid) FROM likedtbl WHERE ref=1;
--- 중복 추천유무 추출
-SELECT count(likedid) FROM likedtbl WHERE ref=1 AND userid=1;
--- 추천 insert
-INSERT INTO likedtbl (ref, userid) VALUES (1, 1);
--- 추천수에 따른 인기글 부여
-UPDATE boardtbl SET best = 'Y' WHERE boardid=1;
-
-
-### 글상세 추출 쿼리문
-# 클릭한 글 추출
-INSERT * FROM boardtbl WHERE boardid = 1;
-# 클릭한 글 추출
-SELECT * FROM boardtbl WHERE boardid = 1;
-# 클릭한 글의 댓글 추출
-SELECT * FROM commenttbl WHERE REF = 127;
-SELECT count(commentid) FROM commenttbl WHERE ref = 127;
-
-# 조회수증가
-UPDATE boardtbl SET count = count+1 WHERE boardid = 1;
-# 추천수증가
-UPDATE boardtbl SET liked = liked+1 WHERE boardid = 1;
-SELECT liked FROM boardtbl WHERE boardid = 1;
-
-# 글삭제(status 값 변경)
-SELECT * FROM boardtbl WHERE status=0;
-UPDATE boardtbl SET status = 9 WHERE boardid=1;
-# 글수정
-UPDATE boardtbl SET nickname="또또밍기", title="디비로수정", content="제발잘되길ㅜㅜㅜㅜ", 
-photo=null, genre="역사", tab="추천", ip="127.0.0.1", update_date=now() 
-WHERE boardid=1;
-
-# 댓글 등록
-INSERT INTO commenttbl (userid, nickname, content, ref, pos, depth, parent_commentid, regdate, ip)
-VALUES (1, "밀키", "내가일빠당", 3, 0, 0, null, now(), "127.0.0.1");
-# 댓글 삭제
-SELECT * FROM commenttbl WHERE commentid=31;
-UPDATE commenttbl SET status = 9 WHERE commentid=31;
