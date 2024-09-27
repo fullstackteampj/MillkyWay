@@ -358,7 +358,7 @@
 		if(userid === '0'){//비로그인 상태
 			const loginAnswer = confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?');
 			if(loginAnswer){
-				location.href = 'login/login01';
+				location.href = '/login/login01';
 			}else{
 				checkReview();
 			}
