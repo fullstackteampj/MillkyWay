@@ -8,7 +8,7 @@
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.PreparedStatement" %>
 <%@ page import="java.sql.ResultSet" %>
-<jsp:useBean id="iMgr" class="index.IndexMgr" /> 
+<jsp:useBean id="iMgr" class="index.IndexMgr" />
 
 <%
 	String userId = (String) session.getAttribute("idKeyS");

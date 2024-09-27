@@ -8,7 +8,7 @@ import SHA256test.SHA256;
 
 public class SHASalt {
 	
-	public String getSalt() {
+	public String genSalt() {
 		
 		// 1. Random, byte 객체 생성
 		SecureRandom  r = new SecureRandom ();
