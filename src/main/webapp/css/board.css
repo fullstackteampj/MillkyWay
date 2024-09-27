@@ -799,13 +799,17 @@ section > #postBox > #postMng > .readBtn:last-child {
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
 }
-#commentCont > .comment > .commentInfo > .author {
+#commentCont > .comment > .commentInfo > .authorInfo > .commentAuthor {
   font-family: "Pretendard-Bold";
 }
-#commentCont > .comment > .commentInfo > .same {
+#commentCont > .comment > .commentInfo > .authorInfo > .same {
 	display: inline;
     /*box-shadow: inset 0 -10px 0 #D9FCDB;*/
     box-shadow: inset 0 -10px 0 #b0dbe3;
+}
+#commentCont > .comment > .commentInfo > .authorInfo > .comUpdate {
+	font-family: "Pretendard-Bold";
+	color: #ccc;
 }
 #commentCont > .comment > .commentInfo > .commentAdd {
   display: flex;

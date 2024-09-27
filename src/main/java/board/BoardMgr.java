@@ -36,6 +36,7 @@ public class BoardMgr {
 		
 		try {
 			con = pool.getConnection();
+			// status=0인것만 boardid 내림차순으로 현재페이지 기준으로 추출
 			sql = "select * from boardtbl where status=0";
 
 			// 검색어값이 존재할경우
@@ -69,7 +70,8 @@ public class BoardMgr {
 			sql += " order by boardid desc limit " + start + ", " + end;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
+			System.out.println("start = "+start);
+			System.out.println("end = "+end);
 			while(rs.next()) {
 				BoardBean bean = new BoardBean();
 				bean.setBoardid(rs.getInt("boardid"));
@@ -471,14 +473,14 @@ public class BoardMgr {
 		return count;
 	}
 	
-	// 댓글 목록 반환
+	// 댓글 목록 반환 -- status=0이거나 9이지만 자식댓글이 있는 댓글만 반환
 	public ArrayList<CommentBean> getCommentList(int boardid, int start, int end) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
 		ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
-		
+				
 		try {
 			con = pool.getConnection();
 			sql = "select * from commenttbl where boardid=" + boardid + " order by ref, pos limit "+start+", "+end+";";
@@ -486,28 +488,79 @@ public class BoardMgr {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				CommentBean bean = new CommentBean();
-				bean.setCommentid(rs.getInt("commentid"));
-				bean.setUserid(rs.getInt("userid"));
-				bean.setNickname(rs.getString("nickname"));
-				bean.setContent(rs.getString("content"));
-				bean.setBoardid(rs.getInt("boardid"));
-				bean.setPos(rs.getInt("pos"));
-				bean.setDepth(rs.getInt("depth"));
-				bean.setRef(rs.getInt("ref"));
-				bean.setRegdate(rs.getString("regdate"));
-				bean.setUpdateDate(rs.getString("update_date"));
-				bean.setIp(rs.getString("ip"));
-				bean.setStatus(rs.getInt("status"));
-				clist.add(bean);
+				if(rs.getInt("status") == 0 || hasComReply(rs.getInt("commentid"))) {					
+					CommentBean bean = new CommentBean();
+					bean.setCommentid(rs.getInt("commentid"));
+					bean.setUserid(rs.getInt("userid"));
+					bean.setNickname(rs.getString("nickname"));
+					bean.setContent(rs.getString("content"));
+					bean.setBoardid(rs.getInt("boardid"));
+					bean.setPos(rs.getInt("pos"));
+					bean.setDepth(rs.getInt("depth"));
+					bean.setRef(rs.getInt("ref"));
+					bean.setRegdate(rs.getString("regdate"));
+					bean.setUpdateDate(rs.getString("update_date"));
+					bean.setIp(rs.getString("ip"));
+					bean.setStatus(rs.getInt("status"));
+					clist.add(bean);
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		
 		return clist;
+	}
+	
+	// 모든이전댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 모든 댓글 누적갯수 반환
+	public int getTotalPrevDelCount(int boardid, int start, int end) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int totalDelCount = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT 0, ?";
+			pstmt = con.prepareStatement(sql);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return totalDelCount;
+	}
+	
+	// (연산 후 start)현재 댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 댓글 갯수 반환
+	public int getDeleteComCount(int boardid, int start, int end) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int delCount = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT ?, ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				if(!hasComReply(rs.getInt("commentid"))) {
+					delCount++;
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		System.out.println("delCount = " + delCount);
+		return delCount;
 	}
 	
 	// 댓글작성자 반환
@@ -755,15 +808,16 @@ public class BoardMgr {
 	}
 	
 	// 댓글 삭제
-	public void deleteComment(int commentid) {
+	public void deleteComment(int commentid, String deldate) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		
 		try {
 			con = pool.getConnection();
-			sql = "UPDATE commenttbl SET status = 9 WHERE commentid="+commentid;
+			sql = "UPDATE commenttbl SET status = 9, delete_date = ? WHERE commentid="+commentid;
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, deldate);
 			pstmt.executeUpdate();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -781,6 +835,7 @@ public class BoardMgr {
 			con = pool.getConnection();
 			sql = "UPDATE commenttbl SET nickname=?, content=?, update_date=?, ip=? WHERE commentid=?";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginNickname);
 			pstmt.setString(2, commentMsg);
 			pstmt.setString(3, updateDate);
 			pstmt.setString(4, userip);

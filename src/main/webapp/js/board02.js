@@ -163,7 +163,7 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 	const commentMsg = frm.inputComment.value.replace(/\n/g, '<br>');
 
 	// 날짜 데이터
-	const regdate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
+	const updatedate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
 
 	// 보낼 데이터를 객체로 묶음
 	const commentData = {
@@ -173,7 +173,7 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 		boardid,
 		userip,
 		commentMsg,
-		regdate,
+		updatedate,
 		start,
 		end
 	}
@@ -205,35 +205,49 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 	})
 }
 
-// 댓글삭제 비동기요청
-async function commentDelete(commentId, hasReply, element) {
+// 댓글삭제
+async function commentDelete(commentid, userid, boardid, start, end) {
 	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
+	
 		if(confirmtrue) {
-			const response = await fetch('boardCommentDel', {
+			// 날짜 데이터
+			const deldate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
+
+			// 보낼 데이터를 객체로 묶음
+			const commentData = {
+				commentid,
+				userid,
+				boardid,
+				deldate,
+				start,
+				end
+			}
+			
+			// 삭제 비동기 요청
+			await fetch('boardCommentDel', {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded;'
+					'Content-Type': 'application/json'
 				},
-				body: 'commentId=' + commentId
-			});
-				
-			if(response.ok) {
-				// 이 댓글에 대댓글이 존재하면 내용대체
-				if(hasReply) {
-					const deleteComment = element.parentElement.parentElement.parentElement.parentElement.lastElementChild;
-					deleteComment.textContent = '삭제된 댓글입니다.';
-					console.log("대댓글 존재 !");
-				// 대댓글이 없으면 노드 삭제
-				} else {
-					const deleteComment = element.parentElement.parentElement.parentElement.parentElement;
-					deleteComment.remove();
-					console.log("대댓글 없음 !");
-				}
+				body: JSON.stringify(commentData)
+			})
 
-				// 총 댓글 수 업데이트
-				const commentCount = document.querySelector('#commentOpt>h3>span');
-				commentCount.textContent = parseInt(commentCount.textContent)-1;
-			}
+			.then(response => response.text())
+			.then(data => {
+				// commentCont에 요소비우기
+				 const $commentBox = document.getElementById('commentBox');
+				 const $commentCont = document.getElementById('commentCont');
+				 while($commentCont.firstChild)  {
+					$commentCont.removeChild($commentCont.firstChild);
+				}
+				
+				// contentbox에 요소채우기
+				$commentBox.innerHTML = data;
+				// console.log(data);
+			})
+			.catch(error => {
+				console.error(error);
+			})
 		}
 }
 
@@ -274,16 +288,18 @@ function toggleEdit(element) {
 
 // 답댓글 들여쓰기
 const replys = document.querySelectorAll('.depth');
-
-replys.forEach((reply)=>{
-   const depthClass = reply.classList.item(4);
-   const depth = depthClass.substring(6,depthClass.length+1);
-   // 댓글창이 너무 작아지지 않도록 16번째 대댓부턴 들여쓰기 제한
-   if(depth <= 16) {
-      reply.style.marginLeft = '30'*depth+'px';      
-   } else {
-      reply.style.marginLeft = '30'*16+'px';
-   }
+replys.forEach((reply) => {
+	const depthClass = reply.classList.item(4);
+	const depth = depthClass.substring(6,depthClass.length+1);
+	console.log(depth)
+	
+	// 댓글창이 너무 작아지지 않도록 16번째 대댓부턴 들여쓰기 제한
+	if(depth <= 16) {
+		reply.style.marginLeft = '30'*depth+'px';      
+	} else {
+		reply.style.marginLeft = '30'*16+'px';
+	}
 })
+	
 
 
