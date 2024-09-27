@@ -106,20 +106,6 @@
   		document.readFrm.submit();
   	}
   	
- 
-	//로그인 상태 확인
-    const userid = '<%=userid%>';
-    
-    const popupWidth = 500;
-    const popupHeight = 350;
-    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
-    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
-
-    if (userid === '0') {
-        //비로그인 상태일 경우 팝업창 생성
-        const url = '/buy/buy02';
-        window.open(url, 'checkMember', 'width='+ popupHeight + ', height=' + popupHeight + ', left=' + popupLeft + ', top=' + popupTop);
-    }
 </script>
 
 </head>
@@ -1133,11 +1119,11 @@
 			                </p>
 			              </div>
 			              <form method="post" name="listFrm">
-			                <button formaction="/buy/buy01">바로구매</button>
+			                <button type="button" onclick="toBuy(event, <%=bookid%>)">바로구매</button>
 			                <button type="button" onclick="toCart(event, <%=bookid%>)">장바구니</button>
 			                <button type="button" onclick="toWish(event, <%=bookid%>)">관심목록</button>
 			                <input type="hidden" name="bookid" value="<%=bookid%>"/>
-			                <input type="hidden" name="orderNum" value="1"/>
+
 			              </form>
 			            </a>
 		          	</li>
@@ -1203,11 +1189,19 @@
 	    }else{
 	    	//장바구니/관심목록 구분
 			if(save === 'cart'){
-				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
-			}else{
+				location.href = '/shop/shopProc?orderNum=1&save=&bookid=' + bookid;
+			}else if(save==='wish'){
 				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+			}else{
+				document.orderFrm.action = '/buy/buy01?orderNum=1&bookid=' + bookid;
 			}
+	    	
 	    }
+	}
+	
+	const toBuy = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('buy',bookid);
 	}
 		
 	const toWish = (evt, bookid) => {
