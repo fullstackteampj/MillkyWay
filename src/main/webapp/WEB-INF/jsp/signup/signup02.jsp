@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%> 
+    pageEncoding="UTF-8"%>    
 <jsp:useBean id="sMgr" class="procs.SignupMgr" />
 <jsp:useBean id="bean" class="beans.MemberBean" />
 <jsp:setProperty property="*" name="bean" />
@@ -56,7 +56,7 @@
 	          <li>
 	            <label for="account">아이디</label>
 	            <input type="text" name="account" id="account" placeholder="이메일 형식으로 입력해주세요. (ex. abc1234@naver.com)" required /> 
-	            <button type="button" onclick="">중복체크</button>
+	            <button type="button">중복체크</button>
 	          </li>
 	
 	          <li>
@@ -245,6 +245,7 @@
 		    frm.pwd.focus();
 		    evt.preventDefault();
 		 }
+		  
  	});
  	
   </script>

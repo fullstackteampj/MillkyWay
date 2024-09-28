@@ -27,7 +27,7 @@ const idCheck = (account) => {
   
 
   //팝업창 오픈
-  const url = '/signup/signup02?account=' + account;
+  const url = '/signup/signup04?account=' + account;
   window.open(url, "IDCheck", "width=400, height=300");
 }
 
@@ -45,7 +45,7 @@ const nicknameCheck = (nickname) => {
     return;
   }
 
-  const url = "/signup/signup04?nickname=" + nickname;
+  const url = "/signup/signup05?nickname=" + nickname;
   window.open(url, "nicknameCheck", "width=400, height=300");
 }
 

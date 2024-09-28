@@ -73,7 +73,6 @@ CREATE TABLE membertbl (
     status VARCHAR(20),                     -- 회원 상태 (active, inactive 등)
     favorite TEXT default null,             -- 좋아하는 장르 배열로 입력 (확인 필요)
     profile_photo BLOB,                     -- 프로필 사진
-    
     birth VARCHAR(20) default null,			-- 생년월일
     agree CHAR(1)                           -- 선택 사항 동의여부
 );
