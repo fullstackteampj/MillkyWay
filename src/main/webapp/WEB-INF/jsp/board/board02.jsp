@@ -65,7 +65,7 @@
 	nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock); //현재블럭 계산
 	totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);  //전체블럭계산
 	
-	String category="전체";
+	String category="";
 
 	// 카테고리를 고르면 변수 초기화
 	if(request.getParameter("category") != null || request.getParameter("category") != "") {

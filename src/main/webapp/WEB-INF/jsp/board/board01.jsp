@@ -27,7 +27,7 @@
 	// 글목록 필터링
 	String keyWord="";
 	String keyField="";
-	String category="";
+	String category="전체";
 	String tab="";
 	
 	// nowPage를 전송받을 때마다(페이지 클릭, 블럭넘김) 값을 받아 해당페이지 전역에 활용할 수 있도록 nowPage변수 초기화
@@ -35,16 +35,16 @@
 		nowPage = Integer.parseInt(request.getParameter("nowPage"));
 	}
 	// 검색할 때마다 keyField, keyWord param에서 받아 변수값 초기화
-	if(request.getParameter("keyWord") != null || request.getParameter("keyWord") != "") {
+	if(request.getParameter("keyWord") != null) {
 		keyField = request.getParameter("keyField");
 		keyWord = request.getParameter("keyWord");
 	}
 	// 카테고리를 고르면 변수 초기화
-	if(request.getParameter("category") != null || request.getParameter("category") != "") {
+	if(request.getParameter("category") != null) {
 		category = request.getParameter("category");
 	}
 	// 탭을 고르면 변수초기화
-	if(request.getParameter("tab") != null || request.getParameter("tab") != "") {
+	if(request.getParameter("tab") != null) {
 		tab = request.getParameter("tab");
 	}
 	
