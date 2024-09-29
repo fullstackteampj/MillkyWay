@@ -208,7 +208,8 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 // 댓글삭제
 async function commentDelete(commentid, userid, boardid, start, end) {
 	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
-	
+		console.log("start=",start);
+		console.log("end=",end);
 		if(confirmtrue) {
 			// 날짜 데이터
 			const deldate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');

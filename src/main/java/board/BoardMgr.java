@@ -96,8 +96,6 @@ public class BoardMgr {
 			sql += " order by boardid desc limit " + start + ", " + end;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			System.out.println("start = "+start);
-			System.out.println("end = "+end);
 			while(rs.next()) {
 				BoardBean bean = new BoardBean();
 				bean.setBoardid(rs.getInt("boardid"));
@@ -473,7 +471,7 @@ public class BoardMgr {
 		return result;
 	}
 	
-	// 총 댓글 수 반환
+	// 총 댓글 수 반환 - 완전삭제댓글제외
 	public int getCommentCount(int boardid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -483,8 +481,9 @@ public class BoardMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select count(commentid) from commenttbl where status=0 and boardid=" + boardid;
+			sql = "select count(commentid) from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0))";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -505,31 +504,33 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		
 		ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
 				
 		try {
 			con = pool.getConnection();
-			sql = "select * from commenttbl where boardid=" + boardid + " order by ref, pos limit "+start+", "+end+";";
+			sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				if(rs.getInt("status") == 0 || hasComReply(rs.getInt("commentid"))) {					
-					CommentBean bean = new CommentBean();
-					bean.setCommentid(rs.getInt("commentid"));
-					bean.setUserid(rs.getInt("userid"));
-					bean.setNickname(rs.getString("nickname"));
-					bean.setContent(rs.getString("content"));
-					bean.setBoardid(rs.getInt("boardid"));
-					bean.setPos(rs.getInt("pos"));
-					bean.setDepth(rs.getInt("depth"));
-					bean.setRef(rs.getInt("ref"));
-					bean.setRegdate(rs.getString("regdate"));
-					bean.setUpdateDate(rs.getString("update_date"));
-					bean.setIp(rs.getString("ip"));
-					bean.setStatus(rs.getInt("status"));
-					clist.add(bean);
-				}
+			while(rs.next()) {					
+				CommentBean bean = new CommentBean();
+				bean.setCommentid(rs.getInt("commentid"));
+				bean.setUserid(rs.getInt("userid"));
+				bean.setNickname(rs.getString("nickname"));
+				bean.setContent(rs.getString("content"));
+				bean.setBoardid(rs.getInt("boardid"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setUpdateDate(rs.getString("update_date"));
+				bean.setIp(rs.getString("ip"));
+				bean.setStatus(rs.getInt("status"));
+				clist.add(bean);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -539,78 +540,43 @@ public class BoardMgr {
 		return clist;
 	}
 	
-	// 모든이전댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 모든 댓글 누적갯수 반환
-	public int getTotalPrevDelCount(int boardid, int start, int end) {
+	// 댓글정보 반환
+	public CommentBean getComment(int commentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		int totalDelCount = 0;
+		CommentBean bean = null;
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT 0, ?";
-			pstmt = con.prepareStatement(sql);
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return totalDelCount;
-	}
-	
-	// (연산 후 start)현재 댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 댓글 갯수 반환
-	public int getDeleteComCount(int boardid, int start, int end) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int delCount = 0;
-		
-		try {
-			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT ?, ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, boardid);
-			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);			
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				if(!hasComReply(rs.getInt("commentid"))) {
-					delCount++;
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		System.out.println("delCount = " + delCount);
-		return delCount;
-	}
-	
-	// 댓글작성자 반환
-	public int getCommentUser(int commentId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int userid = 0;
-		
-		try {
-			con = pool.getConnection();
-			sql = "SELECT userid FROM commenttbl WHERE commentid = "+commentId;
+			sql = "SELECT * FROM commenttbl WHERE commentid = "+commentId;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				userid = rs.getInt(1);
+				bean = new CommentBean();
+				bean.setCommentid(rs.getInt("commentid"));
+				bean.setUserid(rs.getInt("userid"));
+				bean.setNickname(rs.getString("nickname"));
+				bean.setContent(rs.getString("content"));
+				bean.setBoardid(rs.getInt("boardid"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setParentid(rs.getInt("parentid"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setUpdateDate(rs.getString("update_date"));
+				bean.setDeleteDate(rs.getString("delete_date"));
+				bean.setIp(rs.getString("ip"));
+				bean.setStatus(rs.getInt("status"));
+				bean.setTotalChild(rs.getInt("totalChild"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		return userid;
+		return bean;
 	}
 	
 	// 마지막댓글의 id추출
@@ -636,7 +602,7 @@ public class BoardMgr {
 		return lastId;
 	}
 	
-	// 부모댓글의 parentId 추출
+	// 부모댓글의 ref 추출
 	public int getGrandId(int parentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -659,40 +625,6 @@ public class BoardMgr {
 		return parentPos;
 	}
 	
-	// 댓글의 자식갯수 추출
-	public int getCountCommentChild(int pos, int grandId, int parentId, int parentDepth) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int countChild = 0;
-		int depth = parentDepth+1;
-		System.out.println("----------------------------");
-		System.out.println("ref="+grandId);
-		System.out.println("pos="+pos);
-		System.out.println("depth="+depth);
-		System.out.println("parentId="+parentId);
-		System.out.println("----------------------------");
-		try {
-			con = pool.getConnection();
-			// sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND ((DEPTH>? AND parentid >=?) OR (DEPTH<=? AND parentid = ?));";
-			sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND (DEPTH>?);";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, grandId);
-			pstmt.setInt(2, pos);
-			pstmt.setInt(3, depth);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				countChild = rs.getInt(1);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return countChild;
-	}
-	
 	// 댓글 pos값 업데이트
 	public void updatePos(int ref, int pos) {
 		Connection con = null;
@@ -713,11 +645,12 @@ public class BoardMgr {
 	}
 	
 	// 조상id가 같고 부모id가 같고 depth가 같은(동일 조상, 동일 부모, 동일 레벨의) 마지막 대댓의 pos
-	public int sameLevelPos(int grandId, int depth, int parentId) {
+	public int sameLevelPos(int depth, int parentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		int grandId = getGrandId(parentId);
 		int lastpos = grandId+1;
 		try {
 			con = pool.getConnection();
@@ -729,10 +662,8 @@ public class BoardMgr {
 			rs = pstmt.executeQuery();
 			if(rs.next()) { // 있으면 그거의 pos+1 하고 그값보다 같거나 높은 pos값들은 전부 +1로 업데이트
 				int pos = rs.getInt("pos");
-				int countChild = getCountCommentChild(pos, grandId, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
+				int countChild = getCountCommentChild(pos, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
 				lastpos = pos+countChild+1;
-				System.out.println("조상,부모,뎁스같은거 잇음 그거의 pos+자식갯수+1 하고 그값보다 같거나 높은 pos값들은 전부 +1로 업데이트");
-				System.out.println("countChild = "+countChild);
 				updatePos(grandId, lastpos);
 			} else { // 없으면 직계부모댓글의 pos+1
 				con = pool.getConnection();
@@ -741,7 +672,6 @@ public class BoardMgr {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					lastpos = rs.getInt("pos")+1; //2
-					System.out.println("조상같고뎁스같은거 없음 직계부모댓글의 pos+1 하고 그값보다 같거나 높은 pos값 업데이트");
 					updatePos(grandId, lastpos);
 				}
 			}
@@ -751,6 +681,36 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		return lastpos;
+	}
+	
+	// 동레벨의 바로 다음댓글의 pos
+	public int sameLevelNextPos(int depth, int parentId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int grandId = getGrandId(parentId);
+		int nextpos = grandId+1;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM commenttbl WHERE ref=? AND parentid=? AND depth=? ORDER BY pos LIMIT 1;";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, grandId);
+			pstmt.setInt(2, parentId);
+			pstmt.setInt(3, depth+1);
+			rs = pstmt.executeQuery();
+			if(rs.next()) { 
+				int pos = rs.getInt("pos");
+				int countChild = getCountCommentChild(pos, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
+				nextpos = pos+countChild+1;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		System.out.println("nextpos = "+nextpos);
+		return nextpos;
 	}
 	
 	// 댓글 작성
@@ -785,9 +745,7 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		String sql = null;
 		int grandId = getGrandId(parentId);
-		int newpos = sameLevelPos(grandId, depth, parentId);
-		//System.out.println("grandId = " + grandId);
-		//System.out.println("pos = " + pos);
+		int newpos = sameLevelPos(depth, parentId);
 		try {
 			con = pool.getConnection();
 			sql = "insert into commenttbl (userid, nickname, content, boardid, pos, depth, regdate, ip, ref, parentid)"
@@ -809,29 +767,6 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt);
 		}
 	}
-
-	// 댓글의 대댓글 유무 반환
-	public boolean hasComReply(int commentId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		boolean flag = false;
-		try {
-			con = pool.getConnection();
-			sql = "SELECT commentid FROM commenttbl WHERE status = 0 AND parentid="+commentId;
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				flag = true;
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return flag;
-	}
 	
 	// 댓글 삭제
 	public void deleteComment(int commentid, String deldate) {
@@ -850,6 +785,126 @@ public class BoardMgr {
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+	}
+	
+	// 조상댓글의 자손댓글 업데이트
+	public void updateGrandChild(int ref, String event) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int commentid = getGrandId(ref);
+		
+		try {
+			con = pool.getConnection();
+			if(event.equals("reply")) {
+				sql = "UPDATE commenttbl SET totalChild = totalChild+1 WHERE commentid="+commentid;
+			} else if(event.equals("delete")) {
+				sql = "UPDATE commenttbl SET totalChild = totalChild-1 WHERE commentid="+commentid;
+			}
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 임시 : 대댓글의 자손댓글 업데이트
+	public void updateChild(int parentid, int pos) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int grandId = getGrandId(parentid);
+		int childCount = 0;
+		pos = pos+1;
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM commenttbl WHERE ref = "+grandId+" AND pos < "+pos;
+			System.out.println("grandId = "+grandId);
+			System.out.println("pos+1 = "+pos);
+			
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int comPos = rs.getInt("pos");
+				int commentid = rs.getInt("commentid");
+				int depth = rs.getInt("depth");
+				childCount = getCountCommentChild(comPos, commentid, depth)+1; //기존자식수+지금등록한댓글
+
+				System.out.println("comPos = "+comPos);
+				System.out.println("commentid = "+commentid);
+				System.out.println("depth = "+depth);
+				
+				sql = "UPDATE commenttbl SET totalChild = ? where commentid="+commentid;
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, childCount);
+				System.out.println("업데이트될 자식 수="+childCount);
+				System.out.println("=======================");
+				pstmt.executeUpdate();
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 댓글의 자식갯수 추출
+	public int getCountCommentChild(int pos, int parentId, int parentDepth) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		
+		int countChild = 0;
+		int grandId = getGrandId(parentId);
+		int depth = parentDepth+1;
+		try {
+			con = pool.getConnection();
+			// sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND ((DEPTH>? AND parentid >=?) OR (DEPTH<=? AND parentid = ?));";
+			sql = "SELECT count(commentid) FROM commenttbl WHERE (status=0) AND (ref=?) AND (pos>?) AND (DEPTH>?);";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, grandId);
+			pstmt.setInt(2, pos);
+			pstmt.setInt(3, depth);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				countChild = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return countChild;
+	}
+	
+	// 댓글의 대댓글 유무 반환
+	public boolean hasComReply(int commentid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT commentid FROM commenttbl WHERE status = 0 AND parentid="+commentid;
+			//sql = "SELECT totalChild FROM commenttbl WHERE commentid="+commentid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				flag = true;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
 	}
 	
 	// 댓글 수정

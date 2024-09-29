@@ -166,8 +166,10 @@ public class BoardServlet extends HttpServlet {
             BoardBean post = bMgr.getPost(boardid);
             int postuser = post.getUserid();
     		
-    		// DB에 댓글 저장
+    		// DB에 댓글 저장 후 조상댓글 업데이트
     		bMgr.insertReply(userid, nickname, boardid, ip, content, regdate, parentid, depth, pos);
+        	//bMgr.updateGrandChild(parentid, "reply");
+    		bMgr.updateChild(parentid, pos);
     		
     		// 댓글창에 필요한 데이터 담기
     		int commentCount = bMgr.getCommentCount(boardid);
@@ -210,7 +212,8 @@ public class BoardServlet extends HttpServlet {
             
             //필요한 데이터 추가
             BoardMgr bMgr = new BoardMgr();
-            int commentUser = bMgr.getCommentUser(commentid);
+            CommentBean comment = bMgr.getComment(commentid);
+            int commentUser = comment.getUserid();
             BoardBean post = bMgr.getPost(boardid);
             int postuser = post.getUserid();
     		
@@ -258,13 +261,15 @@ public class BoardServlet extends HttpServlet {
             
             //필요한 데이터 추가
             BoardMgr bMgr = new BoardMgr();
-            int commentUser = bMgr.getCommentUser(commentid);
+            CommentBean comment = bMgr.getComment(commentid);
+            int commentUser = comment.getUserid();
             BoardBean post = bMgr.getPost(boardid);
             int postuser = post.getUserid();
     		
-    		// userid와 댓글작성자id가 같으면 DB에 댓글 삭제 (status값 업데이트)
+    		// userid와 댓글작성자id가 같으면 DB에 댓글 삭제 (status값 업데이트) 후 조상댓글 업데이트
             if(userid == commentUser) {
             	bMgr.deleteComment(commentid, deldate);
+            	bMgr.updateGrandChild(commentid, "delete");
             } else {
             	response.sendRedirect("boardError?error=failCommentDel");
             }

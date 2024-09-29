@@ -36,16 +36,14 @@
 	
 	// 댓글 페이징
 	int totalRecord=0; //전체레코드수
-	int numPerPage=15; // 페이지당 레코드 수 
+	int numPerPage=10; // 페이지당 레코드 수 
 	int pagePerBlock=10; //블럭당 페이지수 
 	int totalPage=0; //전체 페이지 수
-	int totalBlock=0;  //전체 블럭수 
+	int totalBlock=0;  //전체 블럭수
 	int nowPage=1; // 현재페이지
 	int nowBlock=1;  //현재블럭
 	int start=0; //디비의 select 시작번호
 	int end=numPerPage; //시작번호로 부터 가져올 select 갯수
-	int comStart = start;
-	int comEnd=numPerPage;
 	int listSize=0; // DB로부터 추출해 list에 저장한 댓글 수
 	
 	
@@ -53,11 +51,13 @@
 	if(request.getParameter("nowPage") != null) {
 		nowPage = Integer.parseInt(request.getParameter("nowPage"));
 	}
+	
 	// 페이지이동 시 게시글을 DB에서 추출할 때 기준이 되는 값을 초기화
-	start = (nowPage * numPerPage)-numPerPage; 
+	start = (nowPage-1)*numPerPage;
 	end = numPerPage;
-	comStart = start+bMgr.getDeleteComCount(num, start, end);
-	comEnd = end+bMgr.getDeleteComCount(num, start, end);
+	//start = ((nowPage-1)*numPerPage)+bMgr.getTotalPrevDelCount(num, nowPage, numPerPage);
+	//end = numPerPage+bMgr.getDeleteComCount(num, start, numPerPage);
+	//System.out.println("현재페이지삭제댓글수 = "+bMgr.getDeleteComCount(num, start, numPerPage));
 	
 	// 페이징, 글목록출력 등에 활용될 변수 초기화 (총게시글수, 총페이지수, 현재블럭, 총블럭수)
 	totalRecord = bMgr.getCommentCount(num);
@@ -174,7 +174,7 @@
 	        </div> <!-- div#commentMng -->
 	      </div> <!--commentHead-->
 	
-	      <% ArrayList<CommentBean> clist = bMgr.getCommentList(num, start, end); 
+	      <% ArrayList<CommentBean> clist = bMgr.getCommentList(num, start, end);
 			listSize = clist.size();
 			
           
@@ -233,7 +233,7 @@
 					if(loginId != null) { 
 						if(comUserid == loginId) {%>
 	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
-	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=num%>, <%=comStart%>, <%=comEnd%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
+	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=num%>, <%=start%>, <%=end%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
 	                <%	}
 					} %>
 	                
@@ -254,7 +254,7 @@
 		            <span>수정</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"><%=comContent%></textarea>
-		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=comStart%>, <%=comEnd%>)">수정</button>
+		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>)">수정</button>
 		        </div>
 			</form>
 	        
@@ -265,7 +265,7 @@
 		            <span>답글</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="답글을 작성해보세요!"></textarea>
-		          <button type="button" onclick="replySubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>, <%=comStart%>, <%=comEnd%>)">작성</button>
+		          <button type="button" onclick="replySubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>, <%=start%>, <%=end%>)">작성</button>
 		        </div>
 			</form>
 			
@@ -351,7 +351,7 @@
 			          </p>
 			          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"></textarea>
 			          <!-- <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', '<%=userid%>')">작성</button> -->
-			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=comStart%>, <%=comEnd%>)">작성</button>
+			          <button type="button" onclick="comSubmit(<%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>)">작성</button>
 			        </div>
 				</form>
 		<% } else { %>
