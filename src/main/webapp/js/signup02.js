@@ -12,7 +12,13 @@ const $email = document.getElementById('email');
 //아이디 중복체크 클릭시 팝업창 열어주는 함수
 const idCheck = (account) => {
 
-  if($account.value!=='' && !validText.test($account.value)){
+  //팝업창 오픈 함수
+  const openPopup = () => {
+    const url = '/signup/signup04?account=' + account;
+    window.open(url, "IDCheck", "width=400, height=300");
+  }
+
+  if(!validText.test($account.value) && $account.value!==''){
     alert('아이디를 이메일 형식으로 입력해 주세요.\n ex) abdc77@naver.com');
     $account.value = '';
     $account.focus();
@@ -24,17 +30,17 @@ const idCheck = (account) => {
     $account.focus();
     return;
   }
+    
+  openPopup();
   
+}//end of idCheck()
 
-  //팝업창 오픈
-  const url = '/signup/signup04?account=' + account;
-  window.open(url, "IDCheck", "width=400, height=300");
-}
 
 //아이디 중복 체크 버튼 - 클릭이벤트 -> 함수 호출
 $account.nextElementSibling.addEventListener('click', ()=>{
   idCheck($account.value);
 });
+
 
 //별명 중복체크 함수
 const nicknameCheck = (nickname) => {
@@ -47,7 +53,8 @@ const nicknameCheck = (nickname) => {
 
   const url = "/signup/signup05?nickname=" + nickname;
   window.open(url, "nicknameCheck", "width=400, height=300");
-}
+  
+}//end of nicknameCheck()
 
 //별명 중복 체크 버튼 - 클릭이벤트 -> 함수 호출
 $nickname.nextElementSibling.addEventListener('click', ()=>{
@@ -58,6 +65,10 @@ $nickname.nextElementSibling.addEventListener('click', ()=>{
 const $idEqual = $email.nextElementSibling;
 
 $idEqual.addEventListener('click', ()=>{
+  if($account.value === '' || $account.value === null){
+    alert('아이디 입력창에 입력된 값이 없습니다. \n아이디를 입력해주세요.');
+    $account.focus();
+  }
   $email.value = $account.value;
 });
 
@@ -66,12 +77,9 @@ const $enterInfoPrev = document.querySelector('.sign-up .enterInfoPrev');
 
 $enterInfoPrev.addEventListener('click', ()=>{
   if(confirm('입력하신 정보가 모두 지워집니다. 뒤로 가시겠습니까?')){
-    $agreement.classList.remove('hide');
-    $enterInfo.classList.remove('on');
-    $progress.classList.remove('next-stage');
+    history.back();
   }
 });
-
 
 //우편번호 API 이용 함수
 function zipSearch() {

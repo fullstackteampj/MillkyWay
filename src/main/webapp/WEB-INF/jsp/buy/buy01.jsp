@@ -9,8 +9,7 @@
 
 	//id 기본으로 0  설정
 	int userid = 0; 
-
-	String name =null;
+	String name = null;
 	String phone = null;
 	String zipcode = null;
 	String address = null;

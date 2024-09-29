@@ -2,8 +2,11 @@ package procs;
 
 import DBConnection.DBConnectionMgr;
 import beans.MemberBean;
+import javax.servlet.*;
 
 import java.sql.*;
+
+import javax.servlet.http.Cookie;
 
 public class SignupMgr {
 	private  DBConnectionMgr pool;
@@ -27,12 +30,14 @@ public class SignupMgr {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, account);
 			flag = pstmt.executeQuery().next();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {
 			pool.freeConnection(con, pstmt);
 		}
 		return flag;
+		
 	}
 	
 	//별명 중복 체크
