@@ -10,9 +10,9 @@
 	//로그인 상태 확인
 	int userid = 0; 
 	
-	if(session.getAttribute("idKey") !=null){
+	if(session.getAttribute("idKeyS") !=null){
 		//세션값 int로 저장 
-		Object sessionValue = session.getAttribute("idKey");
+		Object sessionValue = session.getAttribute("idKeyS");
 		
 		// 타입 확인 후 변환
 		if (sessionValue instanceof String) {
@@ -340,7 +340,7 @@
 
 	const checkReview = () => {
 	  //쿼리스트링으로 JS에서 클릭했던 별점 inputScore 값 보내줌
-	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=<%=userid%>'; //임의 아이디키 넣음
+	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=<%=userid%>';
 	  window.open(url, "review", "width=400, height=300");
 	  frm.action = url;
 	  frm.target = "review";
@@ -357,11 +357,12 @@
 	
 		if(userid === '0'){//비로그인 상태
 			const loginAnswer = confirm('로그인해야 이용가능한 서비스입니다. 로그인 하시겠습니까?');
+
 			if(loginAnswer){
 				location.href = '/login/login01';
-			}else{
-				checkReview();
 			}
+		} else{
+			checkReview();
 		}
 	}//reviewFn()
 	

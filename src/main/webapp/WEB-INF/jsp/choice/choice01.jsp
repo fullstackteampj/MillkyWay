@@ -119,7 +119,7 @@
 							<img src="<%=imgUrl%>" alt="<%=tit%>">
 							<div>
 								<a href="/shop/shop02?bookid=<%=bookid%>"><i
-										class="fa-solid fa-magnifying-glass" "></i></a>
+										class="fa-solid fa-magnifying-glass"></i></a>
 								<a href="/mypage/mypage05" onclick="toCart(event, <%=bookid%>)"><i
 										class="fa-solid fa-cart-shopping"></i></a>
 								<a href="/mypage/mypage05" onclick="toWish(event, <%=bookid%>)"><i

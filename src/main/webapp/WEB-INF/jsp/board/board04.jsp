@@ -6,17 +6,17 @@
 <!-- 글작성 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
-	MemberBean loginBean = (MemberBean)session.getAttribute("mBean");
 	Integer loginId = 0;
 	String loginNickname = null;
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginId = loginBean.getUserid();
-		loginNickname = loginBean.getNickname();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+		loginNickname = bMgr.getNickname(loginId);
 	}
 	
 	// 로그인유무로 접근제한 하기 위한 boolean값
-	boolean loginOk = (session != null && loginBean != null);
+	boolean loginOk = (session != null && loginId != null);
+	String category = request.getParameter("category");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -41,14 +41,18 @@
       	<input type="hidden" name="userid" value="<%=loginId%>" />
       	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
 		<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+		<input type="hidden" name="category" value="<%=category%>" />
         <div id="writeArea">
           <select name="postGenre" id="postGenre" required>
-	          <option value="" selected disabled hidden>카테고리 선택</option>
 	          
 	        <!-- 카테고리목록 출력 -->
 	        <%  ArrayList<String> cList = bMgr.getCategoryList();
-	        	for(int i=1; i<cList.size(); i++) {%>
-	           	<option value="<%=cList.get(i)%>"><%=cList.get(i)%></option>
+        		// 넘어온 카테고리와 옵션값이 같은것에 seleted || 전체일경우 '카테고리 선택' 표시
+		        if(category.equals("전체")) {%>
+	          	<option value="" selected disabled hidden>카테고리 선택</option>
+	         <% }
+	        	for(int i=1; i<cList.size(); i++) {	%>
+	           	<option value="<%=cList.get(i)%>" <% if(cList.get(i).equals(category)) {%> selected <%}%> ><%=cList.get(i)%></option>
 	        <% } %>
           </select>
           

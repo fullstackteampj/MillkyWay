@@ -15,7 +15,7 @@ public class MemberBean {
 	private String gender;
 	private String zipcode;
 	private String address;
-	private String detailAddress; //추가
+	private String detailAddress;
 	private String phoneNum;
 	private String phone;
 	private String email;

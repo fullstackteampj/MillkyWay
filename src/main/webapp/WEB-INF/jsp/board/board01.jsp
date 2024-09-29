@@ -7,12 +7,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
 	}
 	
 	int totalRecord=0; //전체레코드수
@@ -90,8 +88,8 @@
       <h2 class="sr-only">은하수 광장✨</h2>
       <!-- 임시: 개발자용 로그인/로그아웃 -->
       <div>
-      	<button type="button" onclick="location.href='forDev/loginMilky'">밀키 로그인</button>
-      	<button type="button" onclick="location.href='forDev/loginToto'">또또 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginJihey'">지혜 로그인</button>
+      	<button type="button" onclick="location.href='forDev/loginSujin'">수진 로그인</button>
       	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
       </div>
       <article id="category">
@@ -110,7 +108,7 @@
        		 <% } else {%>
        		 		<li>
        		 <% }%>
-        		<a href="javascript:categoryFn('<%=cList.get(i)%>')"><%=cList.get(i)%></a></li>
+        		<a href="board01?category=<%=cList.get(i)%>&nowPage=1"><%=cList.get(i)%></a></li>
        	 <% } %>
         </ul>
         
@@ -148,8 +146,13 @@
           
           <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
-			if(loginId != null) { %>
-	          <a href="./board04">글쓰기</a>
+			if(loginId != null) {
+			  if(category != null) {%>
+	          <a href="./board04?category=<%=category%>">
+           <% } else { %>
+        	  <a href="./board04?category=전체">
+           <% } %>
+        	   글쓰기</a>
           <%} else { %>
         	  <a href="#" onclick="goLogin()">글쓰기</a>
           <%}%>
@@ -157,7 +160,7 @@
 	
 		<% // 검색햇을시
 		if(!(keyWord == null || keyWord.equals(""))) { %>
-			<p id="searchInfo">"<span> <%= keyWord %> </span>"의 검색결과 입니다.</p>
+			<p id="searchInfo"><span> <%=category%></span> 게시판의&nbsp;&nbsp;"<span> <%= keyWord %> </span>" 검색결과 입니다.</p>
 	<%	} %>
 		
 		<!-- 글목록 -->
@@ -206,8 +209,8 @@
 			 	String prevYearPost = dateMgr.getFormatDate(regDate, "lastYear");
 			 	
 			  %>
-			<a href="board02?num=<%=boardid%>">
-	            <span class="tab"><%=kind%> / <%=genre%></span>
+			<a href="board02?category=<%=category%>&num=<%=boardid%>">
+	            <span class="kind"><%=kind%> / <%=genre%></span>
 	            <div class="content">
 	            	<p class="title">
 	              <% // 인기글이면 제목에 스타일 적용 
@@ -270,7 +273,8 @@
           %>
         
         </div> <!--list-->
-  
+  		<% // 게시글이 존재한다면 (totalPage 검사) 페이지네이션 생성(현재블럭의 첫페이지~끝페이지)
+        	if(totalPage != 0) { %>
 		<!-- 페이지네이션 -->
         <ul id="pagination">
         <% 
@@ -284,10 +288,9 @@
         if(nowBlock > 1) { %>
 	        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('1')" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></a></li>
 	        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('<%=pageStart-1%>')" title="이전 페이지로"><i class="fa-solid fa-angle-left"></i></a></li>
-      <%}
+      <%} //if(nowBlock > 1)
         	
-        	// 게시글이 존재한다면 (totalPage 검사) 페이지네이션 생성(현재블럭의 첫페이지~끝페이지)
-        	if(totalPage != 0) {
+        	
         		for(int nPage=pageStart; nPage<pageEnd; nPage++) { 
         			// 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on")
         			if(nPage == nowPage) { %>
@@ -297,15 +300,16 @@
        			<%	}%>
 		        	<a href="javascript:goPageFn('<%=nPage%>')"><%= nPage %></a>
 		        	</li>
-       		  <%}
-        	}
+       		  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)
         	
         	// 현재 페이지블럭이 마지막블럭이 아니라면 '다음블럭으로', '마지막페이지로' 버튼생성
         	if(totalBlock > nowBlock) { %>
 				<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=pageStart+pagePerBlock%>')"  title="다음 페이지로"><i class="fa-solid fa-angle-right"></i></a></li>
           		<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=totalPage%>')" title="마지막 페이지로"><i class="fa-solid fa-angles-right"></i></a></li>
-          <% } %>
+          <% } //if(totalBlock > nowBlock) { %>
         </ul> <!--#pagination-->
+        
+       <% } //if(totalPage != 0) %>
   
         <div id="postSearch">
           <form action="board01" method="get" name="frmPostSearch" autocomplete="off">
@@ -375,21 +379,6 @@
     	<input type="hidden" name="nowPage" />
     </form>
     
-    <form action="board01" method="get" name="categoryFrm">    	
-    
-    	<% if(!(keyWord == null || keyWord.equals(""))) {%>
-    	<input type="hidden" name="keyField" value="<%=keyField%>" />
-    	<input type="hidden" name="keyWord" value="<%=keyWord%>" />
-    	<% } %>
-    	
-    	<input type="hidden" name="category" />
-    	<input type="hidden" name="nowPage" value="1" />
-    	
-    	<% if(!(tab == null || tab.equals(""))) {%>
-    	<input type="hidden" name="tab" value="<%=tab%>" />
-    	<% } %>
-    </form>
-    
     <form action="board01" method="get" name="tabFrm">
     
     	<% if(!(keyWord == null || keyWord.equals(""))) {%>
@@ -405,16 +394,6 @@
     	<input type="hidden" name="tab" />
     </form>
     
-    <!--
-    <form action="board02" method="get" name="readFrm">
-    	<input type="hidden" name="num" />
-    	<input type="hidden" name="keyField" value="<%=keyField%>" />
-    	<input type="hidden" name="keyWord" value="<%=keyWord%>" />
-    	<input type="hidden" name="category" value="<%=category%>" />
-    	<input type="hidden" name="tab" value="<%=tab%>" />
-    	<input type="hidden" name="nowPage" value="<%=nowPage%>" />
-    </form>
-       -->
   </div>
   <script>
     // 페이지버튼 href로 실행되는 함수 : 현재 글페이지값, 글검색값 등의 값을 전송하는 폼 submit
@@ -422,12 +401,7 @@
   		document.pageFrm.nowPage.value = page;
   		document.pageFrm.submit();
   	}
-	
-  	function categoryFn(category) {
-  		document.categoryFrm.category.value = category;
-  		document.categoryFrm.submit();
-  	}
-  
+
   	function tabFn(tab) {
   		document.tabFrm.tab.value = tab;
   		document.tabFrm.submit();

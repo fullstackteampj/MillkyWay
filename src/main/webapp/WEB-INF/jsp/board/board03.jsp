@@ -7,11 +7,12 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	int num = Integer.parseInt(request.getParameter("num"));
+	String category = request.getParameter("category");
 		
 	// 글정보 추출
 	BoardBean post = bMgr.getPost(num);
 	int userid = post.getUserid();
-	String category = post.getGenre();
+	String genre = post.getGenre();
 	String tab = post.getTab();
 	String title = post.getTitle();
 	String content = post.getContent();
@@ -22,20 +23,18 @@
 	boolean identify = false;
 	
 	// 로그인 상태면 필요한 데이터 추출(id, nickname)
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	String loginNickname = null; // 닉네임을 변경하였을 시 글수정 후 데이터에도 반영
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
-		loginNickname = loginBean.getNickname();
-		
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
+		loginNickname = bMgr.getNickname(loginId);
+	
 		identify = (userid == loginId);
 	}
 	
 	// 로그인유무로 접근제한
-	boolean loginOk = (session != null && loginBean != null);
+	boolean loginOk = (session != null && loginId != null);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -60,6 +59,7 @@
       	<input type="hidden" name="boardid" value="<%=num%>" />
       	<input type="hidden" name="nickname" value="<%=loginNickname%>" />
 		<input type="hidden" name="userip" value="<%=request.getRemoteAddr()%>" />
+		<input type="hidden" name="category" value="<%=category%>" />
         <div id="writeArea">
           <select name="postGenre" id="postGenre" required>	          
 	        <!-- 카테고리목록 출력 -->
@@ -67,7 +67,7 @@
 	        	for(int i=1; i<cList.size(); i++) {%>
 	           	<option value="<%=cList.get(i)%>"
 	           	<% // 선택했던 카테고리에 selected
-	           		if(cList.get(i).equals(category)) { %> selected <% } %>
+	           		if(cList.get(i).equals(genre)) { %> selected <% } %>
 	           	><%=cList.get(i)%></option>
 	        <% } %>
           </select>
@@ -80,7 +80,7 @@
 	        	for(int i=2; i<tList.size(); i++) {%>
 	           	<option value="<%=tList.get(i)%>"
 	           	<% // 선택했던 카테고리에 selected
-	           		if(cList.get(i).equals(category)) { %> selected <% } %>
+	           		if(cList.get(i).equals(genre)) { %> selected <% } %>
 	           	><%=tList.get(i)%></option>
 	        <% } %>
             </select>
