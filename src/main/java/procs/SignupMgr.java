@@ -2,8 +2,11 @@ package procs;
 
 import DBConnection.DBConnectionMgr;
 import beans.MemberBean;
+import javax.servlet.*;
 
 import java.sql.*;
+
+import javax.servlet.http.Cookie;
 
 public class SignupMgr {
 	private  DBConnectionMgr pool;
@@ -27,12 +30,14 @@ public class SignupMgr {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, account);
 			flag = pstmt.executeQuery().next();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally {
 			pool.freeConnection(con, pstmt);
 		}
 		return flag;
+		
 	}
 	
 	//별명 중복 체크
@@ -63,8 +68,8 @@ public class SignupMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "insert membertbl(account, pwd, name, phone, zipcode, address, detailAddress, nickname, question, answer, gender, birth, email, favorite, signup_date, agree)" +
-			"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?)";
+			sql = "insert membertbl(account, pwd, name, phone, zipcode, address, detailAddress, nickname, question, answer, gender, birth, email, favorite, signup_date, agree, salt)" +
+			"values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,now(),?,?)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, bean.getAccount());
 			pstmt.setString(2, bean.getPwd());
@@ -98,6 +103,10 @@ public class SignupMgr {
 				pstmt.setString(14, "0000000");
 			}
 			pstmt.setString(15, bean.getAgree());
+			pstmt.setString(16, bean.getSalt());
+			
+			System.out.println("bean.getSalt = "+bean.getSalt());
+			System.out.println("bean.getPwd() = "+ bean.getPwd());
 			
 			if(pstmt.executeUpdate() == 1) {
 				flag = true;

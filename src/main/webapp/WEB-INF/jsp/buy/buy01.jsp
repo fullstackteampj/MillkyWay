@@ -9,7 +9,7 @@
 
 	//id 기본으로 0  설정
 	int userid = 0; 
-	String name =null;
+	String name = null;
 	String phone = null;
 	String zipcode = null;
 	String address = null;
@@ -18,10 +18,19 @@
 	String imgUrl = null;
 	String tit = null;
 	int price = 0;
+	int bookid = 0;
+	int orderNum = 0;
 	
-	
-	int bookid = Integer.parseInt(request.getParameter("bookid")); 
-	int orderNum = Integer.parseInt(request.getParameter("orderNum")); 
+
+	if(request.getParameterValues("bookids") == null){
+		//배열 데이터가 없는 경우 단일데이터(바로 구매 버튼 통해서 들어오는 경우)
+		bookid = Integer.parseInt(request.getParameter("bookid")); 
+		orderNum = Integer.parseInt(request.getParameter("orderNum")); 
+	}else{
+		//배열 데이터가 있는 경우 (장바구니를 통해서 들어오는 경우)
+		String[] bookids = request.getParameterValues("bookids");
+	}
+
 	
 	//세션에서 아이디 값 int로 가져오기
 	if(session.getAttribute("idKeyS") != null){
