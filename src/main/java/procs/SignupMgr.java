@@ -2,11 +2,7 @@ package procs;
 
 import DBConnection.DBConnectionMgr;
 import beans.MemberBean;
-import javax.servlet.*;
-
 import java.sql.*;
-
-import javax.servlet.http.Cookie;
 
 public class SignupMgr {
 	private  DBConnectionMgr pool;
