@@ -157,8 +157,7 @@ CREATE TABLE boardtbl (
     bookid INT,                            				 	-- 북아이디
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     update_date DATETIME,                            		-- 게시물 수정 날짜
-    status INT NOT NULL DEFAULT 0,                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
-    liked INT
+    status INT NOT NULL DEFAULT 0                 		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
 -- 댓글 테이블 생성
