@@ -258,6 +258,7 @@ public class MyPageMgr {
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setCartid(rs.getInt("cartid"));
 				bean.setUserid(rs.getInt("userid"));
+				bean.setQuantity(rs.getInt("quantity"));
 				myCartList.add(bean);
 			}
 			

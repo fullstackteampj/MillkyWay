@@ -150,15 +150,15 @@ CREATE TABLE boardtbl (
     content TEXT NOT NULL,                                  -- 게시물 내용
     photo MEDIUMBLOB,                               	 	-- 게시물에 포함된 사진
     genre VARCHAR(50) NOT NULL,                             -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
-    tab VARCHAR(10) NOT NULL,							 	-- 글의 탭분류 (일반, 질문, 감상, 추천)
+    tab VARCHAR(10) NOT NULL DEFAULT '일반',					-- 글의 탭분류 (일반, 질문, 감상, 추천)
     regdate datetime DEFAULT now() NOT NULL,                -- 게시물 작성 날짜
     count INT NOT NULL DEFAULT 0,                           -- 조회수 (기본값 0)
     best VARCHAR(1) NOT NULL DEFAULT "N",				 	-- 인기글여부 (기본값 "N", 인기글활성화 "Y")
     bookid INT,                            				 	-- 북아이디
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     update_date DATETIME,                            		-- 게시물 수정 날짜
-    liked VARCHAR(10),
-    status INT NOT NULL DEFAULT 0                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    status INT NOT NULL DEFAULT 0,                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    liked INT
 );
 
 -- 댓글 테이블 생성
@@ -247,7 +247,7 @@ CREATE TABLE carttbl (
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 장바구니 상태 (active, inactive 등)
     added_date DATE,                                -- 장바구니 추가 날짜
-    quantity INT,                                   -- 장바구니에 담긴 수량
+    quantity INT default 1,                                   -- 장바구니에 담긴 수량
 
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 사용자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결

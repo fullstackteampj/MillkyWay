@@ -29,8 +29,8 @@
 		orderNum = 1;
 	}else{
 		//배열 데이터가 있는 경우 (장바구니를 통해서 들어오는 경우)
-		bookids = request.getParameterValues("bookids");
-		orderNums = request.getParameterValues("orderNums");
+		String[] bookids = request.getParameterValues("bookids");
+		String[] orderNums = request.getParameterValues("orderNums");
 	}
 
 	
