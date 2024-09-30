@@ -20,12 +20,13 @@
 	int price = 0;
 	int bookid = 0;
 	int orderNum = 0;
+	String[] bookids = null;
+	String[] orderNums = null;
 	
-
-	if(request.getParameterValues("bookids") == null){
+	if(bookids == null && orderNums == null){
 		//배열 데이터가 없는 경우 단일데이터(바로 구매 버튼 통해서 들어오는 경우)
 		bookid = Integer.parseInt(request.getParameter("bookid")); 
-		orderNum = Integer.parseInt(request.getParameter("orderNum")); 
+		orderNum = 1;
 	}else{
 		//배열 데이터가 있는 경우 (장바구니를 통해서 들어오는 경우)
 		String[] bookids = request.getParameterValues("bookids");
@@ -52,22 +53,13 @@
 		} 
 
 		
-		//책 정보 가져오기
-		Vector<BookBean> vlist = null;
-		vlist = iMgr.getBook(bookid);
-		BookBean bean = vlist.get(0);
-		
-		imgUrl = "/image?bookid="+bookid;
-		tit = bean.getTitle();
-		price = bean.getPrice();
-		
 		//회원 정보 가져오기
 		Vector<MemberBean> mlist = null;
 		mlist = oMgr.getMember(userid);
 		MemberBean mBean = mlist.get(0);
 		
 		name = mBean.getName();
-		phone = mBean.getPhoneNum();
+		phone = mBean.getPhoneNum().substring(0, 11);
 		zipcode = mBean.getZipcode();
 		address = mBean.getAddress();
 		detailAdress = mBean.getDetailAddress();
@@ -141,15 +133,49 @@
                         </ol>
                     </li>
                     <li>
-                        <h3>주문 상품</h3>
+                        <h3>주문 상품 (총<span class="totNum">1</span>권)</h3>
                         <ol class="buy-products">
-                            <li>
-                                <img src="<%=imgUrl%>"
-                                    alt="<%=tit%>" />
-                                <h4><%=tit%>(<span class="regularPrice"><%=price%></span>원)</h4>
-                                <p><span class="orderNum"><%=orderNum%></span>권</p>
-                                <p><span class="price"></span>원</p>
-                            </li>
+                        	<%
+                        		if(bookids == null && orderNums == null){//단일데이터
+                        			//책 정보 가져오기
+                        			Vector<BookBean> vlist = null;
+                        			vlist = iMgr.getBook(bookid);
+                        			BookBean bean = vlist.get(0);
+                        			imgUrl = "/image?bookid="+bookid;
+                        			tit = bean.getTitle();
+                        			price = bean.getPrice();
+                        			%>
+                        			<li>
+		                                <img src="<%=imgUrl%>"
+		                                    alt="<%=tit%>" />
+		                                <h4><%=tit%>(<span class="regularPrice"><%=price%></span>원)</h4>
+		                                <p><span class="eachNum"><%=orderNum%></span>권</p>
+		                                <p><span class="price"></span>원</p>
+                            		</li>
+                        			<%
+                        		}else{//배열데이터
+                        			for(int i=0; i<bookids.length; i++){
+                        				//책 정보 가져오기
+                        				Vector<BookBean> vlist = null;
+                        				vlist = iMgr.getBook(bookid);
+                        				BookBean bean = vlist.get(i);
+                        				
+                        				imgUrl = "/image?bookid="+bookid;
+                        				tit = bean.getTitle();
+                        				price = bean.getPrice();
+                        				orderNum = Integer.parseInt(orderNums[i]);
+                        				%>
+                        				<li>
+                        					<img src="<%=imgUrl%>"
+		                                    alt="<%=tit%>" />
+			                                <h4><%=tit%>(<span class="regularPrice"><%=price%></span>원)</h4>
+			                                <p><span class="eachNum"><%=orderNum%></span>권</p>
+			                                <p><span class="price"></span>원</p>
+                        				</li>
+                        				<%
+                        			}//for
+                        		}//if-else
+                        	%>
                         </ol>
                     </li>
                     <li>
@@ -177,7 +203,7 @@
                         포인트
                         <input type="text" name="usePoint">
                         원
-                        <button>사용</button>
+                        <button type=button class="usePointBtn">사용</button>
                         (보유 <span><%=point%></span>p)
                     </li>
                     <li>
