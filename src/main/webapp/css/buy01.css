@@ -480,13 +480,17 @@ section.buy > form > .payment-info > li > ol.buy-products > li {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 0;
+  padding: 60px 0;
   font-size: 16px;
+  border-bottom: 1px solid #ddd;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li:last-of-type {
+  border-bottom: none;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li > img {
   display: block;
-  width: 90px;
   height: 120px;
+  box-shadow: 1px 1px 2px #ddd;
 }
 section.buy > form > .payment-info > li > ol > li {
   width: 450px;
@@ -554,7 +558,7 @@ section.buy > form > .payment-info > li > .btns-pay > button:hover {
 section.buy > form > .buy-total {
   position: sticky;
   top: 100px;
-  right: 50px;
+  left: 1000px;
   width: 32%;
   height: 300px;
   margin: 30px 20px 0 0;
@@ -618,4 +622,8 @@ section.buy > form > .buy-total > li > input + button {
   margin: 0 3px 0 10px;
   font-size: 14px;
   background-color: rgb(226, 218, 214);
+}
+section.buy > form > .buy-total > li .usePointBtn.active {
+  background-color: rgb(127, 161, 195);
+  color: #fdfdfd;
 }/*# sourceMappingURL=buy01.css.map */

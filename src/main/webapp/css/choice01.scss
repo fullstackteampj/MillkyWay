@@ -17,7 +17,7 @@ section.choice{
   >h2{
     padding: 20px 0;
     >i{color: $point-color;}
-  }
+  }//h2
 
   >nav{
     position: absolute;
@@ -44,7 +44,7 @@ section.choice{
           height: 40px;
           color: $white;
           font-weight: 700;
-        }
+        }//a
       }//li
     }//ul
   }//nav
@@ -60,7 +60,6 @@ section.choice{
       height: 1000px;
       margin: 0 auto;
       text-align: center;
-      
       >a{
         display: block;
         position: absolute;
@@ -143,16 +142,3 @@ section.choice{
     }//.frame
   }//.container
 }//section.choice
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-  >address{
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-}

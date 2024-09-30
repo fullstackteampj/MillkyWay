@@ -113,16 +113,17 @@ public class BookOrderMgr {
 	}
 	
 	//장바구니 넣기 전 테이블에 있는지 확인
-	public boolean checkCart (int bookid) {
+	public boolean checkCart (int userid, int bookid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select * from carttbl where bookid = ?";
+			sql = "select * from carttbl where userid= ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			flag = pstmt.executeQuery().next();
 			
 		}catch(Exception e) {
@@ -135,16 +136,17 @@ public class BookOrderMgr {
 	}
 	
 	//장바구니에 이미 있을 경우 수량 +1 
-	public boolean plusQCart (int bookid) {
+	public boolean plusQCart (int bookid, int userid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "update carttbl set (quantity = quantity + 1) where bookid = ?";
+			sql = "update carttbl set (quantity = quantity + 1) where userid = ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			flag = pstmt.executeQuery().next();
 			
 		}catch(Exception e) {
@@ -157,7 +159,7 @@ public class BookOrderMgr {
 	}
 	
 	//관심목록 넣기 전 테이블에 있는지 확인
-	public boolean checkWish (int bookid) {
+	public boolean checkWish (int bookid, int userid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -165,9 +167,10 @@ public class BookOrderMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select * from wishtbl where bookid = ?";
+			sql = "select * from wishtbl where userid = ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			
 			flag = pstmt.executeQuery().next();
 				
@@ -179,8 +182,5 @@ public class BookOrderMgr {
 		
 		return flag;
 	}
-	
-	
-	
 	
 }

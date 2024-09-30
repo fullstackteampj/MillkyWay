@@ -43,9 +43,8 @@
 		const sendData = '<%=result%>' === 'false';
 		if(sendData){
 			// 팝업창에서 부모 창으로 데이터 전송(postMessage API사용)
-			const dataToSend = { id: "ok" };
+			const dataToSend = { nickname: "ok" };
 			window.opener.postMessage(dataToSend, 'http://localhost:8080');
-
 		}
 		
 		self.close();

@@ -97,17 +97,17 @@
 					<div class="slide-recommend">
 						<% 
 							for(int i=0; i<list.size(); i++){ 
-							int bookid=list.get(i); 
-							String imgUrl="/image?bookid="+bookid; 
-							vlist=bMgr.getBook(bookid); 
-							BookBean bean=vlist.get(0); 
-							String tit=bean.getTitle(); 
-							String author=bean.getAuthor(); 
-							String category=bean.getCategory();
-							String genre=bean.getGenre(); 
-							String mini=bean.getMiniIntro(); 
-							String review=bean.getReview();
-							String contents=bean.getContents(); 
+								int bookid = list.get(i); 
+								String imgUrl = "/image?bookid="+bookid; 
+								vlist = bMgr.getBook(bookid); 
+								BookBean bean = vlist.get(0); 
+								String tit = bean.getTitle(); 
+								String author = bean.getAuthor(); 
+								String category = bean.getCategory();
+								String genre = bean.getGenre(); 
+								String mini = bean.getMiniIntro(); 
+								String review = bean.getReview();
+								String contents = bean.getContents(); 
 						%>
 						<article>
 							<h3>
@@ -163,11 +163,11 @@
 	    }else{
 	    	//장바구니/관심목록 구분
 			if(save === 'cart'){
-				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
+				location.href = '/shop/shopProc?save=cart&bookid=' + bookid;
 			}else if(save==='wish'){
-				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+				location.href = '/shop/shopProc?save=wish&bookid=' + bookid;
 			}else{
-				document.orderFrm.action = '/buy/buy01?orderNum=1&save=buy&bookid=' + bookid;
+				document.orderFrm.action = '/buy/buy01?save=buy&bookid=' + bookid;
 			}
 	    }
 	}
