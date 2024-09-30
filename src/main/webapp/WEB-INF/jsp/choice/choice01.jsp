@@ -119,7 +119,7 @@
 							<img src="<%=imgUrl%>" alt="<%=tit%>">
 							<div>
 								<a href="/shop/shop02?bookid=<%=bookid%>"><i
-										class="fa-solid fa-magnifying-glass" "></i></a>
+										class="fa-solid fa-magnifying-glass"></i></a>
 								<a href="/mypage/mypage05" onclick="toCart(event, <%=bookid%>)"><i
 										class="fa-solid fa-cart-shopping"></i></a>
 								<a href="/mypage/mypage05" onclick="toWish(event, <%=bookid%>)"><i
@@ -164,11 +164,20 @@
 	    	//장바구니/관심목록 구분
 			if(save === 'cart'){
 				location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + bookid;
-			}else{
+			}else if(save==='wish'){
 				location.href = '/shop/shopProc?orderNum=1&save=wish&bookid=' + bookid;
+			}else{
+				document.orderFrm.action = '/buy/buy01?orderNum=1&save=buy&bookid=' + bookid;
 			}
 	    }
 	}
+	
+
+	const toBuy = (evt, bookid) => {
+		evt.preventDefault();
+		makePopup('buy',bookid);
+	}
+		
 		
 	const toWish = (evt, bookid) => {
 		evt.preventDefault();

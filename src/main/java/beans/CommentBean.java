@@ -63,12 +63,7 @@ public class CommentBean {
 	public void setRef(int ref) {
 		this.ref = ref;
 	}
-	public int getParentid() {
-		return ref;
-	}
-	public void setParentid(int ref) {
-		this.ref = ref;
-	}
+
 	public String getRegdate() {
 		return regdate;
 	}
@@ -92,5 +87,11 @@ public class CommentBean {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	public int getParentid() {
+		return parentid;
+	}
+	public void setParentid(int parentid) {
+		this.parentid = parentid;
 	}
 }

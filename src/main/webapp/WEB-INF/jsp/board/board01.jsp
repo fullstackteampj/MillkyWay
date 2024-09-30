@@ -7,12 +7,10 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 
-	MemberBean loginBean = null;
 	Integer loginId = null;
 	
-	if(session != null && session.getAttribute("mBean") != null) {
-		loginBean = (MemberBean)session.getAttribute("mBean");
-		loginId = loginBean.getUserid();
+	if(session != null && session.getAttribute("idKey") != null) {
+		loginId = (Integer)session.getAttribute("idKey");
 	}
 	
 	int totalRecord=0; //전체레코드수
@@ -212,7 +210,7 @@
 			 	
 			  %>
 			<a href="board02?category=<%=category%>&num=<%=boardid%>">
-	            <span class="tab"><%=kind%> / <%=genre%></span>
+	            <span class="kind"><%=kind%> / <%=genre%></span>
 	            <div class="content">
 	            	<p class="title">
 	              <% // 인기글이면 제목에 스타일 적용 

@@ -16,8 +16,8 @@
 	for(int i=0; i<agrees.length; i++){
 		if(agrees[i].contains("useInfo")) agree = "T"; 
 	}
-
 %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -56,7 +56,7 @@
 	          <li>
 	            <label for="account">아이디</label>
 	            <input type="text" name="account" id="account" placeholder="이메일 형식으로 입력해주세요. (ex. abc1234@naver.com)" required /> 
-	            <button type="button" onclick="">중복체크</button>
+	            <button type="button">중복체크</button>
 	          </li>
 	
 	          <li>
@@ -102,7 +102,7 @@
 	          <li>
 	            <label for="address">별명</label>
 	            <input type="text" name="nickname" id="nickname"  placeholder="은하수 책방에서 사용할 별명을 입력해 주세요." required>
-	            <button type="button" onclick="nicknameCheck()">중복체크</button>
+	            <button type="button">중복체크</button>
 	          </li>
 	
 	          <li>
@@ -209,6 +209,24 @@
 	</div>
 	
  <script>
+ 
+	//쿠키저장함수
+	 function setCookie(name, value, minutes) {
+	    const now = new Date();
+	    now.setTime(now.getTime() + (minutes * 60 * 1000)); //만료일 설정
+	    const expires = "expires=" + now.toUTCString();
+	    document.cookie = name + "=" + value + ";" + expires + "; path=/"; //쿠키 설정
+	}
+ 	//쿠키 확인 함수
+ 	function getCookie(name) {
+	    const value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+	    return value ? value[2] : null;
+	}
+ 	//쿠키 삭제 함수
+ 	function deleteCookie(name) {
+    	document.cookie = name + '=; Max-Age=0; path=/;';
+	}
+ 	
  	const frm = document.signupFrm;
  	
  	const validText = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
@@ -237,7 +255,8 @@
 		    frm.email.focus();
 		    evt.preventDefault();
 	  	}
-		  //비밀번호
+	  	
+		 //비밀번호
 		 if(frm.pwd.value !== frm.repwd.value){
 		    alert('비밀번호와 비밀번호 재확인 값이 다릅니다. 다시 확인해주세요.');
 		    frm.pwd.value = '';
@@ -245,6 +264,62 @@
 		    frm.pwd.focus();
 		    evt.preventDefault();
 		 }
+		  
+		 const idValue = getCookie("id");
+		 
+		  if(idValue !== "ok"){
+			  alert("아이디 중복 확인이 되지 않습니다. \n다시 중복 체크를 확인하고 입력해 주세요.");
+			  frm.account.focus();
+			  evt.preventDefault();
+		  }
+		  
+		  const nicknameValue = getCookie("nickname");
+		  if(nicknameValue !== "ok"){
+			  alert("별명 중복 확인이 되지 않습니다. \n다시 중복 체크를 확인하고 입력해 주세요.");
+			  frm.nickname.focus();
+			  evt.preventDefault();
+		  }
+		  
+		  console.log("idValue" + idValue);
+		  console.log("nicknameValue" + nicknameValue);
+		  console.log("document.cookie" + document.cookie);
+ 	});
+ 	
+ 	
+ 	//팝업창 데이터 받기
+ 	//부모 창에서 메시지 수신
+	window.addEventListener('message', (event) => {
+	    if (event.origin === 'http://localhost:8080') {
+	       const receivedData = event.data;
+	   
+	       //아이디 중복체크 결과가 사용가능일 경우
+	       if(receivedData.id === 'ok'){
+	    		//id 쿠키 생성
+	    		setCookie("id", "ok", 30);
+	       }
+	       //별명 중복체크 결과가 사용가능일 경우
+	       if(receivedData.nickname === 'ok'){
+	    	 	//nickname 쿠키 생성
+	    		setCookie("nickname", "ok", 30);
+	       }
+	    }
+	});
+ 	
+ 	//페이지 reload시 id, nickname 쿠키 삭제 
+ 	window.addEventListener('load', ()=>{
+ 		deleteCookie('id');
+ 		deleteCookie('nickname');
+ 		
+ 	});
+ 	
+ 	//아이디 입력값 변경시 - 쿠키 삭제
+ 	frm.account.addEventListener('input', ()=>{
+ 		deleteCookie('id');
+ 	});
+ 	
+ 	//별명 입력값 변경시 - 쿠키 삭제
+ 	frm.nickname.addEventListener('input', ()=>{
+ 		deleteCookie('nickname');
  	});
  	
   </script>
