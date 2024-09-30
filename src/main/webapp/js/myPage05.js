@@ -55,7 +55,8 @@ $cartChkBoxs.forEach(($cartChkBox)=>{
         let checked = false;
         for($cartChkBox of $cartChkBoxs) {
             if($cartChkBox.checked) {
-                totalprice += parseInt($cartChkBox.nextElementSibling.nextElementSibling.lastElementChild.textContent);
+                totalprice += parseInt($cartChkBox.nextElementSibling.nextElementSibling.lastElementChild.textContent)*
+				parseInt($cartChkBox.nextElementSibling.nextElementSibling.nextElementSibling.lastElementChild.previousElementSibling.value);
                 checked = true;
             }
         }

@@ -224,14 +224,27 @@ public class ProcsMgr {
 				bean.setStatus(rs.getString("status"));
 			}
 			
-			// 2. 카트테이블에 추가
-			sql = "insert into carttbl (bookid,userid,status,added_date)"
-					+"values(?,?,?,curdate())";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, bean.getBookid());
-			pstmt.setInt(2, bean.getUserid());
-			pstmt.setString(3, bean.getStatus());
-			pstmt.executeUpdate();
+			boolean flag = addCartVal(bean.getUserid(),bean.getBookid());
+			
+			if(flag) {
+				// 2.카트테이블에 추가(중복될시 수량증가)
+				sql = "update carttbl set quantity = quantity + 1 where "
+						+"bookid = ? and userid = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, bean.getBookid());
+				pstmt.setInt(2, bean.getUserid());
+				pstmt.executeUpdate();
+				
+			}else {
+				// 2. 카트테이블에 추가(중복없을 시 새로운 목록 생성)
+				sql = "insert into carttbl (bookid,userid,status,added_date)"
+						+"values(?,?,?,curdate())";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, bean.getBookid());
+				pstmt.setInt(2, bean.getUserid());
+				pstmt.setString(3, bean.getStatus());
+				pstmt.executeUpdate();
+			}
 			
 			// 3. 위시에서 아이템 삭제
 			sql = "delete From wishtbl where wishid = ?";
@@ -245,6 +258,37 @@ public class ProcsMgr {
 			pool.freeConnection(conn, pstmt, rs);
 		}
 	}//void moveToWish(cartId)
+	
+	
+	public boolean addCartVal(int userid, int bookid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		
+		try {
+			conn = pool.getConnection();
+			
+			// 1. 위시테이블에서 아이템 조회
+			sql = "select * from carttbl where userid = ? and bookid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				flag = true;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+
+		return flag;
+	}//boolean addCartVal(int userid, int bookid)
 	
 }//class ProcsMgr
 

@@ -64,7 +64,7 @@ function addToCart(userId,ranId,title,idx) {
         }
         return;
     }else if(confirm(title+"를 장바구니에 추가하시겠습니까?")) {
-      location.href="/procs/addToCart?userId="+userId+"&bookId="+ranId;
+      location.href = '/shop/shopProc?orderNum=1&save=cart&bookid=' + ranId;
   }
 
   $pointers[idx].lastElementChild.style.display = "none";

@@ -31,7 +31,7 @@
               <div class="underNav">eBookunderNav</div>
             </li>
             <li>
-              <a href="/shop/shop01">중고매장</a>
+              <a href="/choice/choice01">추천도서</a>
               <div class="underNav">중고매장underNav</div>
             </li>
             <li>
