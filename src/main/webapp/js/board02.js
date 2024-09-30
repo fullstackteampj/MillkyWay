@@ -148,16 +148,22 @@ async function replySubmit(commentid, userid, nickname, boardid, userip, parenti
 }
 
 // 댓글 수정
-async function editSubmit(commentid, userid, nickname, boardid, userip, start, end) {
+async function editSubmit(commentid, userid, nickname, boardid, userip, start, end, comUserid) {
 	
 	// 유효성 검사
 	const comment = document.querySelector('.comid-'+commentid);
-		const frm = comment.nextElementSibling;
-		if(frm.inputComment.value == "" || frm.inputComment.value == null) {
-			alert("내용을 입력해주세요.");
-			frm.inputComment.focus();
-			return;
-		}
+	const frm = comment.nextElementSibling;
+	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
+		alert("내용을 입력해주세요.");
+		frm.inputComment.focus();
+		return;
+	}
+	
+	// 권한 검사
+	if(userid !== comUserid) {
+		alert("권한이 없습니다.");
+		return;
+	}
 	
 	// 댓글 줄바꿈 처리
 	const commentMsg = frm.inputComment.value.replace(/\n/g, '<br>');
@@ -206,11 +212,16 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 }
 
 // 댓글삭제
-async function commentDelete(commentid, userid, boardid, start, end) {
+async function commentDelete(commentid, userid, pos, boardid, start, end, comUserid) {
 	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
-		console.log("start=",start);
-		console.log("end=",end);
 		if(confirmtrue) {
+			
+			// 권한 검사
+			if(userid !== comUserid) {
+				alert("권한이 없습니다.");
+				return;
+			}
+			
 			// 날짜 데이터
 			const deldate = new Date().getFullYear() + '-' + zeroDate('month') + '-' + zeroDate('date') + ' ' + zeroDate('hours') + ':' + zeroDate('minutes') + ':' + zeroDate('seconds');
 
@@ -218,6 +229,7 @@ async function commentDelete(commentid, userid, boardid, start, end) {
 			const commentData = {
 				commentid,
 				userid,
+				pos,
 				boardid,
 				deldate,
 				start,
@@ -273,16 +285,35 @@ async function uplike(boardid, userid, element) {
 
 // 답글버튼 클릭시 대댓글 폼 노출
 function toggleReply(element) {
+	// 다른 열려있는 폼 닫음
+	const otherFrms = document.querySelectorAll('#commentCont form');
+	otherFrms.forEach((otherFrm)=>{
+		otherFrm.classList.add('off');
+	})
+	
+	// 해당 댓글의 대댓폼 노출
 	const $replyFrm = element.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
 	$replyFrm.classList.toggle('off');
+	
+	// 내용초기화 및 포커스
 	$replyFrm.inputComment.value = '';
 	$replyFrm.inputComment.focus();
+	
 }
 
 // 수정버튼 클릭시 댓글수정 폼 노출
 function toggleEdit(element) {
+	// 다른 열려있는 폼 닫음
+	const otherFrms = document.querySelectorAll('#commentCont form');
+	otherFrms.forEach((otherFrm)=>{
+		otherFrm.classList.add('off');
+	})
+	
+	// 해당 댓글의 수정폼 노출
 	const $editFrm = element.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
 	$editFrm.classList.toggle('off');
+	
+	// 내용초기화 및 포커스
 	$editFrm.inputComment.value = $editFrm.inputComment.textContent;
 	$editFrm.inputComment.focus();
 }
@@ -292,7 +323,6 @@ const replys = document.querySelectorAll('.depth');
 replys.forEach((reply) => {
 	const depthClass = reply.classList.item(4);
 	const depth = depthClass.substring(6,depthClass.length+1);
-	console.log(depth)
 	
 	// 댓글창이 너무 작아지지 않도록 16번째 대댓부턴 들여쓰기 제한
 	if(depth <= 16) {
@@ -301,6 +331,116 @@ replys.forEach((reply) => {
 		reply.style.marginLeft = '30'*16+'px';
 	}
 })
+
+// 댓글 페이징 클릭에 따른 스타일 적용
+/*
+const comPages = document.querySelectorAll('#comPagination>li');
+
+let now = 0;
+let old = nowIdx;
+
+comPages.forEach((comPage, idx)=>{
+	comPage.addEventListener('click', ()=>{
+		old = now;
+		now = idx;
+		alert(now);
+		
+		comPages[now].classList.add('on');
+		comPages[old].classList.remove('on');
+	})
+})
+*/
+
+// 댓글 페이징 비동기요청
+async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, page, end) {
+	
+	//console.log(element);
+	element.classList.add('on');
+	
+	let pageStart = (nowBlock-1)*pagePerBlock+1; // 6
+	let pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	let start = (pageStart-1)*end;
+	console.log("pageStart = "+pageStart);
+	console.log("pageEnd = "+pageEnd);
+	console.log("start = "+start);
 	
 
+	// 보낼 데이터를 객체로 묶음
+	const commentData = {
+		boardid,
+		start,
+		end,
+		pageStart,
+		pageEnd
+	}
+	
+	await fetch('commentPaging', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+	
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
+		// console.log(data);
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}
 
+// 댓글 페이징 다음 블럭으로 요청
+async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
+	nowBlock = nowBlock+1;
+	let pageStart = (nowBlock-1)*pagePerBlock+1; // 6
+	let pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	let start = (pageStart-1)*end;
+	console.log('pageStart = '+pageStart);
+	console.log('pageEnd = '+pageEnd);
+	console.log('start = '+start);
+
+	// 보낼 데이터를 객체로 묶음
+	const commentData = {
+		boardid,
+		start,
+		end,
+		pageStart,
+		pageEnd
+	}
+	
+	await fetch('commentNextBlock', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+	
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
+		// console.log(data);
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}

@@ -254,6 +254,7 @@ public class BoardServlet extends HttpServlet {
             int commentid = jsonObj.get("commentid").getAsInt();
             int userid = jsonObj.get("userid").getAsInt();
             String deldate = jsonObj.get("deldate").getAsString();
+            int pos = jsonObj.get("pos").getAsInt();
             
             int boardid = jsonObj.get("boardid").getAsInt();
             int start = jsonObj.get("start").getAsInt();
@@ -269,7 +270,7 @@ public class BoardServlet extends HttpServlet {
     		// userid와 댓글작성자id가 같으면 DB에 댓글 삭제 (status값 업데이트) 후 조상댓글 업데이트
             if(userid == commentUser) {
             	bMgr.deleteComment(commentid, deldate);
-            	bMgr.updateGrandChild(commentid, "delete");
+        		bMgr.updateChild(commentid, pos);
             } else {
             	response.sendRedirect("boardError?error=failCommentDel");
             }
@@ -290,6 +291,83 @@ public class BoardServlet extends HttpServlet {
     		dispatcher.forward(request, response);
     	}
     	
+    	// 댓글 페이징 요청
+    	if("/commentPaging".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            int boardid = jsonObj.get("boardid").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
+            int pageStart = jsonObj.get("pageStart").getAsInt();
+            int pageEnd = jsonObj.get("pageEnd").getAsInt();
+
+    		// 댓글창에 필요한 데이터 담기
+            BoardMgr bMgr = new BoardMgr();
+            int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// request 객체로 반환
+            request.setAttribute("pageStart", pageStart);
+            request.setAttribute("pageEnd", pageEnd);
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
+    	}
+    	
+    	// 댓글페이징 다음블럭으로 요청
+    	if("/commentNextBlock".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            int boardid = jsonObj.get("boardid").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
+            int pageStart = jsonObj.get("pageStart").getAsInt();
+            int pageEnd = jsonObj.get("pageEnd").getAsInt();
+
+    		// 댓글창에 필요한 데이터 담기
+            BoardMgr bMgr = new BoardMgr();
+            int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// request 객체로 반환
+            request.setAttribute("pageStart", pageStart);
+            request.setAttribute("pageEnd", pageEnd);
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
+    	}
     }
 
     private void handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

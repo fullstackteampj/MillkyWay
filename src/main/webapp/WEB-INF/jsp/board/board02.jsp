@@ -36,8 +36,8 @@
 	
 	// 댓글 페이징
 	int totalRecord=0; //전체레코드수
-	int numPerPage=10; // 페이지당 레코드 수 
-	int pagePerBlock=10; //블럭당 페이지수 
+	int numPerPage=3; // 페이지당 레코드 수 
+	int pagePerBlock=5; //블럭당 페이지수 
 	int totalPage=0; //전체 페이지 수
 	int totalBlock=0;  //전체 블럭수
 	int nowPage=1; // 현재페이지
@@ -233,7 +233,7 @@
 					if(loginId != null) { 
 						if(comUserid == loginId) {%>
 	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
-	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=num%>, <%=start%>, <%=end%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
+	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=comPos%>, <%=num%>, <%=start%>, <%=end%>, <%=comUserid%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
 	                <%	}
 					} %>
 	                
@@ -254,7 +254,7 @@
 		            <span>수정</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"><%=comContent%></textarea>
-		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>)">수정</button>
+		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>, <%=comUserid%>)">수정</button>
 		        </div>
 			</form>
 	        
@@ -313,26 +313,20 @@
 	    	
 	        // 현재 페이지블럭이 첫블럭이 아니라면 '이전블럭으로', '처음페이지로' 버튼 생성
 	        if(nowBlock > 1) { %>
-		        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('1')" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></a></li>
-		        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('<%=pageStart-1%>')" title="이전 페이지로"><i class="fa-solid fa-angle-left"></i></a></li>
+		        <li class="pageBtn btnPrev" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></li>
+		        <li class="pageBtn btnPrev" title="이전 페이지로"><i class="fa-solid fa-angle-left"></i></li>
 	      <%} //if(nowBlock > 1)
         	
         	
-        		for(int nPage=pageStart; nPage<pageEnd; nPage++) { 
-        			// 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on")
-        			if(nPage == nowPage) { %>
-        			<li class="on">
-       			<%  } else { %>
-       				<li>
-       			<%	}%>
-		        	<a href="javascript:goPageFn('<%=nPage%>')"><%=nPage%></a>
-		        	</li>
+        		for(int nPage=pageStart; nPage<pageEnd; nPage++) { %>
+        			<!-- 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on") -->
+        			<li onclick="goComPage(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"><%=nPage%></li>
        		  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)
         	
         	// 현재 페이지블럭이 마지막블럭이 아니라면 '다음블럭으로', '마지막페이지로' 버튼생성
         	if(totalBlock > nowBlock) { %>
-				<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=pageStart+pagePerBlock%>')"  title="다음 페이지로"><i class="fa-solid fa-angle-right"></i></a></li>
-          		<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=totalPage%>')" title="마지막 페이지로"><i class="fa-solid fa-angles-right"></i></a></li>
+				<li class="pageBtn btnNext" title="다음 페이지로" onclick="goNextBlock(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-right"></i></li>
+          		<li class="pageBtn btnNext" title="마지막 페이지로"><i class="fa-solid fa-angles-right"></i></li>
           <% } //if(totalBlock > nowBlock) %>
         	</ul> <!--#pagination-->
       <% } // if(totalPage != 0)%>

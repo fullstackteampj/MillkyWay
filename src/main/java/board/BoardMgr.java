@@ -693,23 +693,20 @@ public class BoardMgr {
 		int nextpos = grandId+1;
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE ref=? AND parentid=? AND depth=? ORDER BY pos LIMIT 1;";
+			sql = "SELECT pos FROM commenttbl WHERE commentid = (SELECT commentid FROM commenttbl WHERE ref=? AND parentid=? AND depth=? ORDER BY pos LIMIT 1,1);";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, grandId);
 			pstmt.setInt(2, parentId);
-			pstmt.setInt(3, depth+1);
+			pstmt.setInt(3, depth);
 			rs = pstmt.executeQuery();
 			if(rs.next()) { 
-				int pos = rs.getInt("pos");
-				int countChild = getCountCommentChild(pos, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
-				nextpos = pos+countChild+1;
+				nextpos = rs.getInt("pos");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		System.out.println("nextpos = "+nextpos);
 		return nextpos;
 	}
 	
@@ -816,40 +813,38 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		int grandId = getGrandId(parentid);
-		int childCount = 0;
-		pos = pos+1;
+		int ref = getGrandId(parentid);
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE ref = "+grandId+" AND pos < "+pos;
-			System.out.println("grandId = "+grandId);
-			System.out.println("pos+1 = "+pos);
-			
+			sql = "select * from commenttbl where ref=? and pos<=?";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, ref);
+			pstmt.setInt(2, pos);
 			rs = pstmt.executeQuery();
+			//System.out.println("=====업데이트 후보 추출=====");
+			//System.out.println("ref = "+ref);
+			//System.out.println("pos = "+pos);
+			
+			sql = "UPDATE commenttbl SET totalChild = ? WHERE commentid=?";
 			while(rs.next()) {
-				int comPos = rs.getInt("pos");
-				int commentid = rs.getInt("commentid");
-				int depth = rs.getInt("depth");
-				childCount = getCountCommentChild(comPos, commentid, depth)+1; //기존자식수+지금등록한댓글
-
-				System.out.println("comPos = "+comPos);
-				System.out.println("commentid = "+commentid);
-				System.out.println("depth = "+depth);
-				
-				sql = "UPDATE commenttbl SET totalChild = ? where commentid="+commentid;
+				int totalChild = getCountCommentChild(rs.getInt("pos"), rs.getInt("commentid"), rs.getInt("depth")-1);
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, childCount);
-				System.out.println("업데이트될 자식 수="+childCount);
-				System.out.println("=======================");
+				pstmt.setInt(1, totalChild);
+				pstmt.setInt(2, rs.getInt("commentid"));
+				//System.out.println("=====업데이트 내용 출력=====");
+				//System.out.println("업데이트할 댓글id = "+rs.getInt("commentid"));
+				//System.out.println("업데이트할 자식수 = "+totalChild);
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				
 				pstmt.executeUpdate();
 			}
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			pool.freeConnection(con, pstmt);
+			pool.freeConnection(con, pstmt, rs);
 		}
 	}
 	
@@ -872,8 +867,13 @@ public class BoardMgr {
 			pstmt.setInt(2, pos);
 			pstmt.setInt(3, depth);
 			rs = pstmt.executeQuery();
+			System.out.println("====자손조건====");
+			System.out.println("ref가 "+grandId+" 와 같고");
+			System.out.println("pos가 "+pos+" 보다 높고");
+			System.out.println("depth가 "+depth+" 보다 높은것");
 			if(rs.next()) {
 				countChild = rs.getInt(1);
+				System.out.println("countChild = "+countChild);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

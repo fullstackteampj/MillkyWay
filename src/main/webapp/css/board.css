@@ -942,24 +942,24 @@ section > #postBox > #postMng > .readBtn:last-child {
 	/*outline: 1px solid red;*/
 }
 #comPagination > li {
-	margin-right: 5px;
-}
-#comPagination > li > a {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 30px;
 	height: 30px;
+	margin-right: 5px;
 	font-size: 14px;
-	/*outline: 1px solid pink;*/
+	cursor: pointer;
+	border: 1px solid #ccc;
 }
 #comPagination > li:last-child {
 	margin-right: 0px;
 }
-#comPagination > li:hover > a,
-#comPagination > li.on > a {
+#comPagination > li:hover,
+#comPagination > li.on {
 	font-family: "Pretendard-Bold";
 	color: #33afe9;
+	border-color: #33afe9;
 }
 section > #btns {
   display: flex;
