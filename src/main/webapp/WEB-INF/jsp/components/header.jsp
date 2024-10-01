@@ -177,7 +177,7 @@
           const $author = document.createElement('p');
           const $genre = document.createElement('p');
 
-          $a.setAttribute('href','/shop/shop01?bookid=' + bookid);
+          $a.setAttribute('href','/shop/shop02?bookid=' + bookid);
           $image.setAttribute('src','/image?bookid=' + bookid);
           $image.setAttribute('alt', title);
           $title.textContent = title;

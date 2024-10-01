@@ -53,18 +53,18 @@ USE MillkyWayDB;
 CREATE TABLE membertbl (
     userid INT PRIMARY KEY AUTO_INCREMENT,  -- 회원 ID, 기본 키 및 자동 증가
     account VARCHAR(100) NOT NULL unique,   -- 회원 계정 (이메일 또는 사용자 이름)
-    pwd VARCHAR(100) NOT NULL,              -- 비밀번호
-	salt VARCHAR(100) NOT NULL,             -- salt값
-    question VARCHAR(100) NOT NULL,         -- 질문
-    answer VARCHAR(100) NOT NULL,           -- 답
+    pwd VARCHAR(100) NULL,              	-- 비밀번호
+	salt VARCHAR(100) NULL,             	-- salt값
+    question VARCHAR(100) NULL,         	-- 질문
+    answer VARCHAR(100) NULL,           	-- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름
     nickname VARCHAR(100),                  -- 별명
     gender CHAR(1) default null,            -- 성별 (M, F)
-    zipcode VARCHAR(10),                    -- 우편번호
-    usergrade VARCHAR(100),					-- 유저등급
-	curpoint int default 0,					-- 보유포인트 //디폴트값 추가 
-	expectpoint int,						-- 적립예정포인트
-    address TEXT,                           -- 주소
+    zipcode VARCHAR(10) default 00000,      -- 우편번호
+    usergrade VARCHAR(100) default 'vip',	-- 유저등급
+	curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
+	expectpoint int default 0,				-- 적립예정포인트
+    address TEXT,        					-- 주소
 	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
@@ -157,8 +157,7 @@ CREATE TABLE boardtbl (
     bookid INT,                            				 	-- 북아이디
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     update_date DATETIME,                            		-- 게시물 수정 날짜
-    status INT NOT NULL DEFAULT 0,                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
-    liked INT
+    status INT NOT NULL DEFAULT 0                 		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
 -- 댓글 테이블 생성
