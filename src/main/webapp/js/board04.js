@@ -46,5 +46,9 @@ async function postBookSearchFn() {
 	.catch(error => {
 		console.error(error);
 	})
+
+	// 인풋에 다시 focus
+	const $searchInput = document.querySelector('#postBookSearch');
+	$searchInput.focus();
 }
 

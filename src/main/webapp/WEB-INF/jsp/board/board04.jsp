@@ -195,6 +195,9 @@
     	$postBookFrm.classList.toggle('on');
     	const $searchInput = document.querySelector('#postBookSearch');
     	$searchInput.focus();
+    	
+    	// 검색내용 초기화
+    	postBookSearchFn();
     }
   </script>
 </body>
