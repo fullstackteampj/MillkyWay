@@ -7,6 +7,7 @@ public class BoardBean {
 	private String title;
 	private String content;
 	private byte[] photo;
+	private String photoName;
 	private String genre;
 	private String tab;
 	private String regdate;
@@ -49,6 +50,12 @@ public class BoardBean {
 	}
 	public byte[] getPhoto() {
 		return photo;
+	}
+	public String getPhotoName() {
+		return photoName;
+	}
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
 	}
 	public void setPhoto(byte[] photo) {
 		this.photo = photo;

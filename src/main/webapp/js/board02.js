@@ -1,3 +1,37 @@
+// 스크롤감지
+let nowScr = document.documentElement.scrollTop;
+window.addEventListener('scroll', ()=>{
+	nowScr = document.documentElement.scrollTop;
+});
+
+// 댓글 페이징요청 시 댓글박스 상단으로 스크롤
+function scrollFn(element) {
+	const $commentBox = document.getElementById('commentBox');
+	const $postBox = document.getElementById('postBox');
+	
+	const pageY = window.pageYOffset;
+	const commentBoxRect = $commentBox.getBoundingClientRect();
+	const commentBoxTop = pageY + commentBoxRect.top;
+	
+	const postBoxRect = $postBox.getBoundingClientRect();
+	const postBoxTop = pageY + postBoxRect.top;
+	
+	// 스크롤감지 헤더 높이에 따라
+	// 현재 스크롤높이를 기준으로 스크롤업 되어야할시 더 낮은값으로 스크롤
+	const scrollValue = nowScr > commentBoxTop ? commentBoxTop-130 : commentBoxTop-60;
+	
+	// 댓글 바로가기 버튼/새댓글 작성/본문 바로가기 버튼/페이징
+	if(element === 'button') {
+		window.scrollTo({ top: scrollValue, behavior: 'smooth' });		
+	} else if(element === 'newCom') {
+		window.scrollTo(0, document.body.scrollHeight-1000);
+	} else if(element === 'post') {
+		window.scrollTo({ top: postBoxTop-130, behavior: 'smooth' });
+	} else {
+		window.scrollTo(0, scrollValue);
+	}
+}
+
 // 비로그인 상태일 때 글쓰기 제한
 function goLogin() {
 	const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?");
@@ -35,7 +69,12 @@ function zeroDate(thing) {
 }
 
 // 댓글 작성
-async function comSubmit(userid, nickname, boardid, userip, start, end) {
+async function comSubmit(userid, nickname, boardid, userip) {
+	
+	const nowPage = 1;
+	const numPerPage = 10;
+	const start = (nowPage-1)*numPerPage;
+	const end = numPerPage;
 	// 댓글작성 유효성 검사
 	const frm = document.commentFrm;
 	if(frm.inputComment.value == "" || frm.inputComment.value == null) {
@@ -58,6 +97,7 @@ async function comSubmit(userid, nickname, boardid, userip, start, end) {
 		userip,
 		commentMsg,
 		regdate,
+		nowPage,
 		start,
 		end
 	}
@@ -87,6 +127,9 @@ async function comSubmit(userid, nickname, boardid, userip, start, end) {
 	.catch(error => {
 		console.error(error);
 	})
+	
+	// 스크롤 맨아래로
+	scrollFn("newCom");
 }
 
 // 답글 작성
@@ -360,30 +403,11 @@ replys.forEach((reply) => {
 	}
 })
 
-// 댓글 페이징 클릭에 따른 스타일 적용
-/*
-const comPages = document.querySelectorAll('#comPagination>li');
-
-let now = 0;
-let old = nowIdx;
-
-comPages.forEach((comPage, idx)=>{
-	comPage.addEventListener('click', ()=>{
-		old = now;
-		now = idx;
-		alert(now);
-		
-		comPages[now].classList.add('on');
-		comPages[old].classList.remove('on');
-	})
-})
-*/
-
 // 댓글 페이징 비동기요청
-async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, nowPage, end) {
-	
-	//console.log(element);
-	element.classList.add('on');
+async function goComPage(boardid, nowBlock, pagePerBlock, totalPage, nowPage, end) {
+
+	// 댓글박스 상단으로 스크롤
+	scrollFn();
 	
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
 	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
@@ -420,7 +444,6 @@ async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, no
 		
 		// contentbox에 요소채우기
 		$commentBox.innerHTML = data;
-		// console.log(data);
 	})
 	.catch(error => {
 		console.error(error);
@@ -429,6 +452,10 @@ async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, no
 
 // 댓글 페이징 다음 블럭으로 요청
 async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
+	
+	// 댓글박스 상단으로 스크롤
+	scrollFn();
+	
 	nowBlock = nowBlock+1;
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
 	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
@@ -465,7 +492,6 @@ async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 		
 		// contentbox에 요소채우기
 		$commentBox.innerHTML = data;
-		// console.log(data);
 	})
 	.catch(error => {
 		console.error(error);
@@ -474,6 +500,10 @@ async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 
 // 댓글 페이징 이전 블럭으로 요청
 async function goPrevBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
+
+	// 댓글박스 상단으로 스크롤
+	scrollFn();
+	
 	nowBlock = nowBlock-1;
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
 	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
@@ -518,6 +548,10 @@ async function goPrevBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 
 // 댓글 페이징 마지막페이지로 요청
 async function goLastPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
+
+	// 댓글박스 상단으로 스크롤
+	scrollFn();
+	
 	const totalBlock = Math.ceil(totalPage / pagePerBlock);
 	nowBlock = totalBlock;
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
@@ -563,6 +597,10 @@ async function goLastPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
 
 // 댓글 페이징 첫번째페이지로 요청
 async function goFirstPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
+
+	// 댓글박스 상단으로 스크롤
+	scrollFn();
+	
 	nowBlock = 1;
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
 	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
@@ -604,3 +642,4 @@ async function goFirstPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
 		console.error(error);
 	})
 }
+

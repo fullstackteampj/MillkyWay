@@ -107,7 +107,7 @@
          %>
 	
      	<div id="commentCont"> 
-		<%// 추출된 댓글이 있을경우 >
+		<%// 추출된 댓글이 있을경우
          if(!clist.isEmpty()) { %>
 		  <% for(int i=0; i<forCount; i++) {
 				CommentBean bean = clist.get(i);
@@ -239,7 +239,7 @@
        	
       for(int nPage=pageStart; nPage<pageEnd; nPage++) { %>
 		<!-- 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on") -->
-		<li onclick="goComPage(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"
+		<li onclick="goComPage(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"
 		<% if(nowPage == nPage) { %>class="on" <% } %>><%=nPage%></li>
 	  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)
 

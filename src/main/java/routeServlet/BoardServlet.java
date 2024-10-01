@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import board.BoardMgr;
 import beans.BoardBean;
+import beans.BookBean;
 import beans.CommentBean;
 
 @WebServlet("/board/*")
@@ -72,7 +73,7 @@ public class BoardServlet extends HttpServlet {
     		String category = URLEncoder.encode(request.getParameter("category"),"UTF-8");
     		String boardid = request.getParameter("boardid");
     		if(editOk) {
-    			response.sendRedirect("boardSuccess?event=editPost&category="+category);
+    			response.sendRedirect("boardSuccess?event=editPost&category="+category+"&num="+boardid);
     		} else {
     			response.sendRedirect("boardError?error=failEdit&num="+boardid);
     		}
@@ -90,6 +91,33 @@ public class BoardServlet extends HttpServlet {
     			response.setContentType("application/json");
     			response.getWriter().write("{\"liked\": " + updateLiked + "}");
     		}
+    	}
+    	
+    	// 글작성 시 도서검색 요청
+    	if("/postBookSearch".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            
+            String searchVal = jsonObj.get("searchVal").getAsString();
+            
+    		// 반환에 필요한 데이터 담기
+    		BoardMgr bMgr = new BoardMgr();
+    		ArrayList<BookBean> bList = bMgr.getSearchBookList(searchVal);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("bList", bList);
+    		
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/boardBookSearch.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
     	}
     	
     	// 댓글 작성 요청
@@ -110,6 +138,7 @@ public class BoardServlet extends HttpServlet {
             String ip = jsonObj.get("userip").getAsString();
             String content = jsonObj.get("commentMsg").getAsString();
             String regdate = jsonObj.get("regdate").getAsString();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
             int start = jsonObj.get("start").getAsInt();
             int end = jsonObj.get("end").getAsInt();
             
@@ -126,6 +155,7 @@ public class BoardServlet extends HttpServlet {
     		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
     		
     		// request 객체로 반환
+    		request.setAttribute("nowPage", nowPage);
     		request.setAttribute("postuser", postuser);
     		request.setAttribute("commentCount", commentCount);
     		request.setAttribute("clist", clist);

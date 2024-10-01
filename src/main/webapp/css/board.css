@@ -606,7 +606,7 @@ section > h2 {
 section > form#FrmPost {
   position: relative;
 }
-section > form#FrmPost > #writeArea {
+section > form#FrmPost > div {
   padding: 30px;
   margin-bottom: 12px;
   border: 1px solid #ccc;
@@ -620,7 +620,7 @@ section > form#FrmPost > #writeArea > select {
 }
 section > form#FrmPost > #writeArea > #writeHead {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 7px;
 }
 section > form#FrmPost > #writeArea > #writeHead > select {
   width: 100px;
@@ -635,6 +635,7 @@ section > form#FrmPost > #writeArea > #writeHead > input {
   outline-color: #33afe9;
 }
 section > form#FrmPost > #writeArea > #postEditor {
+  margin-top: 20px;
   margin-bottom: 12px;
 }
 section > form#FrmPost > #writeArea > #postEditor > #writeSet {
@@ -660,13 +661,8 @@ section > form#FrmPost > #writeArea > #postEditor > textarea {
   box-sizing: border-box;
   outline-color: #33afe9;
 }
-section > form#FrmPost > #uploadArea {
-  padding: 30px;
-  border: 1px solid #ccc;
+section > form#FrmPost > div > h3 {
   margin-bottom: 12px;
-}
-section > form#FrmPost > #uploadArea > p {
-  margin-bottom: 10px;
   font-family: "Pretendard-Bold";
   font-size: 14px;
 }
@@ -706,9 +702,111 @@ section > form#FrmPost > #uploadArea > #upload > label {
 section > form#FrmPost > #uploadArea > #upload > #uploadFile {
   display: none;
 }
+section > form#FrmPost > #bookSearchArea {
+	position: relative;
+}
+section > form#FrmPost > #bookSearchArea > input {
+  width: 100%;
+  margin-bottom: 7px;
+  padding: 12px;
+  color: #222;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  outline: none;
+  cursor: pointer;
+}
+section > form#FrmPost > #bookSearchArea > input:hover {
+	border-color: #33afe9;
+	outline: 1px solid #33afe9;
+	background-color: #eff1f5;
+}
+section > form#FrmPost > #bookSearchArea > i {
+	position: absolute;
+	top: 75px;
+	right: 42px;
+}
+section > #postBookFrm {
+	display: none;
+	position: fixed;
+	left: 50%;
+	top: 30%;
+	transform: translate(-50%, 0);
+	width: 60%;
+	max-width: 700px;
+	padding: 30px;
+	border: 1px solid #aaa;
+	box-sizing: border-box;
+	z-index: 300;
+	background-color: #fff;
+}
+section > #postBookFrm.on {
+	display: initial;
+}
+section > #postBookFrm > #formHead {
+	display: flex;
+	justify-content: space-between;
+	font-size: 18px;
+}
+section > #postBookFrm > #formHead > i {
+	cursor: pointer;
+}
+section > #postBookFrm > input {
+	display: block;
+	width: 95%;
+	height: 40px;
+	margin: 16px auto;
+	padding: 0 12px;
+	/*border: 2px solid #1a6080;*/
+	border: 2px solid #33afe9;
+	outline: none;
+}
+section > #postBookFrm > ul {
+	max-height: 300px;
+	overflow: auto;
+	/*
+	border-top: 1px solid #222;
+	border-bottom: 1px solid #222;
+	*/
+}
+section > #postBookFrm > ul::-webkit-scrollbar {
+    width: 10px;
+}
+section > #postBookFrm > ul::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 5px;
+}
+section > #postBookFrm > ul > li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px;
+	font-size: 14px;
+	border-bottom: 1px solid #ccc;
+	cursor: pointer;
+}
+section > #postBookFrm > ul > li:hover {
+	background-color: #eff1f5;
+}
+section > #postBookFrm > ul > li:last-child {
+	border-bottom: none;
+}
+section > #postBookFrm > ul > li > div > span:last-child {
+	margin-left: 12px;
+	color: #ccc;
+}
+section > #postBookFrm > ul > li > img {
+	display: block;
+	width: 30px;
+	height: 30px;
+	outline: 1px solid blue;
+}
 section > form#FrmPost > #postBtn {
   display: flex;
   justify-content: flex-end;
+  padding: 0;
+  margin-bottom: 0;
+  border: none;
 }
 section > form#FrmPost > #postBtn > button {
   width: 110px;
@@ -770,13 +868,13 @@ section > #postBox > #readHead > #readHead-bottom > #feedback {
 }
 section > #postBox > #readHead > #readHead-bottom > #feedback > p {
   font-size: 15px;
-}
-section > #postBox > #readHead > #readHead-bottom > #feedback > p {
   padding: 0 10px;
   border-right: 1px solid #ccc;
 }
 section > #postBox > #readHead > #readHead-bottom > #feedback > p:last-of-type {
   border-right: none;
+  text-decoration: underline;
+  cursor: pointer;
 }
 section > #postBox > #readContent {
   padding: 40px 10px;
@@ -870,6 +968,7 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #commentHead > #commentMng > span {
   margin-right: 10px;
+  text-decoration: underline;
   cursor: pointer;
 }
 #commentHead > #commentMng > span:last-of-type {
@@ -1135,10 +1234,13 @@ section > #btns > button:last-child:hover {
 	background-color: rgb(205, 92, 92);
 }
 section > #postBox > #errorNotice > p {
-	font-size: 14px;
+	font-size: 18px;
+	font-family: "Pretendard-Bold";
 	margin-bottom: 30px;
 }
 section > #postBox > #errorNotice > p:last-child {
+	font-size: 14px;
+	font-family: "Pretendard-Regular";
 	margin-bottom: 0;
 }
 footer {

@@ -17,3 +17,34 @@ $uploadFile.addEventListener('change', ()=>{
     $uploadNameBox.append($li);
   }
 })
+
+// 도서검색 비동기요청
+async function postBookSearchFn() {
+	const bookSearchInput = document.querySelector('#postBookSearch');
+
+	const searchVal = bookSearchInput.value;
+	const sendData = {searchVal}
+	await fetch('postBookSearch', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(sendData)
+	})
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $postBookFrm = document.getElementById('postBookFrm');
+		 const $bookSearchList = document.getElementById('bookSearchList');
+		 while($bookSearchList.firstChild)  {
+			$bookSearchList.removeChild($bookSearchList.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$postBookFrm.innerHTML = data;
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}
+

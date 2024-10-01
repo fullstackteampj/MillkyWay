@@ -194,6 +194,7 @@
 			 	String best = bean.getBest();
 			 	int liked = bMgr.getLikedCount(boardid);
 			 	byte[] photo = bean.getPhoto();
+			 	String photoName = bean.getPhotoName();
 			 	
 			 	
 			 	// 날짜데이터 가공
@@ -260,7 +261,7 @@
 	            <% // 첨부이미지가 있으면 출력
 	               if(photo != null && photo.length > 0) { %>
 	            	<p class="frame">
-	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
+	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="<%=photoName%>">
 	            	</p>
 	            <% } %>
 	            

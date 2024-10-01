@@ -16,6 +16,12 @@
 	String tab = post.getTab();
 	String title = post.getTitle();
 	String content = post.getContent();
+	byte[] photo = null;
+	String photoName = null;
+	if(post.getPhoto() != null) {
+		photo = post.getPhoto();
+		photoName = post.getPhotoName();
+	}
 	int status = post.getStatus();		  // 이미 삭제된 글일 시 접근제한
 
 	
@@ -99,7 +105,11 @@
 
           <div id="upload">
             <ul id="uploadName">
+              <% if(photo == null) { %>
               <li>선택된 파일이 없습니다.</li>
+              <% } else { %>
+              <li><%= photoName %></li>
+              <% } %>
             </ul>
             <label for="uploadFile">파일찾기</label>
             <input type="file" name="uploadFile" id="uploadFile" accept="image/*" />

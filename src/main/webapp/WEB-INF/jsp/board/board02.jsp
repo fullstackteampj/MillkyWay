@@ -30,6 +30,7 @@
 	int count = post.getCount();
 	int liked = bMgr.getLikedCount(num);
 	byte[] photo = post.getPhoto();
+	String photoName = post.getPhotoName();
 	String content = post.getContent();
 	int userid = post.getUserid();
 	int status = post.getStatus();
@@ -50,9 +51,6 @@
 	// 페이지이동 시 게시글을 DB에서 추출할 때 기준이 되는 값을 초기화
 	start = (nowPage-1)*numPerPage;
 	end = numPerPage;
-	//start = ((nowPage-1)*numPerPage)+bMgr.getTotalPrevDelCount(num, nowPage, numPerPage);
-	//end = numPerPage+bMgr.getDeleteComCount(num, start, numPerPage);
-	//System.out.println("현재페이지삭제댓글수 = "+bMgr.getDeleteComCount(num, start, numPerPage));
 	
 	// 페이징, 글목록출력 등에 활용될 변수 초기화 (총게시글수, 총페이지수, 현재블럭, 총블럭수)
 	totalRecord = bMgr.getCommentCount(num);
@@ -115,7 +113,7 @@
 	          <div id="feedback">
 	            <p>조회 <span><%=count%></span></p>
 	            <p>추천 <span><%=liked%></span></p>
-	            <p>댓글 <span><%=bMgr.getCommentCount(num)%></span></p>
+	            <p onclick="scrollFn('button')">댓글 <span><%=bMgr.getCommentCount(num)%></span></p>
 	          </div>
 	        </div> <!--readHead-bottom-->
 	      </div> <!--readHead-->
@@ -124,7 +122,7 @@
 	        <div id="contentDetail">
 	          <% // 이미지가 존재하면 출력
 	          	 if(photo != null && photo.length > 0) { %>
-		            <img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="#">
+		            <img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="<%=photoName%>">
 		            <br />
 	          <% } %>
 	          <p>
@@ -171,7 +169,7 @@
 	        </div> <!-- div#commentOpt -->
 	
 	        <div id="commentMng">
-	          <span onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">본문보기</span>
+	          <span onclick="scrollFn('post')">본문보기</span>
 	        </div> <!-- div#commentMng -->
 	      </div> <!--commentHead-->
 	
@@ -187,7 +185,7 @@
           %>
   		
       	<div id="commentCont"> 
-		<%// 추출된 댓글이 있을경우 >
+		<%// 추출된 댓글이 있을경우
           if(!clist.isEmpty()) { %>
 		  <% for(int i=0; i<forCount; i++) {
 				CommentBean bean = clist.get(i);
@@ -313,7 +311,7 @@
         	
         		for(int nPage=pageStart; nPage<pageEnd; nPage++) { %>
         			<!-- 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on") -->
-        			<li onclick="goComPage(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"
+        			<li onclick="goComPage(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"
         			<% if(nowPage == nPage) { %>class="on" <% } %>
         			><%=nPage%></li>
        		  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)

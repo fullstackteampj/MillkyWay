@@ -3,6 +3,7 @@ package board;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
 import beans.BoardBean;
+import beans.BookBean;
 import beans.CommentBean;
 
 public class BoardMgr {
@@ -107,6 +109,7 @@ public class BoardMgr {
 					Blob photoBlob = rs.getBlob("photo");
 					byte[] photo = photoBlob.getBytes(1, (int)photoBlob.length());
 					bean.setPhoto(photo);
+					bean.setPhotoName(rs.getString("photo_name"));
 				}
 				bean.setGenre(rs.getString("genre"));
 				bean.setTab(rs.getString("tab"));
@@ -290,7 +293,10 @@ public class BoardMgr {
 				bean.setNickname(rs.getString("nickname"));
 				bean.setTitle(rs.getString("title"));
 				bean.setContent(rs.getString("content"));
-				bean.setPhoto(rs.getBytes("photo"));
+				if(rs.getBytes("photo") != null) {
+					bean.setPhoto(rs.getBytes("photo"));
+					bean.setPhotoName(rs.getString("photo_name"));
+				}
 				bean.setGenre(rs.getString("genre"));
 				bean.setTab(rs.getString("tab"));
 				bean.setRegdate(rs.getString("regdate"));
@@ -509,7 +515,11 @@ public class BoardMgr {
 				
 		try {
 			con = pool.getConnection();
-			sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
+			//sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
+			sql = "select * from "
+					+ "(select * from commenttbl where boardid = ? and ( (status=0)  or (status=0 and totalChild>0) ) "
+					+ "order by REF desc, pos limit ?,?) e "
+					+ "order by ref, pos ASC";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, boardid);
 			pstmt.setInt(2, start);
@@ -937,24 +947,36 @@ public class BoardMgr {
 		String sql = null;
 		
 		Part imagePart = req.getPart("uploadFile");
-    	InputStream imageInputStream = imagePart.getInputStream();
+		InputStream imageInputStream = imagePart.getInputStream();
+		String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 		boolean flag = false;
 		
 		try {
 			con = pool.getConnection();
-			sql = "update boardtbl set nickname=?, title=?, content=?, photo=?, genre=?,"
-					+ "tab=?, ip=?, update_date=? where boardid=?";
-			pstmt = con.prepareStatement(sql);
+			
+			// 새로운 사진이 있으면 업데이트
+			if(imagePart != null && imagePart.getSize() > 0) {
+				sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+						+ "tab=?, ip=?, update_date=?, photo=?, photo_name=? where boardid=?";
+				pstmt = con.prepareStatement(sql);	
+				pstmt.setBlob(8, imageInputStream);
+				pstmt.setString(9, fileName);
+				pstmt.setInt(10, Integer.parseInt(req.getParameter("boardid")));
+				
+			} else { // 새로운 사진이 없으면 기존 유지
+				sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+						+ "tab=?, ip=?, update_date=? where boardid=?";
+				pstmt = con.prepareStatement(sql);	
+				pstmt.setInt(8, Integer.parseInt(req.getParameter("boardid")));
+			}
 			pstmt.setString(1, req.getParameter("nickname"));
 			pstmt.setString(2, req.getParameter("postTit"));
 			pstmt.setString(3, req.getParameter("postCont"));
-			pstmt.setBlob(4, imageInputStream);
-			pstmt.setString(5, req.getParameter("postGenre"));
-			pstmt.setString(6, req.getParameter("postTab"));
-			pstmt.setString(7, req.getParameter("userip"));
+			pstmt.setString(4, req.getParameter("postGenre"));
+			pstmt.setString(5, req.getParameter("postTab"));
+			pstmt.setString(6, req.getParameter("userip"));
 			DateMgr dMgr = new DateMgr();
-			pstmt.setString(8, dMgr.getToday());
-			pstmt.setInt(9, Integer.parseInt(req.getParameter("boardid")));
+			pstmt.setString(7, dMgr.getToday());
 			pstmt.executeUpdate();
 			flag = true;
 			
@@ -976,22 +998,32 @@ public class BoardMgr {
 
     	Part imagePart = req.getPart("uploadFile");
     	InputStream imageInputStream = imagePart.getInputStream();
+    	String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+    	
 		boolean flag = false;
 		
 		try {
 			con = pool.getConnection();
-			sql = "insert into boardtbl (userid, nickname, title, content, photo, genre, tab, ip)"
-					+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
-			pstmt = con.prepareStatement(sql);
-			// jsp에서 userid받아 보내야함
+			
+			// 사진이 있으면 등록
+			if(imagePart != null && imagePart.getSize() > 0) {
+				sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, photo, photo_name)"
+						+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setBlob(8, imageInputStream);
+				pstmt.setString(9, fileName);
+			} else {
+				sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip)"
+						+ "values (?, ?, ?, ?, ?, ?, ?);";
+				pstmt = con.prepareStatement(sql);
+			}
 			 pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
 			 pstmt.setString(2, req.getParameter("nickname"));
 			 pstmt.setString(3, req.getParameter("postTit"));
 			 pstmt.setString(4, req.getParameter("postCont"));
-			 pstmt.setBlob(5, imageInputStream);
-			 pstmt.setString(6, req.getParameter("postGenre"));
-			 pstmt.setString(7, req.getParameter("postTab"));
-			 pstmt.setString(8, req.getParameter("userip"));
+			 pstmt.setString(5, req.getParameter("postGenre"));
+			 pstmt.setString(6, req.getParameter("postTab"));
+			 pstmt.setString(7, req.getParameter("userip"));
 			 pstmt.executeUpdate();
 
 			flag = true;
@@ -1001,6 +1033,49 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		return flag;
+	}
+	
+	// 연관서적 검색 메서드
+	public ArrayList<BookBean> getSearchBookList(String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		ArrayList<BookBean> blist = new ArrayList<BookBean>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM booktbl WHERE (author LIKE '%"+keyword+"%') OR (title LIKE '%"+keyword+"%');";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookBean bean = new BookBean();
+				bean.setBookid(rs.getInt("bookid"));
+				bean.setAuthor(rs.getString("author"));
+				bean.setCategory(rs.getString("category"));
+				bean.setGenre(rs.getString("genre"));
+				bean.setTitle(rs.getString("title"));
+				bean.setReview(rs.getString("review"));
+				bean.setScore(rs.getInt("score"));
+				bean.setContents(rs.getString("contents"));
+				bean.setAuthorIntro(rs.getString("authorIntro"));
+				bean.setContentsTables(rs.getString("contentsTables"));
+				bean.setMiniIntro(rs.getString("miniIntro"));
+				bean.setPhoto(rs.getBytes("photo"));
+				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setIsbn(rs.getString("isbn"));
+				bean.setStock_Quantity(rs.getInt("stock_Quantity"));
+				bean.setPrice(rs.getInt("price"));
+				bean.setPages(rs.getInt("pages"));
+				blist.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return blist;
 	}
 	
 	

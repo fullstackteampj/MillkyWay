@@ -21,7 +21,7 @@
 			<div id="postBox">
 				<div id="errorNotice">
 					<p><i class="fa-solid fa-circle-exclamation"></i> 존재하지 않는 게시물입니다.</p>
-					<p>잠시 후 글 목록 페이지로 이동합니다.</p>
+					<p>잠시 후 글 목록 페이지로 이동합니다... <span>3</span></p>
 				</div>
 			</div>
 		</section>
@@ -31,4 +31,15 @@
 		</footer>
 	</div>
 </body>
+<script>
+	setTimeout(()=>{
+		location.href="/board/board01";
+	}, 3000)
+	
+	let time = 2;
+	setInterval(()=>{
+		const $time = document.querySelector('#errorNotice>p:last-child>span');
+		$time.textContent = time--;
+	}, 1000)
+</script>
 </html>

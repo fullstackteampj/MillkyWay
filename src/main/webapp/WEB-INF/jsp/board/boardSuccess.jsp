@@ -6,7 +6,6 @@
 	String event = request.getParameter("event");
 	String category = request.getParameter("category");
 	String boardid = request.getParameter("num");
- // "board01?category="+category
 %>
 <script>
 	if('<%=event%>' == 'delPost') {
@@ -16,7 +15,7 @@
 	}
 	if('<%=event%>' == 'editPost') {
 		alert('글을 성공적으로 수정하였습니다.');
-		let url = ("<%=category%>" == "null") ? "board01" : ("board01?category=<%=category%>");
+		let url = ("<%=category%>" == "null") ? "board01" : ("board02?category=<%=category%>&num=<%=boardid%>");
 		location.href = url;
 	}
 </script>
