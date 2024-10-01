@@ -157,6 +157,12 @@
         return;
       }
       
+      // 글 작성자와 로그인유저 id가 다를 시 권한없음
+      if(!<%=identify%>) {
+    	alert("권한이 없습니다.");
+		location.href = "board02?num=" + <%=num%>;
+      }
+      
       $frm.submit();
       
     }

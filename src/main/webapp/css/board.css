@@ -10,12 +10,18 @@
   font-weight: 700;
   font-style: normal;
 }
+
 * {
   font-family: "Pretendard-Regular";
 }
 
 h1, h2 {
   letter-spacing: -2px;
+}
+
+header, header h1, h2 {
+	font-family: initial;
+	letter-spacing: 0;
 }
 
 #wrap {
@@ -77,6 +83,20 @@ header > .headTop > .frame > .topGnb > li > a {
   font-weight: 500;
   font-size: 16px;
 }
+header > .headTop > .frame > .topGnb > li > .underNav {
+  display: none;
+  position: absolute;
+  top: 41px;
+  left: calc((100% - 1200px) / 2);
+  z-index: 300;
+  width: 1200px;
+  height: auto;
+  border: 1px solid #aaa;
+  box-sizing: border-box;
+}
+header > .headTop > .frame > .topGnb > li:hover > .underNav {
+  display: block;
+}
 header > .headTop > .frame .userBar {
   display: flex;
   justify-content: space-around;
@@ -96,6 +116,7 @@ header > .headTop > .frame .userBar > li > a {
   color: #fff;
   font-weight: 500;
   font-size: 14px;
+  text-align: center;
 }
 header > .headTop > .frame .userBar > li > a > .arrow {
   position: relative;
@@ -107,22 +128,29 @@ header > .headTop > .frame .userBar > li > a > .arrow {
 header > .headTop > .frame .userBar > li > .myPageList {
   display: none;
 }
+header > .headTop > .frame .userBar > li > .myPageList > li {
+  line-height: 25px;
+}
+header > .headTop > .frame .userBar > li > .myPageList > li > a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
+  font-weight: 600;
+}
 header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
 header > .headTop > .frame .userBar > li > .myPageList:hover {
   display: block;
   position: absolute;
   z-index: 100;
-  top: 40px;
+  top: 30px;
   left: -10px;
-  width: 100px;
+  width: 120px;
   padding: 0 10px;
   background-color: #fff;
   box-shadow: 0 0 7px 0 #666;
   box-sizing: border-box;
-}
-header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList > li,
-header > .headTop > .frame .userBar > li > .myPageList:hover > li {
-  line-height: 25px;
 }
 header > .headMiddle {
   display: flex;
@@ -153,6 +181,9 @@ header > .headMiddle > .searchFrame {
   border-radius: 20px;
   box-sizing: border-box;
 }
+header > .headMiddle > .searchFrame.searched {
+  border-radius: 20px 20px 0 0;
+}
 header > .headMiddle > .searchFrame > p.searchId {
   width: 80px;
   height: 40px;
@@ -162,14 +193,17 @@ header > .headMiddle > .searchFrame > p.searchId {
   text-align: center;
   cursor: pointer;
 }
-header > .headMiddle > .searchFrame > input {
+header > .headMiddle > .searchFrame > form {
+  flex: 1 1 auto;
+}
+header > .headMiddle > .searchFrame > form > input {
   border: none;
   outline: none;
-  flex: 1 1 auto;
+  width: 100%;
   height: 30px;
 }
 header > .headMiddle > .searchFrame > span {
-  display: block;
+  display: none;
   width: 80px;
   height: 40px;
   color: #fff;
@@ -178,8 +212,64 @@ header > .headMiddle > .searchFrame > span {
   line-height: 40px;
   text-align: center;
   background-color: #33afe9;
+  cursor: pointer;
 }
-header > .headMiddle > .searchList {
+header > .headMiddle > .searchFrame > span.visible {
+  display: block;
+}
+header > .headMiddle > .searchedList {
+  position: absolute;
+  top: 60px;
+  left: 350px;
+  width: 500px;
+  height: auto;
+}
+#wrap > header > .headMiddle > .searchedList > li {
+  background-color: #fff;
+  border: 3px solid #33afe9;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li:last-child {
+  border-radius: 0 0 20px 20px;
+}
+#wrap > header > .headMiddle > .searchedList > li > p {
+  width: 100%;
+  height: 30px;
+  font-size: 16px;
+  line-height: 30px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > img {
+  height: 80px;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .title {
+  width: 30%;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 25px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .author {
+  width: 30%;
+  font-weight: 400;
+  font-size: 16px;
+  text-align: center;
+}
+#wrap > header > .headMiddle > .searchedList > li > a > .genre {
+  width: 10%;
+  color: #666;
+}
+#wrap > header > .headMiddle > .searchList {
   display: none;
 }
 header > .headMiddle:has(p.searchId:hover) > .searchList,
@@ -345,15 +435,18 @@ section > #post > #list > a .content {
   font-size: 16px;
   box-sizing: border-box;
 }
-section > #post > #list > a .content > .title {
+section > #post > #list > a .content > .contentHead {
+  display: flex;
   padding: 5px 0;
+  margin-bottom: 3px;
+}
+section > #post > #list > a .content > .contentHead > .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  margin-bottom: 3px;
 }
-section > #post > #list > a .content > .title > span.commentCount {
-  margin-left: 3px;
+section > #post > #list > a .content > .contentHead > span.commentCount {
+  margin-left: 5px;
   color: #1a6080;
   font-size: 14px;
 }
@@ -815,10 +908,10 @@ section > #postBox > #postMng > .readBtn:last-child {
   display: flex;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
-  margin-right: 12px;
   color: #aaa;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
+  margin-left: 12px;
   font-size: 0;
 }
 #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
@@ -930,9 +1023,15 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #loginNotice {
 	margin: 30px 0;
-	padding: 30px 0;
+	padding: 20px 0;
 	font-size: 14px;
 	text-align: center;
+}
+#loginNotice > p {
+	margin-bottom: 20px;
+}
+#loginNotice > a {
+	text-decoration: underline;
 }
 #comPagination {
 	display: flex;
@@ -981,16 +1080,13 @@ section > #btns > a:first-child {
 section > #btns > a:last-child {
   margin: 0;
 }
-section > #postBox > #deleteArea {
+section > #postBox > #deleteArea,
+section > #postBox > #errorNotice {
 	display: flex;
 	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
 	margin: 70px 0;
-}
-section > #postBox > #deleteArea > h3 {
-	font-size: 30px;
-	font-family: "Pretendard-Bold";
 }
 section > #postBox > #deleteArea > p {
 	font-size: 14px;
@@ -1037,6 +1133,13 @@ section > #btns > button:last-child {
 }
 section > #btns > button:last-child:hover {
 	background-color: rgb(205, 92, 92);
+}
+section > #postBox > #errorNotice > p {
+	font-size: 14px;
+	margin-bottom: 30px;
+}
+section > #postBox > #errorNotice > p:last-child {
+	margin-bottom: 0;
 }
 footer {
   width: 100%;

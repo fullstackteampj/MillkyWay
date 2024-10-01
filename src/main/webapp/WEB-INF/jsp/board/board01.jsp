@@ -212,19 +212,18 @@
 			<a href="board02?category=<%=category%>&num=<%=boardid%>">
 	            <span class="kind"><%=kind%> / <%=genre%></span>
 	            <div class="content">
-	            	<p class="title">
+	            	<p class="contentHead">
 	              <% // 인기글이면 제목에 스타일 적용 
 	            	 if(best.equals("Y")) {%>
-	            	 <span class="overBestLike">
+	            	 <span class="title overBestLike">
             	  <% } else { %>
-            		  <span>
+            		  <span class="title">
             	  <% } %>
 	                <%=title%></span>
 	                <% // 댓글이 1개 이상이면 댓글 수 출력
 	                  if(commentCount > 0) { %>
 	                <span class="commentCount">[<%=commentCount%>]</span>
 	                <%}%>
-	                
 	              </p>
 	              <div class="postInfo">
 	                <p class="postuser"><%=nickname%></p>

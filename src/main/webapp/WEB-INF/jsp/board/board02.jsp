@@ -36,7 +36,7 @@
 	
 	// 댓글 페이징
 	int totalRecord=0; //전체레코드수
-	int numPerPage=3; // 페이지당 레코드 수 
+	int numPerPage=10; // 페이지당 레코드 수 
 	int pagePerBlock=5; //블럭당 페이지수 
 	int totalPage=0; //전체 페이지 수
 	int totalBlock=0;  //전체 블럭수
@@ -46,11 +46,6 @@
 	int end=numPerPage; //시작번호로 부터 가져올 select 갯수
 	int listSize=0; // DB로부터 추출해 list에 저장한 댓글 수
 	
-	
-	// nowPage를 전송받을 때마다(페이지 클릭, 블럭넘김) 값을 받아 해당페이지 전역에 활용할 수 있도록 nowPage변수 초기화
-	if(request.getParameter("nowPage") != null) {
-		nowPage = Integer.parseInt(request.getParameter("nowPage"));
-	}
 	
 	// 페이지이동 시 게시글을 DB에서 추출할 때 기준이 되는 값을 초기화
 	start = (nowPage-1)*numPerPage;
@@ -64,7 +59,13 @@
 	totalPage = (int)Math.ceil((double)totalRecord / numPerPage);  //전체페이지수
 	nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock); //현재블럭 계산
 	totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);  //전체블럭계산
-	
+
+	// 페이지네이션 변수 초기화
+	// 현재 블럭에서의 시작번호 (현재블럭과 블럭당페이지수로 계산)
+	int pageStart = (nowBlock-1)*pagePerBlock+1;
+    // 현재 블럭에서의 끝번호 ()
+	int pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+    
 	String category="";
 
 	// 카테고리를 고르면 변수 초기화
@@ -184,7 +185,7 @@
           if(listSize >= numPerPage) {forCount = numPerPage;}
           else {forCount = listSize;}
           %>
-		
+  		
       	<div id="commentCont"> 
 		<%// 추출된 댓글이 있을경우 >
           if(!clist.isEmpty()) { %>
@@ -224,20 +225,18 @@
 	            <div class="commentAdd">
 	              <span class="commentDate"><%=comRegdate%></span>
 	              
+              	<% // 로그인 시에만 답글버튼
+				if(loginId != null) { %>
 	              <div class="author-addOns">
-	              	<% // 로그인 시에만 답글버튼
-					if(loginId != null) { %>
-						<span onclick="toggleReply(this);"><i class="fa-solid fa-reply" title="답글"></i></span>
-				 <% } %>
-	                <% // 내댓글일 때만 수정/삭제버튼
-					if(loginId != null) { 
-						if(comUserid == loginId) {%>
+					<span onclick="toggleReply(this);"><i class="fa-solid fa-reply" title="답글"></i></span>
+				 
+               	<% // 내댓글일 때만 수정/삭제버튼
+					if(comUserid == loginId) {%>
 	                <span onclick="toggleEdit(this);"><i class="fa-solid fa-pencil" title="댓글수정"></i></span>
-	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=comPos%>, <%=num%>, <%=start%>, <%=end%>, <%=comUserid%>);"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
-	                <%	}
-					} %>
-	                
+	                <span onclick="commentDelete(<%=commentId%>, <%=loginId%>, <%=comPos%>, <%=num%>, <%=end%>, <%=comUserid%>, <%=nowBlock%>, <%=nowPage%>, <%=pagePerBlock%>, <%=totalPage%>)"><i class="fa-solid fa-trash-can" title="댓글삭제"></i></span>
+	            <%	} %>
 	              </div> <!-- .author-addOns -->
+         	<% } //if(loginId != null) %>
 	            </div> <!-- commentAdd -->
 	            
 	          </div> <!-- commentInfo -->
@@ -254,7 +253,7 @@
 		            <span>수정</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="댓글을 작성해보세요!"><%=comContent%></textarea>
-		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=start%>, <%=end%>, <%=comUserid%>)">수정</button>
+		          <button type="button" onclick="editSubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=end%>, <%=comUserid%>, <%=nowBlock%>, <%=nowPage%>, <%=pagePerBlock%>, <%=totalPage%>)">수정</button>
 		        </div>
 			</form>
 	        
@@ -265,7 +264,7 @@
 		            <span>답글</span><%=loginNickname%>
 		          </p>
 		          <textarea name="inputComment" placeholder="답글을 작성해보세요!"></textarea>
-		          <button type="button" onclick="replySubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>, <%=start%>, <%=end%>)">작성</button>
+		          <button type="button" onclick="replySubmit(<%=commentId%>, <%=loginId%>, '<%=loginNickname%>', <%=num%>, '<%=request.getRemoteAddr()%>', <%=commentId%>, <%=comDepth%>, <%=comPos%>, <%=end%>, <%=nowBlock%>, <%=nowPage%>, <%=pagePerBlock%>, <%=totalPage%>)">작성</button>
 		        </div>
 			</form>
 			
@@ -304,29 +303,25 @@
 		<%// 게시글이 존재한다면 (totalPage 검사) 페이지네이션 생성(현재블럭의 첫페이지~끝페이지)
         if(totalPage != 0) { %>
 	        <ul id="comPagination">
-	        <% 
-	    	// 페이지네이션 생성
-	    	// 현재 블럭에서의 시작번호 (현재블럭과 블럭당페이지수로 계산)
-	    	int pageStart = (nowBlock-1)*pagePerBlock+1;
-	        // 현재 블럭에서의 끝번호 ()
-	    	int pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	    	
+	        <%   	
 	        // 현재 페이지블럭이 첫블럭이 아니라면 '이전블럭으로', '처음페이지로' 버튼 생성
 	        if(nowBlock > 1) { %>
 		        <li class="pageBtn btnPrev" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></li>
-		        <li class="pageBtn btnPrev" title="이전 페이지로"><i class="fa-solid fa-angle-left"></i></li>
+		        <li class="pageBtn btnPrev" title="이전 페이지로" onclick="goPrevBlock(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-left"></i></li>
 	      <%} //if(nowBlock > 1)
         	
         	
         		for(int nPage=pageStart; nPage<pageEnd; nPage++) { %>
         			<!-- 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on") -->
-        			<li onclick="goComPage(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"><%=nPage%></li>
+        			<li onclick="goComPage(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=nPage%>, <%=end%>)"
+        			<% if(nowPage == nPage) { %>class="on" <% } %>
+        			><%=nPage%></li>
        		  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)
         	
         	// 현재 페이지블럭이 마지막블럭이 아니라면 '다음블럭으로', '마지막페이지로' 버튼생성
         	if(totalBlock > nowBlock) { %>
 				<li class="pageBtn btnNext" title="다음 페이지로" onclick="goNextBlock(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-right"></i></li>
-          		<li class="pageBtn btnNext" title="마지막 페이지로"><i class="fa-solid fa-angles-right"></i></li>
+          		<li class="pageBtn btnNext" title="마지막 페이지로" onclick="goLastPage(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angles-right"></i></li>
           <% } //if(totalBlock > nowBlock) %>
         	</ul> <!--#pagination-->
       <% } // if(totalPage != 0)%>
@@ -349,7 +344,10 @@
 			        </div>
 				</form>
 		<% } else { %>
-			<p id="loginNotice">로그인 이후에 댓글을 작성할 수 있습니다.</p>
+			<div id="loginNotice">
+				<p>로그인 이후에 댓글을 작성할 수 있습니다.</p>
+				<a href="/login/login01">로그인</a>
+			</div>
 		<% } %>
 	      
 	    </div> <!--commentBox-->
@@ -357,7 +355,6 @@
 	
 	    <div id="btns"> <!--임시-->
 	      <a href="./board01">목록</a>
-	      
 	      <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
           	if(loginId != null) { %>

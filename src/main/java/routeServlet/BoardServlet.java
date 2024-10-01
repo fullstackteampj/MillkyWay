@@ -160,6 +160,10 @@ public class BoardServlet extends HttpServlet {
             int pos = jsonObj.get("pos").getAsInt();
             int start = jsonObj.get("start").getAsInt();
             int end = jsonObj.get("end").getAsInt();
+            int pageStart = jsonObj.get("pageStart").getAsInt();
+            int pageEnd = jsonObj.get("pageEnd").getAsInt();
+            int nowBlock = jsonObj.get("nowBlock").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
             
             //필요한 데이터 추가
             BoardMgr bMgr = new BoardMgr();
@@ -176,6 +180,10 @@ public class BoardServlet extends HttpServlet {
     		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
     		
     		// request 객체로 반환
+            request.setAttribute("nowPage", nowPage);
+            request.setAttribute("nowBlock", nowBlock);
+            request.setAttribute("pageStart", pageStart);
+            request.setAttribute("pageEnd", pageEnd);
     		request.setAttribute("postuser", postuser);
     		request.setAttribute("commentCount", commentCount);
     		request.setAttribute("clist", clist);
@@ -204,11 +212,14 @@ public class BoardServlet extends HttpServlet {
             String ip = jsonObj.get("userip").getAsString();
             String content = jsonObj.get("commentMsg").getAsString();
             String updatedate = jsonObj.get("updatedate").getAsString();
-            
 
             int boardid = jsonObj.get("boardid").getAsInt();
             int start = jsonObj.get("start").getAsInt();
             int end = jsonObj.get("end").getAsInt();
+            int pageStart = jsonObj.get("pageStart").getAsInt();
+            int pageEnd = jsonObj.get("pageEnd").getAsInt();
+            int nowBlock = jsonObj.get("nowBlock").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
             
             //필요한 데이터 추가
             BoardMgr bMgr = new BoardMgr();
@@ -229,6 +240,10 @@ public class BoardServlet extends HttpServlet {
     		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
     		
     		// request 객체로 반환
+            request.setAttribute("nowPage", nowPage);
+            request.setAttribute("nowBlock", nowBlock);
+            request.setAttribute("pageStart", pageStart);
+            request.setAttribute("pageEnd", pageEnd);
     		request.setAttribute("postuser", postuser);
     		request.setAttribute("commentCount", commentCount);
     		request.setAttribute("clist", clist);
@@ -259,6 +274,10 @@ public class BoardServlet extends HttpServlet {
             int boardid = jsonObj.get("boardid").getAsInt();
             int start = jsonObj.get("start").getAsInt();
             int end = jsonObj.get("end").getAsInt();
+            int pageStart = jsonObj.get("pageStart").getAsInt();
+            int pageEnd = jsonObj.get("pageEnd").getAsInt();
+            int nowBlock = jsonObj.get("nowBlock").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
             
             //필요한 데이터 추가
             BoardMgr bMgr = new BoardMgr();
@@ -280,6 +299,10 @@ public class BoardServlet extends HttpServlet {
     		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
     		
     		// request 객체로 반환
+            request.setAttribute("nowPage", nowPage);
+            request.setAttribute("nowBlock", nowBlock);
+            request.setAttribute("pageStart", pageStart);
+            request.setAttribute("pageEnd", pageEnd);
     		request.setAttribute("postuser", postuser);
     		request.setAttribute("commentCount", commentCount);
     		request.setAttribute("clist", clist);
@@ -307,6 +330,8 @@ public class BoardServlet extends HttpServlet {
             int end = jsonObj.get("end").getAsInt();
             int pageStart = jsonObj.get("pageStart").getAsInt();
             int pageEnd = jsonObj.get("pageEnd").getAsInt();
+            int nowBlock = jsonObj.get("nowBlock").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
 
     		// 댓글창에 필요한 데이터 담기
             BoardMgr bMgr = new BoardMgr();
@@ -317,6 +342,8 @@ public class BoardServlet extends HttpServlet {
             int postuser = post.getUserid();
     		
     		// request 객체로 반환
+            request.setAttribute("nowPage", nowPage);
+            request.setAttribute("nowBlock", nowBlock);
             request.setAttribute("pageStart", pageStart);
             request.setAttribute("pageEnd", pageEnd);
     		request.setAttribute("postuser", postuser);
@@ -331,7 +358,7 @@ public class BoardServlet extends HttpServlet {
     	}
     	
     	// 댓글페이징 다음블럭으로 요청
-    	if("/commentNextBlock".equals(path)) {
+    	if("/commentGoBlock".equals(path)) {
     		StringBuilder sb = new StringBuilder();
     		String line;
             while ((line = request.getReader().readLine()) != null) {
@@ -346,6 +373,8 @@ public class BoardServlet extends HttpServlet {
             int end = jsonObj.get("end").getAsInt();
             int pageStart = jsonObj.get("pageStart").getAsInt();
             int pageEnd = jsonObj.get("pageEnd").getAsInt();
+            int nowBlock = jsonObj.get("nowBlock").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
 
     		// 댓글창에 필요한 데이터 담기
             BoardMgr bMgr = new BoardMgr();
@@ -356,6 +385,8 @@ public class BoardServlet extends HttpServlet {
             int postuser = post.getUserid();
     		
     		// request 객체로 반환
+            request.setAttribute("nowPage", nowPage);
+            request.setAttribute("nowBlock", nowBlock);
             request.setAttribute("pageStart", pageStart);
             request.setAttribute("pageEnd", pageEnd);
     		request.setAttribute("postuser", postuser);
@@ -377,6 +408,7 @@ public class BoardServlet extends HttpServlet {
 
         // /procs 경로를 처리하기 위한 JSP 경로 생성
         String jspPath = "/WEB-INF/jsp/board" + relativePath.substring("/board".length()) + ".jsp"; // /WEB-INF/jsp/board/board01.jsp
+        String errorPath = "/WEB-INF/jsp/board/boardError404.jsp";
 
         try {
             // JSP로 포워딩
@@ -384,7 +416,9 @@ public class BoardServlet extends HttpServlet {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
             // JSP 파일을 찾을 수 없는 경우 에러 처리
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "JSP 파일을 찾을 수 없습니다.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(errorPath);
+            dispatcher.forward(request, response);
+            //response.sendError(HttpServletResponse.SC_NOT_FOUND, "JSP 파일을 찾을 수 없습니다.");
         }
     }
 }

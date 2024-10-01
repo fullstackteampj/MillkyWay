@@ -14,21 +14,22 @@ function goPageFn(page) {
 
 // 시각데이터 가공('10'미만일시 '06'와 같은 형태)
 function zeroDate(thing) {
+	const now = new Date();
 	let obj;
 	if(thing == 'month') {
-		obj = new Date().getMonth()+1;
+		obj = now.getMonth()+1;
 	}
 	if(thing == 'date') {
-		obj = new Date().getDate();
+		obj = now.getDate();
 	}
 	if(thing == 'hours') {
-		obj = new Date().getHours();
+		obj = now.getHours();
 	}
 	if(thing == 'minutes') {
-		obj = new Date().getMinutes();
+		obj = now.getMinutes();
 	}
 	if(thing == 'seconds') {
-		obj = new Date().getSeconds();
+		obj = now.getSeconds();
 	}
 	return obj < 10 ? '0'+obj : obj;
 }
@@ -89,7 +90,13 @@ async function comSubmit(userid, nickname, boardid, userip, start, end) {
 }
 
 // 답글 작성
-async function replySubmit(commentid, userid, nickname, boardid, userip, parentid, depth, pos, start, end) {
+async function replySubmit(commentid, userid, nickname, boardid, userip, parentid, depth, pos, end, nowBlock, nowPage, pagePerBlock, totalPage) {
+
+	// 페이지 유지
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
+	const start = (nowPage-1)*end;
+
 	// 유효성 검사
 	const comment = document.querySelector('.comid-'+commentid);
 	const frm = comment.nextElementSibling.nextElementSibling;
@@ -117,7 +124,11 @@ async function replySubmit(commentid, userid, nickname, boardid, userip, parenti
 		depth,
 		pos,
 		start,
-		end
+		end,
+		pageStart,
+		pageEnd,
+		nowBlock,
+		nowPage
 	}
 
 	// 답글 비동기 요청
@@ -148,7 +159,12 @@ async function replySubmit(commentid, userid, nickname, boardid, userip, parenti
 }
 
 // 댓글 수정
-async function editSubmit(commentid, userid, nickname, boardid, userip, start, end, comUserid) {
+async function editSubmit(commentid, userid, nickname, boardid, userip, end, comUserid, nowBlock, nowPage, pagePerBlock, totalPage) {
+	
+	// 페이지 유지
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
+	const start = (nowPage-1)*end;
 	
 	// 유효성 검사
 	const comment = document.querySelector('.comid-'+commentid);
@@ -181,7 +197,11 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 		commentMsg,
 		updatedate,
 		start,
-		end
+		end,
+		pageStart,
+		pageEnd,
+		nowBlock,
+		nowPage
 	}
 
 	// 수정 비동기 요청
@@ -204,7 +224,6 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 		
 		// contentbox에 요소채우기
 		$commentBox.innerHTML = data;
-		// console.log(data);
 	})
 	.catch(error => {
 		console.error(error);
@@ -212,7 +231,13 @@ async function editSubmit(commentid, userid, nickname, boardid, userip, start, e
 }
 
 // 댓글삭제
-async function commentDelete(commentid, userid, pos, boardid, start, end, comUserid) {
+async function commentDelete(commentid, userid, pos, boardid, end, comUserid, nowBlock, nowPage, pagePerBlock, totalPage) {
+
+	// 페이지 유지
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
+	const start = (nowPage-1)*end;
+	
 	const confirmtrue = confirm("삭제된 댓글은 복구할 수 없습니다.\n댓글을 삭제 하시겠습니까?");
 		if(confirmtrue) {
 			
@@ -233,7 +258,11 @@ async function commentDelete(commentid, userid, pos, boardid, start, end, comUse
 				boardid,
 				deldate,
 				start,
-				end
+				end,
+				pageStart,
+				pageEnd,
+				nowBlock,
+				nowPage
 			}
 			
 			// 삭제 비동기 요청
@@ -256,7 +285,6 @@ async function commentDelete(commentid, userid, pos, boardid, start, end, comUse
 				
 				// contentbox에 요소채우기
 				$commentBox.innerHTML = data;
-				// console.log(data);
 			})
 			.catch(error => {
 				console.error(error);
@@ -352,17 +380,14 @@ comPages.forEach((comPage, idx)=>{
 */
 
 // 댓글 페이징 비동기요청
-async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, page, end) {
+async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, nowPage, end) {
 	
 	//console.log(element);
 	element.classList.add('on');
 	
-	let pageStart = (nowBlock-1)*pagePerBlock+1; // 6
-	let pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	let start = (pageStart-1)*end;
-	console.log("pageStart = "+pageStart);
-	console.log("pageEnd = "+pageEnd);
-	console.log("start = "+start);
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
+	const start = (nowPage-1)*end;
 	
 
 	// 보낼 데이터를 객체로 묶음
@@ -371,7 +396,9 @@ async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, pa
 		start,
 		end,
 		pageStart,
-		pageEnd
+		pageEnd,
+		nowBlock,
+		nowPage
 	}
 	
 	await fetch('commentPaging', {
@@ -403,12 +430,10 @@ async function goComPage(element, boardid, nowBlock, pagePerBlock, totalPage, pa
 // 댓글 페이징 다음 블럭으로 요청
 async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 	nowBlock = nowBlock+1;
-	let pageStart = (nowBlock-1)*pagePerBlock+1; // 6
-	let pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	let start = (pageStart-1)*end;
-	console.log('pageStart = '+pageStart);
-	console.log('pageEnd = '+pageEnd);
-	console.log('start = '+start);
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	const nowPage = pageStart;
+	const start = (nowPage-1)*end;
 
 	// 보낼 데이터를 객체로 묶음
 	const commentData = {
@@ -416,10 +441,12 @@ async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 		start,
 		end,
 		pageStart,
-		pageEnd
+		pageEnd,
+		nowBlock,
+		nowPage
 	}
 	
-	await fetch('commentNextBlock', {
+	await fetch('commentGoBlock', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -439,6 +466,139 @@ async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
 		// contentbox에 요소채우기
 		$commentBox.innerHTML = data;
 		// console.log(data);
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}
+
+// 댓글 페이징 이전 블럭으로 요청
+async function goPrevBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
+	nowBlock = nowBlock-1;
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	const nowPage = pageEnd-1;
+	const start = (nowPage-1)*end;
+	
+	// 보낼 데이터를 객체로 묶음
+	const commentData = {
+		boardid,
+		start,
+		end,
+		pageStart,
+		pageEnd,
+		nowBlock,
+		nowPage
+	}
+	
+	await fetch('commentGoBlock', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+	
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}
+
+// 댓글 페이징 마지막페이지로 요청
+async function goLastPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
+	const totalBlock = Math.ceil(totalPage / pagePerBlock);
+	nowBlock = totalBlock;
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	const nowPage = totalPage;
+	const start = (nowPage-1)*end;
+	
+	// 보낼 데이터를 객체로 묶음
+	const commentData = {
+		boardid,
+		start,
+		end,
+		pageStart,
+		pageEnd,
+		nowBlock,
+		nowPage
+	}
+	
+	await fetch('commentGoBlock', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+	
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
+	})
+	.catch(error => {
+		console.error(error);
+	})
+}
+
+// 댓글 페이징 첫번째페이지로 요청
+async function goFirstPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
+	nowBlock = 1;
+	const pageStart = (nowBlock-1)*pagePerBlock+1;
+	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+	const nowPage = 1;
+	const start = (nowPage-1)*end;
+	
+	// 보낼 데이터를 객체로 묶음
+	const commentData = {
+		boardid,
+		start,
+		end,
+		pageStart,
+		pageEnd,
+		nowBlock,
+		nowPage
+	}
+	
+	await fetch('commentGoBlock', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+	
+	.then(response => response.text())
+	.then(data => {
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
 	})
 	.catch(error => {
 		console.error(error);
