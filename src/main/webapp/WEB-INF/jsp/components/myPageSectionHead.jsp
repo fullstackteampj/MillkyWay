@@ -11,6 +11,7 @@
 		userId = "3";
 	}
 	MemberBean mbean = comMgr.getMypageMember(Integer.parseInt(userId));
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,15 @@
 
           <div class="myInfo">
 	          <%
-	       		if(userId!=null){
+	       		if(userId!=null&&mbean.getStatus().equals("sns")){
+					%>
+					<p class="name">이름 : <%= mbean.getName() %></p>
+		            <p class="account">아이디 : 네이버로그인 회원입니다</p>
+		            <p class="gender">성별 : <%= mbean.getGender() %></p>
+		            <p class="email">email : <%= mbean.getEmail() %></p>
+		            <p class="address">기본배송지 : <%= mbean.getAddress() %></p>
+					<%
+	       		}else{
 					%>
 					<p class="name">이름 : <%= mbean.getName() %></p>
 		            <p class="account">아이디 : <%= mbean.getAccount() %></p>

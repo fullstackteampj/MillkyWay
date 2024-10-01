@@ -31,7 +31,7 @@
 		boolean checkResult = oMgr.checkCart(bookid, userid);
 		if(checkResult){
 			//carttbl에 이미 등록된 도서인 경우 레코드에 수량+1
-			oMgr.plusQCart(bookid); 
+			oMgr.plusQCart(bookid, userid);
 			%>
 			<script>
 			alert('이미 장바구니에 들어있던 도서의 수량을 +1 했습니다.');
@@ -63,7 +63,7 @@
 		
 		
 	}else{//관심목록 추가시
-		boolean checkResult = oMgr.checkWish(bookid);
+		boolean checkResult = oMgr.checkWish(bookid, userid);
 		if(checkResult){
 			//wishtbl에 이미 등록된 도서인 경우
 			%>
