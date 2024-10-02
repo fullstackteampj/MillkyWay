@@ -42,11 +42,11 @@ String userId = (String) session.getAttribute("idKey");
           <%
           if(saveId.equals("")){
         	  %>
-        	  <input type="text" name="id" id="id">
+        	  <input type="text" name="id" id="id" placeholder = "abc@naver.com">
         	  <%
           }else{
         	  %>
-        	  <input type="text" name="id" id="id" value="<%=saveId%>">
+        	  <input type="text" name="id" id="id" placeholder = "이메일형식" value="<%=saveId%>">
         	  <%
           }
           %>
@@ -110,11 +110,6 @@ String userId = (String) session.getAttribute("idKey");
       if($frm.id.value == null || $frm.id.value == "") {
         alert("아이디를 입력해주세요.");
         $frm.id.focus();
-        return;
-      }
-      if($frm.pwd.value == null || $frm.pwd.value == "") {
-        alert("비밀번호를 입력해주세요.");
-        $frm.pwd.focus();
         return;
       }
       if($frm.pwd.value == null || $frm.pwd.value == "") {

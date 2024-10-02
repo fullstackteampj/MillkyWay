@@ -12,6 +12,15 @@
 	
 	MemberBean mBean = lMgr.getLoginInfo(account);
 	
+	if(mBean.getUserid()==0) {
+		%>
+		<script>
+			alert("일치하는 아이디가 없습니다.");
+			location.href = "/login/login01";
+		</script>
+		<%
+	}
+	
 	int userId = mBean.getUserid();
 	String userIdS = Integer.toString(mBean.getUserid());
 	

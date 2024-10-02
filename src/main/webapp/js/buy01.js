@@ -222,8 +222,7 @@ const now = new Date();
 const randomNum = Math.floor(Math.random() * 101);//0-100 난수 
 
 const $totPrice = document.querySelector('.totalPrice');
-const mName = '<%=name%>';
-console.log(mName);//문제다 문제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 function reqKakaoPay(){
   IMP.init("imp11026118"); //mykey
   IMP.request_pay(
