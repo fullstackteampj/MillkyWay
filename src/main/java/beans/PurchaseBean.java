@@ -7,7 +7,7 @@ public class PurchaseBean {
 	private String status;
 	private String purchase_date ;
 	private int quantity;
-	private int totalCount;
+	private String pay_method;
 	
 	public int getPurchaseid() {
 		return purchaseid;
@@ -45,12 +45,12 @@ public class PurchaseBean {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public int getTotalCount() {
-		return totalCount;
+	public String getPay_method() {
+		return pay_method;
 	}
-	public void setTotalCount(int totalCount) {
-		this.totalCount = totalCount;
+	public void setPay_method(String pay_method) {
+		this.pay_method = pay_method;
 	}
-	
+
 	
 }

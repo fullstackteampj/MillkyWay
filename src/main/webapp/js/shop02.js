@@ -31,7 +31,6 @@ $scrollOneReview.addEventListener('click', (evt)=>{
 //수량 선택
 const $orderNum = document.querySelector('.shop-product .order-qty>.updown-qty>input');
 const $orderUp = document.querySelector('.shop-product .btn-updown>button:first-child');
-
 const $orderDown = $orderUp.nextElementSibling;
 const $preTotal = document.querySelector('.shop-product .pretotal');
 const $delivery = $preTotal.nextElementSibling;
@@ -42,7 +41,7 @@ let orderNum = 1;
 
 const calcFn = () => {
   let total = parseInt($price.textContent)*orderNum;
-  $preTotal.textContent = total +'원';
+  $preTotal.textContent = '도서가격 ' + total +'원';
   if(total<50000) {
     $freeDelivery.classList.remove('deleteline');
     $delivery.textContent = ' + 배송비 2000원';

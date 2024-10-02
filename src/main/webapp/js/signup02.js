@@ -105,4 +105,37 @@ function zipSearch() {
           document.getElementById("detailAddress").focus();
       }
   }).open();
-}
+}//zipSearch()
+
+//비밀번호 보안 체크
+const $pwdSecutity = $pwd.nextElementSibling;
+
+
+$pwd.addEventListener('input', ()=>{
+  
+  const pwd = $pwd.value; //입력값 변경할때마다 값 받아야함
+  //.test(): 문자열을 전달하면 문자열이 정규 표현식의 패턴과 일치하는지 알려주는지 불리언을 반환하는 메서드
+  const hasLetter = /[a-zA-Z]/.test(pwd); //문자 체크
+  const hasNumber = /[0-9]/.test(pwd); //숫자 체크
+  const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(pwd); // 특수문자 체크
+  let securityLevel = '';
+
+  $pwd.parentElement.classList.add('sec');
+
+  if(pwd === null || pwd === ''){
+    $pwd.parentElement.classList.remove('sec');
+  }else{
+    if(pwd.length < 8){
+      securityLevel = '비밀번호를 최소한 8자리 이상 입력해주세요.';
+    }else if(hasLetter && hasNumber && hasSpecial){
+      securityLevel = '비밀번호 보안 : 높음';
+    }else if(hasLetter && hasNumber || hasNumber && hasSpecial || hasLetter && hasSpecial){
+      securityLevel = '비밀번호 보안 : 보통';
+    }else{
+      securityLevel = '비밀번호 보안 : 낮음';
+    }
+  }
+
+  $pwdSecutity.textContent = securityLevel;
+  
+});
