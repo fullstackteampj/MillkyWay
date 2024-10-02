@@ -9,11 +9,12 @@
 
 	//id 기본으로 0  설정
 	int userid = 0; 
+	String account = null;
 	String name = null;
 	String phone = null;
 	String zipcode = null;
 	String address = null;
-	String detailAdress = null;
+	String detailAddress = null;
 	int point = 0;
 	String imgUrl = null;
 	String tit = null;
@@ -22,15 +23,16 @@
 	int orderNum = 0;
 	String[] bookids = null;
 	String[] orderNums = null;
-	
-	if(bookids == null && orderNums == null){
+
+	if(request.getParameterValues("bookids") == null && request.getParameterValues("orderNums") == null){
 		//배열 데이터가 없는 경우 단일데이터(바로 구매 버튼 통해서 들어오는 경우)
-		bookid = Integer.parseInt(request.getParameter("bookid"));
-		orderNum = 1;
+		bookid = Integer.parseInt(request.getParameter("bookid")); 
+		orderNum = Integer.parseInt(request.getParameter("orderNum")); 
+		
 	}else{
 		//배열 데이터가 있는 경우 (장바구니를 통해서 들어오는 경우)
-		bookids = request.getParameterValues("bookids");
-		orderNums = request.getParameterValues("orderNums");
+		bookids =  request.getParameterValues("bookids");
+		orderNums =  request.getParameterValues("orderNums");
 	}
 
 	
@@ -51,23 +53,23 @@
 		    // 만약 세션에 직접 Integer로 저장되어 있다면
 		    userid = (Integer) sessionValue; 
 		} 
-
-		
-		//회원 정보 가져오기
-		Vector<MemberBean> mlist = null;
-		mlist = oMgr.getMember(userid);
-		MemberBean mBean = mlist.get(0);
-		
-		name = mBean.getName();
-		phone = mBean.getPhoneNum().substring(0, 11);
-		zipcode = mBean.getZipcode();
-		address = mBean.getAddress();
-		detailAdress = mBean.getDetailAddress();
-		point = mBean.getCurpoint();
 	}
+	
+	//회원 정보 가져오기
+	Vector<MemberBean> mlist = null;
+	mlist = oMgr.getMember(userid);
+	MemberBean mBean = mlist.get(0);
+	
+	account = mBean.getAccount();
+	name = mBean.getName();
+	phone = mBean.getPhoneNum().substring(0, 11);
+	zipcode = mBean.getZipcode();
+	address = mBean.getAddress();
+	detailAddress = mBean.getDetailAddress();
+	point = mBean.getCurpoint();
+	
 %>
 	
-
 <!DOCTYPE html>
 <html>
 
@@ -78,7 +80,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/buy01.css?after" />
     <script defer src="${pageContext.request.contextPath}/js/buy01.js"></script>
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 </head>
 
 <body>
@@ -149,18 +153,25 @@
 		                                <img src="<%=imgUrl%>"
 		                                    alt="<%=tit%>" />
 		                                <h4><%=tit%>(<span class="regularPrice"><%=price%></span>원)</h4>
-		                                <p><span class="eachNum"><%=orderNum%></span>권</p>
+	                                    <div class="updown-qty">
+								            <input type="text" name="eachNum" value="<%=orderNum%>"/>
+								            <div class="btn-updown">
+								              <button type="button">+</button>
+								              <button type="button">-</button>
+								            </div><!--btn-updown-->
+							          	</div><!--updown-qty-->
 		                                <p><span class="price"></span>원</p>
+		                                <input type="hidden" name="bookids" value="<%=bookid%>" />
                             		</li>
                         			<%
                         		}else{//배열데이터
                         			for(int i=0; i<bookids.length; i++){
                         				//책 정보 가져오기
                         				Vector<BookBean> vlist = null;
-                        				vlist = iMgr.getBook(bookid);
-                        				BookBean bean = vlist.get(i);
+                        				vlist = iMgr.getBook(Integer.parseInt(bookids[i]));
+                        				BookBean bean = vlist.get(0);
                         				
-                        				imgUrl = "/image?bookid="+bookid;
+                        				imgUrl = "/image?bookid="+bookids[i];
                         				tit = bean.getTitle();
                         				price = bean.getPrice();
                         				orderNum = Integer.parseInt(orderNums[i]);
@@ -169,10 +180,19 @@
                         					<img src="<%=imgUrl%>"
 		                                    alt="<%=tit%>" />
 			                                <h4><%=tit%>(<span class="regularPrice"><%=price%></span>원)</h4>
-			                                <p><span class="eachNum"><%=orderNum%></span>권</p>
+			                           
+			                                <div class="updown-qty">
+									            <input type="text" name="eachNum" value="<%=orderNums[i]%>"/>
+									            <div class="btn-updown">
+									              <button type="button">+</button>
+									              <button type="button">-</button>
+									            </div><!--btn-updown-->
+								          	</div><!--updown-qty-->
 			                                <p><span class="price"></span>원</p>
                         				</li>
+                        				<input type="hidden" name="bookids" value="<%=bookids[i]%>" />
                         				<%
+                        				
                         			}//for
                         		}//if-else
                         	%>
@@ -181,10 +201,10 @@
                     <li>
                         <h3>결제 수단</h3>
                         <div class="btns-pay">
-                            <button type="button" class="on">신용카드</button>
+                            <button type="button" >신용카드</button>
                             <button type="button">온라인입금</button>
                             <button type="button">휴대폰결제</button>
-                            <button type="button">네이버페이</button>
+                            <button type="button" class="on">네이버페이</button>
                             <button type="button">카카오페이</button>
                             <button type="button">토스페이</button>
                             <button type="button">삼성페이</button>
@@ -201,10 +221,10 @@
                     </li>
                     <li>
                         포인트
-                        <input type="text" name="usePoint">
+                        <input type="text" name="usePoint" />
                         원
                         <button type=button class="usePointBtn">사용</button>
-                        (보유 <span><%=point%></span>p)
+                        (보유 <span class="havePoint"><%=point%></span>p)
                     </li>
                     <li>
                         적립 예정 포인트 <span class="point"></span>p (10%)
@@ -223,13 +243,14 @@
 <script>
 	const frm = document.buyFrm;
 	
+	//주문자와 동일 체크박스
 	frm.checkSame.addEventListener('click', ()=>{
 		if(frm.checkSame.checked){
 			frm.receiveName.value = '<%=name%>';
 			frm.receivePhone.value = '<%=phone%>';
 			frm.zipcode.value = '<%=zipcode%>';
 			frm.address.value = '<%=address%>';
-			frm.detailAddress.value = '<%=detailAdress%>';
+			frm.detailAddress.value = '<%=detailAddress%>';
 		}else{
 			frm.receiveName.value = '';
 			frm.receivePhone.value = '';
@@ -238,6 +259,7 @@
 			frm.detailAddress.value = '';
 		}
 	});
+	
 	
 </script>
 </body>

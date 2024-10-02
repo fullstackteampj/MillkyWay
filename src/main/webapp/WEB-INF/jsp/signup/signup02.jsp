@@ -62,6 +62,7 @@
 	          <li>
 	            <label for="pwd">비밀번호</label>
 	            <input type="password" name="pwd" id="pwd" required />
+	            <span></span>
 	          </li>
 	          
 	          <li>
@@ -84,7 +85,7 @@
 	              <option value="KT2">KT알뜰폰</option>
 	              <option value="LG U+2">LG U+알뜰폰</option>
 	            </select>
-	            <input type="text" name="phoneNum" id="phoneNum" placeholder=" - 없이 숫자만 입력해주세요." required />
+	            <input type="text" name="phoneNum" id="phoneNum" placeholder=" - 없이 숫자 11자리를 입력해주세요." required />
 	          </li>
 	          
 	          <li>
@@ -229,6 +230,7 @@
  	
  	const frm = document.signupFrm;
  	
+ 	//이메일 형식 확인 코드
  	const validText = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
  	
  	//회원가입 submit 이벤트
@@ -295,7 +297,7 @@
 	       //아이디 중복체크 결과가 사용가능일 경우
 	       if(receivedData.id === 'ok'){
 	    		//id 쿠키 생성
-	    		setCookie("id", "ok", 30);
+	    		setCookie("id", "ok", 30);//30분동안 저장
 	       }
 	       //별명 중복체크 결과가 사용가능일 경우
 	       if(receivedData.nickname === 'ok'){

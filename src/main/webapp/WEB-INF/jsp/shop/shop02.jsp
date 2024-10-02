@@ -90,9 +90,9 @@
 	      <img src="<%=imgUrl%>" alt="<%=tit%>">
 	      
 	      <form name="orderFrm" method="post">
-	        <h3>가격 :<span><%=price%></span>원</h3>
+	        <h3>가격 : <span><%=price%></span>원</h3>
 	        <p>
-	          포인트 : &nbsp;
+	          포인트 :
 	          <span class="point"></span>원 적립 (판매가의 10% 적립)
 	        </p>
 	        <p>배송료 : 2000원<span>(5만원 이상 무료배송)</span></p>
@@ -122,16 +122,15 @@
 	              <button type="button">-</button>
 	            </div><!--btn-updown-->
 	          </div><!--updown-qty-->
-	          <p>도서 가격
+	          <p>
 	            <span class="pretotal"></span>
 	            <span></span>
 	            <i class="fa-solid fa-arrow-right"></i>
-	          총 금액
+	          	총 금액
 	            <span class="total-price"></span>
 	          </p>
 	        </div><!--order-qty-->
 	        <input type="hidden" name="bookid" value="<%=bookid%>" />
-	        <button>매장 위치 확인</button>
 	        <div class="btns-quickbuy">
 	          <button onclick="toBuy(event)">바로구매</button>
 	          <button onclick="toCart(event)">장바구니</button>
@@ -272,31 +271,38 @@
 	        	//한줄평 출력
 	        	Vector<ReviewBean> rlist = null;
 	        	rlist = bMgr.getReview(bookid);
-	      
-	        	for(int i=0; i<rlist.size(); i++){
-	        		ReviewBean rbean = rlist.get(i);
-	        		int rScore = rbean.getScore();
-	        		String rContent = rbean.getContent();
-	        		String nickname = rbean.getNickname();
+	        	
+	        	if(rlist.size() == 0){
 	        		%>
-	        		<li>     
+	        		<li>등록된 한줄평이 없습니다.</li>
 	        		<%
-	        		for(int c=0; c<rScore; c++){//별 생성
-	        			%>
-	        			<i class="fa-solid fa-star"></i>
-	        			<%
-	        		}//for - make colorstar
-	        		for(int e=0; e<5-rScore; e++){
-	        			%>
-	        			<i class="fa-regular fa-star"></i>
-	        			<% 
-	        		}//for - make emptystar
-	        		%>
-		        		<p><%=rContent%></p>
-		        		<span><%=nickname%></span>
-	        		</li>
-	        		<%
-	        	}//for - li 
+	        	}else{
+	        		
+		        	for(int i=0; i<rlist.size(); i++){
+		        		ReviewBean rbean = rlist.get(i);
+		        		int rScore = rbean.getScore();
+		        		String rContent = rbean.getContent();
+		        		String nickname = rbean.getNickname();
+		        		%>
+		        		<li>     
+		        		<%
+		        		for(int c=0; c<rScore; c++){//별 생성
+		        			%>
+		        			<i class="fa-solid fa-star"></i>
+		        			<%
+		        		}//for - make colorstar
+		        		for(int e=0; e<5-rScore; e++){
+		        			%>
+		        			<i class="fa-regular fa-star"></i>
+		        			<% 
+		        		}//for - make emptystar
+		        		%>
+			        		<p><%=rContent%></p>
+			        		<span><%=nickname%></span>
+		        		</li>
+		        		<%
+		        	}//for - li 
+	        	}//else
 	        %>
 	         
 	        </ul>
@@ -382,9 +388,9 @@
 	    }else{
 	    	//장바구니/관심목록 구분
 			if(save==='cart'){
-				document.orderFrm.action = '/shop/shopProc?save=cart';
+				document.orderFrm.action = '/procs/shopProc?save=cart';
 			}else if(save==='wish'){
-				document.orderFrm.action = '/shop/shopProc?save=wish';
+				document.orderFrm.action = '/procs/shopProc?save=wish';
 			}else{
 				document.orderFrm.action = '/buy/buy01';
 			}
