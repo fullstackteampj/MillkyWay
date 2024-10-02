@@ -62,6 +62,7 @@
 	          <li>
 	            <label for="pwd">비밀번호</label>
 	            <input type="password" name="pwd" id="pwd" required />
+	            <span></span>
 	          </li>
 	          
 	          <li>
@@ -84,7 +85,7 @@
 	              <option value="KT2">KT알뜰폰</option>
 	              <option value="LG U+2">LG U+알뜰폰</option>
 	            </select>
-	            <input type="text" name="phoneNum" id="phoneNum" placeholder=" - 없이 숫자만 입력해주세요." required />
+	            <input type="text" name="phoneNum" id="phoneNum" placeholder=" - 없이 숫자 11자리를 입력해주세요." required />
 	          </li>
 	          
 	          <li>

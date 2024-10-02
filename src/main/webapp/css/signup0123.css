@@ -596,6 +596,10 @@ section.sign-up > .enterInfo > form ul > li {
   align-items: center;
   margin: 20px 0;
   font-size: 16px;
+  position: relative;
+}
+section.sign-up > .enterInfo > form ul > li.sec {
+  margin-bottom: 30px;
 }
 section.sign-up > .enterInfo > form ul > li input:focus, section.sign-up > .enterInfo > form ul > li select:focus {
   border-color: rgb(127, 161, 195);
@@ -606,6 +610,13 @@ section.sign-up > .enterInfo > form ul > li #account, section.sign-up > .enterIn
 }
 section.sign-up > .enterInfo > form ul > li #account + button, section.sign-up > .enterInfo > form ul > li #nickname + button {
   width: calc(12% - 5px);
+}
+section.sign-up > .enterInfo > form ul > li #pwd + span {
+  position: absolute;
+  left: 130px;
+  top: 35px;
+  color: rgb(100, 130, 173);
+  font-size: 12px;
 }
 section.sign-up > .enterInfo > form ul > li #phone {
   width: calc(20% - 5px);
