@@ -89,7 +89,7 @@
         </div>
         
         <div id="bookSearchArea">
-          <h3>관련서적</h3>
+          <h3>연관도서</h3>
 		  <div id="selectedBook" onclick="postBookFn()">🔍 이 책에 대해 이야기하고 계신가요?</div>
 		  <input type="hidden" id="postBook" name="postBook" />
 		</div>
@@ -99,7 +99,6 @@
           <button type="button" onclick="writeChk()">작성</button>
         </div>
       </form>
-      
       
       <div id="postBookFrm">
       	<div id="formHead">

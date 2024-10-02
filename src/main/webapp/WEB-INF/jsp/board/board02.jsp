@@ -366,7 +366,7 @@
 		<% } else { %>
 			<div id="loginNotice">
 				<p>로그인 이후에 댓글을 작성할 수 있습니다.</p>
-				<a href="/login/login01">로그인</a>
+				<a href="/login/login01">로그인 하러가기 👉</a>
 			</div>
 		<% } %>
 	      
@@ -374,7 +374,7 @@
 	    
 	
 	    <div id="btns"> <!--임시-->
-	      <a href="./board01">목록</a>
+	      <a href="./board01?category=<%=category%>">목록</a>
 	      <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
           	if(loginId != null) { %>

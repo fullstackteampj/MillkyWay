@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="beans.BoardBean, beans.BookBean, board.DateMgr, beans.MemberBean" %>
+<%@ page import="java.util.ArrayList, beans.BoardBean, beans.BookBean, beans.MemberBean, board.DateMgr" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <!-- 글목록 페이지 -->
 <%
@@ -28,7 +27,7 @@
 	String keyWord="";
 	String keyField="";
 	String category="전체";
-	String tab="";
+	String tab="전체";
 	
 	// nowPage를 전송받을 때마다(페이지 클릭, 블럭넘김) 값을 받아 해당페이지 전역에 활용할 수 있도록 nowPage변수 초기화
 	if(request.getParameter("nowPage") != null) {
@@ -86,12 +85,12 @@
 
     <section>
       <h2 class="sr-only">은하수 광장✨</h2>
-      <!-- 임시: 개발자용 로그인/로그아웃 -->
+      <!-- 임시: 개발자용 로그인/로그아웃
       <div>
       	<button type="button" onclick="location.href='forDev/loginJihey'">지혜 로그인</button>
       	<button type="button" onclick="location.href='forDev/loginSujin'">수진 로그인</button>
       	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
-      </div>
+      </div> -->
       <article id="category">
         <h3 class="sr-only">카테고리</h3>
         
@@ -160,7 +159,7 @@
 	
 		<% // 검색햇을시
 		if(!(keyWord == null || keyWord.equals(""))) { %>
-			<p id="searchInfo"><span> <%=category%></span> 게시판의&nbsp;&nbsp;"<span> <%= keyWord %> </span>" 검색결과 입니다.</p>
+			<p id="searchInfo"><span> <%=category%></span> 게시판의 <span>" <%= keyWord %> "</span> 검색결과 입니다.</p>
 	<%	} %>
 		
 		<!-- 글목록 -->
@@ -176,7 +175,7 @@
           int forCount = listSize >= numPerPage ? numPerPage : listSize;
        	  // 추출된 게시글이 없을경우
           if(postList.isEmpty()) { %>
-        	 <p>등록된 게시물이 없습니다.</p>
+        	 <p><span>" <%=category%> / <%=tab%> "</span>에 등록된 게시물이 없습니다.</p>
        <% } else { // 추출된 게시글이 있을경우
         	 
         	
@@ -333,20 +332,22 @@
             <button>검색</button>
           </form>
         </div> <!--postSearch-->
+        
+	  <!-- 임시: 개발자용 글복사버그 
+	  <button type="button" onclick="location.href='forDev/postbug?category=<category%>'">글복사버그</button>-->
 
       </article> <!-- #post-->
 
 	  <div id="rightBox">
 	      <article id="bestPost">
-	        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">실시간 인기글</a></h3>
+	        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">🌟 실시간 인기글</a></h3>
 	        
 	        <% // 인기글 목록 출력 
 	        	ArrayList<BoardBean> bestList = bMgr.getBestList();
-	        	if(bestList.isEmpty()) {
-	        		out.println("<p>등록된 인기글이 없습니다.</p>");
-	        	} else {
-	        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size();
-	        		%>
+	        	if(bestList.isEmpty()) { %>
+	        		<p>등록된 인기글이 없습니다.</p>
+	        <% } else {
+	        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size(); %>
 	        		<ul>
 	        	 <% for(int i=0; i<roofCount; i++) {
 	        		 BoardBean bBean = bestList.get(i);
@@ -359,8 +360,8 @@
 	      </article>
 	      
 	      <article id="bestBook">
-	      	<h3>지금 핫한 책</h3>
-	      	<i class="fa-solid fa-circle-exclamation"></i>
+	      	<h3>🔥 지금 핫한 책</h3>
+	      	<i class="fa-solid fa-circle-question"></i>
 	      	<span>최근 50개의 글 중 연관도서로 많이 언급된 도서목록입니다.</span>
 	      	
 	      	<% // 최근글 중 많이 언급되는 책 목록 출력 
@@ -377,15 +378,16 @@
 	        		 int mentionedCount = bestBookInfo[1];
 	        		 
 	        		 BookBean book = bMgr.getBook(bookid); %>
-	          		<li><a href="#">
-	          			<span><%=book.getTitle()%> (<%=book.getGenre()%>)</span>
-	          			<span><%=mentionedCount%>회 언급중</span>
+	          		<li><a href="/shop/shop02?bookid=<%=bookid%>">
+	          			<p><span><%=book.getTitle()%></span> <span>(<%=book.getGenre()%>)</span></p>
+	          			<span><%=mentionedCount%>회</span>
 	          		</a></li>
 	          	<% } //for %>
 	        	 </ul>
 	       <% } //else %>
 	      </article>
 	  </div>
+	  
     </section>
 
     <footer>

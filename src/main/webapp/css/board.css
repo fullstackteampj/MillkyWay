@@ -390,12 +390,19 @@ section > #post > #head > a {
   border-radius: 3px;
 }
 section > #post > #searchInfo {
-	margin-left: 12px;
-	padding-bottom: 12px;
+	display: flex;
+	align-items: center;
+	margin: 12px;
+	padding: 10px;
     font-family: "Pretendard-Bold";
 	font-size: 16px;
+	color: #222;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	/* background-color: rgba(255,247,196,0.3); */
 }
 section > #post > #searchInfo > span {
+	margin: 0 6px;
 	color: #33afe9;
     font-family: "Pretendard-Bold";
 }
@@ -411,6 +418,11 @@ section > #post > #list > p {
   	height: 200px;
   	font-size: 15px;
   	color: #222;
+}
+section > #post > #list > p > span {
+	color: #33afe9;
+    font-family: "Pretendard-Bold";
+    margin-right: 5px;
 }
 section > #post > #list > a {
   display: flex;
@@ -567,7 +579,7 @@ section > #rightBox {
   	top: 0;
   	right: 0;
   	margin-top: 51px;
-  	max-height: 610px;
+  	max-height: 805px;
 }
 section > #rightBox > article {
   width: 200px;
@@ -586,17 +598,21 @@ section > #rightBox > article > h3 {
   /*border: 1px solid red;*/
 }
 section > #rightBox > #bestBook {
-	position: relative;	
+	position: relative;
+	padding: 16px 0;
+}
+section > #rightBox > #bestBook > h3 {
+	padding: 0 16px;
 }
 section > #rightBox > #bestBook > i {
 	position: absolute;
-	top: 20px;
+	top: 21px;
 	right: 16px;
 	font-size: 14px;
-	color: #ccc;
+	color: #888;
 }
 section > #rightBox > #bestBook > span {
-	display: flex;
+	display: none;
 	justify-content: center;
   	align-items: center;
 	position: absolute;
@@ -607,13 +623,38 @@ section > #rightBox > #bestBook > span {
 	border: 1px solid #222;
 	background-color: rgba(255,247,196,0.3);
 }
+section > #rightBox > #bestBook > span:before{
+	position: absolute; 
+	bottom: 0px; 
+	right: 15px;
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent; 
+	border-right: 10px solid transparent; 
+	border-top: 10px solid #222;
+	transform: translate(0, 100%);
+	content: ''; 
+}
+section > #rightBox > #bestBook > span:after{
+	position: absolute; 
+	bottom: 1px; 
+	right: 15px;
+	width: 0; 
+	height: 0; 
+	border-left: 10px solid transparent; 
+	border-right: 10px solid transparent; 
+	border-top: 10px solid #FFFDED; 
+	transform: translate(0, 100%);
+	content: ''; 
+}
+section > #rightBox > #bestBook > i:hover~span {
+	display: flex;
+}
 section > #rightBox > article > p {
 	display: flex;
-  	align-items: center;
-  	height: 35px;
-  	font-size: 13px;
-  	color: #222;
-    /*border: 1px solid blue;*/
+	align-items: center;
+	height: 40px;
+  	font-size: 14px;
 }
 section > #rightBox > article > ul {
   font-size: 14px;
@@ -622,10 +663,49 @@ section > #rightBox > article > ul > li {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  padding: 5px 0;
 }
-section > #rightBox > article > ul > li > a:hover {
+section > #rightBox > #bestPost > ul > li > a {
+	display: block;
+	padding: 5px 0;
+}
+section > #rightBox > #bestBook > p,
+section > #rightBox > #bestBook > ul > li > a {
+	margin: 0 16px;
+}
+section > #rightBox > #bestPost > ul > li > a:hover {
   color: #ccc;
+}
+section > #rightBox > #bestBook > ul > li > a {
+	display: flex;
+	padding: 15px 0;
+	border-bottom: 1px solid #ccc;
+}
+section > #rightBox > #bestBook > ul > li:last-child > a {
+	border: none;
+}
+section > #rightBox > #bestBook > ul > li:hover {
+	background-color: #eff1f5;
+}
+section > #rightBox > #bestBook > ul > li:hover > a {
+	color: #33afe9;
+}
+	
+section > #rightBox > #bestBook > ul > li > a > p {
+	flex: 1 0 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+section > #rightBox > #bestBook > ul > li > a > p > span:first-child {
+	font-family: "Pretendard-Bold";
+}
+section > #rightBox > #bestBook > ul > li > a > p > span:last-child {
+	color: #ccc;
+}
+section > #rightBox > #bestBook > ul > li > a > span {
+	margin-left: 12px;
+	font-family: "Pretendard-Bold";
+	color: #ccc;
 }
 section > h2 {
   font-size: 30px;
@@ -753,8 +833,8 @@ section > form#FrmPost > #bookSearchArea > #selectedBook:hover {
 section > form#FrmPost > #bookSearchArea > #selectedBook > img {
 	width: 35px; /* 임시 */
 	height: 50px;
+	object-fit: cover;
 	margin-right: 12px;
-	outline: 1px solid #222;
 }
 section > form#FrmPost > #bookSearchArea > #selectedBook > div {
 	display: flex;
@@ -843,7 +923,6 @@ section > #postBookFrm > #bookSearchList > li > img {
 	display: block;
 	width: 30px;
 	height: 30px;
-	outline: 1px solid blue;
 	object-fit: cover;
 }
 section > form#FrmPost > #postBtn {
@@ -1215,6 +1294,7 @@ section > #postBox > #postMng > .readBtn:last-child {
 }
 #loginNotice > a {
 	text-decoration: underline;
+    box-shadow: inset 0 -10px 0 #b0dbe3;
 }
 #comPagination {
 	display: flex;

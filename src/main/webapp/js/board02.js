@@ -50,21 +50,16 @@ function goPageFn(page) {
 function zeroDate(thing) {
 	const now = new Date();
 	let obj;
-	if(thing == 'month') {
+	if(thing == 'month')
 		obj = now.getMonth()+1;
-	}
-	if(thing == 'date') {
+	if(thing == 'date')
 		obj = now.getDate();
-	}
-	if(thing == 'hours') {
+	if(thing == 'hours')
 		obj = now.getHours();
-	}
-	if(thing == 'minutes') {
+	if(thing == 'minutes')
 		obj = now.getMinutes();
-	}
-	if(thing == 'seconds') {
+	if(thing == 'seconds')
 		obj = now.getSeconds();
-	}
 	return obj < 10 ? '0'+obj : obj;
 }
 
@@ -129,7 +124,7 @@ async function comSubmit(userid, nickname, boardid, userip) {
 	})
 	
 	// 스크롤 맨아래로
-	scrollFn("newCom");
+	// scrollFn("newCom");
 }
 
 // 답글 작성

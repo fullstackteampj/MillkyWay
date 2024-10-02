@@ -175,6 +175,7 @@ public class BoardMgr {
 			con = pool.getConnection();
 			sql = "SELECT bookid, count(bookid) FROM "
 					+ "(SELECT * FROM boardtbl WHERE status=0 ORDER BY regdate DESC LIMIT 0, 50) currentBoard "
+					+ "WHERE bookid IS NOT null "
 					+ "GROUP BY bookid ORDER BY count(bookid) DESC LIMIT 0, 10;";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -182,8 +183,6 @@ public class BoardMgr {
 				int[] bestInfo = new int[2];
 				bestInfo[0] = rs.getInt("bookid");
 				bestInfo[1] = rs.getInt("count(bookid)");
-				System.out.println("bestInfo[0] = "+bestInfo[0]);
-				System.out.println("bestInfo[1] = "+bestInfo[1]);
 				bestBook.add(bestInfo);
 			}
 		} catch(Exception e) {
@@ -411,47 +410,6 @@ public class BoardMgr {
 		return updateLiked;
 	}
 	
-	// 임시 !! 개발자용: 추천수
-	public int upLike(int ref, int uid) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int boardid = ref;
-		int userid = uid;
-		int updateLiked = 0;
-		try {
-			// 추천 수 증가
-			con = pool.getConnection();
-			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, boardid);
-			pstmt.setInt(2, userid);
-			pstmt.executeUpdate();
-			
-			// 증가된 추천 수 추출
-			sql = "select count(likedid) from likedtbl where ref=" + boardid;
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				updateLiked = rs.getInt(1);
-				
-				if(updateLiked >= 15) {
-					// 추천수가 15이상이면 인기글부여
-					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
-					pstmt = con.prepareStatement(sql);
-					pstmt.executeUpdate();
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		
-		return updateLiked;
-	}
 	
 	// 누적 추천 수 반환
 	public int getLikedCount(int boardid) {
@@ -1031,18 +989,38 @@ public class BoardMgr {
 			
 			// 새로운 사진이 있으면 업데이트
 			if(imagePart != null && imagePart.getSize() > 0) {
-				sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
-						+ "tab=?, ip=?, update_date=?, photo=?, photo_name=? where boardid=?";
-				pstmt = con.prepareStatement(sql);	
-				pstmt.setBlob(8, imageInputStream);
-				pstmt.setString(9, fileName);
-				pstmt.setInt(10, Integer.parseInt(req.getParameter("boardid")));
-				
+				// 새로운 책이 있으면 업데이트
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, photo=?, photo_name=?, bookid=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+					pstmt.setInt(10, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setInt(11, Integer.parseInt(req.getParameter("boardid")));
+				} else {
+					// 새로운 책이 없으면 기존유지
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, photo=?, photo_name=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+					pstmt.setInt(10, Integer.parseInt(req.getParameter("boardid")));
+				}
 			} else { // 새로운 사진이 없으면 기존 유지
-				sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
-						+ "tab=?, ip=?, update_date=? where boardid=?";
-				pstmt = con.prepareStatement(sql);	
-				pstmt.setInt(8, Integer.parseInt(req.getParameter("boardid")));
+				// 새로운 책이 있으면 업데이트
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, bookid=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setInt(9, Integer.parseInt(req.getParameter("boardid")));
+				} else {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("boardid")));
+				}
 			}
 			pstmt.setString(1, req.getParameter("nickname"));
 			pstmt.setString(2, req.getParameter("postTit"));
@@ -1240,5 +1218,50 @@ public class BoardMgr {
 		
 		return salt;
 	}
+	
+	
+	/* 임시 : 개발자용 */
+	// 추천수증가
+	public int upLike(int ref, int uid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int boardid = ref;
+		int userid = uid;
+		int updateLiked = 0;
+		try {
+			// 추천 수 증가
+			con = pool.getConnection();
+			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, userid);
+			pstmt.executeUpdate();
+			
+			// 증가된 추천 수 추출
+			sql = "select count(likedid) from likedtbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				updateLiked = rs.getInt(1);
+				
+				if(updateLiked >= 15) {
+					// 추천수가 15이상이면 인기글부여
+					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return updateLiked;
+	}
+	
 	
 }
