@@ -179,12 +179,23 @@ section.sign-up{
           align-items: center;
           margin: 20px 0;
           font-size: 16px;
+          &.sec{margin-bottom: 30px;}
           input:focus, select:focus{border-color: $pri-color;}
           #account, #nickname{
             width: 68%;
             margin-right: 5px;
             &+button{width: calc(12% - 5px);}
           }//#account, #nickname
+          position: relative;
+          #pwd{
+            &+span{
+              position: absolute;
+              left: 130px;
+              top: 35px;
+              color: $point-color;
+              font-size: 12px
+            }//span
+          }//#pwd
           #phone{
             width: calc(20% - 5px);
             margin-right: 5px;
