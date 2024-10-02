@@ -1188,11 +1188,11 @@
 	    }else{
 	    	//장바구니/관심목록 구분
 			if(save === 'cart'){
-				location.href = '/shop/shopProc?save=cart&bookid=' + bookid;
+				location.href = '/procs/shopProc?orderNum=1&save=cart&bookid=' + bookid;
 			}else if(save==='wish'){
-				location.href = '/shop/shopProc?save=wish&bookid=' + bookid;
+				location.href = '/procs/shopProc?orderNum=1&save=wish&bookid=' + bookid;
 			}else{
-				location.href = '/buy/buy01?save=buy&bookid=' + bookid;
+				location.href = '/buy/buy01?orderNum=1&save=buy&bookid=' + bookid;
 			}
 	    	
 	    }

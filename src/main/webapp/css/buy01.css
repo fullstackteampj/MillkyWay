@@ -480,12 +480,54 @@ section.buy > form > .payment-info > li > ol.buy-products > li {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  padding: 60px 0;
+  padding: 50px 0 70px;
   font-size: 16px;
   border-bottom: 1px solid #ddd;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li:last-of-type {
   border-bottom: none;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li > h4 {
+  width: 180px;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > input {
+  outline: none;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  text-align: center;
+  font-size: 17px;
+  border: 1px solid rgb(127, 161, 195);
+  border-right: none;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 15px;
+  border: 1px solid rgb(127, 161, 195);
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15px;
+  font-size: 14px;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button:hover {
+  color: #fff;
+  background-color: rgb(100, 130, 173);
+}
+section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button:first-child {
+  border-bottom: 1px solid rgb(127, 161, 195);
 }
 section.buy > form > .payment-info > li > ol.buy-products > li > img {
   display: block;
@@ -548,6 +590,10 @@ section.buy > form > .payment-info > li > .btns-pay > button.on {
 }
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(3n) {
   margin-right: 0;
+}
+section.buy > form > .payment-info > li > .btns-pay > button:nth-child(4), section.buy > form > .payment-info > li > .btns-pay > button:nth-child(5) {
+  color: rgb(100, 130, 173);
+  background-color: rgb(226, 218, 214);
 }
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(7), section.buy > form > .payment-info > li > .btns-pay > button:nth-child(8) {
   margin-bottom: 0;

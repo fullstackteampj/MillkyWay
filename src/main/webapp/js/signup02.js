@@ -105,4 +105,11 @@ function zipSearch() {
           document.getElementById("detailAddress").focus();
       }
   }).open();
-}
+}//zipSearch()
+
+//비밀번호 보안 체크
+const pwd = $pwd.value;
+
+$pwd.addEventListener('input', ()=>{
+  
+});
