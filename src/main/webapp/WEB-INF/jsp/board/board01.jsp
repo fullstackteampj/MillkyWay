@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="beans.BoardBean, board.DateMgr, beans.MemberBean" %>
+<%@ page import="beans.BoardBean, beans.BookBean, board.DateMgr, beans.MemberBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <!-- 글목록 페이지 -->
 <%
@@ -174,10 +174,10 @@
           // 반복문으로 출력할 게시글이 한페이지게시글수 보다 많으면 그만큼만,
           // 그보다 적으면 가진만큼만 반복
           int forCount = listSize >= numPerPage ? numPerPage : listSize;
-          
-          if(postList.isEmpty()) { // 추출된 게시글이 없을경우
-        	  out.println("<p>등록된 게시물이 없습니다.</p>");
-          } else { // 추출된 게시글이 있을경우
+       	  // 추출된 게시글이 없을경우
+          if(postList.isEmpty()) { %>
+        	 <p>등록된 게시물이 없습니다.</p>
+       <% } else { // 추출된 게시글이 있을경우
         	 
         	
 			for(int i=0; i<forCount; i++) {
@@ -336,27 +336,56 @@
 
       </article> <!-- #post-->
 
-      <article id="bestPost">
-        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">실시간 인기글</a></h3>
-        
-        <% // 인기글 목록 출력 
-        	ArrayList<BoardBean> bestList = bMgr.getBestList();
-        	if(bestList.isEmpty()) {
-        		out.println("<p>등록된 인기글이 없습니다.</p>");
-        	} else {
-        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size();
-        		%>
-        		<ul>
-        	 <% for(int i=0; i<roofCount; i++) {
-        		 BoardBean bBean = bestList.get(i);
-        		 int bBoardid = bBean.getBoardid();
-        		 String bTitle = bBean.getTitle(); %>
-          		<li><a href="board02?num=<%=bBoardid%>"><%=bTitle%></a></li>
-          	 <% }
-          	 }%>
-        </ul>
-      </article>
-
+	  <div id="rightBox">
+	      <article id="bestPost">
+	        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">실시간 인기글</a></h3>
+	        
+	        <% // 인기글 목록 출력 
+	        	ArrayList<BoardBean> bestList = bMgr.getBestList();
+	        	if(bestList.isEmpty()) {
+	        		out.println("<p>등록된 인기글이 없습니다.</p>");
+	        	} else {
+	        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size();
+	        		%>
+	        		<ul>
+	        	 <% for(int i=0; i<roofCount; i++) {
+	        		 BoardBean bBean = bestList.get(i);
+	        		 int bBoardid = bBean.getBoardid();
+	        		 String bTitle = bBean.getTitle(); %>
+	          		<li><a href="board02?num=<%=bBoardid%>"><%=bTitle%></a></li>
+	          	 <% }
+	          	 }%>
+	        </ul>
+	      </article>
+	      
+	      <article id="bestBook">
+	      	<h3>지금 핫한 책</h3>
+	      	<i class="fa-solid fa-circle-exclamation"></i>
+	      	<span>최근 50개의 글 중 연관도서로 많이 언급된 도서목록입니다.</span>
+	      	
+	      	<% // 최근글 중 많이 언급되는 책 목록 출력 
+	        	ArrayList<int[]> bestBookList = bMgr.getBestBookList();
+	        	if(bestBookList.isEmpty()) { %>
+	        		<p>최근 언급된 도서가 없습니다.</p>
+	        <%  } else {
+	        		int roofCount = bestBookList.size() >= 10 ? 10 : bestBookList.size();
+	        		%>
+	        		<ul>
+	        	 <% for(int i=0; i<roofCount; i++) {
+	        		 int[] bestBookInfo = bestBookList.get(i);        		 
+	        		 int bookid = bestBookInfo[0];
+	        		 int mentionedCount = bestBookInfo[1];
+	        		 
+	        		 BookBean book = bMgr.getBook(bookid); %>
+	          		<li><a href="#">
+	          			<span><%=book.getTitle()%> (<%=book.getGenre()%>)</span>
+	          			<span><%=mentionedCount%>회 언급중</span>
+	          		</a></li>
+	          	<% } //for %>
+	        	 </ul>
+	       <% } //else %>
+	      </article>
+	  </div>
     </section>
 
     <footer>

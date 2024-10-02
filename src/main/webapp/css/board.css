@@ -408,7 +408,7 @@ section > #post > #list > p {
 	display: flex;
 	justify-content: center;
   	align-items: center;
-  	height: 100px;
+  	height: 200px;
   	font-size: 15px;
   	color: #222;
 }
@@ -562,24 +562,52 @@ section > #post #postSearch > form > button:focus {
 section > #post #postSearch > form > button:hover {
   background-color: #edf5f8;
 }
-section > #bestPost {
-  position: absolute;
-  top: 0;
-  right: 0;
+section > #rightBox {
+	position: absolute;
+  	top: 0;
+  	right: 0;
+  	margin-top: 51px;
+  	max-height: 610px;
+}
+section > #rightBox > article {
   width: 200px;
-  max-height: 240px;
-  margin-top: 51px;
+  margin-bottom: 12px;
   padding: 16px;
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid #ddd;
 }
-section > #bestPost > h3 {
+section > #rightBox > article:last-child {
+  margin-bottom: 0;	
+}
+section > #rightBox > article > h3 {
   font-size: 20px;
   margin-bottom: 7px;
   /*border: 1px solid red;*/
 }
-section > #bestPost > p {
+section > #rightBox > #bestBook {
+	position: relative;	
+}
+section > #rightBox > #bestBook > i {
+	position: absolute;
+	top: 20px;
+	right: 16px;
+	font-size: 14px;
+	color: #ccc;
+}
+section > #rightBox > #bestBook > span {
+	display: flex;
+	justify-content: center;
+  	align-items: center;
+	position: absolute;
+	top: -30px;
+	right: 0;
+	width: 300px;
+	height: 30px;
+	border: 1px solid #222;
+	background-color: rgba(255,247,196,0.3);
+}
+section > #rightBox > article > p {
 	display: flex;
   	align-items: center;
   	height: 35px;
@@ -587,16 +615,16 @@ section > #bestPost > p {
   	color: #222;
     /*border: 1px solid blue;*/
 }
-section > #bestPost > ul {
+section > #rightBox > article > ul {
   font-size: 14px;
 }
-section > #bestPost > ul > li {
+section > #rightBox > article > ul > li {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   padding: 5px 0;
 }
-section > #bestPost > ul > li > a:hover {
+section > #rightBox > article > ul > li > a:hover {
   color: #ccc;
 }
 section > h2 {
@@ -705,7 +733,8 @@ section > form#FrmPost > #uploadArea > #upload > #uploadFile {
 section > form#FrmPost > #bookSearchArea {
 	position: relative;
 }
-section > form#FrmPost > #bookSearchArea > input {
+section > form#FrmPost > #bookSearchArea > #selectedBook {
+  display: flex;
   width: 100%;
   margin-bottom: 7px;
   padding: 12px;
@@ -716,15 +745,30 @@ section > form#FrmPost > #bookSearchArea > input {
   outline: none;
   cursor: pointer;
 }
-section > form#FrmPost > #bookSearchArea > input:hover {
+section > form#FrmPost > #bookSearchArea > #selectedBook:hover {
 	border-color: #33afe9;
 	outline: 1px solid #33afe9;
 	background-color: #eff1f5;
 }
-section > form#FrmPost > #bookSearchArea > i {
-	position: absolute;
-	top: 75px;
-	right: 42px;
+section > form#FrmPost > #bookSearchArea > #selectedBook > img {
+	width: 35px; /* 임시 */
+	height: 50px;
+	margin-right: 12px;
+	outline: 1px solid #222;
+}
+section > form#FrmPost > #bookSearchArea > #selectedBook > div {
+	display: flex;
+	align-items: center;
+	flex: 1 0 0;
+}
+section > form#FrmPost > #bookSearchArea > #selectedBook > div > p {
+	font-size: 16px;
+	margin-right: 12px;
+}
+section > form#FrmPost > #bookSearchArea > #selectedBook > div > p:last-child {
+	font-size: 14px;
+	color: #ccc;
+	margin-right: 0;
 }
 section > #postBookFrm {
 	display: none;
@@ -761,7 +805,7 @@ section > #postBookFrm > input {
 	border: 2px solid #33afe9;
 	outline: none;
 }
-section > #postBookFrm > ul {
+section > #postBookFrm > #bookSearchList {
 	max-height: 300px;
 	overflow: auto;
 	/*
@@ -769,14 +813,14 @@ section > #postBookFrm > ul {
 	border-bottom: 1px solid #222;
 	*/
 }
-section > #postBookFrm > ul::-webkit-scrollbar {
+section > #postBookFrm > #bookSearchList::-webkit-scrollbar {
     width: 10px;
 }
-section > #postBookFrm > ul::-webkit-scrollbar-thumb {
+section > #postBookFrm > #bookSearchList::-webkit-scrollbar-thumb {
     background: #ccc;
     border-radius: 5px;
 }
-section > #postBookFrm > ul > li {
+section > #postBookFrm > #bookSearchList > li {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -785,21 +829,22 @@ section > #postBookFrm > ul > li {
 	border-bottom: 1px solid #ccc;
 	cursor: pointer;
 }
-section > #postBookFrm > ul > li:hover {
+section > #postBookFrm > #bookSearchList > li:hover {
 	background-color: #eff1f5;
 }
-section > #postBookFrm > ul > li:last-child {
+section > #postBookFrm > #bookSearchList > li:last-child {
 	border-bottom: none;
 }
-section > #postBookFrm > ul > li > div > span:last-child {
+section > #postBookFrm > #bookSearchList > li > div > span:last-child {
 	margin-left: 12px;
 	color: #ccc;
 }
-section > #postBookFrm > ul > li > img {
+section > #postBookFrm > #bookSearchList > li > img {
 	display: block;
 	width: 30px;
 	height: 30px;
 	outline: 1px solid blue;
+	object-fit: cover;
 }
 section > form#FrmPost > #postBtn {
   display: flex;
@@ -890,6 +935,45 @@ section > #postBox > #readContent > #contentDetail > p {
 }
 section > #postBox > #readContent > #contentDetail > img {
 	max-width: 100%;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink {
+	width: 90%;
+	margin: 0 auto;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > h4 {
+	margin-top: 150px;
+	margin-bottom: 6px;
+	font-size: 14px;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a {
+	display: flex;
+	align-items: center;
+	padding: 12px 24px;
+	background-color: #edf5f8;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a > img {
+    object-fit: cover;
+	width: 60px; /* 임시 */
+	height: 80px;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a > p {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1 0 0;
+	margin: 0 16px;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a > p > span {
+	font-family: "Pretendard-Bold";
+	font-size: 20px;
+	margin-right: 12px;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a > p > span:last-child {
+	color: #ccc;
+	font-size: 14px;
+	margin-right: 0;
+}
+section > #postBox > #readContent > #contentDetail > #bookLink > a > span {
+	color: #ccc;
 }
 section > #postBox > #readContent > #likeBtn {
   display: flex;

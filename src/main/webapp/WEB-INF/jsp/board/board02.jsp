@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, beans.BoardBean, beans.CommentBean, beans.MemberBean" %>
+<%@ page import="java.util.*, beans.BoardBean, beans.CommentBean, beans.MemberBean, beans.BookBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <jsp:useBean id="dMgr" class="board.DateMgr" />
 <!-- 글보기 페이지 -->
@@ -34,6 +34,7 @@
 	String content = post.getContent();
 	int userid = post.getUserid();
 	int status = post.getStatus();
+	int bookid = post.getBookid();
 	
 	// 댓글 페이징
 	int totalRecord=0; //전체레코드수
@@ -128,6 +129,27 @@
 	          <p>
 	          	<pre><%=content%></pre>
 	          </p>
+	          <% // 선택한 도서가 존재하면 출력
+	          	if(bookid > 0) { 
+	          		BookBean book = bMgr.getBook(bookid);
+	          	%>
+	          	
+	          	<div id="bookLink">
+	          		<h4>🔍 이야기 중인 책을 알고싶다면?</h4>
+		          	<a href="/shop/shop02?bookid=<%=bookid%>">
+		          		<% // 첨부이미지가 있으면 출력
+		                if(book.getPhoto() != null) { %>
+			   			<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(book.getPhoto()) %>" alt="<%= book.getTitle() %>">
+		   			 <% } else { %>
+		   			 	<img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="<%= book.getTitle() %>">
+		   			 <% } %>
+		          		<p>
+		          			<span><%=book.getTitle()%></span>
+		          			<span><%=book.getAuthor()%></span>
+		          		</p>
+		          	</a>
+	          	</div>
+	          <% } %>
 	        </div>
 	
 	        <p id="likeBtn" onclick="
@@ -356,7 +378,7 @@
 	      <%
           	// 로그인 검사(session) 결과에 따른 글쓰기버튼
           	if(loginId != null) { %>
-	          <a href="./board04">글쓰기</a>
+	          <a href="./board04?category=<%=category%>">글쓰기</a>
           <%} else { %>
         	  <a href="#" onclick="goLogin()">글쓰기</a>
           <%}%>

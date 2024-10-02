@@ -12,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
+import SHA256.SHASalt;
 import beans.BoardBean;
 import beans.BookBean;
 import beans.CommentBean;
+import beans.MemberBean;
 
 public class BoardMgr {
 	private DBConnectionMgr pool;
@@ -159,6 +161,37 @@ public class BoardMgr {
 		}
 		
 		return bList;
+	}
+	
+	// 게시글 50개중 많이 다뤄진 책 top10 추출
+	public ArrayList<int[]> getBestBookList() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		ArrayList<int[]> bestBook = new ArrayList<int[]>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT bookid, count(bookid) FROM "
+					+ "(SELECT * FROM boardtbl WHERE status=0 ORDER BY regdate DESC LIMIT 0, 50) currentBoard "
+					+ "GROUP BY bookid ORDER BY count(bookid) DESC LIMIT 0, 10;";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int[] bestInfo = new int[2];
+				bestInfo[0] = rs.getInt("bookid");
+				bestInfo[1] = rs.getInt("count(bookid)");
+				System.out.println("bestInfo[0] = "+bestInfo[0]);
+				System.out.println("bestInfo[1] = "+bestInfo[1]);
+				bestBook.add(bestInfo);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return bestBook;
 	}
 	
 	// 현재 불러온 총 게시글 수 반환
@@ -476,6 +509,48 @@ public class BoardMgr {
 		
 		return result;
 	}
+	
+	// 연관서적 정보 반환
+	public BookBean getBook(int bookid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		BookBean bean = new BookBean();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM booktbl WHERE bookid="+bookid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				bean.setBookid(rs.getInt("bookid"));
+				bean.setAuthor(rs.getString("author"));
+				bean.setCategory(rs.getString("category"));
+				bean.setGenre(rs.getString("genre"));
+				bean.setTitle(rs.getString("title"));
+				bean.setReview(rs.getString("review"));
+				bean.setScore(rs.getInt("score"));
+				bean.setContents(rs.getString("contents"));
+				bean.setAuthorIntro(rs.getString("authorIntro"));
+				bean.setContentsTables(rs.getString("contentsTables"));
+				bean.setMiniIntro(rs.getString("miniIntro"));
+				bean.setPhoto(rs.getBytes("photo"));
+				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setIsbn(rs.getString("isbn"));
+				bean.setStock_Quantity(rs.getInt("stock_Quantity"));
+				bean.setPrice(rs.getInt("price"));
+				bean.setPages(rs.getInt("pages"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return bean;
+	}
+	
 	
 	// 총 댓글 수 반환 - 완전삭제댓글제외
 	public int getCommentCount(int boardid) {
@@ -1004,18 +1079,36 @@ public class BoardMgr {
 		
 		try {
 			con = pool.getConnection();
-			
-			// 사진이 있으면 등록
+
+			// 사진유무
 			if(imagePart != null && imagePart.getSize() > 0) {
-				sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, photo, photo_name)"
-						+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setBlob(8, imageInputStream);
-				pstmt.setString(9, fileName);
+				// 선택한 도서 유무
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, bookid, photo, photo_name)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setBlob(9, imageInputStream);
+					pstmt.setString(10, fileName);
+				} else {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, photo, photo_name)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+				}
 			} else {
-				sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip)"
-						+ "values (?, ?, ?, ?, ?, ?, ?);";
-				pstmt = con.prepareStatement(sql);
+				// 선택한 도서 유무
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, bookid)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+				} else {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip)"
+							+ "values (?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+				}
 			}
 			 pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
 			 pstmt.setString(2, req.getParameter("nickname"));
@@ -1085,22 +1178,27 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		
-		int userid = Integer.parseInt(req.getParameter("userid"));
-		int inputPwd = Integer.parseInt(req.getParameter("pwd"));
-		int boardid = Integer.parseInt(req.getParameter("boardid"));
 		boolean flag = false;
 		
-		// 멤버테이블에서 글작성자의 userid와 일치하는 회원의 비밀번호를 추출
+		int userid = Integer.parseInt(req.getParameter("userid"));
+		int boardid = Integer.parseInt(req.getParameter("boardid"));
+		
+		// 유저의 salt를 추출해 입력받은 pwd를 암호화
+		SHASalt saltMgr = new SHASalt();
+		String inPwd = req.getParameter("pwd");
+		String salt = getLoginSalt(userid);
+		String CrPwd = saltMgr.getEncrypt(inPwd, salt);
+		
+		// 멤버테이블에서 글작성자의 userid와 일치하는 회원의 암호화된 비밀번호를 추출
 		try {
 			con = pool.getConnection();
 			sql = "select pwd from membertbl where userid = " + userid;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			// 글작성자의 비밀번호와 입력받은 비밀번호가 같으면
+			// 암호화된 글작성자의 비밀번호와 암호화된 입력받은 비밀번호가 같으면
 			if(rs.next()) {
-				if(rs.getInt("pwd") == inputPwd) {
+				if(CrPwd.equals(rs.getString("pwd"))) {
 					sql = "update boardtbl set status = 9 where boardid = " + boardid;
 					pstmt = con.prepareStatement(sql);
 					pstmt.executeUpdate();
@@ -1114,6 +1212,33 @@ public class BoardMgr {
 		}
 		
 		return flag;
+	}
+	
+	// 로그인한 유저의 salt 추출
+	public String getLoginSalt(int userid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String salt = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select salt from membertbl where userid = " + userid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				salt = rs.getString("salt");
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return salt;
 	}
 	
 }

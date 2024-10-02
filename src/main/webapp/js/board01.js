@@ -1,6 +1,6 @@
 const headerelement = document.querySelector('header');
 const $category = document.getElementById('category');
-const $bestPost = document.getElementById('bestPost');
+const $rightBox = document.getElementById('rightBox');
 const $footer = document.querySelector('footer');
 const scrollTop = Math.ceil(window.scrollY);
 
@@ -67,9 +67,9 @@ window.addEventListener('scroll', ()=>{
 
   // 인기글
   if(scrollTop >= 100) {
-    $bestPost.style.top = (scrollTop-100) + 'px';
+    $rightBox.style.top = (scrollTop-100) + 'px';
   } else if(scrollTop < 100) {
-    $bestPost.style.top = '0';
+    $rightBox.style.top = '0';
   }
 
   // 헤더 - 스크롤 시 세로스크롤만 상단 fixed
@@ -82,7 +82,7 @@ window.addEventListener('scroll', ()=>{
     // 카테고리
     topfixedFn($category, $footer, 120);
     // 인기글
-    topfixedFn($bestPost, $footer, 170);
+    topfixedFn($rightBox, $footer, 170);
 
   } else { // 스크롤 업
     //헤더 - 스크롤업 시 헤더탑 보이기
@@ -90,7 +90,7 @@ window.addEventListener('scroll', ()=>{
     // 카테고리
     topfixedFn($category, $footer, 50);
     // 인기글
-    topfixedFn($bestPost, $footer, 100);
+    topfixedFn($rightBox, $footer, 100);
   }
   
   lastScrollba = nowScroll;

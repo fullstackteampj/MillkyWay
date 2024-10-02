@@ -90,7 +90,8 @@
         
         <div id="bookSearchArea">
           <h3>관련서적</h3>
-		  <input onclick="postBookFn()" value="🔍 이 책에 대해 이야기하고 계신가요?" readonly />
+		  <div id="selectedBook" onclick="postBookFn()">🔍 이 책에 대해 이야기하고 계신가요?</div>
+		  <input type="hidden" id="postBook" name="postBook" />
 		</div>
 		
         <div id="postBtn">
@@ -103,10 +104,10 @@
       <div id="postBookFrm">
       	<div id="formHead">
 	      	<h4>도서 검색</h4>
-	      	<i class="fa-solid fa-x" onclick="postBookFn()"></i>
+	      	<i class="fa-solid fa-xmark" onclick="postBookFn()"></i>
       	</div>
       	
-      	<input onkeyup="if(window.event.keyCode==13){(postBookSearchFn())}" id="postBookSearch" placeholder="도서명을 검색해보세요!" />
+      	<input onkeyup="if(window.event.keyCode==13){(postBookSearchFn())}" id="postBookSearch" placeholder="도서명 & 작가명으로 검색해보세요" autocomplete="off" />
       	<ul id="bookSearchList">
    		<%
    		String keyword = " ";
@@ -115,14 +116,16 @@
 		  if(!bList.isEmpty()) {
 		  	for(int i=0; i<bList.size(); i++) { 
 				BookBean bean = bList.get(i); %>
-		   		<li onclick="bookSelectFn()">
+		   		<li onclick="bookSelectFn(<%=bean.getBookid()%>, '<%=bean.getTitle()%>', '<%=bean.getAuthor()%>')">
 		   			<div>
 			   			<span><%= bean.getTitle() %></span>
 			   			<span><%= bean.getAuthor() %></span>
 		   			</div>
 		   			<% // 첨부이미지가 있으면 출력
-	                if(bean.getPhoto() != null && bean.getPhoto().length > 0) { %>
-		   			<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(bean.getPhoto()) %>" alt="#">
+		   			if(bean.getPhoto() != null) { %>
+		   			<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(bean.getPhoto()) %>" alt="<%= bean.getTitle() %>">
+	   			 <% } else { %>
+	   				<img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="<%= bean.getTitle() %>">
 	   			 <% } %>
 		   		</li>
 	 		<% } %>
@@ -189,16 +192,6 @@
       
     }
   	
- 	// 글작성 페이지에서 관련 서적폼 노출
-    function postBookFn() {
-    	const $postBookFrm = document.querySelector('#postBookFrm');
-    	$postBookFrm.classList.toggle('on');
-    	const $searchInput = document.querySelector('#postBookSearch');
-    	$searchInput.focus();
-    	
-    	// 검색내용 초기화
-    	postBookSearchFn();
-    }
   </script>
 </body>
 </html>

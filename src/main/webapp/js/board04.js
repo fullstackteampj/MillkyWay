@@ -18,6 +18,17 @@ $uploadFile.addEventListener('change', ()=>{
   }
 })
 
+// 글작성 페이지에서 관련 서적폼 노출
+function postBookFn() {
+	const $postBookFrm = document.querySelector('#postBookFrm');
+	$postBookFrm.classList.toggle('on');
+	const $searchInput = document.querySelector('#postBookSearch');
+	$searchInput.focus();
+	
+	// 검색내용 초기화
+	postBookSearchFn();
+}
+
 // 도서검색 비동기요청
 async function postBookSearchFn() {
 	const bookSearchInput = document.querySelector('#postBookSearch');
@@ -52,3 +63,11 @@ async function postBookSearchFn() {
 	$searchInput.focus();
 }
 
+function bookSelectFn(id, title, author) {
+	const selectedBook = document.querySelector('#selectedBook');
+	selectedBook.innerHTML = "<img src='/image?bookid="+id+"' alt='"+title+"' /> <div> <p>"+title+"</p> <p>"+author+"</p> </div>";
+	
+	const postBook = document.querySelector('#postBook');
+	postBook.value = id;
+	postBookFn();
+}
