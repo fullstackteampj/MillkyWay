@@ -7,6 +7,23 @@
 
 <%
 	String userId = request.getParameter("userId");
+
+	String inpwd = request.getParameter("inpwd");
+	// 기존회원일 경우 비밀번호 검사
+	if(!inpwd.equals("sns")) {
+		boolean flag = myMgr.checkPwd(inpwd, userId);
+		
+		// 비밀번호가 일치하지 않을 경우 알림 및 뒤로가기
+		if(!flag){
+			%>
+			<script>
+				alert("비밀번호가 일치하지 않습니다");
+				location.href="/mypage/mypage03";
+			</script>
+			<%
+		}
+	}
+
 	boolean flag = myMgr.executeMemberUpdate(Integer.parseInt(userId), inBean);
 	
 	if(flag){

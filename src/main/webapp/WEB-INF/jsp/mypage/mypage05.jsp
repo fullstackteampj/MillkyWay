@@ -499,7 +499,7 @@
 	
 	function buyCartListsNow() {
 		document.cartFrm.action = '/buy/buy01';
-		document.cartFrm.method = 'post';
+		document.cartFrm.method = 'get';
 		document.cartFrm.submit();
 	}//buyCartListsNow()
 

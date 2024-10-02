@@ -65,7 +65,7 @@
   box-sizing: border-box;
 }
 #wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
-  display: block;
+  display: none;
 }
 #wrap > header > .headTop > .frame .userBar {
   display: flex;
@@ -353,6 +353,10 @@ section.login button {
 }
 section.login button:hover {
   background-color: rgb(100, 130, 173);
+}
+section.login .naver {
+  display: block;
+  margin-left: 130px;
 }
 section.login #loginMng {
   display: flex;
