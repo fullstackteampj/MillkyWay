@@ -519,6 +519,45 @@ public class MyPageMgr {
 		return flag;
 	}//heckPwd(String inpwd)
 	
+	
+	public void signoutMember(String userId) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		
+		try {
+			// 회원정보를 삭제
+			sql = "update membertbl set "
+					+ "pwd = '탈퇴한회원입니다', "
+					+ "salt = '탈퇴한회원입니다', "
+					+ "question = '탈퇴한회원입니다', "
+					+ "answer = '탈퇴한회원입니다', "
+					+ "name = '탈퇴한회원입니다', "
+					+ "nickname = '탈퇴한회원입니다', "
+					+ "zipcode = '탈퇴한회원입니다', "
+					+ "usergrade = '탈퇴한회원입니다', "
+					+ "address = '탈퇴한회원입니다', "
+					+ "detailAddress = '탈퇴한회원입니다', "
+					+ "gender = '', "
+					+ "status = 'signout', "
+					+ "phone = '탈퇴한회원입니다', "
+					+ "email = '탈퇴한회원입니다' "
+					+ "WHERE userId = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(userId));
+			
+			int j = pstmt.executeUpdate();
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt);
+		}
+		
+	}// void signoutMember(String userId)
+	
 }//class MyPageMgr
 
 

@@ -34,6 +34,7 @@
 	}else{
 		session.setAttribute("idKey", userId);
 		session.setAttribute("idKeyS", userIdS);
+		lMgr.updateLastLogin(userId); // 마지막로그인 날짜 업데이트
 		
 		if(saveId!=null){
 		    Cookie cookie = new Cookie("saveId", account);
