@@ -248,10 +248,9 @@ function reqKakaoPay(){
                     // 백엔드로 주문 생성 요청
                     axios.post("http://localhost:8080/orders/kakaoPay?impUid="+res.imp_uid).then((response) => {
                         console.log('response.data = ' + response.data);
-                     
                         frm.action = '/procs/buyProc';
                         frm.submit();
-                      
+                        
                     }).catch((error) => {
                         console.error(error);
                         alert("에러가 발생했습니다. 잠시후 다시 실행해 주세요.")
@@ -263,11 +262,14 @@ function reqKakaoPay(){
   );//IMP.request_pay
 }//reqKakaoPay()
 
-const $goPay = document.querySelector('.goPay');
-
 //buyFrm - submit 이벤트
-$goPay.addEventListener('click', (evt)=>{
-  evt.preventDefault(); // 액션으로 페이지 이동할거면 필요 없음
-  if(payment === '카카오페이') reqKakaoPay();
-  
+frm.addEventListener('submit', (evt)=>{
+  if(payment === '카카오페이'){
+    evt.preventDefault(); 
+    reqKakaoPay();
+    
+  }else{
+    evt.preventDefault(); 
+  }
 });
+

@@ -233,7 +233,7 @@
                         최종 결제 금액 <span class="totalPrice"></span>원
                     </li>
                     <li>
-                        <button type="button" class="goPay">결제하기</button>
+                        <button>결제하기</button>
                     </li>
                 </ul>
             </form>
