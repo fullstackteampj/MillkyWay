@@ -1,64 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, beans.BoardBean, beans.BookBean, beans.MemberBean, board.DateMgr" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="beans.BoardBean, beans.BookBean, beans.MemberBean, beans.BoardFilterBean, beans.boardPagingBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
+<jsp:useBean id="dMgr" class="board.DateMgr" />
 <!-- 글목록 페이지 -->
-<%
-	request.setCharacterEncoding("UTF-8");
-
-	Integer loginId = null;
-	
-	if(session != null && session.getAttribute("idKey") != null) {
-		loginId = (Integer)session.getAttribute("idKey");
-	}
-	
-	int totalRecord=0; //전체레코드수
-	int numPerPage=10; // 페이지당 레코드 수 
-	int pagePerBlock=10; //블럭당 페이지수 
-	int totalPage=0; //전체 페이지 수
-	int totalBlock=0;  //전체 블럭수 
-	int nowPage=1; // 현재페이지
-	int nowBlock=1;  //현재블럭
-	int start=0; //디비의 select 시작번호
-	int end=10; //시작번호로 부터 가져올 select 갯수
-	int listSize=0; // DB로부터 추출해 list에 저장한 게시글의 수
-	
-	// 글목록 필터링
-	String keyWord="";
-	String keyField="";
-	String category="전체";
-	String tab="전체";
-	
-	// nowPage를 전송받을 때마다(페이지 클릭, 블럭넘김) 값을 받아 해당페이지 전역에 활용할 수 있도록 nowPage변수 초기화
-	if(request.getParameter("nowPage") != null) {
-		nowPage = Integer.parseInt(request.getParameter("nowPage"));
-	}
-	// 검색할 때마다 keyField, keyWord param에서 받아 변수값 초기화
-	if(request.getParameter("keyWord") != null) {
-		keyField = request.getParameter("keyField");
-		keyWord = request.getParameter("keyWord");
-	}
-	// 카테고리를 고르면 변수 초기화
-	if(request.getParameter("category") != null) {
-		category = request.getParameter("category");
-	}
-	// 탭을 고르면 변수초기화
-	if(request.getParameter("tab") != null) {
-		tab = request.getParameter("tab");
-	}
-	
-	
-	// 페이지이동 시 게시글을 DB에서 추출할 때 기준이 되는 값을 초기화
-	start = (nowPage * numPerPage)-numPerPage; 
-	end = numPerPage;
-	
-	// 페이징, 글목록출력 등에 활용될 변수 초기화 (총게시글수, 총페이지수, 현재블럭, 총블럭수)
-	totalRecord = bMgr.getTotalCount(keyField, keyWord, category, tab);
-	totalPage = (int)Math.ceil((double)totalRecord / numPerPage);  //전체페이지수
-	nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock); //현재블럭 계산
-	totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);  //전체블럭계산
-	
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -69,46 +16,39 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/board.css?after">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <script defer src="${pageContext.request.contextPath}/js/board01.js"></script>
-  <script>
-  	function goLogin() {
-  		const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?");
-  		if(result) {
-  			location.href = "../login/login01";
-  		}
-  	}
-  </script>
 </head>
 <body>
+	<c:set var="loginId" value="${loginId}" />
+	<c:set var="filter" value="${filter}" />
+	
   <div id="wrap">
 
-   <jsp:include page="../components/header.jsp" />
-
+	<jsp:include page="../components/header.jsp" />
     <section>
       <h2 class="sr-only">은하수 광장✨</h2>
-      <!-- 임시: 개발자용 로그인/로그아웃
-      <div>
-      	<button type="button" onclick="location.href='forDev/loginJihey'">지혜 로그인</button>
-      	<button type="button" onclick="location.href='forDev/loginSujin'">수진 로그인</button>
-      	<button type="button" onclick="location.href='forDev/logout'">로그아웃</button>
-      </div> -->
       <article id="category">
         <h3 class="sr-only">카테고리</h3>
         
         <ul>
-        <%// 카테고리 목록
-        	ArrayList<String> cList = bMgr.getCategoryList();
-        	for(int i=0; i<cList.size(); i++) {
-        		// param과 비교해 현재 선택된 카테고리에 스타일 적용
-        		if(!(category == null || category.equals("")) && category.equals(cList.get(i))) { %>
+        <c:forEach var="categoryItem" items="${cList}">
+        	<c:choose>
+        		<%-- 현재 선택된 카테고리에 스타일 적용 --%>
+        		<c:when test="${not empty filter.category && filter.category == categoryItem}">
         			<li class="on">
-       		 <% } else if((category == null || category.equals("")) && i==0) { %>
-       		 	<!-- param 이 없는 초기상태에는 첫번째항목에 스타일 -->
-       		 		<li class="on">
-       		 <% } else {%>
-       		 		<li>
-       		 <% }%>
-        		<a href="board01?category=<%=cList.get(i)%>&nowPage=1"><%=cList.get(i)%></a></li>
-       	 <% } %>
+        		</c:when>
+        		<c:otherwise >
+        			<%-- 초기상태에는 첫번째항목에 스타일 --%>
+        			<c:if test="${empty filter.category && status.index == 0}">
+        				<li class="on">
+        			</c:if>
+        			<%-- 그 외는 스타일X --%>
+        			<c:if test="${not empty filter.category || status.index > 0}">
+        				<li>
+        			</c:if>
+        		</c:otherwise>
+        	</c:choose>
+        	<a href="board01?category=${categoryItem}&nowPage=1">${categoryItem}</a></li>
+       	 </c:forEach>
         </ul>
         
       </article>
@@ -116,199 +56,162 @@
       <article id="post">
         
         <div id="head">
-          <h2><% // 게시판제목 (전체글, 인문학, 에세이 등)
-          	if(category == null || category.equals("전체")) { %>
-          	<a href="board01?category=전체&nowPage=1">
-          	전체글
-          <%} else {%>
-          	<a href="board01?category=<%=category%>&nowPage=1"> 
-          	<%=category%> 게시판
-          <%}%></a>
+          <h2>
+          	<c:choose>
+          		<c:when test="${empty filter.category || filter.category == '전체'}">
+	          		<a href="board01?category=전체&nowPage=1">전체글</a>          		
+          		</c:when>
+          		<c:otherwise>
+          			<a href="board01?category=${filter.category}&nowPage=1">${filter.category} 게시판</a>
+          		</c:otherwise>
+          	</c:choose>
           </h2>
           
           <ul id="tab">
-          <%// 탭 목록
-        	ArrayList<String> tList = bMgr.getTabList();
-        	for(int i=0; i<tList.size(); i++) {
-        		// param과 비교해 현재 선택된 탭에 스타일 적용
-        		if(!(tab == null || tab.equals("")) && tab.equals(tList.get(i))) { %>
-        			<li class="on">
-       		 <% } else if((tab == null || tab.equals("")) && i==0) { %>
-       		 	<!-- param 이 없는 초기상태에는 첫번째항목에 스타일 -->
-       		 		<li class="on">
-       		 <% } else { %>
-       		 		<li>
-       		 <% }%>
-        		<a href="javascript:tabFn('<%=tList.get(i)%>')"><%=tList.get(i)%></a></li>
-       	 <% } %>
+          	<c:forEach var="tabItem" items="${tList}">
+       			<li class="${filter.tab == tabItem ? 'on' : ''}">
+       				<a href="javascript:tabFn('${tabItem}')">${tabItem}</a>
+       			</li>
+          	</c:forEach>
           </ul>
           
-          <%
-          	// 로그인 검사(session) 결과에 따른 글쓰기버튼
-			if(loginId != null) {
-			  if(category != null) {%>
-	          <a href="./board04?category=<%=category%>">
-           <% } else { %>
-        	  <a href="./board04?category=전체">
-           <% } %>
-        	   글쓰기</a>
-          <%} else { %>
-        	  <a href="#" onclick="goLogin()">글쓰기</a>
-          <%}%>
-        </div> <!--#head-->
+          <%-- 로그인검사에 따른 글쓰기버튼 --%>
+          <c:choose>
+          	<c:when test="${not empty loginId}">
+          		<c:choose>
+          			<c:when test="${not empty filter.category}">
+          				<a href="./board04?category=${filter.category}">글쓰기</a>
+          			</c:when>
+          			<c:otherwise>
+          				<a href="./board04?category=전체">글쓰기</a>
+          			</c:otherwise>
+          		</c:choose>
+          	</c:when>
+          	
+          	<c:otherwise>
+          		<a href="#" onclick="goLogin()">글쓰기</a>
+          	</c:otherwise>
+          </c:choose>
+        </div> <%--#head--%>
 	
-		<% // 검색햇을시
-		if(!(keyWord == null || keyWord.equals(""))) { %>
-			<p id="searchInfo"><span> <%=category%></span> 게시판의 <span>" <%= keyWord %> "</span> 검색결과 입니다.</p>
-	<%	} %>
+		<c:if test="${not empty filter.keyWord}">
+			<p id="searchInfo">
+				<span>${filter.category}</span> 게시판의 <span>" ${filter.keyWord} "</span> 검색결과 입니다.
+			</p>
+		</c:if>
 		
-		<!-- 글목록 -->
+		<%-- 글목록 --%>
         <div id="list">
+        	<c:choose>
+        		<%-- 추출된 게시글이 없는경우 --%>
+        		<c:when test="${empty postList}">
+        			<p><span>" ${filter.category} / ${filter.tab} "</span>에 등록된 게시물이 없습니다.</p>
+        		</c:when>
+        		<%-- 있는경우 --%>
+        		<c:otherwise>
+        			<%-- 게시글 출력 --%>
+        			<c:forEach var="post" items="${postList}">
+        				<a href="board02?category=${filter.category}&num=${post.boardid}">
+				            <span class="kind">${post.tab} / ${post.genre}</span>
+				            
+				            <div class="content">
+				            	<p class="contentHead">
+					            	<%-- 인기글이면 제목에 스타일 적용 --%>
+					            	<span class="${post.best == 'Y' ? 'title overBestLike' : 'title'}">${post.title}</span>
+				              		<%-- 댓글이 존재하면 댓글수 출력 --%>
+				              		<c:set var="commentCount" value="${bMgr.getCommentCount(post.boardid)}"></c:set>
+				              		<c:if test="${commentCount > 0}">
+				              			<span class="commentCount">[${commentCount}]</span>
+				              		</c:if>
+								</p>
+				              	
+								<div class="postInfo">
+									<p class="postuser">${post.nickname}</p>
+									<p class="postDate">
+										<c:set var="today" value="${dMgr.getToday()}" />
+										<%-- 오늘 작성글이면 시:분 --%>
+										<c:choose>
+											<c:when test="${dMgr.getIntDate(post.regdate, 'year') == dMgr.getIntDate(today, 'year') && dMgr.getIntDate(post.regdate, 'date') == dMgr.getIntDate(today, 'date')}">
+												${dMgr.getFormatDate(post.regdate, 'today')}
+											</c:when>
+											<%-- 올해이면서 오늘이전 작성글이면 월.일 --%>
+											<c:when test="${dMgr.getIntDate(post.regdate, 'year') == dMgr.getIntDate(today, 'year') && dMgr.getIntDate(post.regdate, 'date') < dMgr.getIntDate(today, 'date')}">
+	                                            ${dMgr.getFormatDate(post.regdate, 'yesterday')}
+	                                        </c:when>
+	                                        <%-- 올해이전 작성글이면 년.월.일 --%>
+	                                        <c:otherwise>
+	                                            ${dMgr.getFormatDate(post.regdate, 'lastYear')}
+	                                        </c:otherwise>
+										</c:choose>
+										<%-- 수정됐으면 덧붙임 --%>
+										<c:if test="${not empty post.updateDate}">(수정됨)</c:if>
+									</p>
+									<p class="views">조회 <span>${post.count}</span></p>
+									<%-- 추천수가 15이상이면 스타일적용 --%>
+									<c:set var="liked" value="${bMgr.getLikedCount(post.boardid)}"></c:set>
+									<p class="${liked >= 15 ? 'like overBestLike' : 'like'}">추천 <span>${liked}</span></p>
+								</div> <%-- div.postInfo --%>
+								
+							</div> <%-- div.content --%>
+								
+							<%-- 첨부이미지가 있으면 출력 --%>
+							<c:if test="${not empty post.photo}">
+								<p class="frame">
+                                	<img src="data:image/jpeg;base64, ${post.encodedPhoto}" alt="${post.photoName}">
+                                	<%-- <img src="data:image/jpeg;base64, ${fn:escapeXml(java.util.Base64.getEncoder().encodeToString(post.photo))}" alt="${post.photoName}">
+										 <img src="data:image/jpeg;base64, <= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="<=photoName%>"> --%>
+								</p>
+							</c:if>
+							
+						</a>
+        			</c:forEach>
+        		</c:otherwise>
+        	</c:choose>
         
-          <%
-          // 글정보 추출
-          ArrayList<BoardBean> postList = bMgr.getPostList(keyField, keyWord, category, tab, start, end);
-          listSize = postList.size();
-          
-          // 반복문으로 출력할 게시글이 한페이지게시글수 보다 많으면 그만큼만,
-          // 그보다 적으면 가진만큼만 반복
-          int forCount = listSize >= numPerPage ? numPerPage : listSize;
-       	  // 추출된 게시글이 없을경우
-          if(postList.isEmpty()) { %>
-        	 <p><span>" <%=category%> / <%=tab%> "</span>에 등록된 게시물이 없습니다.</p>
-       <% } else { // 추출된 게시글이 있을경우
-        	 
-        	
-			for(int i=0; i<forCount; i++) {
-			 	BoardBean bean = postList.get(i);
-			 	int boardid = bean.getBoardid();
-			 	String genre = bean.getGenre();
-			 	String kind = bean.getTab();
-			 	String title = bean.getTitle();
-			 	int commentCount = bMgr.getCommentCount(boardid);
-			 	String nickname = bean.getNickname();
-			 	String regDate = bean.getRegdate();	
-			 	String updateDate = bean.getUpdateDate();
-			 	int count = bean.getCount();
-			 	String best = bean.getBest();
-			 	int liked = bMgr.getLikedCount(boardid);
-			 	byte[] photo = bean.getPhoto();
-			 	String photoName = bean.getPhotoName();
-			 	
-			 	
-			 	// 날짜데이터 가공
-			 	DateMgr dateMgr = new DateMgr();
-			 	
-			 	// 오늘날짜 추출
-			 	String today = dateMgr.getToday();
-			 	// 시:분 (오늘작성글)
-			 	String todayPost = dateMgr.getFormatDate(regDate, "today");
-			 	// 월-일 (올해이면서 오늘 이전글)
-			 	String prevdayPost = dateMgr.getFormatDate(regDate, "yesterday");
-			 	// 년-월-일 (올해이전글)
-			 	String prevYearPost = dateMgr.getFormatDate(regDate, "lastYear");
-			 	
-			  %>
-			<a href="board02?category=<%=category%>&num=<%=boardid%>">
-	            <span class="kind"><%=kind%> / <%=genre%></span>
-	            <div class="content">
-	            	<p class="contentHead">
-	              <% // 인기글이면 제목에 스타일 적용 
-	            	 if(best.equals("Y")) {%>
-	            	 <span class="title overBestLike">
-            	  <% } else { %>
-            		  <span class="title">
-            	  <% } %>
-	                <%=title%></span>
-	                <% // 댓글이 1개 이상이면 댓글 수 출력
-	                  if(commentCount > 0) { %>
-	                <span class="commentCount">[<%=commentCount%>]</span>
-	                <%}%>
-	              </p>
-	              <div class="postInfo">
-	                <p class="postuser"><%=nickname%></p>
-	                <p class="postDate">
-	                	<% // 오늘 작성글이면 시:분
-	                	   if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") == dateMgr.getIntDate(today, "date")) { %>
-						       <%=todayPost%>
-	                	<% } 
-	                	   // 올해이면서 오늘이전 작성글이면 월.일
-	                	   else if(dateMgr.getIntDate(regDate, "year") == dateMgr.getIntDate(today, "year") && dateMgr.getIntDate(regDate, "date") < dateMgr.getIntDate(today, "date")) { %>
-	                	       <%=prevdayPost%>
-	                	<% } 
-	                	   // 올해이전 작성글이면 년.월.일
-	                	   else if(dateMgr.getIntDate(regDate, "year") < dateMgr.getIntDate(today, "year")) { %>
-	                		   <%=prevYearPost%>
-	                	<% }
-	                	  // 수정됐으면 덧붙임
-	                	  if(updateDate != null) { %>
-	                	(수정됨)
-	                	<% } %>
-	                </p>
-	                <p class="views">조회 <span><%=count%></span></p>
-	                
-	                <% // 추천수가 15이상이면 스타일적용
-	                   if(liked >= 15) { %>
-	                	<p class="like overBestLike">
-	                <% } else { %>
-	                	<p class="like">
-	                <% } %> 추천 <span><%=liked%></span></p>
-	              </div>
-	            </div>
-	            
-	            
-	            <% // 첨부이미지가 있으면 출력
-	               if(photo != null && photo.length > 0) { %>
-	            	<p class="frame">
-	              		<img src="data:image/jpeg;base64, <%= java.util.Base64.getEncoder().encodeToString(photo) %>" alt="<%=photoName%>">
-	            	</p>
-	            <% } %>
-	            
-	        </a>
-	           
-		<%  } // for
-          } // else if
-          
-          %>
+        </div> <%-- #list --%>
         
-        </div> <!--list-->
-  		<% // 게시글이 존재한다면 (totalPage 검사) 페이지네이션 생성(현재블럭의 첫페이지~끝페이지)
-        	if(totalPage != 0) { %>
-		<!-- 페이지네이션 -->
-        <ul id="pagination">
-        <% 
-    	// 페이지네이션 생성
-    	// 현재 블럭에서의 시작번호 (현재블럭과 블럭당페이지수로 계산)
-    	int pageStart = (nowBlock-1)*pagePerBlock+1;
-        // 현재 블럭에서의 끝번호 ()
-    	int pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-    	
-        // 현재 페이지블럭이 첫블럭이 아니라면 '이전블럭으로', '처음페이지로' 버튼 생성
-        if(nowBlock > 1) { %>
-	        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('1')" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></a></li>
-	        <li class="pageBtn btnPrev"><a href="javascript:goPageFn('<%=pageStart-1%>')" title="이전 페이지로"><i class="fa-solid fa-angle-left"></i></a></li>
-      <%} //if(nowBlock > 1)
-        	
-        	
-        		for(int nPage=pageStart; nPage<pageEnd; nPage++) { 
-        			// 클릭한 페이지네이션nPage과 클릭시 전송받은 nowPage와 같다면 스타일 적용(li에 class="on")
-        			if(nPage == nowPage) { %>
-        				<li class="on">
-       			<%  } else { %>
-       					<li>
-       			<%	}%>
-		        	<a href="javascript:goPageFn('<%=nPage%>')"><%= nPage %></a>
+        <%-- 게시글이 존재한다면 (totalPage 검사) 페이지네이션 생성(현재블럭의 첫페이지~끝페이지) --%>
+		<c:set var="paging" value="${paging}" />
+        <c:if test="${paging.totalPage != 0}">
+        
+			<%-- 페이지네이션 --%>
+        	<ul id="pagination">
+				<%-- 현재 페이지블럭이 첫블럭이 아니라면 이전 블럭/첫페이지로 버튼 --%>
+	        	<c:if test="${paging.nowBlock > 1 }">
+	        		<li class="pageBtn btnPrev">
+	        			<a href="javascript:goPageFn('1')" title="첫 페이지로">
+	        				<i class="fa-solid fa-angles-left"></i>
+	        			</a>
+	        		</li>
+		        	<li class="pageBtn btnPrev">
+		        		<a href="javascript:goPageFn('${paging.pageStart - 1}')" title="이전 페이지로">
+		        			<i class="fa-solid fa-angle-left"></i>
+		        		</a>
 		        	</li>
-       		  <%} //for(int nPage=pageStart; nPage<pageEnd; nPage++)
-        	
-        	// 현재 페이지블럭이 마지막블럭이 아니라면 '다음블럭으로', '마지막페이지로' 버튼생성
-        	if(totalBlock > nowBlock) { %>
-				<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=pageStart+pagePerBlock%>')"  title="다음 페이지로"><i class="fa-solid fa-angle-right"></i></a></li>
-          		<li class="pageBtn btnNext"><a href="javascript:goPageFn('<%=totalPage%>')" title="마지막 페이지로"><i class="fa-solid fa-angles-right"></i></a></li>
-          <% } //if(totalBlock > nowBlock) { %>
-        </ul> <!--#pagination-->
-        
-       <% } //if(totalPage != 0) %>
+	        	</c:if> <%-- if(paging.nowBlock > 1) --%>
+	        	
+	        	<c:forEach var="nPage" begin="${paging.pageStart}" end="${paging.pageEnd - 1}">
+	        		<%-- 클릭한 페이지네이션과 현재페이지가 같다면 스타일 적용 --%>
+	        		<li class="${nPage == paging.nowPage ? 'on' : ''}">
+	        			<a href="javascript:goPageFn('${nPage}')">${nPage}</a>
+	        		</li>
+	        	</c:forEach>
+	        	
+	        	<%-- 현재 페이지블럭이 마지막블럭이 아니라면 다음 블럭/마지막페이지로 버튼 --%>
+	        	<c:if test="${paging.totalBlock > paging.nowBlock}">
+	        		<li class="pageBtn btnNext">
+	        			<a href="javascript:goPageFn('${paging.pageStart + paging.pagePerBlock}')"  title="다음 페이지로">
+	        				<i class="fa-solid fa-angle-right"></i>
+	        			</a>
+	        		</li>
+          			<li class="pageBtn btnNext">
+	          			<a href="javascript:goPageFn('${paging.totalPage}')" title="마지막 페이지로">
+	          				<i class="fa-solid fa-angles-right"></i>
+	          			</a>
+          			</li>
+	        	</c:if>
+        	</ul> <%-- #pagination --%>
+        </c:if> <%-- if(paging.totalPage != 0) --%>
   
         <div id="postSearch">
           <form action="board01" method="get" name="frmPostSearch" autocomplete="off">
@@ -321,42 +224,40 @@
   
             <input type="text" name="keyWord" id="keyWord" required />
             
-    		<% if(!(category == null || category.equals(""))) {%>
-    		<input type="hidden" name="category" value="<%=category%>" />
-    		<% } %>
+            <c:if test="${not empty filter.category}">
+            	<input type="hidden" name="category" value="${filter.category}" />
+            </c:if>
     	
-    		<% if(!(tab == null || tab.equals(""))) {%>
-    		<input type="hidden" name="tab" value="<%=tab%>" />
-    		<% } %>
-  
+            <c:if test="${not empty filter.tab}">
+            	<input type="hidden" name="category" value="${filter.tab}" />
+            </c:if>
             <button>검색</button>
           </form>
-        </div> <!--postSearch-->
+        </div> <%--postSearch--%>
         
-	  <!-- 임시: 개발자용 글복사버그 
-	  <button type="button" onclick="location.href='forDev/postbug?category=<category%>'">글복사버그</button>-->
+	  <%-- 임시: 개발자용 글복사버그 
+	  <button type="button" onclick="location.href='forDev/postbug?category=<category%>'">글복사버그</button>--%>
 
-      </article> <!-- #post-->
+      </article> <%-- #post--%>
 
 	  <div id="rightBox">
 	      <article id="bestPost">
 	        <h3><a href="http://localhost:8080/board/board01?nowPage=1&tab=인기">🌟 실시간 인기글</a></h3>
 	        
-	        <% // 인기글 목록 출력 
-	        	ArrayList<BoardBean> bestList = bMgr.getBestList();
-	        	if(bestList.isEmpty()) { %>
+	        <c:choose>
+	        	<c:when test="${empty bestList}">
 	        		<p>등록된 인기글이 없습니다.</p>
-	        <% } else {
-	        		int roofCount = bestList.size() >= 6 ? 6 : bestList.size(); %>
+	        	</c:when>
+	        	<c:otherwise>
 	        		<ul>
-	        	 <% for(int i=0; i<roofCount; i++) {
-	        		 BoardBean bBean = bestList.get(i);
-	        		 int bBoardid = bBean.getBoardid();
-	        		 String bTitle = bBean.getTitle(); %>
-	          		<li><a href="board02?num=<%=bBoardid%>"><%=bTitle%></a></li>
-	          	 <% }
-	          	 }%>
-	        </ul>
+		        		<c:forEach var="bBean" items="${bestList}" varStatus="status">
+		        			<c:if test="${status.index < 6}">
+		        				<li><a href="board02?num=${bBean.boardid}">${bBean.title}</a></li>
+		        			</c:if>
+		        		</c:forEach>
+	        		</ul>
+	        	</c:otherwise>
+	        </c:choose>
 	      </article>
 	      
 	      <article id="bestBook">
@@ -364,27 +265,31 @@
 	      	<i class="fa-solid fa-circle-question"></i>
 	      	<span>최근 50개의 글 중 연관도서로 많이 언급된 도서목록입니다.</span>
 	      	
-	      	<% // 최근글 중 많이 언급되는 책 목록 출력 
-	        	ArrayList<int[]> bestBookList = bMgr.getBestBookList();
-	        	if(bestBookList.isEmpty()) { %>
-	        		<p>최근 언급된 도서가 없습니다.</p>
-	        <%  } else {
-	        		int roofCount = bestBookList.size() >= 10 ? 10 : bestBookList.size();
-	        		%>
-	        		<ul>
-	        	 <% for(int i=0; i<roofCount; i++) {
-	        		 int[] bestBookInfo = bestBookList.get(i);        		 
-	        		 int bookid = bestBookInfo[0];
-	        		 int mentionedCount = bestBookInfo[1];
-	        		 
-	        		 BookBean book = bMgr.getBook(bookid); %>
-	          		<li><a href="/shop/shop02?bookid=<%=bookid%>">
-	          			<p><span><%=book.getTitle()%></span> <span>(<%=book.getGenre()%>)</span></p>
-	          			<span><%=mentionedCount%>회</span>
-	          		</a></li>
-	          	<% } //for %>
-	        	 </ul>
-	       <% } //else %>
+	      	<c:choose>
+	      		<c:when test="${empty bestBookList}">
+	      			<p>최근 언급된 도서가 없습니다.</p>
+	      		</c:when>
+	      		<c:otherwise>
+	      			<ul>
+	      				<c:forEach var="bestBookInfo" items="${bestBookList}" varStatus="status">
+	      					<c:if test="${status.index < 10}">
+	                            <c:set var="bookid" value="${bestBookInfo[0]}" />
+	                            <c:set var="mentionedCount" value="${bestBookInfo[1]}" />
+	                            <c:set var="book" value="${bMgr.getBook(bookid)}" />
+				          		<li>
+					          		<a href="/shop/shop02?bookid=${bookid}">
+					          			<p>
+					          				<span>${book.title}</span> 
+                                        	<span>(${book.genre})</span>
+					          			</p>
+					          			<span>${mentionedCount}회</span>
+					          		</a>
+				          		</li>
+	      					</c:if> <%-- if(status.index < 10) --%>
+	      				</c:forEach>
+	      			</ul>
+	      		</c:otherwise>
+	      	</c:choose>
 	      </article>
 	  </div>
 	  
@@ -395,35 +300,33 @@
     </footer>
     
     <form action="board01" method="get" name="pageFrm">
-    	
-    	<% if(!(keyWord == null || keyWord.equals(""))) {%>
-    	<input type="hidden" name="keyField" value="<%=keyField%>" />
-    	<input type="hidden" name="keyWord" value="<%=keyWord%>" />
-    	<% } %>
-    	<% if(!(category == null || category.equals(""))) {%>
-    	<input type="hidden" name="category" value="<%=category%>" />
-    	<% } %>
-    	<% if(!(tab == null || tab.equals(""))) {%>
-    	<input type="hidden" name="tab" value="<%=tab%>" />
-    	<% } %>
-    	
-    	<input type="hidden" name="nowPage" />
-    </form>
-    
-    <form action="board01" method="get" name="tabFrm">
-    
-    	<% if(!(keyWord == null || keyWord.equals(""))) {%>
-    	<input type="hidden" name="keyField" value="<%=keyField%>" />
-    	<input type="hidden" name="keyWord" value="<%=keyWord%>" />
-    	<% } %>
-    	
-    	<% if(!(category == null || category.equals(""))) {%>
-    	<input type="hidden" name="category" value="<%=category%>" />
-    	<% } %>
-    	
-    	<input type="hidden" name="nowPage" value="1" />
-    	<input type="hidden" name="tab" />
-    </form>
+	    <c:if test="${not empty filter.keyWord}">
+	        <input type="hidden" name="keyField" value="${filter.keyField}" />
+	        <input type="hidden" name="keyWord" value="${filter.keyWord}" />
+	    </c:if>
+	    <c:if test="${not empty filter.category}">
+	        <input type="hidden" name="category" value="${filter.category}" />
+	    </c:if>
+	    <c:if test="${not empty filter.tab}">
+	        <input type="hidden" name="tab" value="${filter.tab}" />
+	    </c:if>
+	    
+	    <input type="hidden" name="nowPage" />
+	</form>
+	
+	<form action="board01" method="get" name="tabFrm">
+	    <c:if test="${not empty filter.keyWord}">
+	        <input type="hidden" name="keyField" value="${filter.keyField}" />
+	        <input type="hidden" name="keyWord" value="${filter.keyWord}" />
+	    </c:if>
+	    
+	    <c:if test="${not empty filter.category}">
+	        <input type="hidden" name="category" value="${filter.category}" />
+	    </c:if>
+	    
+	    <input type="hidden" name="nowPage" value="1" />
+	    <input type="hidden" name="tab" />
+	</form>
     
   </div>
   <script>

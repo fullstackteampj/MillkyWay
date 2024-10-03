@@ -1,3 +1,11 @@
+// 로그인 검사
+function goLogin() {
+	const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?");
+	if(result) {
+		location.href = "../login/login01";
+	}
+}
+
 const headerelement = document.querySelector('header');
 const $category = document.getElementById('category');
 const $rightBox = document.getElementById('rightBox');

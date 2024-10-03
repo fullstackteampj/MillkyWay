@@ -326,8 +326,8 @@
 	        <%   	
 	        // 현재 페이지블럭이 첫블럭이 아니라면 '이전블럭으로', '처음페이지로' 버튼 생성
 	        if(nowBlock > 1) { %>
-		        <li class="pageBtn btnPrev" title="첫 페이지로"><i class="fa-solid fa-angles-left"></i></li>
-		        <li class="pageBtn btnPrev" title="이전 페이지로" onclick="goPrevBlock(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-left"></i></li>
+		        <li class="pageBtn btnFirst" title="첫 페이지로" onclick="goComBlock(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angles-left"></i></li>
+		        <li class="pageBtn btnPrev" title="이전 페이지로" onclick="goComBlock(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-left"></i></li>
 	      <%} //if(nowBlock > 1)
         	
         	
@@ -340,8 +340,8 @@
         	
         	// 현재 페이지블럭이 마지막블럭이 아니라면 '다음블럭으로', '마지막페이지로' 버튼생성
         	if(totalBlock > nowBlock) { %>
-				<li class="pageBtn btnNext" title="다음 페이지로" onclick="goNextBlock(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-right"></i></li>
-          		<li class="pageBtn btnNext" title="마지막 페이지로" onclick="goLastPage(<%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angles-right"></i></li>
+				<li class="pageBtn btnNext" title="다음 페이지로" onclick="goComBlock(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angle-right"></i></li>
+          		<li class="pageBtn btnLast" title="마지막 페이지로" onclick="goComBlock(this, <%=num%>, <%=nowBlock%>, <%=pagePerBlock%>, <%=totalPage %>, <%=end%>);"><i class="fa-solid fa-angles-right"></i></li>
           <% } //if(totalBlock > nowBlock) %>
         	</ul> <!--#pagination-->
       <% } // if(totalPage != 0)%>

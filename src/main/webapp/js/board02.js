@@ -407,7 +407,6 @@ async function goComPage(boardid, nowBlock, pagePerBlock, totalPage, nowPage, en
 	const pageStart = (nowBlock-1)*pagePerBlock+1;
 	const pageEnd = ((pageStart + pagePerBlock) <= totalPage) ?  (pageStart + pagePerBlock) : totalPage+1;
 	const start = (nowPage-1)*end;
-	
 
 	// 보낼 데이터를 객체로 묶음
 	const commentData = {
@@ -445,114 +444,50 @@ async function goComPage(boardid, nowBlock, pagePerBlock, totalPage, nowPage, en
 	})
 }
 
-// 댓글 페이징 다음 블럭으로 요청
-async function goNextBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
+// 댓글 페이징 블럭 이동 요청
+async function goComBlock(element, boardid, nowBlock, pagePerBlock, totalPage, end) {
 	
+	const clicked = element.classList.item(1);
 	// 댓글박스 상단으로 스크롤
 	scrollFn();
+	let pageStart;
+	let pageEnd;
+	let nowPage;
+	let start;
 	
-	nowBlock = nowBlock+1;
-	const pageStart = (nowBlock-1)*pagePerBlock+1;
-	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	const nowPage = pageStart;
-	const start = (nowPage-1)*end;
-
-	// 보낼 데이터를 객체로 묶음
-	const commentData = {
-		boardid,
-		start,
-		end,
-		pageStart,
-		pageEnd,
-		nowBlock,
-		nowPage
-	}
-	
-	await fetch('commentGoBlock', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(commentData)
-	})
-	
-	.then(response => response.text())
-	.then(data => {
-		// commentCont에 요소비우기
-		 const $commentBox = document.getElementById('commentBox');
-		 const $commentCont = document.getElementById('commentCont');
-		 while($commentCont.firstChild)  {
-			$commentCont.removeChild($commentCont.firstChild);
-		}
+	// 다음블럭으로
+	if(clicked === "btnNext") {
+		nowBlock = nowBlock+1;
+		pageStart = (nowBlock-1)*pagePerBlock+1;
+		pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+		nowPage = pageStart;
+		start = (nowPage-1)*end;
 		
-		// contentbox에 요소채우기
-		$commentBox.innerHTML = data;
-	})
-	.catch(error => {
-		console.error(error);
-	})
-}
-
-// 댓글 페이징 이전 블럭으로 요청
-async function goPrevBlock(boardid, nowBlock, pagePerBlock, totalPage, end) {
-
-	// 댓글박스 상단으로 스크롤
-	scrollFn();
+	// 이전블럭으로
+	} else if(clicked === "btnPrev") {
+		nowBlock = nowBlock-1;
+		pageStart = (nowBlock-1)*pagePerBlock+1;
+		pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+		nowPage = pageEnd-1;
+		start = (nowPage-1)*end;
 	
-	nowBlock = nowBlock-1;
-	const pageStart = (nowBlock-1)*pagePerBlock+1;
-	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	const nowPage = pageEnd-1;
-	const start = (nowPage-1)*end;
-	
-	// 보낼 데이터를 객체로 묶음
-	const commentData = {
-		boardid,
-		start,
-		end,
-		pageStart,
-		pageEnd,
-		nowBlock,
-		nowPage
+	// 마지막블럭으로
+	} else if(clicked === "btnLast") {
+		const totalBlock = Math.ceil(totalPage / pagePerBlock);
+		nowBlock = totalBlock;
+		pageStart = (nowBlock-1)*pagePerBlock+1;
+		pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+		nowPage = totalPage;
+		start = (nowPage-1)*end;
+
+	// 첫블럭으로
+	} else if(clicked === "btnFirst") {
+		nowBlock = 1;
+		pageStart = (nowBlock-1)*pagePerBlock+1;
+		pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+		nowPage = 1;
+		start = (nowPage-1)*end;
 	}
-	
-	await fetch('commentGoBlock', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(commentData)
-	})
-	
-	.then(response => response.text())
-	.then(data => {
-		// commentCont에 요소비우기
-		 const $commentBox = document.getElementById('commentBox');
-		 const $commentCont = document.getElementById('commentCont');
-		 while($commentCont.firstChild)  {
-			$commentCont.removeChild($commentCont.firstChild);
-		}
-		
-		// contentbox에 요소채우기
-		$commentBox.innerHTML = data;
-	})
-	.catch(error => {
-		console.error(error);
-	})
-}
-
-// 댓글 페이징 마지막페이지로 요청
-async function goLastPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
-
-	// 댓글박스 상단으로 스크롤
-	scrollFn();
-	
-	const totalBlock = Math.ceil(totalPage / pagePerBlock);
-	nowBlock = totalBlock;
-	const pageStart = (nowBlock-1)*pagePerBlock+1;
-	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	const nowPage = totalPage;
-	const start = (nowPage-1)*end;
 	
 	// 보낼 데이터를 객체로 묶음
 	const commentData = {
@@ -589,52 +524,3 @@ async function goLastPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
 		console.error(error);
 	})
 }
-
-// 댓글 페이징 첫번째페이지로 요청
-async function goFirstPage(boardid, nowBlock, pagePerBlock, totalPage, end) {
-
-	// 댓글박스 상단으로 스크롤
-	scrollFn();
-	
-	nowBlock = 1;
-	const pageStart = (nowBlock-1)*pagePerBlock+1;
-	const pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
-	const nowPage = 1;
-	const start = (nowPage-1)*end;
-	
-	// 보낼 데이터를 객체로 묶음
-	const commentData = {
-		boardid,
-		start,
-		end,
-		pageStart,
-		pageEnd,
-		nowBlock,
-		nowPage
-	}
-	
-	await fetch('commentGoBlock', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(commentData)
-	})
-	
-	.then(response => response.text())
-	.then(data => {
-		// commentCont에 요소비우기
-		 const $commentBox = document.getElementById('commentBox');
-		 const $commentCont = document.getElementById('commentCont');
-		 while($commentCont.firstChild)  {
-			$commentCont.removeChild($commentCont.firstChild);
-		}
-		
-		// contentbox에 요소채우기
-		$commentBox.innerHTML = data;
-	})
-	.catch(error => {
-		console.error(error);
-	})
-}
-
