@@ -24,6 +24,7 @@
 	String[] bookids = null;
 	String[] orderNums = null;
 
+	//ver1. 데이터 개수에 따라 if문으로 나누어서 다른 변수 타입에 저장
 	if(request.getParameterValues("bookids") == null && request.getParameterValues("orderNums") == null){
 		//배열 데이터가 없는 경우 단일데이터(바로 구매 버튼 통해서 들어오는 경우)
 		bookid = Integer.parseInt(request.getParameter("bookid")); 
@@ -251,6 +252,9 @@
 			frm.zipcode.value = '<%=zipcode%>';
 			frm.address.value = '<%=address%>';
 			frm.detailAddress.value = '<%=detailAddress%>';
+			if(frm.detailAddress.value === 'null'){
+				frm.detailAddress.value = '';
+			}
 		}else{
 			frm.receiveName.value = '';
 			frm.receivePhone.value = '';
@@ -264,8 +268,7 @@
 	const now = new Date();
 	const randomNum = Math.floor(Math.random() * 101);//0-100 난수 
 	const $totPrice = document.querySelector('.totalPrice');
-	const mName = '<%=name%>';
-	console.log(mName);
+
 	function reqKakaoPay(){
 	  IMP.init("imp11026118"); //mykey
 	  IMP.request_pay(
@@ -290,7 +293,7 @@
 	                    // 백엔드로 주문 생성 요청
 	                    axios.post("http://localhost:8080/orders/kakaoPay?impUid="+res.imp_uid).then((response) => {
 	                        console.log('response.data = ' + response.data);
-	                        frm.action = '/procs/buyProc';
+	                        frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent;
 	                        frm.submit();
 	                        
 	                    }).catch((error) => {

@@ -27,13 +27,14 @@
 	String[] bookids = null;
 	String[] eachNum = null;
 	String payMethod = request.getParameter("payMethod");
+	int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
 	boolean result = false;
 	
-	//데이터 개수에 상관없이 
+	//ver.2 데이터 개수에 상관없이 배열로 받기(그래서 bean파일 사용 안함)
 	bookids =  request.getParameterValues("bookids");
 	eachNum =  request.getParameterValues("eachNum");
 	
-	result = oMgr.insertPurchaseOne(userid, bookids, eachNum, payMethod);
+	result = oMgr.insertPurchaseOne(userid, bookids, eachNum, payMethod, totalPrice);
 	
 	if(result){
 		%>
