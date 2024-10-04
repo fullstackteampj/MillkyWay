@@ -55,24 +55,24 @@
 				
 					<div class="inputPhoto">
 						<label for="photo">도서 표지사진</label><br />
-						<input type="file" name="photo" id="photo"/>
+						<input type="file" name="photo" id="photo" required />
 						<input type="text" name="photoText"  />
 					</div>
 					
 					<ul class="shortInput">
 						<li>
 							<label for="title">도서 제목</label>
-							<input type="text" name="title" id="title" />
+							<input type="text" name="title" id="title" required />
 						</li>
 						
 						<li>
 							<label for="author">도서 작가</label>
-							<input type="text" name="author" id="author" />
+							<input type="text" name="author" id="author" required />
 						</li>
 						
 						<li>
 							<label for="category">도서 카테고리</label>
-							<select name="category" id="category">
+							<select name="category" id="category" required>
 								<option value="국내도서">국내도서</option>
 								<option value="해외도서">해외도서</option>
 								<option value="eBook">eBook</option>
@@ -81,71 +81,67 @@
 						
 						<li>
 							<label for="genre">도서 장르</label>
-							<input type="text" name="genre" id="genre" />
+							<input type="text" name="genre" id="genre" required />
 						</li>
 						
 						<li>
 							<label for="review">도서 리뷰</label>
-							<input type="text" name="review" id="review" placeholder="한줄로 간단히 작성" />
+							<input type="text" name="review" id="review" placeholder="한줄로 간단히 작성" required />
 						</li>
 						
 						<li>
 							<label for="publish_date">도서 출판일</label>
-							<input type="text" name="publish_date" id="publish_date" placeholder="2000-01-01 형식으로 작성"/>
+							<input type="text" name="publish_date" id="publish_date" placeholder="2000-01-01 형식으로 작성" required/>
 						</li>
 							
 						<li>
 							<label for="isbn">도서 isbn</label>
-							<input type="text" name="isbn" id="isbn" placeholder="숫자만 작성" />
+							<input type="text" name="isbn" id="isbn" placeholder="숫자만 작성" required />
 						</li>
 						
 						<li>
 							<label for="stock_Quantity">도서 재고</label>
-							<input type="text" name="stock_Quantity" id="stock_Quantity" placeholder="숫자만 작성"/>
+							<input type="text" name="stock_Quantity" id="stock_Quantity" placeholder="숫자만 작성" required/>
 						</li>
 						
 						<li>
 							<label for="price">도서 가격</label>
-							<input type="text" name="price" id="price" placeholder="숫자만 작성"/>
+							<input type="text" name="price" id="price" placeholder="숫자만 작성" required />
 						</li>
 						
 						<li>
 							<label for="pages">도서 페이지수</label>
-							<input type="text" name="pages" id="pages" placeholder="숫자만 작성"/>
+							<input type="text" name="pages" id="pages" placeholder="숫자만 작성" required />
 						</li>
 					</ul><!-- .shortInputr -->
-
 				</div><!-- .topContainer -->
 				
 				<ul>
 					<li>
 						<label for="contents">도서 내용 요약글</label><br />
-						<input type="text" name="contents" id="contents" />
+						<input type="text" name="contents" id="contents" required />
 					</li>
 					
 					<li>
 						<label for="authorIntro">저자 소개</label><br />
-						<input type="text" name="authorIntro" id="authorIntro" />
+						<input type="text" name="authorIntro" id="authorIntro" required />
 					</li>
 					
 					<li>
 						<label for="contentsTables">목차</label><br />
-						<input type="text" name="contentsTables" id="contentsTables" />
+						<input type="text" name="contentsTables" id="contentsTables" required />
 					</li>
 					
 					<li>
 						<label for="miniIntro">간단 소개글</label><br />
-						<input type="text" name="miniIntro" id="miniIntro" />
+						<input type="text" name="miniIntro" id="miniIntro" required />
 					</li>
 				</ul>
-				
-				
 				
 				<button>도서 정보 삭제</button>
 			</form>
 		</section>
 		
-		<footer></footer>
 	</div>
 <script>
       const $search = document.querySelector('.searchFrame>.search');
@@ -347,6 +343,6 @@
         });
       });//$searchItems.forEach(($searchItem)
 
-	</script>
+</script>
 </body>
 </html>
