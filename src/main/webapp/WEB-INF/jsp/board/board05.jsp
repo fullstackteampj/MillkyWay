@@ -75,8 +75,8 @@
 	// 페이지 로드 시, 로그인이 안되어있거나 글작성자와 로그인유저가 다를시 접근제한 (직접 주소창으로 접근 시 제한)
 	window.onload = function() {
 		if(!<%=loginOk%> || !<%=identify%>) {
-		alert("권한이 없습니다.");
-		location.href = "board02?num=" + <%=num%>;
+			alert("권한이 없습니다.");
+			location.href = "board02?num=" + <%=num%>;
       	}
 		
 		// 입력창에 포커스
@@ -90,6 +90,13 @@
  	        $frm.pwd.focus();
  	        return;
  	      }
+ 	      
+ 	      // 글 작성자와 로그인유저 id가 다를 시 권한없음
+ 	      if(!<%=identify%>) {
+ 	 		alert("권한이 없습니다.");
+ 			location.href = "board02?num=" + <%=num%>;
+ 	      }
+ 	      
  	  	$frm.submit();
     }
 	</script>

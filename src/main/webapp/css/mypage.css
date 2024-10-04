@@ -628,7 +628,7 @@ section.myPage05 > .sectionHead > .myInfoContainer > .myInfo > p {
   justify-content: space-around;
   width: 20%;
   height: 100%;
-  padding: 20px;
+  padding: 10px 20px;
   background-color: #fff;
   border-radius: 10px;
   box-sizing: border-box;

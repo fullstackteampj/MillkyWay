@@ -1,10 +1,18 @@
-const $header = document.querySelector('header');
+// 로그인 검사
+function goLogin() {
+	const result = confirm("로그인이 필요한 서비스 입니다.\n로그인 하시겠습니까?");
+	if(result) {
+		location.href = "../login/login01";
+	}
+}
+
+const headerelement = document.querySelector('header');
 const $category = document.getElementById('category');
-const $bestPost = document.getElementById('bestPost');
+const $rightBox = document.getElementById('rightBox');
 const $footer = document.querySelector('footer');
 const scrollTop = Math.ceil(window.scrollY);
 
-let lastScroll = document.documentElement.scrollTop || 0;
+let lastScrollba = document.documentElement.scrollTop || 0;
 
 // 상단고정/하단막힘 함수 정의
 // 1. 스크롤업/다운에 따라 유동적인 헤더높이에 맞춰 스크롤에 따른 top값을 동적으로 부여해 상단고정.
@@ -67,33 +75,33 @@ window.addEventListener('scroll', ()=>{
 
   // 인기글
   if(scrollTop >= 100) {
-    $bestPost.style.top = (scrollTop-100) + 'px';
+    $rightBox.style.top = (scrollTop-100) + 'px';
   } else if(scrollTop < 100) {
-    $bestPost.style.top = '0';
+    $rightBox.style.top = '0';
   }
 
   // 헤더 - 스크롤 시 세로스크롤만 상단 fixed
-  $header.style.top = scrollTop + 'px';
+  headerelement.style.top = scrollTop + 'px';
 
   // 스크롤 감지 if문 - 업, 다운에 따른 헤더높이 변동. 그에따른 카테고리박스, 인기글박스의 상단고정값 변동.
-  if(nowScroll > lastScroll) { // 스크롤 다운
+  if(nowScroll > lastScrollba) { // 스크롤 다운
     // 헤더
-    $header.classList.add('scrolled');
+    headerelement.classList.add('scrolled');
     // 카테고리
     topfixedFn($category, $footer, 120);
     // 인기글
-    topfixedFn($bestPost, $footer, 170);
+    topfixedFn($rightBox, $footer, 170);
 
   } else { // 스크롤 업
     //헤더 - 스크롤업 시 헤더탑 보이기
-    $header.classList.remove('scrolled');
+    headerelement.classList.remove('scrolled');
     // 카테고리
     topfixedFn($category, $footer, 50);
     // 인기글
-    topfixedFn($bestPost, $footer, 100);
+    topfixedFn($rightBox, $footer, 100);
   }
   
-  lastScroll = nowScroll;
+  lastScrollba = nowScroll;
 });
 
 // 요소 클릭했을 때 스타일 적용
