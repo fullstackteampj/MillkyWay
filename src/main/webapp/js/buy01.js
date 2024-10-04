@@ -217,59 +217,10 @@ $payBtns.forEach($payBtn => {
   });
 });
 
-//결제 API - 카카오페이 사용
-const now = new Date();
-const randomNum = Math.floor(Math.random() * 101);//0-100 난수 
-
-const $totPrice = document.querySelector('.totalPrice');
-const mName = '<%=name%>';
-console.log(mName);//문제다 문제~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-function reqKakaoPay(){
-  IMP.init("imp11026118"); //mykey
-  IMP.request_pay(
-      {
-        pg: "kakaopay.TC0ONETIME", //테스터용 코드 TC0ONETIME
-        pay_method: "card", // 생략가능
-        merchant_uid: "randomNum_" + randomNum + "order_time_" + now, 
-        //매번 다르게 설정되어야 다른 결제로 인식, 난수 + 현재 시간 붙여줌(동시 결제 고려)
-        name: "은하수 책방 도서구매",
-        amount: $totPrice.textContent,
-        buyer_email: "<%=account%>",
-        buyer_name: "<%=name%>",
-        buyer_tel: "<%=phone%>",
-        buyer_addr: "<%=address%> <%=detailAddress%>",
-        buyer_postcode: "<%=zipcode%>"
-      },
-      function (res) {
-        console.log(res);
-      // 결제 성공 시 처리
-                if (res.success) {
-                    console.log("res 성공~");
-                    // 백엔드로 주문 생성 요청
-                    axios.post("http://localhost:8080/orders/kakaoPay?impUid="+res.imp_uid).then((response) => {
-                        console.log('response.data = ' + response.data);
-                        frm.action = '/procs/buyProc';
-                        frm.submit();
-                        
-                    }).catch((error) => {
-                        console.error(error);
-                        alert("에러가 발생했습니다. 잠시후 다시 실행해 주세요.")
-                    });
-                }else{
-                    alert("에러메세지: " + rsp.error_msg);
-                }//else
-      }//function (res)
-  );//IMP.request_pay
-}//reqKakaoPay()
-
 //buyFrm - submit 이벤트
 frm.addEventListener('submit', (evt)=>{
-  if(payment === '카카오페이'){
-    evt.preventDefault(); 
-    reqKakaoPay();
-    
-  }else{
-    evt.preventDefault(); 
-  }
+  evt.preventDefault(); 
+  if(payment === '카카오페이') reqKakaoPay();
+   
 });
 
