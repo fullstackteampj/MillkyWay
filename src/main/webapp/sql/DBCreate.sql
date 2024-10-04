@@ -10,16 +10,6 @@
 -- 각 테이블간 참조관계를 고려하여 참조된 필드가 있는 테이블 먼저 삭제
 -- 모든 테이블이 삭제된 후 데이터베이스를 삭제하여
 -- 잔여 데이터가 남지않도록 삭제
-DROP TABLE IF EXISTS canceltbl;
-DROP TABLE IF EXISTS carttbl;
-DROP TABLE IF EXISTS wishtbl;
-DROP TABLE IF EXISTS purchasetbl;
-DROP TABLE IF EXISTS commenttbl;
-DROP TABLE IF EXISTS Reviewtbl;
-DROP TABLE IF EXISTS boardtbl;
-DROP TABLE IF EXISTS Booktbl;
-DROP TABLE IF EXISTS membertbl;
-
 DROP DATABASE IF EXISTS MillkyWayDB;
 
 
@@ -260,6 +250,8 @@ CREATE TABLE canceltbl (
     userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 주문 취소 상태 (cancelled, pending 등)
+    price INT default 12000,                        -- 도서 가격 (원화)
+	quantity INT default 1,                         -- 구매 수량
     cancellation_date DATE,                         -- 주문 취소 날짜
     cancellation_reason TEXT,                       -- 주문 취소 사유
 

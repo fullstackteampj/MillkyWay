@@ -71,6 +71,13 @@
 	}//check()
 	
 	
+	function checkSignOut() {
+		if(confirm("한번 탈퇴한 아이디(이메일)로는 재가입이 불가능 합니다. \n 회원 탈퇴를 진행하시겠습니까?")) {
+			location.href="/mypage/signout";
+		}
+	}//checkSignOut()
+	
+	
    </script>
 </head>
 
@@ -140,7 +147,7 @@
 
             <button type="button" onClick="check()">수정하기</button>
             <button type="button" onClick="document.userUpdateFrm.reset()">다시쓰기</button>
-            <button type="button" onClick="javascript:history.back()">뒤로가기</button>
+            <button type="button" onClick="checkSignOut()">탈퇴하기</button>
           	<input type="hidden" name="userId" value="<%=userId%>" />
           </form>
         </div>

@@ -96,7 +96,7 @@ $point-color : rgb(100, 130, 173);
                         justify-content: space-around;
                         width: 20%;
                         height: 100%;
-                        padding: 20px;
+                        padding: 10px 20px;
                         background-color: #fff;
                         border-radius: 10px;
                         box-sizing: border-box;
@@ -109,6 +109,10 @@ $point-color : rgb(100, 130, 173);
                             color: skyblue;
                             font-size: 20px;
                             font-weight: 600;
+                        }
+
+                        >button{
+
                         }
                     }//.content
                 }//li

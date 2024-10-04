@@ -498,9 +498,53 @@
 	
 	
 	function buyCartListsNow() {
-		document.cartFrm.action = '/buy/buy01';
-		document.cartFrm.method = 'get';
-		document.cartFrm.submit();
+		
+		// 체크박스중 체크된 목록의 값만 배열에 저장
+		const $cartChkBoxs = document.querySelectorAll('input[name=cart]');
+		const $bookids = document.querySelectorAll('input[name=bookids]');
+		const $orderNums = document.querySelectorAll('input[name=orderNums]');
+		let bookids = [];
+		let orderNums = [];
+		let checkResult = false;
+		$cartChkBoxs.forEach(($cartChkBox,idx)=>{
+			if($cartChkBox.checked){
+				checkResult = true;
+				bookids.push($bookids[idx].value);
+				orderNums.push($orderNums[idx].value);
+			}
+		});
+		
+		if (checkResult) {
+	        // 새 폼 생성
+	        const $form = document.createElement('form');
+	        $form.method = 'post';
+	        $form.action = '/buy/buy01';
+
+	        // 체크된 값들을 폼에 추가
+	        for (let j = 0; j < bookids.length; j++) {
+	            const $input = document.createElement('input');
+	            $input.type = 'hidden';
+	            $input.name = 'bookids';
+	            $input.value = bookids[j];
+	            $form.appendChild($input);
+	        }
+	        
+	        // 체크된 값들을 폼에 추가
+	        for (let j = 0; j < orderNums.length; j++) {
+	            const $input = document.createElement('input');
+	            $input.type = 'hidden';
+	            $input.name = 'orderNums';
+	            $input.value = orderNums[j];
+	            $form.appendChild($input);
+	        }
+
+	        // 폼 제출
+	        document.body.appendChild($form);
+	        $form.submit();
+	    } else {
+	        alert("선택된 항목이 없습니다."); // 체크된 항목이 없을 때 경고
+	    }
+		
 	}//buyCartListsNow()
 
 
