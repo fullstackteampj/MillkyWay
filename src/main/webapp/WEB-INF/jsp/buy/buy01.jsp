@@ -265,7 +265,7 @@
 		}
 	});
 	
-	//결제 API - 카카오페이 사용
+	//결제 API - 카카오페이
 	const now = new Date();
 	const randomNum = Math.floor(Math.random() * 101);//0-100 난수 
 	const $totPrice = document.querySelector('.totalPrice');
