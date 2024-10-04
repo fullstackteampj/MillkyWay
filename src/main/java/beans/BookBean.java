@@ -14,6 +14,7 @@ public class BookBean {
 	private String contentsTables;
 	private String miniIntro;
 	private byte[] photo;
+	private String encodedPhoto; // Base64로 인코딩된 이미지
 	private String publish_date;
 	private String isbn;
 	private int stock_Quantity;
@@ -122,6 +123,12 @@ public class BookBean {
 	}
 	public void setPrice(int price) {
 		this.price = price;
+	}
+	public String getEncodedPhoto() {
+		return encodedPhoto;
+	}
+	public void setEncodedPhoto(String encodedPhoto) {
+		this.encodedPhoto = encodedPhoto;
 	}
 
 }
