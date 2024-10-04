@@ -52,7 +52,7 @@
 		
 		<section class="admin">
 			<form action="updateBook" method="post" name="updateBookFrm" id="updateBookFrm" enctype="multipart/form-data">
-			
+				
 				<c:choose>
 					<%-- 파라미터값이 존재하지않으면 --%>
 					<c:when test="${empty bookid}">
@@ -61,6 +61,7 @@
 					
 					<%-- 파라미터값이 존재하면(insert에서 검색해 넘어왔을 경우) --%>
 					<c:otherwise>
+					<input type="hidden" name="bookid" value="${bookid}" />
 					<div id="bookInfoWrap">
 						<div class="topContainer">
 							<c:if test="${not empty book}">

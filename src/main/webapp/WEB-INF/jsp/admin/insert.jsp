@@ -206,7 +206,6 @@
         const $author = document.createElement('p');
         const $genre = document.createElement('p');
 
-        //$a.setAttribute('href','javascript:bookInfoFn('+bookid+', "update")');
         $a.setAttribute('href','/admin/update?bookid=' + bookid);
         $image.setAttribute('src','/image?bookid=' + bookid);
         $image.setAttribute('alt', title);

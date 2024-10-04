@@ -133,9 +133,9 @@ public class AdminServlet extends HttpServlet {
     	if("/updateBook".equals(path)) {
     		AdminMgr aMgr = new AdminMgr();
     		boolean result = aMgr.updateBook(request);
-    		int requestid = Integer.parseInt(request.getParameter("requestid"));
+    		int bookid = (request.getParameter("requestid") != null) ? Integer.parseInt(request.getParameter("requestid")) : Integer.parseInt(request.getParameter("bookid"));
     		if(result) {
-    			response.sendRedirect("/admin/adminSuccess?success=updatesuccess&requestid="+requestid);
+    			response.sendRedirect("/admin/adminSuccess?success=updatesuccess&requestid="+bookid);
     		} else {
     			response.sendRedirect("/admin/adminError?error=updateFail");
     		}

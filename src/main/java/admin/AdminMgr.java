@@ -105,6 +105,9 @@ public class AdminMgr {
     	InputStream imageInputStream = imagePart.getInputStream();
     	//String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
     	
+    	System.out.println("request.getParameter(\"bookid\") = " + request.getParameter("bookid"));
+    	int bookid = (request.getParameter("requestid") != null) ? Integer.parseInt(request.getParameter("requestid")) : Integer.parseInt(request.getParameter("bookid"));
+    	
 		try {
 			con = pool.getConnection();
 			// 새로운 사진이 있으면 업데이트
@@ -116,7 +119,7 @@ public class AdminMgr {
 					+ "WHERE bookid = ?;";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setBlob(15, imageInputStream);
-				pstmt.setInt(16, Integer.parseInt(request.getParameter("requestid")));
+				pstmt.setInt(16, bookid);
 			} else {
 			// 없으면 기존유지
 				sql = "UPDATE booktbl SET "
@@ -125,7 +128,7 @@ public class AdminMgr {
 					+ "contents=?, authorIntro=?, contentsTables=?, miniIntro=? "
 					+ "WHERE bookid = ?;";
 				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(15, Integer.parseInt(request.getParameter("requestid")));
+				pstmt.setInt(15, bookid);
 			}
 			
 			pstmt.setString(1, request.getParameter("title"));
