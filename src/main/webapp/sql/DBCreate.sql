@@ -149,6 +149,7 @@ CREATE TABLE boardtbl (
     title VARCHAR(200) NOT NULL,                            -- 게시물 제목
     content TEXT NOT NULL,                                  -- 게시물 내용
     photo MEDIUMBLOB,                               	 	-- 게시물에 포함된 사진
+    photo_name VARCHAR(100),                        		-- 사진 이름
     genre VARCHAR(50) NOT NULL,                             -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
     tab VARCHAR(10) NOT NULL DEFAULT '일반',					-- 글의 탭분류 (일반, 질문, 감상, 추천)
     regdate datetime DEFAULT now() NOT NULL,                -- 게시물 작성 날짜
@@ -162,20 +163,21 @@ CREATE TABLE boardtbl (
 
 -- 댓글 테이블 생성
 CREATE TABLE commenttbl (
-	commentid INT PRIMARY KEY AUTO_INCREMENT,				-- 댓글 ID, 기본키 및 자동 증가
-	userid INT NOT NULL, 							        -- 댓글 작성자 id(식별자)
-    nickname VARCHAR(100) NOT NULL,							-- 댓글 작성자 닉네임
-	content TEXT NOT NULL,									-- 댓글 내용
+   commentid INT PRIMARY KEY AUTO_INCREMENT,            -- 댓글 ID, 기본키 및 자동 증가
+   userid INT NOT NULL,                              -- 댓글 작성자 id(식별자)
+    nickname VARCHAR(100) NOT NULL,                     -- 댓글 작성자 닉네임
+   content TEXT NOT NULL,                           -- 댓글 내용
     boardid INT NOT NULL DEFAULT 0,                         -- 댓글이 속한 글 (100~127 사이에서만)
-    pos INT NOT NULL DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
-    depth INT NOT NULL DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-	ref INT,												-- 대댓글이 속한 조상댓글
-	parentid INT,											-- 대댓글이 속한 직계부모댓글
+    pos INT NOT NULL DEFAULT 0,                        -- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
+    depth INT NOT NULL DEFAULT 0,                         -- 댓글의 깊이 (0은 최상위 댓글)
+   	ref INT,                                    -- 대댓글이 속한 조상댓글
+   	parentid INT,                                 -- 대댓글이 속한 직계부모댓글
     regdate DATETIME NOT NULL DEFAULT now(),                -- 댓글 작성 날짜
-    update_date DATETIME,                               	-- 댓글 수정 날짜
-    delete_date DATETIME,                               	-- 댓글 삭제 날짜
+    update_date DATETIME,                                  -- 댓글 수정 날짜
+    delete_date DATETIME,                                  -- 댓글 삭제 날짜
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
-    status INT NOT NULL DEFAULT 0							-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    status INT NOT NULL DEFAULT 0,                     -- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    totalChild INT DEFAULT 0                        -- 조상댓글의 자손댓글 수
 );
 
 -- 추천 테이블 생성

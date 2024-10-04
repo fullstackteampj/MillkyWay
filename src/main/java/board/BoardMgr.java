@@ -3,6 +3,7 @@ package board;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -11,8 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
+import SHA256.SHASalt;
 import beans.BoardBean;
+import beans.BookBean;
 import beans.CommentBean;
+import beans.MemberBean;
 
 public class BoardMgr {
 	private DBConnectionMgr pool;
@@ -96,8 +100,6 @@ public class BoardMgr {
 			sql += " order by boardid desc limit " + start + ", " + end;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			System.out.println("start = "+start);
-			System.out.println("end = "+end);
 			while(rs.next()) {
 				BoardBean bean = new BoardBean();
 				bean.setBoardid(rs.getInt("boardid"));
@@ -109,6 +111,7 @@ public class BoardMgr {
 					Blob photoBlob = rs.getBlob("photo");
 					byte[] photo = photoBlob.getBytes(1, (int)photoBlob.length());
 					bean.setPhoto(photo);
+					bean.setPhotoName(rs.getString("photo_name"));
 				}
 				bean.setGenre(rs.getString("genre"));
 				bean.setTab(rs.getString("tab"));
@@ -158,6 +161,36 @@ public class BoardMgr {
 		}
 		
 		return bList;
+	}
+	
+	// 게시글 50개중 많이 다뤄진 책 top10 추출
+	public ArrayList<int[]> getBestBookList() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		ArrayList<int[]> bestBook = new ArrayList<int[]>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT bookid, count(bookid) FROM "
+					+ "(SELECT * FROM boardtbl WHERE status=0 ORDER BY regdate DESC LIMIT 0, 50) currentBoard "
+					+ "WHERE bookid IS NOT null "
+					+ "GROUP BY bookid ORDER BY count(bookid) DESC LIMIT 0, 10;";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				int[] bestInfo = new int[2];
+				bestInfo[0] = rs.getInt("bookid");
+				bestInfo[1] = rs.getInt("count(bookid)");
+				bestBook.add(bestInfo);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return bestBook;
 	}
 	
 	// 현재 불러온 총 게시글 수 반환
@@ -292,7 +325,10 @@ public class BoardMgr {
 				bean.setNickname(rs.getString("nickname"));
 				bean.setTitle(rs.getString("title"));
 				bean.setContent(rs.getString("content"));
-				bean.setPhoto(rs.getBytes("photo"));
+				if(rs.getBytes("photo") != null) {
+					bean.setPhoto(rs.getBytes("photo"));
+					bean.setPhotoName(rs.getString("photo_name"));
+				}
 				bean.setGenre(rs.getString("genre"));
 				bean.setTab(rs.getString("tab"));
 				bean.setRegdate(rs.getString("regdate"));
@@ -374,47 +410,6 @@ public class BoardMgr {
 		return updateLiked;
 	}
 	
-	// 임시 !! 개발자용: 추천수
-	public int upLike(int ref, int uid) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int boardid = ref;
-		int userid = uid;
-		int updateLiked = 0;
-		try {
-			// 추천 수 증가
-			con = pool.getConnection();
-			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, boardid);
-			pstmt.setInt(2, userid);
-			pstmt.executeUpdate();
-			
-			// 증가된 추천 수 추출
-			sql = "select count(likedid) from likedtbl where ref=" + boardid;
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				updateLiked = rs.getInt(1);
-				
-				if(updateLiked >= 15) {
-					// 추천수가 15이상이면 인기글부여
-					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
-					pstmt = con.prepareStatement(sql);
-					pstmt.executeUpdate();
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		
-		return updateLiked;
-	}
 	
 	// 누적 추천 수 반환
 	public int getLikedCount(int boardid) {
@@ -473,7 +468,49 @@ public class BoardMgr {
 		return result;
 	}
 	
-	// 총 댓글 수 반환
+	// 연관서적 정보 반환
+	public BookBean getBook(int bookid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		BookBean bean = new BookBean();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM booktbl WHERE bookid="+bookid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				bean.setBookid(rs.getInt("bookid"));
+				bean.setAuthor(rs.getString("author"));
+				bean.setCategory(rs.getString("category"));
+				bean.setGenre(rs.getString("genre"));
+				bean.setTitle(rs.getString("title"));
+				bean.setReview(rs.getString("review"));
+				bean.setScore(rs.getInt("score"));
+				bean.setContents(rs.getString("contents"));
+				bean.setAuthorIntro(rs.getString("authorIntro"));
+				bean.setContentsTables(rs.getString("contentsTables"));
+				bean.setMiniIntro(rs.getString("miniIntro"));
+				bean.setPhoto(rs.getBytes("photo"));
+				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setIsbn(rs.getString("isbn"));
+				bean.setStock_Quantity(rs.getInt("stock_Quantity"));
+				bean.setPrice(rs.getInt("price"));
+				bean.setPages(rs.getInt("pages"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return bean;
+	}
+	
+	
+	// 총 댓글 수 반환 - 완전삭제댓글제외
 	public int getCommentCount(int boardid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -483,8 +520,9 @@ public class BoardMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select count(commentid) from commenttbl where status=0 and boardid=" + boardid;
+			sql = "select count(commentid) from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0))";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -505,31 +543,37 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		
 		ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
 				
 		try {
 			con = pool.getConnection();
-			sql = "select * from commenttbl where boardid=" + boardid + " order by ref, pos limit "+start+", "+end+";";
+			//sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
+			sql = "select * from "
+					+ "(select * from commenttbl where boardid = ? and ( (status=0)  or (status=0 and totalChild>0) ) "
+					+ "order by REF desc, pos limit ?,?) e "
+					+ "order by ref, pos ASC";
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {
-				if(rs.getInt("status") == 0 || hasComReply(rs.getInt("commentid"))) {					
-					CommentBean bean = new CommentBean();
-					bean.setCommentid(rs.getInt("commentid"));
-					bean.setUserid(rs.getInt("userid"));
-					bean.setNickname(rs.getString("nickname"));
-					bean.setContent(rs.getString("content"));
-					bean.setBoardid(rs.getInt("boardid"));
-					bean.setPos(rs.getInt("pos"));
-					bean.setDepth(rs.getInt("depth"));
-					bean.setRef(rs.getInt("ref"));
-					bean.setRegdate(rs.getString("regdate"));
-					bean.setUpdateDate(rs.getString("update_date"));
-					bean.setIp(rs.getString("ip"));
-					bean.setStatus(rs.getInt("status"));
-					clist.add(bean);
-				}
+			while(rs.next()) {					
+				CommentBean bean = new CommentBean();
+				bean.setCommentid(rs.getInt("commentid"));
+				bean.setUserid(rs.getInt("userid"));
+				bean.setNickname(rs.getString("nickname"));
+				bean.setContent(rs.getString("content"));
+				bean.setBoardid(rs.getInt("boardid"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setUpdateDate(rs.getString("update_date"));
+				bean.setIp(rs.getString("ip"));
+				bean.setStatus(rs.getInt("status"));
+				clist.add(bean);
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -539,78 +583,43 @@ public class BoardMgr {
 		return clist;
 	}
 	
-	// 모든이전댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 모든 댓글 누적갯수 반환
-	public int getTotalPrevDelCount(int boardid, int start, int end) {
+	// 댓글정보 반환
+	public CommentBean getComment(int commentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		int totalDelCount = 0;
+		CommentBean bean = null;
 		
 		try {
 			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT 0, ?";
-			pstmt = con.prepareStatement(sql);
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return totalDelCount;
-	}
-	
-	// (연산 후 start)현재 댓글페이지에서 삭제되어 미출력된(자식댓글이 없는) 댓글 갯수 반환
-	public int getDeleteComCount(int boardid, int start, int end) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int delCount = 0;
-		
-		try {
-			con = pool.getConnection();
-			sql = "SELECT * FROM commenttbl WHERE boardid = ? AND status=9 LIMIT ?, ?";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, boardid);
-			pstmt.setInt(2, start);
-			pstmt.setInt(3, end);			
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				if(!hasComReply(rs.getInt("commentid"))) {
-					delCount++;
-				}
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		System.out.println("delCount = " + delCount);
-		return delCount;
-	}
-	
-	// 댓글작성자 반환
-	public int getCommentUser(int commentId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int userid = 0;
-		
-		try {
-			con = pool.getConnection();
-			sql = "SELECT userid FROM commenttbl WHERE commentid = "+commentId;
+			sql = "SELECT * FROM commenttbl WHERE commentid = "+commentId;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				userid = rs.getInt(1);
+				bean = new CommentBean();
+				bean.setCommentid(rs.getInt("commentid"));
+				bean.setUserid(rs.getInt("userid"));
+				bean.setNickname(rs.getString("nickname"));
+				bean.setContent(rs.getString("content"));
+				bean.setBoardid(rs.getInt("boardid"));
+				bean.setPos(rs.getInt("pos"));
+				bean.setDepth(rs.getInt("depth"));
+				bean.setRef(rs.getInt("ref"));
+				bean.setParentid(rs.getInt("parentid"));
+				bean.setRegdate(rs.getString("regdate"));
+				bean.setUpdateDate(rs.getString("update_date"));
+				bean.setDeleteDate(rs.getString("delete_date"));
+				bean.setIp(rs.getString("ip"));
+				bean.setStatus(rs.getInt("status"));
+				bean.setTotalChild(rs.getInt("totalChild"));
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			pool.freeConnection(con, pstmt, rs);
 		}
-		return userid;
+		return bean;
 	}
 	
 	// 마지막댓글의 id추출
@@ -636,7 +645,7 @@ public class BoardMgr {
 		return lastId;
 	}
 	
-	// 부모댓글의 parentId 추출
+	// 부모댓글의 ref 추출
 	public int getGrandId(int parentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -659,40 +668,6 @@ public class BoardMgr {
 		return parentPos;
 	}
 	
-	// 댓글의 자식갯수 추출
-	public int getCountCommentChild(int pos, int grandId, int parentId, int parentDepth) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		int countChild = 0;
-		int depth = parentDepth+1;
-		System.out.println("----------------------------");
-		System.out.println("ref="+grandId);
-		System.out.println("pos="+pos);
-		System.out.println("depth="+depth);
-		System.out.println("parentId="+parentId);
-		System.out.println("----------------------------");
-		try {
-			con = pool.getConnection();
-			// sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND ((DEPTH>? AND parentid >=?) OR (DEPTH<=? AND parentid = ?));";
-			sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND (DEPTH>?);";
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, grandId);
-			pstmt.setInt(2, pos);
-			pstmt.setInt(3, depth);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				countChild = rs.getInt(1);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return countChild;
-	}
-	
 	// 댓글 pos값 업데이트
 	public void updatePos(int ref, int pos) {
 		Connection con = null;
@@ -713,11 +688,12 @@ public class BoardMgr {
 	}
 	
 	// 조상id가 같고 부모id가 같고 depth가 같은(동일 조상, 동일 부모, 동일 레벨의) 마지막 대댓의 pos
-	public int sameLevelPos(int grandId, int depth, int parentId) {
+	public int sameLevelPos(int depth, int parentId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
+		int grandId = getGrandId(parentId);
 		int lastpos = grandId+1;
 		try {
 			con = pool.getConnection();
@@ -729,10 +705,8 @@ public class BoardMgr {
 			rs = pstmt.executeQuery();
 			if(rs.next()) { // 있으면 그거의 pos+1 하고 그값보다 같거나 높은 pos값들은 전부 +1로 업데이트
 				int pos = rs.getInt("pos");
-				int countChild = getCountCommentChild(pos, grandId, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
+				int countChild = getCountCommentChild(pos, parentId, depth); //같은레벨의 pos, 조상, 부모아이디, 부모깊이
 				lastpos = pos+countChild+1;
-				System.out.println("조상,부모,뎁스같은거 잇음 그거의 pos+자식갯수+1 하고 그값보다 같거나 높은 pos값들은 전부 +1로 업데이트");
-				System.out.println("countChild = "+countChild);
 				updatePos(grandId, lastpos);
 			} else { // 없으면 직계부모댓글의 pos+1
 				con = pool.getConnection();
@@ -741,7 +715,6 @@ public class BoardMgr {
 				rs = pstmt.executeQuery();
 				if(rs.next()) {
 					lastpos = rs.getInt("pos")+1; //2
-					System.out.println("조상같고뎁스같은거 없음 직계부모댓글의 pos+1 하고 그값보다 같거나 높은 pos값 업데이트");
 					updatePos(grandId, lastpos);
 				}
 			}
@@ -751,6 +724,33 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt, rs);
 		}
 		return lastpos;
+	}
+	
+	// 동레벨의 바로 다음댓글의 pos
+	public int sameLevelNextPos(int depth, int parentId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int grandId = getGrandId(parentId);
+		int nextpos = grandId+1;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT pos FROM commenttbl WHERE commentid = (SELECT commentid FROM commenttbl WHERE ref=? AND parentid=? AND depth=? ORDER BY pos LIMIT 1,1);";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, grandId);
+			pstmt.setInt(2, parentId);
+			pstmt.setInt(3, depth);
+			rs = pstmt.executeQuery();
+			if(rs.next()) { 
+				nextpos = rs.getInt("pos");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return nextpos;
 	}
 	
 	// 댓글 작성
@@ -785,9 +785,7 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		String sql = null;
 		int grandId = getGrandId(parentId);
-		int newpos = sameLevelPos(grandId, depth, parentId);
-		//System.out.println("grandId = " + grandId);
-		//System.out.println("pos = " + pos);
+		int newpos = sameLevelPos(depth, parentId);
 		try {
 			con = pool.getConnection();
 			sql = "insert into commenttbl (userid, nickname, content, boardid, pos, depth, regdate, ip, ref, parentid)"
@@ -809,29 +807,6 @@ public class BoardMgr {
 			pool.freeConnection(con, pstmt);
 		}
 	}
-
-	// 댓글의 대댓글 유무 반환
-	public boolean hasComReply(int commentId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		String sql = null;
-		boolean flag = false;
-		try {
-			con = pool.getConnection();
-			sql = "SELECT commentid FROM commenttbl WHERE status = 0 AND parentid="+commentId;
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			if(rs.next()) {
-				flag = true;
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			pool.freeConnection(con, pstmt, rs);
-		}
-		return flag;
-	}
 	
 	// 댓글 삭제
 	public void deleteComment(int commentid, String deldate) {
@@ -850,6 +825,129 @@ public class BoardMgr {
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
+	}
+	
+	// 조상댓글의 자손댓글 업데이트
+	public void updateGrandChild(int ref, String event) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		int commentid = getGrandId(ref);
+		
+		try {
+			con = pool.getConnection();
+			if(event.equals("reply")) {
+				sql = "UPDATE commenttbl SET totalChild = totalChild+1 WHERE commentid="+commentid;
+			} else if(event.equals("delete")) {
+				sql = "UPDATE commenttbl SET totalChild = totalChild-1 WHERE commentid="+commentid;
+			}
+			pstmt = con.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
+	
+	// 임시 : 대댓글의 자손댓글 업데이트
+	public void updateChild(int parentid, int pos) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int ref = getGrandId(parentid);
+		
+		try {
+			con = pool.getConnection();
+			sql = "select * from commenttbl where ref=? and pos<=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, ref);
+			pstmt.setInt(2, pos);
+			rs = pstmt.executeQuery();
+			//System.out.println("=====업데이트 후보 추출=====");
+			//System.out.println("ref = "+ref);
+			//System.out.println("pos = "+pos);
+			
+			sql = "UPDATE commenttbl SET totalChild = ? WHERE commentid=?";
+			while(rs.next()) {
+				int totalChild = getCountCommentChild(rs.getInt("pos"), rs.getInt("commentid"), rs.getInt("depth")-1);
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, totalChild);
+				pstmt.setInt(2, rs.getInt("commentid"));
+				//System.out.println("=====업데이트 내용 출력=====");
+				//System.out.println("업데이트할 댓글id = "+rs.getInt("commentid"));
+				//System.out.println("업데이트할 자식수 = "+totalChild);
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				
+				pstmt.executeUpdate();
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+	}
+	
+	// 댓글의 자식갯수 추출
+	public int getCountCommentChild(int pos, int parentId, int parentDepth) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		
+		int countChild = 0;
+		int grandId = getGrandId(parentId);
+		int depth = parentDepth+1;
+		try {
+			con = pool.getConnection();
+			// sql = "SELECT count(commentid) FROM commenttbl WHERE (ref=?) AND (pos>?) AND ((DEPTH>? AND parentid >=?) OR (DEPTH<=? AND parentid = ?));";
+			sql = "SELECT count(commentid) FROM commenttbl WHERE (status=0) AND (ref=?) AND (pos>?) AND (DEPTH>?);";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, grandId);
+			pstmt.setInt(2, pos);
+			pstmt.setInt(3, depth);
+			rs = pstmt.executeQuery();
+			System.out.println("====자손조건====");
+			System.out.println("ref가 "+grandId+" 와 같고");
+			System.out.println("pos가 "+pos+" 보다 높고");
+			System.out.println("depth가 "+depth+" 보다 높은것");
+			if(rs.next()) {
+				countChild = rs.getInt(1);
+				System.out.println("countChild = "+countChild);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return countChild;
+	}
+	
+	// 댓글의 대댓글 유무 반환
+	public boolean hasComReply(int commentid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "SELECT commentid FROM commenttbl WHERE status = 0 AND parentid="+commentid;
+			//sql = "SELECT totalChild FROM commenttbl WHERE commentid="+commentid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				flag = true;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return flag;
 	}
 	
 	// 댓글 수정
@@ -882,24 +980,56 @@ public class BoardMgr {
 		String sql = null;
 		
 		Part imagePart = req.getPart("uploadFile");
-    	InputStream imageInputStream = imagePart.getInputStream();
+		InputStream imageInputStream = imagePart.getInputStream();
+		String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
 		boolean flag = false;
 		
 		try {
 			con = pool.getConnection();
-			sql = "update boardtbl set nickname=?, title=?, content=?, photo=?, genre=?,"
-					+ "tab=?, ip=?, update_date=? where boardid=?";
-			pstmt = con.prepareStatement(sql);
+			
+			// 새로운 사진이 있으면 업데이트
+			if(imagePart != null && imagePart.getSize() > 0) {
+				// 새로운 책이 있으면 업데이트
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, photo=?, photo_name=?, bookid=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+					pstmt.setInt(10, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setInt(11, Integer.parseInt(req.getParameter("boardid")));
+				} else {
+					// 새로운 책이 없으면 기존유지
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, photo=?, photo_name=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+					pstmt.setInt(10, Integer.parseInt(req.getParameter("boardid")));
+				}
+			} else { // 새로운 사진이 없으면 기존 유지
+				// 새로운 책이 있으면 업데이트
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=?, bookid=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setInt(9, Integer.parseInt(req.getParameter("boardid")));
+				} else {
+					sql = "update boardtbl set nickname=?, title=?, content=?, genre=?,"
+							+ "tab=?, ip=?, update_date=? where boardid=?";
+					pstmt = con.prepareStatement(sql);	
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("boardid")));
+				}
+			}
 			pstmt.setString(1, req.getParameter("nickname"));
 			pstmt.setString(2, req.getParameter("postTit"));
 			pstmt.setString(3, req.getParameter("postCont"));
-			pstmt.setBlob(4, imageInputStream);
-			pstmt.setString(5, req.getParameter("postGenre"));
-			pstmt.setString(6, req.getParameter("postTab"));
-			pstmt.setString(7, req.getParameter("userip"));
+			pstmt.setString(4, req.getParameter("postGenre"));
+			pstmt.setString(5, req.getParameter("postTab"));
+			pstmt.setString(6, req.getParameter("userip"));
 			DateMgr dMgr = new DateMgr();
-			pstmt.setString(8, dMgr.getToday());
-			pstmt.setInt(9, Integer.parseInt(req.getParameter("boardid")));
+			pstmt.setString(7, dMgr.getToday());
 			pstmt.executeUpdate();
 			flag = true;
 			
@@ -921,22 +1051,50 @@ public class BoardMgr {
 
     	Part imagePart = req.getPart("uploadFile");
     	InputStream imageInputStream = imagePart.getInputStream();
+    	String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+    	
 		boolean flag = false;
 		
 		try {
 			con = pool.getConnection();
-			sql = "insert into boardtbl (userid, nickname, title, content, photo, genre, tab, ip)"
-					+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
-			pstmt = con.prepareStatement(sql);
-			// jsp에서 userid받아 보내야함
+
+			// 사진유무
+			if(imagePart != null && imagePart.getSize() > 0) {
+				// 선택한 도서 유무
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, bookid, photo, photo_name)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+					pstmt.setBlob(9, imageInputStream);
+					pstmt.setString(10, fileName);
+				} else {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, photo, photo_name)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setBlob(8, imageInputStream);
+					pstmt.setString(9, fileName);
+				}
+			} else {
+				// 선택한 도서 유무
+				if(!req.getParameter("postBook").equals("")) {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip, bookid)"
+							+ "values (?, ?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(8, Integer.parseInt(req.getParameter("postBook")));
+				} else {
+					sql = "insert into boardtbl (userid, nickname, title, content, genre, tab, ip)"
+							+ "values (?, ?, ?, ?, ?, ?, ?);";
+					pstmt = con.prepareStatement(sql);
+				}
+			}
 			 pstmt.setInt(1, Integer.parseInt(req.getParameter("userid")));
 			 pstmt.setString(2, req.getParameter("nickname"));
 			 pstmt.setString(3, req.getParameter("postTit"));
 			 pstmt.setString(4, req.getParameter("postCont"));
-			 pstmt.setBlob(5, imageInputStream);
-			 pstmt.setString(6, req.getParameter("postGenre"));
-			 pstmt.setString(7, req.getParameter("postTab"));
-			 pstmt.setString(8, req.getParameter("userip"));
+			 pstmt.setString(5, req.getParameter("postGenre"));
+			 pstmt.setString(6, req.getParameter("postTab"));
+			 pstmt.setString(7, req.getParameter("userip"));
 			 pstmt.executeUpdate();
 
 			flag = true;
@@ -948,6 +1106,49 @@ public class BoardMgr {
 		return flag;
 	}
 	
+	// 연관서적 검색 메서드
+	public ArrayList<BookBean> getSearchBookList(String keyword) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		ArrayList<BookBean> blist = new ArrayList<BookBean>();
+		
+		try {
+			con = pool.getConnection();
+			sql = "SELECT * FROM booktbl WHERE (author LIKE '%"+keyword+"%') OR (title LIKE '%"+keyword+"%');";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BookBean bean = new BookBean();
+				bean.setBookid(rs.getInt("bookid"));
+				bean.setAuthor(rs.getString("author"));
+				bean.setCategory(rs.getString("category"));
+				bean.setGenre(rs.getString("genre"));
+				bean.setTitle(rs.getString("title"));
+				bean.setReview(rs.getString("review"));
+				bean.setScore(rs.getInt("score"));
+				bean.setContents(rs.getString("contents"));
+				bean.setAuthorIntro(rs.getString("authorIntro"));
+				bean.setContentsTables(rs.getString("contentsTables"));
+				bean.setMiniIntro(rs.getString("miniIntro"));
+				bean.setPhoto(rs.getBytes("photo"));
+				bean.setPublish_date(rs.getString("publish_date"));
+				bean.setIsbn(rs.getString("isbn"));
+				bean.setStock_Quantity(rs.getInt("stock_Quantity"));
+				bean.setPrice(rs.getInt("price"));
+				bean.setPages(rs.getInt("pages"));
+				blist.add(bean);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return blist;
+	}
+	
 	
 	/* board05(글삭제페이지) 활용메서드 */
 	public boolean deleteBoard(HttpServletRequest req) {
@@ -955,22 +1156,27 @@ public class BoardMgr {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql = null;
-		
-		int userid = Integer.parseInt(req.getParameter("userid"));
-		int inputPwd = Integer.parseInt(req.getParameter("pwd"));
-		int boardid = Integer.parseInt(req.getParameter("boardid"));
 		boolean flag = false;
 		
-		// 멤버테이블에서 글작성자의 userid와 일치하는 회원의 비밀번호를 추출
+		int userid = Integer.parseInt(req.getParameter("userid"));
+		int boardid = Integer.parseInt(req.getParameter("boardid"));
+		
+		// 유저의 salt를 추출해 입력받은 pwd를 암호화
+		SHASalt saltMgr = new SHASalt();
+		String inPwd = req.getParameter("pwd");
+		String salt = getLoginSalt(userid);
+		String CrPwd = saltMgr.getEncrypt(inPwd, salt);
+		
+		// 멤버테이블에서 글작성자의 userid와 일치하는 회원의 암호화된 비밀번호를 추출
 		try {
 			con = pool.getConnection();
 			sql = "select pwd from membertbl where userid = " + userid;
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
-			// 글작성자의 비밀번호와 입력받은 비밀번호가 같으면
+			// 암호화된 글작성자의 비밀번호와 암호화된 입력받은 비밀번호가 같으면
 			if(rs.next()) {
-				if(rs.getInt("pwd") == inputPwd) {
+				if(CrPwd.equals(rs.getString("pwd"))) {
 					sql = "update boardtbl set status = 9 where boardid = " + boardid;
 					pstmt = con.prepareStatement(sql);
 					pstmt.executeUpdate();
@@ -985,5 +1191,77 @@ public class BoardMgr {
 		
 		return flag;
 	}
+	
+	// 로그인한 유저의 salt 추출
+	public String getLoginSalt(int userid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		String salt = null;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select salt from membertbl where userid = " + userid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				salt = rs.getString("salt");
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return salt;
+	}
+	
+	
+	/* 임시 : 개발자용 */
+	// 추천수증가
+	public int upLike(int ref, int uid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int boardid = ref;
+		int userid = uid;
+		int updateLiked = 0;
+		try {
+			// 추천 수 증가
+			con = pool.getConnection();
+			sql = "INSERT INTO likedtbl (ref, userid) VALUES (?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			pstmt.setInt(2, userid);
+			pstmt.executeUpdate();
+			
+			// 증가된 추천 수 추출
+			sql = "select count(likedid) from likedtbl where ref=" + boardid;
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				updateLiked = rs.getInt(1);
+				
+				if(updateLiked >= 15) {
+					// 추천수가 15이상이면 인기글부여
+					sql = "UPDATE boardtbl SET best = 'Y' WHERE boardid=" + boardid;
+					pstmt = con.prepareStatement(sql);
+					pstmt.executeUpdate();
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return updateLiked;
+	}
+	
 	
 }
