@@ -60,7 +60,6 @@ public class BookOrderMgr {
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
-		System.out.println("2. userid = " + userid);
 		
 		try {
 			con = pool.getConnection();
@@ -97,11 +96,9 @@ public class BookOrderMgr {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, userid);
 			pstmt.setInt(2, bookid);
-			pstmt.setString(3, "활성");
+			pstmt.setString(3, "active");
 	
-			if(pstmt.executeUpdate() == 1) {
-				flag = true;
-			}
+			if(pstmt.executeUpdate() == 1) flag = true;
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -113,16 +110,17 @@ public class BookOrderMgr {
 	}
 	
 	//장바구니 넣기 전 테이블에 있는지 확인
-	public boolean checkCart (int bookid) {
+	public boolean checkCart (int userid, int bookid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "select * from carttbl where bookid = ?";
+			sql = "select * from carttbl where userid= ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			flag = pstmt.executeQuery().next();
 			
 		}catch(Exception e) {
@@ -135,16 +133,17 @@ public class BookOrderMgr {
 	}
 	
 	//장바구니에 이미 있을 경우 수량 +1 
-	public boolean plusQCart (int bookid) {
+	public boolean plusQCart (int userid, int bookid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "update carttbl set (quantity = quantity + 1) where bookid = ?";
+			sql = "update carttbl set (quantity = quantity + 1) where userid = ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			flag = pstmt.executeQuery().next();
 			
 		}catch(Exception e) {
@@ -157,7 +156,7 @@ public class BookOrderMgr {
 	}
 	
 	//관심목록 넣기 전 테이블에 있는지 확인
-	public boolean checkWish (int bookid) {
+	public boolean checkWish (int userid, int bookid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -165,12 +164,11 @@ public class BookOrderMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select * from wishtbl where bookid = ?";
+			sql = "select * from wishtbl where userid = ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, bookid);
-			
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
 			flag = pstmt.executeQuery().next();
-				
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -180,7 +178,33 @@ public class BookOrderMgr {
 		return flag;
 	}
 	
-	
-	
+	//구매테이블 추가
+	public boolean insertPurchaseOne(int userid, String[] bookids, String[] eachNum, String payMethod ) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		
+		try {
+			con = pool.getConnection();
+			sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, status, purchase_date) "
+					+ "values(?,?,?,?,?, now())";
+			for(int i=0; i<bookids.length; i++) {
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, userid);
+				pstmt.setInt(2, Integer.parseInt(bookids[i]));
+				pstmt.setInt(3, Integer.parseInt(eachNum[i]));
+				pstmt.setString(4, payMethod);
+				pstmt.setString(5, "purchased");
+				if(pstmt.executeUpdate() == 1) flag = true;
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con, pstmt);
+		}
+		
+		return flag;
+	}
 	
 }

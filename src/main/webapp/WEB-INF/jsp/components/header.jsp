@@ -31,7 +31,7 @@
               <div class="underNav">eBookunderNav</div>
             </li>
             <li>
-              <a href="/shop/shop01">중고매장</a>
+              <a href="/choice/choice01">추천도서</a>
               <div class="underNav">중고매장underNav</div>
             </li>
             <li>
@@ -177,7 +177,7 @@
           const $author = document.createElement('p');
           const $genre = document.createElement('p');
 
-          $a.setAttribute('href','/shop/shop01?bookid=' + bookid);
+          $a.setAttribute('href','/shop/shop02?bookid=' + bookid);
           $image.setAttribute('src','/image?bookid=' + bookid);
           $image.setAttribute('alt', title);
           $title.textContent = title;

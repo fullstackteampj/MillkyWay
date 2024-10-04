@@ -97,17 +97,17 @@
 					<div class="slide-recommend">
 						<% 
 							for(int i=0; i<list.size(); i++){ 
-							int bookid=list.get(i); 
-							String imgUrl="/image?bookid="+bookid; 
-							vlist=bMgr.getBook(bookid); 
-							BookBean bean=vlist.get(0); 
-							String tit=bean.getTitle(); 
-							String author=bean.getAuthor(); 
-							String category=bean.getCategory();
-							String genre=bean.getGenre(); 
-							String mini=bean.getMiniIntro(); 
-							String review=bean.getReview();
-							String contents=bean.getContents(); 
+								int bookid = list.get(i); 
+								String imgUrl = "/image?bookid="+bookid; 
+								vlist = bMgr.getBook(bookid); 
+								BookBean bean = vlist.get(0); 
+								String tit = bean.getTitle(); 
+								String author = bean.getAuthor(); 
+								String category = bean.getCategory();
+								String genre = bean.getGenre(); 
+								String mini = bean.getMiniIntro(); 
+								String review = bean.getReview();
+								String contents = bean.getContents(); 
 						%>
 						<article>
 							<h3>

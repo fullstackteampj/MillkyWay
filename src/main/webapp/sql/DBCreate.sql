@@ -53,18 +53,18 @@ USE MillkyWayDB;
 CREATE TABLE membertbl (
     userid INT PRIMARY KEY AUTO_INCREMENT,  -- 회원 ID, 기본 키 및 자동 증가
     account VARCHAR(100) NOT NULL unique,   -- 회원 계정 (이메일 또는 사용자 이름)
-    pwd VARCHAR(100) NOT NULL,              -- 비밀번호
-	salt VARCHAR(100) NOT NULL,             -- salt값
-    question VARCHAR(100) NOT NULL,         -- 질문
-    answer VARCHAR(100) NOT NULL,           -- 답
+    pwd VARCHAR(100) NULL,              	-- 비밀번호
+	salt VARCHAR(100) NULL,             	-- salt값
+    question VARCHAR(100) NULL,         	-- 질문
+    answer VARCHAR(100) NULL,           	-- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름
     nickname VARCHAR(100),                  -- 별명
     gender CHAR(1) default null,            -- 성별 (M, F)
-    zipcode VARCHAR(10),                    -- 우편번호
-    usergrade VARCHAR(100),					-- 유저등급
-	curpoint int default 0,					-- 보유포인트 //디폴트값 추가 
-	expectpoint int,						-- 적립예정포인트
-    address TEXT,                           -- 주소
+    zipcode VARCHAR(10) default 00000,      -- 우편번호
+    usergrade VARCHAR(100) default 'vip',	-- 유저등급
+	curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
+	expectpoint int default 0,				-- 적립예정포인트
+    address TEXT,        					-- 주소
 	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
@@ -73,7 +73,6 @@ CREATE TABLE membertbl (
     status VARCHAR(20),                     -- 회원 상태 (active, inactive 등)
     favorite TEXT default null,             -- 좋아하는 장르 배열로 입력 (확인 필요)
     profile_photo BLOB,                     -- 프로필 사진
-    
     birth VARCHAR(20) default null,			-- 생년월일
     agree CHAR(1)                           -- 선택 사항 동의여부
 );
@@ -143,7 +142,6 @@ CREATE TABLE boardtbl (
 ); */
 
 -- 게시글 테이블 생성
--- 게시글 테이블 생성
 CREATE TABLE boardtbl (
     boardid INT PRIMARY KEY AUTO_INCREMENT,					-- 게시물 ID, 기본 키 및 자동 증가
     userid INT NOT NULL,                            		-- 작성자 ID(식별자)
@@ -153,14 +151,14 @@ CREATE TABLE boardtbl (
     photo MEDIUMBLOB,                               	 	-- 게시물에 포함된 사진
     photo_name VARCHAR(100),                        		-- 사진 이름
     genre VARCHAR(50) NOT NULL,                             -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
-    tab VARCHAR(10) NOT NULL,							 	-- 글의 탭분류 (일반, 질문, 감상, 추천)
+    tab VARCHAR(10) NOT NULL DEFAULT '일반',					-- 글의 탭분류 (일반, 질문, 감상, 추천)
     regdate datetime DEFAULT now() NOT NULL,                -- 게시물 작성 날짜
     count INT NOT NULL DEFAULT 0,                           -- 조회수 (기본값 0)
     best VARCHAR(1) NOT NULL DEFAULT "N",				 	-- 인기글여부 (기본값 "N", 인기글활성화 "Y")
     bookid INT,                            				 	-- 북아이디
     ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
     update_date DATETIME,                            		-- 게시물 수정 날짜
-    status INT NOT NULL DEFAULT 0                  		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    status INT NOT NULL DEFAULT 0                 		 	-- 게시물 상태 (0 : 일반 /  9 : 삭제)
 );
 
 -- 댓글 테이블 생성
@@ -226,7 +224,7 @@ CREATE TABLE purchasetbl (
     status VARCHAR(20),                             -- 구매 상태 (purchased, pending 등)
     purchase_date DATE,                             -- 구매 날짜
     quantity INT,                                   -- 구매 수량
-    
+    pay_method VARCHAR(10),                     -- 결제 수단 //추가
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 구매자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결
 );
@@ -250,7 +248,7 @@ CREATE TABLE carttbl (
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 장바구니 상태 (active, inactive 등)
     added_date DATE,                                -- 장바구니 추가 날짜
-    quantity INT,                                   -- 장바구니에 담긴 수량
+    quantity INT default 1,                                   -- 장바구니에 담긴 수량
 
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 사용자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결

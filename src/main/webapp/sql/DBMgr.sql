@@ -6,7 +6,7 @@ USE MillkyWayDB;
 
 show tables;
 
-select * from membertbl;
+select * from membertbl; -- DCGFH71HRtC1lEq5fzfzKBYJKhlcMmhuglUrV8AzNkA
 
 select * from booktbl;
 

@@ -66,7 +66,7 @@
   box-sizing: border-box;
 }
 #wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
-  display: block;
+  display: none;
 }
 #wrap > header > .headTop > .frame .userBar {
   display: flex;
@@ -507,6 +507,9 @@ section.shop-product > .headbook > img {
 section.shop-product > .headbook > form {
   width: 62%;
 }
+section.shop-product > .headbook > form span {
+  margin: 0 5px;
+}
 section.shop-product > .headbook > form > h3 {
   padding: 15px 15px 30px 15px;
 }
@@ -592,19 +595,14 @@ section.shop-product > .headbook > form > .order-qty > .updown-qty > .btn-updown
 section.shop-product > .headbook > form > .order-qty p {
   border: none;
 }
-section.shop-product > .headbook > form > .order-qty + button {
-  width: 100%;
-  margin: 30px 0;
-  padding: 15px 0;
-  border: 1px solid rgb(127, 161, 195);
-}
-section.shop-product > .headbook > form > .order-qty + button:hover {
-  border-color: rgb(100, 130, 173);
+section.shop-product > .headbook > form > .order-qty p > i {
+  margin: 0 10px;
 }
 section.shop-product > .headbook > form > .btns-quickbuy {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  margin: 20px 0;
 }
 section.shop-product > .headbook > form > .btns-quickbuy > button {
   width: 30%;

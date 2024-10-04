@@ -36,7 +36,19 @@
 	    	<%
 	    }%>
 	   
-	    <button type="button" onclick=self.close()>닫기</button>
+	    <button type="button" onclick="sendDataClose()">닫기</button>
   	</div>
-
+<script>
+	const sendDataClose = () => {
+		const sendData = '<%=result%>' === 'false';
+		if(sendData){
+			// 팝업창에서 부모 창으로 데이터 전송(postMessage API사용)
+			const dataToSend = { nickname: "ok" };
+			window.opener.postMessage(dataToSend, 'http://localhost:8080');
+		}
+		
+		self.close();
+	}
+</script>
+</body>
 </html>

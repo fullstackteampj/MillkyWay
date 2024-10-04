@@ -14,7 +14,11 @@
 	    return;
 	}
 	String userId = (String) session.getAttribute("idKeyS");
+	
 	MemberBean mBean = myMgr.getMemberUpdate(Integer.parseInt(userId));
+	if(mBean.getDetailAddress()==null){
+		mBean.setDetailAddress("상세주소를 입력해주세요");
+	}
 %>
     
 <!DOCTYPE html>
@@ -28,40 +32,46 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
   <script>
-  	function check() {
-  		if(userUpdateFrm.nickname.value==null||userUpdateFrm.nickname.value==""){
+ 	function check() {
+ 		if(userUpdateFrm.nickname.value==null||userUpdateFrm.nickname.value==""){
 			alert("닉네임을 입력해주세요");
 			userUpdateFrm.nickname.focus();
 			return;
-  		}
-  		if(userUpdateFrm.phone.value==null||userUpdateFrm.phone.value==""){
+ 		}
+ 		if(userUpdateFrm.phone.value==null||userUpdateFrm.phone.value==""){
 			alert("전화번호를 입력해주세요");
 			userUpdateFrm.phone.focus();
 			return;
-  		}
-  		if(userUpdateFrm.email.value==null||userUpdateFrm.email.value==""){
+ 		}
+ 		if(userUpdateFrm.email.value==null||userUpdateFrm.email.value==""){
 			alert("이메일을 입력해주세요");
 			userUpdateFrm.email.focus();
 			return;
-  		}
-  		if(userUpdateFrm.address.value==null||userUpdateFrm.address.value==""){
+ 		}
+ 		if(userUpdateFrm.address.value==null||userUpdateFrm.address.value==""){
 			alert("주소를 입력해주세요");
 			userUpdateFrm.address.focus();
 			return;
-  		}
-  		if(userUpdateFrm.inpwd.value==null||userUpdateFrm.inpwd.value==""){
+ 		}
+ 		
+ 		//네이버 회원일 경우 비밀번호 확인 없이 없데이트 실행
+ 		if(userUpdateFrm.inpwd.value==='sns') {
+ 	 		userUpdateFrm.submit();
+ 	 		return;
+ 		}
+ 		
+ 		// 기존회원일 경우 비밀번호 입력 유효성검사진행
+ 		if(userUpdateFrm.inpwd.value==null||userUpdateFrm.inpwd.value==""){
 			alert("정보를 수정하기 위해 비밀번호를 입력해주세요.");
 			userUpdateFrm.inpwd.focus();
 			return;
-  		}else if(userUpdateFrm.inpwd.value != <%=mBean.getPwd()%>){
-			alert("비밀번호가 일치하지 않습니다.\n 다시 한번 확인해주세요.");
-			userUpdateFrm.inpwd.focus();
-			return;
-		}
-  		userUpdateFrm.inpwd.value = "";
-  		userUpdateFrm.submit();
-	}//checkPwd()
-  </script>
+ 		}
+ 		
+ 		userUpdateFrm.submit();
+	}//check()
+	
+	
+   </script>
 </head>
 
 <body>
@@ -111,8 +121,22 @@
             <button type="button" onclick="searchAddAPI()">우편번호찾기</button>
             <input type="text" name="address" id="address" value="<%= mBean.getAddress() %>" />
 
-            <label for="inpwd">비밀번호 입력</label>
-            <input type="password" name="inpwd" id="inpwd" placeholder="비밀번호를 입력해주세요~" />
+            <label for="detailAddress">상세주소</label>
+            <input type="text" name="detailAddress" id="detailAddress" value="<%= mBean.getDetailAddress() %>" />
+
+			<%
+			if(mBean.getStatus().equals("sns")){
+				%>
+	            <input type="hidden" name="inpwd" id="inpwd" value="sns" />
+				<%
+			}else{
+				%>
+	            <label for="inpwd">비밀번호 입력</label>
+	            <input type="password" name="inpwd" id="inpwd" placeholder="비밀번호를 입력해주세요~" />
+				<%
+			}
+			%>
+
 
             <button type="button" onClick="check()">수정하기</button>
             <button type="button" onClick="document.userUpdateFrm.reset()">다시쓰기</button>
@@ -165,5 +189,7 @@
         }).open();
     }
 </script>
+
+ 
 
 </html>

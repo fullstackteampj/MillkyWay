@@ -90,6 +90,12 @@ section.login{
     border-radius: 5px;
     &:hover{background-color: $point-color;}
   }//button
+
+  .naver{
+    display: block;
+    margin-left: 130px;
+  }
+
   #loginMng{
     display: flex;
     justify-content: center;

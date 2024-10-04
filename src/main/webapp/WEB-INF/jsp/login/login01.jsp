@@ -1,3 +1,6 @@
+<%@page import="java.math.BigInteger"%>
+<%@page import="java.security.SecureRandom"%>
+<%@page import="java.net.URLEncoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% 
@@ -24,7 +27,7 @@ String userId = (String) session.getAttribute("idKey");
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/index.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login01.css?after" />
-  <script defer src="${pageContext.request.contextPath}/js/header.js"></script>
+  <script defer src="${pageContext.request.contextPath}/js/header.js?after""></script>
 </head>
 <body>
   <div id="wrap">
@@ -68,12 +71,30 @@ String userId = (String) session.getAttribute("idKey");
         </div>
         
         <button type="button" onclick="loginChk()">로그인</button>
+        
+     	<%
+		String clientId = "cR6ZYmE3B8jjB8ERbb3U";//애플리케이션 클라이언트 아이디값";
+		String redirectURI = URLEncoder.encode("http://localhost:8080/login/naverLogin", "UTF-8"); ///login/naverLogin으로 이동
+		SecureRandom random = new SecureRandom();
+		String state = new BigInteger(130, random).toString();
+		String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
+		apiURL += "&client_id=" + clientId;
+		apiURL += "&redirect_uri=" + redirectURI;
+		apiURL += "&state=" + state;
+		session.setAttribute("state", state);
+		%>
+		<a class="naver" href="<%=apiURL%>">
+			<img height="50" src="${pageContext.request.contextPath}/images/btnG_완성형.png"/>
+		</a>
+        
       </form>
       <div id="loginMng">
         <a href="/signup/signup01">회원가입</a>
         ㅣ
         <a href="/login/login02">비밀번호 찾기</a>
       </div>
+      
+
 
     </section>
 	<footer>

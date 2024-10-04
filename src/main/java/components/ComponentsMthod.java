@@ -44,6 +44,7 @@ public class ComponentsMthod {
 				mbean.setUsergrade(rs.getString("usergrade"));
 				mbean.setCurpoint(rs.getInt("curpoint"));
 				mbean.setExpectpoint(rs.getInt("expectpoint"));
+				mbean.setStatus(rs.getString("status"));
 			}
 
 		}catch(Exception e) {

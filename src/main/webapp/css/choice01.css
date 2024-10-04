@@ -65,7 +65,7 @@
   box-sizing: border-box;
 }
 #wrap > header > .headTop > .frame > .topGnb > li:hover > .underNav {
-  display: block;
+  display: none;
 }
 #wrap > header > .headTop > .frame .userBar {
   display: flex;
@@ -538,17 +538,4 @@ section.choice > .container > .frame > .slide-recommend > article > h5 + p {
   font-size: 16px;
   text-align: justify;
   line-height: 1.8;
-}
-
-footer {
-  width: 100%;
-  height: 100px;
-  margin-bottom: 50px;
-  background-color: #aaa;
-}
-footer > address {
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }/*# sourceMappingURL=choice01.css.map */

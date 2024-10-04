@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.Vector;
 
 import DBConnection.DBConnectionMgr;
+import SHA256.SHASalt;
+import SHA256test.SHA256;
 import beans.BoardBean;
 import beans.BookBean;
 import beans.CancelBean;
@@ -186,6 +188,8 @@ public class MyPageMgr {
 				mBean.setEmail(rs.getString("email"));
 				mBean.setAddress(rs.getString("address"));
 				mBean.setPwd(rs.getString("pwd"));
+				mBean.setStatus(rs.getString("status"));
+				mBean.setDetailAddress(rs.getString("detailAddress"));	
 			}
 			
 		}catch(Exception e) {
@@ -258,6 +262,7 @@ public class MyPageMgr {
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setCartid(rs.getInt("cartid"));
 				bean.setUserid(rs.getInt("userid"));
+				bean.setQuantity(rs.getInt("quantity"));
 				myCartList.add(bean);
 			}
 			
@@ -449,14 +454,15 @@ public class MyPageMgr {
 		try {
 			conn = pool.getConnection();
 			sql = "update membertbl set nickname = ?, gender = ?, phone = ?, email = ?, address = ?"
-					+ "where userid = ?";
+					+ ", detailAddress = ? where userid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, inbean.getNickname());
 			pstmt.setString(2, inbean.getGender());
 			pstmt.setString(3, inbean.getPhone());
 			pstmt.setString(4, inbean.getEmail());
 			pstmt.setString(5, inbean.getAddress());
-			pstmt.setInt(6, userId);
+			pstmt.setString(6, inbean.getDetailAddress());
+			pstmt.setInt(7, userId);
 			
 			int j = pstmt.executeUpdate();
 			if(j>0)
@@ -470,6 +476,48 @@ public class MyPageMgr {
 		
 		return flag;
 	}//boolean executeMemberUpdate(MemberBean inbean)
+	
+	public boolean checkPwd(String inpwd, String userId) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		String salt = null;
+		
+		try {
+			//유저 아이디값으로 salt값 불러오기
+			conn = pool.getConnection();
+			sql = "select salt from membertbl where userid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(userId));
+			rs = pstmt.executeQuery();
+			
+			if(rs.next())
+				salt = rs.getString("salt");
+			
+			// salt값과 입력 비밀번호로 해시화된 비밀번호 생성 및 기존 비밀번호와 비교
+			conn = pool.getConnection();
+			sql = "select * from membertbl where pwd = ?";
+			
+			SHASalt sha = new SHASalt();
+			String pwd = sha.getEncrypt(inpwd, salt);
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next())
+				flag = true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt);
+		}
+		
+		return flag;
+	}//heckPwd(String inpwd)
 	
 }//class MyPageMgr
 

@@ -1,13 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%> 
+<%@ page import="SHA256.SHASalt"%>
 <% request.setCharacterEncoding("UTF-8"); %>
 <jsp:useBean id="sMgr" class="procs.SignupMgr" />
 <jsp:useBean id="bean" class="beans.MemberBean" />
 <jsp:setProperty property="*" name="bean" />
 <%@ page import="java.util.*" %>
 <%
-	System.out.println("05 오기는 하는건가?");
-	
+
+
+	//해시화된 비밀번호 생성 ->  bean(폼에서 전달받은 데이터)에 저장
+	SHASalt SHASalt = new SHASalt();
+	String salt = SHASalt.genSalt(); //난수로 만들어낸 salt 값
+	String inputPwd = bean.getPwd(); //사용자가 input 입력한 pwd값
+	String CrPwd = SHASalt.getEncrypt(inputPwd, salt);
+	bean.setPwd(CrPwd);//pwd 컬럼에 재입력
+	bean.setSalt(salt);
+	System.out.println("CrPwd = " + CrPwd);
+	System.out.println("salt = " + salt);
+
   	boolean result = sMgr.insertMember(bean);
 
 	String msg = "회원가입에 실패하였습니다. 다시 시도해 주세요.";

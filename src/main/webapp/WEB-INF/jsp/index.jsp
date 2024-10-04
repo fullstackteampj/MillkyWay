@@ -180,7 +180,7 @@
         
 
         <div class="bestBoard">
-          <h3><a href="/board/board01">인기 게시물<span>더보기</span></a></h3>
+          <h3><a href="/board/board01?nowPage=1&tab=인기">인기 게시물<span>더보기</span></a></h3>
           <ul class="bestBoardList">
 	          <%
 	          Vector<BoardBean> bestList = iMgr.getBestBoardList();
