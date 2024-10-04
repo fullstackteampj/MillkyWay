@@ -208,4 +208,26 @@ public class BookOrderMgr {
 		return flag;
 	}
 	
+	//포인트 사용시 membertbl 수정
+	public boolean updateMemberPoint(int userid, int usePoint){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "update membertbl set curpoint = curpoint - ? where userid = ? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, usePoint);
+			pstmt.setInt(2, userid);
+			if(pstmt.executeUpdate() == 1) flag = true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();	
+		}finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	};
+	
 }

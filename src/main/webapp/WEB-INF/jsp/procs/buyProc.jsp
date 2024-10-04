@@ -28,13 +28,20 @@
 	String[] eachNum = null;
 	String payMethod = request.getParameter("payMethod");
 	int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
+	int usePoint = Integer.parseInt(request.getParameter("usePoint"));
 	boolean result = false;
+	boolean pResult = false;
 	
 	//ver.2 데이터 개수에 상관없이 배열로 받기(그래서 bean파일 사용 안함)
 	bookids =  request.getParameterValues("bookids");
 	eachNum =  request.getParameterValues("eachNum");
 	
 	result = oMgr.insertPurchaseOne(userid, bookids, eachNum, payMethod, totalPrice);
+	
+	//사용 포인트 membertbl에서 차감
+	pResult = oMgr.updateMemberPoint(userid, usePoint);
+	if(pResult) System.out.println("회원 테이블의 포인트 차감 완료");
+	
 	
 	if(result){
 		%>

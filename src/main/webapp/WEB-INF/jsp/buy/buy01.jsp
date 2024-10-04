@@ -84,6 +84,7 @@
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></script>
 </head>
 
 <body>
@@ -205,8 +206,8 @@
                             <button type="button" >신용카드</button>
                             <button type="button">온라인입금</button>
                             <button type="button">휴대폰결제</button>
-                            <button type="button" class="on">네이버페이</button>
-                            <button type="button">카카오페이</button>
+                            <button type="button">네이버페이</button>
+                            <button type="button" class="on">카카오페이</button>
                             <button type="button">토스페이</button>
                             <button type="button">삼성페이</button>
                             <button type="button">실시간 계좌이체</button>
@@ -222,7 +223,7 @@
                     </li>
                     <li>
                         포인트
-                        <input type="text" name="usePoint" />
+                        <input type="text" name="usePoint" value="0"/>
                         원
                         <button type=button class="usePointBtn">사용</button>
                         (보유 <span class="havePoint"><%=point%></span>p)
@@ -307,7 +308,34 @@
 	  );//IMP.request_pay
 	}//reqKakaoPay()
 	
-	
+	//결제 API - 네이버페이
+	 const oPay = Naver.Pay.create({
+          "mode" : "development", // development or production
+          "clientId": "HN3GGCMDdTgGUfl0kFCo", // clientId
+          "chainId": "ZzhaL2phNm5GMmp", // chainId
+          "openType": "popup",
+          "onAuthorize": function(oData){
+        	  if(oData.resultCode === "Success"){
+        		  frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent;
+                  frm.submit();
+        	  }else{
+        		 console.log(oData.resultCode);
+        		 console.log(oData.resultMessage);
+        	  }
+          }
+    });
+
+    function reqNaverPay() {
+        oPay.open({
+          "merchantPayKey": "12321323",
+          "productName": "은하수책방 도서 구매",
+          "totalPayAmount": $totPrice.textContent,
+          "taxScopeAmount": $totPrice.textContent,
+          "taxExScopeAmount": "0",
+          "returnUrl": 'http://localhost:8080/procs/buyProc?totalPrice=' +  $totPrice.textContent
+        });
+	 };
+
 </script>
 </body>
 </html>
