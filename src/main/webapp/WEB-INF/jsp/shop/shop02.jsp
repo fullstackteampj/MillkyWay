@@ -345,6 +345,7 @@
 	const frm = document.reviewFrm;
 
 	const checkReview = () => {
+		
 	  //쿼리스트링으로 JS에서 클릭했던 별점 inputScore 값 보내줌
 	  const url = '/shop/shop03?inputScore='+ inputScore + '&idKey=<%=userid%>';
 	  window.open(url, "review", "width=400, height=300");
@@ -378,6 +379,7 @@
 		
 	    const popupWidth = 500;
 	    const popupHeight = 350;
+	    //팝업창 중앙 배치
 	    let popupLeft = (window.screen.width / 2) - (popupWidth / 2);
 	    let popupTop = (window.screen.height / 2) - (popupHeight / 2);
 		

@@ -69,7 +69,11 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypage.css?after" />
   <script defer src="https://kit.fontawesome.com/9ad59cd5cc.js" crossorigin="anonymous"></script>
-
+  <script>
+  	function cancelChk(purchaseid,bookid){
+  		window.open("/mypage/cancel?purchaseid=" + purchaseid + "&bookid=" + bookid, '환불/취소', 'width=600,height=550,scrollbars=no,left=600,top=50');	
+  	}
+  </script>
 </head>
 
 <body>
@@ -92,7 +96,6 @@
 	      	for(int i=0; i < purList.size(); i++) {
 	      		PurchaseBean pbean = purList.get(i);
 	      		int bookid = pbean.getBookid();
-	      		
 	      		BookBean bBean = myMgr.getMyBookInfo(bookid);
 	      		String userName = myMgr.getUserName(Integer.parseInt(userId));
         		%>
@@ -107,8 +110,9 @@
 		
 		            <div class="content">
 		              <p class="status"><%= pbean.getStatus() %></p>
-		              <p class="buyId">결제금액: <%= bBean.getPrice() %></p>
+		              <p class="buyId">결제금액: <%=bBean.getPrice()*pbean.getQuantity()%></p>
 		              <p class="reciever">수령인:<%= userName %></p>
+	            	  <button type="button" onClick="cancelChk('<%=pbean.getPurchaseid()%>','<%=bookid%>')">환불/취소신청</button>
 		            </div>
 		          </li>
         		<%

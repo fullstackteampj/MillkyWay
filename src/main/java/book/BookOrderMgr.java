@@ -68,7 +68,7 @@ public class BookOrderMgr {
 			pstmt.setInt(1, userid);
 			pstmt.setInt(2, bookid);
 			pstmt.setInt(3, quantity);
-			pstmt.setString(4, "활성");
+			pstmt.setString(4, "active");
 			
 			if(pstmt.executeUpdate() == 1) {
 				flag = true;
@@ -179,7 +179,7 @@ public class BookOrderMgr {
 	}
 	
 	//구매테이블 추가
-	public boolean insertPurchaseOne(int userid, String[] bookids, String[] eachNum, String payMethod ) {
+	public boolean insertPurchaseOne(int userid, String[] bookids, String[] eachNum, String payMethod, int totalPrice) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
@@ -187,15 +187,16 @@ public class BookOrderMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, status, purchase_date) "
-					+ "values(?,?,?,?,?, now())";
+			sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, status, purchase_date, total_price) "
+					+ "values(?,?,?,?,?, now(), ?)";
 			for(int i=0; i<bookids.length; i++) {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, userid);
 				pstmt.setInt(2, Integer.parseInt(bookids[i]));
 				pstmt.setInt(3, Integer.parseInt(eachNum[i]));
 				pstmt.setString(4, payMethod);
-				pstmt.setString(5, "purchased");
+				pstmt.setString(5, "대기중");
+				pstmt.setInt(6, totalPrice);
 				if(pstmt.executeUpdate() == 1) flag = true;
 			}
 		}catch(Exception e) {
@@ -206,5 +207,27 @@ public class BookOrderMgr {
 		
 		return flag;
 	}
+	
+	//포인트 사용시 membertbl 수정
+	public boolean updateMemberPoint(int userid, int usePoint){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		try {
+			con = pool.getConnection();
+			sql = "update membertbl set curpoint = curpoint - ? where userid = ? ";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, usePoint);
+			pstmt.setInt(2, userid);
+			if(pstmt.executeUpdate() == 1) flag = true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();	
+		}finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	};
 	
 }

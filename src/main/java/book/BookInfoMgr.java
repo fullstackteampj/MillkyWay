@@ -68,7 +68,7 @@ public class BookInfoMgr {
 		Vector<ReviewBean> rlist = new Vector<ReviewBean>();
 		try {
 			con = pool.getConnection();
-			sql = "select * from reviewtbl where bookid = ?";
+			sql = "select * from reviewtbl where bookid = ? order by reviewid desc";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, bookid);
 			rs = pstmt.executeQuery();

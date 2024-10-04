@@ -28,7 +28,7 @@ public class LoginMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select userid, pwd, salt from membertbl where account = ?";
+			sql = "select userid, pwd, salt, status from membertbl where account = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, account);
 			rs = pstmt.executeQuery();
@@ -37,6 +37,7 @@ public class LoginMgr {
 				bean.setPwd(rs.getString("pwd"));
 				bean.setSalt(rs.getString("salt"));
 				bean.setUserid(rs.getInt("userid"));
+				bean.setStatus(rs.getString("status"));
 			}
 			
 		}catch (Exception e) {
@@ -76,6 +77,32 @@ public class LoginMgr {
 		
 		return bean;
 	}//MemberBean getQuestionInfo(String account)
+	
+	public void updateLastLogin(int userId) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		MemberBean bean = new MemberBean();
+		
+		try {
+			conn = pool.getConnection();
+			sql = "update membertbl set last_login_date = curdate() where userid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userId);
+			int j = pstmt.executeUpdate();
+			
+			if(j>0)
+				System.out.println("마지막 로그인 업데이트 성공");
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+		
+	}//void updateLastLogin(account)
 	
 }//class LoginMgr
 
