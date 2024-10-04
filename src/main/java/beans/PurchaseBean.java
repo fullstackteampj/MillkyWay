@@ -8,6 +8,7 @@ public class PurchaseBean {
 	private String purchase_date ;
 	private int quantity;
 	private String pay_method;
+	private int total_price;
 	
 	public int getPurchaseid() {
 		return purchaseid;
@@ -52,5 +53,11 @@ public class PurchaseBean {
 		this.pay_method = pay_method;
 	}
 
+	public int getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
+	}
 	
 }

@@ -124,6 +124,7 @@ const havePointNum = parseInt($havePoint.textContent);
 $usePointBtn.addEventListener('click', ()=>{
   //버튼 클릭시점의 input 값 가져와야함 - 내부에 선언
   const usePointInputNum =  parseInt($usePointInput.value);
+ 
   //사용포인트가 빈 값일 경우(유효성검사)
   if($usePointInput.value === null || $usePointInput.value === '' ){
     alert('사용하려는 포인트를 입력해 주세요.');
@@ -149,8 +150,19 @@ $usePointBtn.addEventListener('click', ()=>{
     //사용버튼 활성화 상태
     if( $usePointBtn.classList.contains('active')){
       //보유포인트가 사용포인트보다 클 경우 - 포인트 사용 가능 상태
-      $totalPrice.textContent = totPrice - parseInt($usePointInput.value);
+      let minusPoint = totPrice - parseInt($usePointInput.value);
       $havePoint.textContent = havePointNum - parseInt($usePointInput.value);
+      
+      if(totPrice<50000) {
+        //상품금액이 50000원 미만인 경우
+        $delivery.classList.remove('deleteline');
+        minusPoint += 2000; // +배송비
+      }else{
+        //상품금액이 50000원 이상인 경우 - 배송비 0원
+        $delivery.classList.add('deleteline');
+      }
+      
+      $totalPrice.textContent = minusPoint;
       //포인트 적립(10% 계산)
       $point.textContent = parseInt($totalPrice.textContent)/10;
     }else{
@@ -211,16 +223,16 @@ $payBtns.forEach($payBtn => {
       $input.setAttribute('name', 'payMethod');
       $input.setAttribute('class', 'payMethod');
       $input.setAttribute('value', $payBtn.textContent);
-      frm.appendChild($input);
+      document.buyFrm.appendChild($input);
 
       payment = $payBtn.textContent;
   });
 });
 
 //buyFrm - submit 이벤트
-frm.addEventListener('submit', (evt)=>{
+document.buyFrm.addEventListener('submit', (evt)=>{
   evt.preventDefault(); 
   if(payment === '카카오페이') reqKakaoPay();
-   
+  if(payment === '네이버페이') reqNaverPay();
 });
 
