@@ -3,11 +3,7 @@
 <%@ page import="beans.MemberBean" %>
 <%
 	//임시로 로그인 세션 저장
-	MemberBean mBean = new MemberBean();
-	mBean.setUserid(2);
-	mBean.setAccount("jihye@gmail.com");
-	mBean.setNickname("지혜");
-	session.setAttribute("mBean", mBean);
+	session.setAttribute("idKey", 2);
 %>
 <!DOCTYPE html>
 <html>

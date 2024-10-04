@@ -12,9 +12,23 @@ public class CommentBean {
 	private int parentid;
 	private String regdate;
 	private String updateDate;
+	private String deleteDate;	
 	private String ip;
 	private int status;
+	private int totalChild;
 	
+	public String getDeleteDate() {
+		return deleteDate;
+	}
+	public void setDeleteDate(String deleteDate) {
+		this.deleteDate = deleteDate;
+	}
+	public int getTotalChild() {
+		return totalChild;
+	}
+	public void setTotalChild(int totalChild) {
+		this.totalChild = totalChild;
+	}
 	public int getCommentid() {
 		return commentid;
 	}
