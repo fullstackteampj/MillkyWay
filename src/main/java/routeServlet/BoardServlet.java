@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,7 @@ public class BoardServlet extends HttpServlet {
     	// 요청URL 불러오기
     	String path = request.getPathInfo();
     	
-    	// 글 작성 요청
+    	// 메인페이지
     	if("/board01".equals(path)) {
     		HttpSession session = request.getSession();
 	    	Integer loginId = null;
@@ -107,6 +108,18 @@ public class BoardServlet extends HttpServlet {
         	
         	// 최근글 중 많이 언급되는 책 목록 추출 
         	ArrayList<int[]> bestBookList = bMgr.getBestBookList();
+        	
+        	// 쿠키 추출
+        	String readPosts = null;
+        	Cookie[] cookies = request.getCookies();
+        	if(cookies != null) {
+        		for(Cookie cookie : cookies) {
+        			if(cookie.getName().equals("readPosts")) {
+        				readPosts = URLDecoder.decode(cookie.getValue());
+        				break;
+        			}
+        		}
+        	}
 			
 	    	// 결과를 request에 저장
 	    	boardPagingBean paging = new boardPagingBean(totalRecord, numPerPage, pagePerBlock,
@@ -121,7 +134,9 @@ public class BoardServlet extends HttpServlet {
 	    	request.setAttribute("postList", postList);
 	    	request.setAttribute("bestList", bestList);
 	    	request.setAttribute("bestBookList", bestBookList);
+	    	request.setAttribute("readPosts", readPosts);
     	}
+    	
         handleRequest(request, response);
     }
 

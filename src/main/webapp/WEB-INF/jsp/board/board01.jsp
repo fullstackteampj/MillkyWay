@@ -5,6 +5,9 @@
 <%@ page import="beans.BoardBean, beans.BookBean, beans.MemberBean, beans.BoardFilterBean, beans.boardPagingBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <jsp:useBean id="dMgr" class="board.DateMgr" />
+<%
+	String readPosts = (String)request.getAttribute("readPosts");
+%>
 <!-- 글목록 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -116,8 +119,36 @@
 				            
 				            <div class="content">
 				            	<p class="contentHead">
-					            	<%-- 인기글이면 제목에 스타일 적용 --%>
-					            	<span class="${post.best == 'Y' ? 'title overBestLike' : 'title'}">${post.title}</span>
+				            		<%-- 인기글이면 제목에 스타일 적용 --%>
+					            	<c:choose>
+					            		<%-- 인기글 --%>
+					            		<c:when test="${post.best == 'Y'}">
+					            			<%-- 쿠키를 검사해 읽었던 글이면 스타일적용 --%>
+					            			<c:choose>
+					            				<%-- 읽었던글 --%>
+					            				<c:when test="${readPosts.contains(String.valueOf(post.boardid))}">
+					            					<span class="title overBestLike read">${post.title}</span>
+					            				</c:when>
+					            				<%-- 읽었던글 아님 --%>
+					            				<c:otherwise>
+					            					<span class="title overBestLike">${post.title}</span>
+					            				</c:otherwise>
+					            			</c:choose>
+					            		</c:when>
+					            		<%-- 인기글 아님 --%>
+					            		<c:otherwise>
+					            			<c:choose>
+						            			<%-- 읽었던글 --%>
+					            				<c:when test="${readPosts.contains(String.valueOf(post.boardid))}">
+					            					<span class="title read">${post.title}</span>
+					            				</c:when>
+					            				<%-- 읽었던글 아님 --%>
+					            				<c:otherwise>
+					            					<span class="title">${post.title}</span>
+					            				</c:otherwise>
+				            				</c:choose>
+					            		</c:otherwise>
+					            	</c:choose>
 				              		<%-- 댓글이 존재하면 댓글수 출력 --%>
 				              		<c:set var="commentCount" value="${bMgr.getCommentCount(post.boardid)}"></c:set>
 				              		<c:if test="${commentCount > 0}">

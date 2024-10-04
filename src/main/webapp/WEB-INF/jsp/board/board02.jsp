@@ -1,3 +1,4 @@
+<%@page import="java.net.URLDecoder, java.net.URLEncoder"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, beans.BoardBean, beans.CommentBean, beans.MemberBean, beans.BookBean" %>
@@ -8,6 +9,7 @@
 	request.setCharacterEncoding("UTF-8");
 
 	int num = Integer.parseInt(request.getParameter("num"));
+	String numS = request.getParameter("num");
 	
 	// 조회수 증가
 	bMgr.upCount(num);
@@ -71,6 +73,33 @@
 	if(request.getParameter("category") != null || request.getParameter("category") != "") {
 		category = request.getParameter("category");
 	}
+	
+
+	// 쿠키저장
+	// 기존 쿠키 유무를 확인하고 누적
+	// 쿠키 추출
+  	String readPosts = null;
+  	Cookie[] cookies = request.getCookies();
+  	if(cookies != null) {
+  		for(Cookie cookie : cookies) {
+  			if(cookie.getName().equals("readPosts")) {
+  				readPosts = URLDecoder.decode(cookie.getValue(), "UTF-8"); // URL 디코딩 (읽을때는 다시 원래의 문자열로 복원)
+  				break;
+  			}
+  		}
+  	}
+  	
+  	// 확인 후 누적
+  	if(readPosts == null) {
+  		readPosts = numS;
+  	} else if(!readPosts.contains(numS)) {
+  		readPosts += ", " + numS;
+  	}
+  			
+	Cookie cookie = new Cookie("readPosts", URLEncoder.encode(readPosts)); //쿠키에 저장하기 전에 문자열을 인코딩(특수문자를 안전하게 저장가능)
+	cookie.setMaxAge(60 * 60 * 24 * 30); 	// 만료는 30일
+	cookie.setPath("/"); 					//모든 경로에서 접근가능
+	response.addCookie(cookie);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -389,9 +418,9 @@
 	    <script>
 	    	alert("삭제된 게시글입니다.");
 	    	location.href="board01";
-	    </script>
-		<% } %>
-		
+		    </script>
+			<% } %>
+			
 		<form action="board02" method="get" name="pageFrm">
     	
     	<% if(!(category == null || category.equals(""))) {%>

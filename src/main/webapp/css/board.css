@@ -457,6 +457,12 @@ section > #post > #list > a .content > .contentHead > .title {
   white-space: nowrap;
   overflow: hidden;
 }
+section > #post > #list > a .content > .contentHead > .title.read {
+	color: #aaa;
+}
+section > #post > #list > a .content > .contentHead > .title.overBestLike.read {
+	color: #a7d7e0;
+}
 section > #post > #list > a .content > .contentHead > span.commentCount {
   margin-left: 5px;
   color: #1a6080;
