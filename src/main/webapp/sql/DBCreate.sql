@@ -214,7 +214,8 @@ CREATE TABLE purchasetbl (
     status VARCHAR(20),                             -- 구매 상태 (purchased, pending 등)
     purchase_date DATE,                             -- 구매 날짜
     quantity INT,                                   -- 구매 수량
-    pay_method VARCHAR(10),                     -- 결제 수단 //추가
+    pay_method VARCHAR(10),                         -- 결제 수단 
+    total_price INT, 								-- 총 결제금액
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 구매자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결
 );
