@@ -7,6 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:useBean id="pMgr"  class="procs.ProcsMgr" />
+<jsp:useBean id="lMgr" class="login.LoginMgr" />
     
 <%
     // 세션에서 access_token 가져오기
@@ -90,6 +91,7 @@
             // id값확인 후 기존에 가입되어있는 회원일 경우 멤버테이블 userid값을 이용해서 로그인 세션 생성
             	int userId = pMgr.getUserIdByNaver(id);
             	String userIdS = Integer.toString(userId);
+            	lMgr.updateLastLogin(userId); // 마지막로그인 날짜 업데이트
             	
         		session.setAttribute("idKey", userId);
         		session.setAttribute("idKeyS", userIdS);
@@ -100,6 +102,7 @@
             	if(signFlag) {
                 	int userId = pMgr.getUserIdByNaver(id);
                 	String userIdS = Integer.toString(userId);
+                	lMgr.updateLastLogin(userId); // 마지막로그인 날짜 업데이트
                 	
             		session.setAttribute("idKey", userId);
             		session.setAttribute("idKeyS", userIdS);
