@@ -166,10 +166,21 @@
     }//.headMiddle
 
   }//header
-  >section{
+  >section.admin{
     padding: 150px 0 50px;
-    >form{
-      .topContainer{
+  }//section
+  
+  form{ /* 수정 : form을 section의 밑이 아닌 바깥으로 뺐음 */
+    > p { /* 수정 : 태그 및 스타일 추가 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 300px;
+      font-size: 16px;
+    }
+
+    #bookInfoWrap { /* 수정 : 태그 추가 */
+      .topContainer{ /* 수정 : 부모요소가 추가됨에 따라 하위로 이동 */
         display: flex;
         flex-flow: row nowrap;
         align-items: center;
@@ -181,7 +192,7 @@
           height: 250px;
           background-color: gray;
         }//.inputPhoto
-
+  
         >.shortInput{
           display: flex;
           flex-flow: column wrap;
@@ -218,13 +229,14 @@
           }//input
         }//li
       }//ul
-      >button{
-        display: block;
-        width: 500px;
-        margin: 50px auto;
-        padding: 30px;
-        font-size: 25px;
-      }//button
-    }//form
-  }//section
+    } // div#bookInfoWrap
+    
+    >button{
+      display: block;
+      width: 500px;
+      margin: 50px auto;
+      padding: 30px;
+      font-size: 25px;
+    }//button
+  }//form
 }//#wrap

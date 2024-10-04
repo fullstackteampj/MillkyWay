@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #wrap {
   width: 1200px;
   margin: 0 auto;
@@ -166,22 +167,31 @@
   color: #ddd;
   cursor: pointer;
 }
-#wrap > section {
+#wrap > section.admin {
   padding: 150px 0 50px;
 }
-#wrap > section > form .topContainer {
+#wrap form { /* 수정 : form을 section의 밑이 아닌 바깥으로 뺐음 */ }
+#wrap form > p { /* 수정 : 태그 및 스타일 추가 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 16px;
+}
+#wrap form #bookInfoWrap { /* 수정 : 태그 추가 */ }
+#wrap form #bookInfoWrap .topContainer { /* 수정 : 부모요소가 추가됨에 따라 하위로 이동 */
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
   padding: 30px;
 }
-#wrap > section > form .topContainer > div.inputPhoto {
+#wrap form #bookInfoWrap .topContainer > div.inputPhoto {
   width: 200px;
   height: 250px;
   background-color: gray;
 }
-#wrap > section > form .topContainer > .shortInput {
+#wrap form #bookInfoWrap .topContainer > .shortInput {
   display: flex;
   flex-flow: column wrap;
   align-content: space-between;
@@ -189,33 +199,33 @@
   height: 480px;
   padding: 10px;
 }
-#wrap > section > form .topContainer > .shortInput > li {
+#wrap form #bookInfoWrap .topContainer > .shortInput > li {
   width: 40%;
   margin: 15px 0;
 }
-#wrap > section > form .topContainer > .shortInput > li > label {
+#wrap form #bookInfoWrap .topContainer > .shortInput > li > label {
   display: block;
   width: 80px;
 }
-#wrap > section > form .topContainer > .shortInput > li > input {
+#wrap form #bookInfoWrap .topContainer > .shortInput > li > input {
   width: 100%;
   padding: 5px;
   font-size: 16px;
 }
-#wrap > section > form > ul {
+#wrap form #bookInfoWrap > ul {
   width: 95%;
   margin: 0 auto;
 }
-#wrap > section > form > ul > li {
+#wrap form #bookInfoWrap > ul > li {
   margin: 30px 0;
 }
-#wrap > section > form > ul > li > input {
+#wrap form #bookInfoWrap > ul > li > input {
   width: 100%;
   height: 300px;
   padding: 5px;
   font-size: 16px;
 }
-#wrap > section > form > button {
+#wrap form > button {
   display: block;
   width: 500px;
   margin: 50px auto;
