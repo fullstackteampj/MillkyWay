@@ -24,14 +24,20 @@
 		
 		<div id="bookInfoWrap">
 			<div class="topContainer">
-			<%-- 수정 / 삭제 요청에 따른 input 속성 구분 (수정-required / 삭제-readonly) --%>
-				<div class="inputPhoto">
-					<label for="photo">도서 표지사진</label><br />
-					<input type="file" name="photo" id="photo"
-					${event == 'update' ? '' : 'readonly'} />
-					<input type="text" name="photoText"  />
-				</div>
+				<c:if test="${not empty book}">
+					<img src="data:image/jpeg;base64, ${book.encodedPhoto}" alt="${book.title}" />
+				</c:if>
 				
+				<%-- 수정일때만 파일업로드(수정) 가능 --%>
+				<c:if test="${event == 'update'}">
+					<div class="inputPhoto">
+						<label for="photo">도서 표지사진</label><br />
+						<input type="file" name="photo" id="photo" onchange="previewImage(event)" />
+						<%-- <input type="text" name="photoText" /> 수정 : 태그 삭제 --%>
+					</div>
+				</c:if>
+				
+				<%-- 수정 / 삭제 요청에 따른 input 속성 구분 (수정-required / 삭제-readonly) --%>
 				<ul class="shortInput">
 					<li>
 						<label for="title">도서 제목</label>
@@ -135,7 +141,7 @@
 				<button>도서 정보 수정</button>
 			</c:when>
 			<c:otherwise>
-				<button>도서 정보 삭제</button>
+				<button type="button" onclick="deleteWarning()">도서 정보 삭제</button>
 			</c:otherwise>
 		</c:choose>
 		

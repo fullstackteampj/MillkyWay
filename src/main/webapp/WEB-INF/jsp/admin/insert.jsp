@@ -46,18 +46,20 @@
 		          <li>eBook</li>
 		        </ul>
 		
-	       </div><!-- .headMiddle -->
+	       </div><%-- .headMiddle --%>
 		</header>
 		
 		<section class="admin">
 			<form action="insertBook" method="post" name="insertBookFrm" id="insertBookFrm" enctype="multipart/form-data">
-				<div id="bookInfoWrap"> <!-- 태그 추가 -->
+				<div id="bookInfoWrap"> <%-- 태그 추가 --%>
 					<div class="topContainer">
+					
+						<img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="#" /> <%-- 태그 추가 --%>
 					
 						<div class="inputPhoto">
 							<label for="photo">도서 표지사진</label><br />
-							<input type="file" name="photo" id="photo" required />
-							<input type="text" name="photoText"  />
+							<input type="file" name="photo" id="photo" onchange="previewImage(event)" required />
+							<%-- <input type="text" name="photoText"  /> 수정 : 태그삭제 --%>
 						</div>
 						
 						<ul class="shortInput">
@@ -115,9 +117,9 @@
 								<label for="pages">도서 페이지수</label>
 								<input type="text" name="pages" id="pages" placeholder="숫자만 작성" required />
 							</li>
-						</ul><!-- .shortInputr -->
+						</ul><%-- .shortInputr --%>
 	
-					</div><!-- .topContainer -->
+					</div><%-- .topContainer --%>
 					
 					<ul>
 						<li>
@@ -140,7 +142,7 @@
 							<input type="text" name="miniIntro" id="miniIntro" placeholder="2-3줄 정도 분량" required />
 						</li>
 					</ul>
-				</div> <!-- #bookInfoWrap -->
+				</div> <%-- #bookInfoWrap --%>
 				<button>도서 정보 등록</button>
 			</form>
 		</section>
@@ -204,7 +206,8 @@
         const $author = document.createElement('p');
         const $genre = document.createElement('p');
 
-        $a.setAttribute('href','javascript:bookInfoFn('+bookid+', "update")');
+        //$a.setAttribute('href','javascript:bookInfoFn('+bookid+', "update")');
+        $a.setAttribute('href','/admin/update?bookid=' + bookid);
         $image.setAttribute('src','/image?bookid=' + bookid);
         $image.setAttribute('alt', title);
         $title.textContent = title;

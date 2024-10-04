@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import admin.AdminMgr;
+import beans.BoardBean;
 import beans.BookBean;
 import board.BoardMgr;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 
 @WebServlet("/admin/*")
 public class AdminServlet extends HttpServlet {
@@ -38,9 +40,16 @@ public class AdminServlet extends HttpServlet {
         		BoardMgr bMgr = new BoardMgr();
         		BookBean book = bMgr.getBook(bookid);
         		
+        		// Base64로 인코딩한 이미지 데이터를 추가
+        		if (book.getPhoto() != null) {
+                    // Base64로 인코딩
+                    String encodedPhoto = Base64.getEncoder().encodeToString(book.getPhoto());
+                    book.setEncodedPhoto(encodedPhoto);
+                }
+        		
         		// 데이터를 response 객체에 저장
         		request.setAttribute("book", book);
-        		request.setAttribute("target", request.getParameter("bookid"));
+        		request.setAttribute("bookid", request.getParameter("bookid"));
     		}
     		request.setAttribute("categories", categories);
     	}
@@ -100,6 +109,13 @@ public class AdminServlet extends HttpServlet {
             BoardMgr bMgr = new BoardMgr();
             BookBean book = bMgr.getBook(bookid);
     		String[] categories = {"국내도서", "해외도서", "eBook"};
+    		
+    		// Base64로 인코딩한 이미지 데이터를 추가
+    		if (book.getPhoto() != null) {
+                // Base64로 인코딩
+                String encodedPhoto = Base64.getEncoder().encodeToString(book.getPhoto());
+                book.setEncodedPhoto(encodedPhoto);
+            }
             
             // request 객체로 반환
             request.setAttribute("bookid", bookid);
