@@ -54,6 +54,8 @@ public class MyPageMgr {
 				bean.setBookid(rs.getInt("bookid"));
 				bean.setPurchase_date(rs.getString("purchase_date"));
 				bean.setStatus(rs.getString("status"));
+				bean.setPurchaseid(rs.getInt("purchaseid"));
+				bean.setQuantity(rs.getInt("quantity"));
 				purList.add(bean);
 			}
 		}catch(Exception e) {
@@ -153,6 +155,8 @@ public class MyPageMgr {
 				cBean.setBookid(rs.getInt("bookid"));
 				cBean.setCancellation_date(rs.getString("cancellation_date"));
 				cBean.setStatus(rs.getString("status"));
+				cBean.setPrice(rs.getInt("price"));
+				cBean.setQuantity(rs.getInt("quantity"));
 				canList.add(cBean);
 			}
 		}catch(Exception e) {
@@ -555,8 +559,125 @@ public class MyPageMgr {
 		}finally {
 			pool.freeConnection(conn, pstmt);
 		}
-		
 	}// void signoutMember(String userId)
+	
+	public PurchaseBean getCanPurInfo(String purchaseid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		PurchaseBean bean = new PurchaseBean();
+		
+		try {
+			conn = pool.getConnection();
+			sql = "select * from purchasetbl where purchaseid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(purchaseid));
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				bean.setStatus(rs.getString("status"));
+				bean.setQuantity(rs.getInt("quantity"));
+				bean.setPurchase_date(rs.getString("purchase_date"));
+				bean.setPurchaseid(rs.getInt("purchaseid"));
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+		
+		return bean;
+	}// getCanPurInfo(String purchaseid)
+	
+	public BookBean getCanBookInfo(String bookid) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		BookBean bean = new BookBean();
+		
+		try {
+			conn = pool.getConnection();
+			sql = "select * from booktbl where bookid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(bookid));
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				bean.setAuthor(rs.getString("author"));
+				bean.setTitle(rs.getString("title"));
+				bean.setPrice(rs.getInt("price"));
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+		
+		return bean;
+	}// getCanPurInfo(String purchaseid)
+	
+	
+	public boolean movePurToCan(String purchaseid, String cancellation_reason, String status, String price, String quantity) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		boolean flag = false;
+		int userid = 0;
+		int bookid = 0;
+		
+		try {
+			// 취소테이블로 옮겨갈 정보 추출
+			conn = pool.getConnection();
+			sql = "select * from purchasetbl where purchaseid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(purchaseid));
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				userid = rs.getInt("userid");
+				bookid = rs.getInt("bookid");
+			}
+			
+			// 취소 테이블에 새로운 목록 추가
+			sql = "insert into canceltbl(userid, bookid, status, cancellation_date, cancellation_reason, price, quantity)"
+					+"values(?,?,?,curdate(),?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, bookid);
+			pstmt.setString(3, status + "대기");
+			pstmt.setString(4, cancellation_reason);
+			pstmt.setInt(5, Integer.parseInt(price));
+			pstmt.setInt(6, Integer.parseInt(quantity));
+			
+			int j = pstmt.executeUpdate();
+			if(j>0) {
+				flag = true;
+			}
+			
+			// 기존 구매테이블에서 목록 제거
+			sql = "delete from purchasetbl where purchaseid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(purchaseid));
+
+			int k = pstmt.executeUpdate();
+			if(k>0) {
+				flag = true;
+			}
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(conn, pstmt, rs);
+		}
+
+		return flag;
+	}//boolean movePurToCan(String purchaseid, String cancellation_reason, String status)
+	
 	
 }//class MyPageMgr
 

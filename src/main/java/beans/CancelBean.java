@@ -8,6 +8,9 @@ public class CancelBean {
 	private String cancellation_date ;
 	private String cancellation_reason;
 	private int totalCount;
+	private int price;
+	private int quantity;
+	
     
 	public int getCancelid() {
 		return cancelid;
@@ -50,6 +53,18 @@ public class CancelBean {
 	}
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
     
 }//class CancelBean

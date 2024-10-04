@@ -28,7 +28,7 @@ public class LoginMgr {
 		
 		try {
 			conn = pool.getConnection();
-			sql = "select userid, pwd, salt from membertbl where account = ?";
+			sql = "select userid, pwd, salt, status from membertbl where account = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, account);
 			rs = pstmt.executeQuery();
@@ -37,6 +37,7 @@ public class LoginMgr {
 				bean.setPwd(rs.getString("pwd"));
 				bean.setSalt(rs.getString("salt"));
 				bean.setUserid(rs.getInt("userid"));
+				bean.setStatus(rs.getString("status"));
 			}
 			
 		}catch (Exception e) {

@@ -16,7 +16,15 @@ if(cookies!=null){
 	}//for
 }//if
 
-String userId = (String) session.getAttribute("idKey");
+if (session.getAttribute("idKeyS") != null) {
+    %>
+    <script>
+        alert("로그인 상태입니다. 메인화면으로 이동합니다.");
+        location.href="/";
+    </script>
+    <%
+    return;
+}
 %>
 <!DOCTYPE html>
 <html lang="en"> 

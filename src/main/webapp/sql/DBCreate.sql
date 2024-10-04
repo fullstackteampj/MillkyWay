@@ -248,6 +248,8 @@ CREATE TABLE canceltbl (
     userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
     status VARCHAR(20),                             -- 주문 취소 상태 (cancelled, pending 등)
+    price INT default 12000,                        -- 도서 가격 (원화)
+	quantity INT default 1,                         -- 구매 수량
     cancellation_date DATE,                         -- 주문 취소 날짜
     cancellation_reason TEXT,                       -- 주문 취소 사유
 

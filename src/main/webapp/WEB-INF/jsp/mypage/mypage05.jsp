@@ -516,31 +516,31 @@
 		
 		if (checkResult) {
 	        // 새 폼 생성
-	        const form = document.createElement('form');
-	        form.method = 'post';
-	        form.action = '/buy/buy01';
+	        const $form = document.createElement('form');
+	        $form.method = 'post';
+	        $form.action = '/buy/buy01';
 
 	        // 체크된 값들을 폼에 추가
 	        for (let j = 0; j < bookids.length; j++) {
-	            const input = document.createElement('input');
-	            input.type = 'hidden';
-	            input.name = 'bookids';
-	            input.value = bookids[j];
-	            form.appendChild(input);
+	            const $input = document.createElement('input');
+	            $input.type = 'hidden';
+	            $input.name = 'bookids';
+	            $input.value = bookids[j];
+	            $form.appendChild($input);
 	        }
 	        
 	        // 체크된 값들을 폼에 추가
 	        for (let j = 0; j < orderNums.length; j++) {
-	            const input = document.createElement('input');
-	            input.type = 'hidden';
-	            input.name = 'orderNums';
-	            input.value = orderNums[j];
-	            form.appendChild(input);
+	            const $input = document.createElement('input');
+	            $input.type = 'hidden';
+	            $input.name = 'orderNums';
+	            $input.value = orderNums[j];
+	            $form.appendChild($input);
 	        }
 
 	        // 폼 제출
-	        document.body.appendChild(form);
-	        form.submit();
+	        document.body.appendChild($form);
+	        $form.submit();
 	    } else {
 	        alert("선택된 항목이 없습니다."); // 체크된 항목이 없을 때 경고
 	    }

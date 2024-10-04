@@ -107,7 +107,7 @@
 				
 				  <div class="content">
 				    <p class="status"><%= cBean.getStatus() %></p>
-				    <p class="buyId">결제금액: <%= bBean.getPrice() %>원</p>
+				    <p class="buyId">결제금액: <%= bBean.getPrice()*cBean.getQuantity() %>원</p>
 				    <p class="reciever">수령인:<%= userName %></p>
 				  </div>
 				</li>

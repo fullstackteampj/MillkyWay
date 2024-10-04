@@ -11,7 +11,7 @@
 	String saveId = request.getParameter("saveId");
 	
 	MemberBean mBean = lMgr.getLoginInfo(account);
-	
+
 	if(mBean.getUserid()==0) {
 		%>
 		<script>
@@ -41,6 +41,15 @@
 		</script>
 		<%
 	}else{
+		
+		// 관리자 아이디일 경우 관리자 페이지로 이동 및 관리자 인증 세션 생성
+		if(mBean.getStatus().equals("admin")) {
+			response.sendRedirect("/admin/insert");
+			session.setAttribute("admin", "admin");
+			lMgr.updateLastLogin(userId); // 마지막로그인 날짜 업데이트
+			return;
+		}
+		
 		session.setAttribute("idKey", userId);
 		session.setAttribute("idKeyS", userIdS);
 		lMgr.updateLastLogin(userId); // 마지막로그인 날짜 업데이트
