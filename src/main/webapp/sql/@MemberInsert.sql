@@ -9,6 +9,7 @@ INSERT INTO membertbl (account, pwd, salt, question, answer, name, nickname, gen
 ('jeonghun@gmail.com', '52f123bfbf568ac7a00ce65b7c9f68b35a9a8aabeb6e53617286b5aaef2c2c65', 'beb952d6d937cb7e9eeb9597c2966cdfd26ec742', '가장 좋아하는 영화는 무엇인가요?', '인셉션', '정훈', '정훈이', 'M', '67890', '인천시 789번지', '010-3456-7890', 'jeonghun@gmail.com', NULL, 'active', '과학 소설, 스릴러', NULL),
 ('millkyway@gmail.com', 'a9949a44a520afbc0e471f5376587ca4c829d9a18e04f980f12ce44e3e30f18c', '8054094825df5beef356725cb008e15f0b8f0a7e', '가장 가고 싶은 여행지는 어디인가요?', '파리', '은하수', '밀키웨이', 'M', '13579', '제주시 101번지', '010-4567-8901', 'millkyway@gmail.com', NULL, 'active', '여행, 모험', NULL),
 ('galaxy@gmail.com', 'cf76649b082af03c82a9451b4d933154d5ab98434bee6572070e8f344be19745', '3b7aa5df8bd3367b870fde6815d07b78190031d5', '가장 좋아하는 책은 무엇인가요?', '1984', '갤럭시', '갤럭시', 'M', '24680', '울산시 202번지', '010-5678-9012', 'galaxy@gmail.com', NULL, 'active', 'SF, 고전', NULL),
+
 ('admin@milkyway.com', 'cf76649b082af03c82a9451b4d933154d5ab98434bee6572070e8f344be19745', '3b7aa5df8bd3367b870fde6815d07b78190031d5', '', '', '관리자', '관리자', 'M', '00000', '', '010-1234-5678', 'admin@millkyway.com', NULL, 'admin', '', NULL);
 
 
