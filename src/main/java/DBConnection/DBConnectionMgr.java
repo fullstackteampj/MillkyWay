@@ -38,6 +38,13 @@ import java.util.Vector;
  */
 public class DBConnectionMgr {
     private Vector connections = new Vector(10);
+    // 홈페이지 DB설정
+//    private String _driver = "com.mysql.cj.jdbc.Driver",
+//    	    _url = "jdbc:mysql://ezensn002.cafe24.com:3306/ezensn002?useUnicode=true&characterEncoding=UTF-8",
+//    	    _user = "ezensn002",
+//    	    _password = "ezen3688**";
+
+      // 로컬 DB설정
     private String _driver = "com.mysql.cj.jdbc.Driver",
     _url = "jdbc:mysql://127.0.0.1:3306/MillkyWayDB?useUnicode=true&characterEncoding=UTF-8",
     _user = "root",

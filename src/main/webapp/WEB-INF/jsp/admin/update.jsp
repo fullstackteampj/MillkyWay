@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +8,8 @@
 <title>관리자 페이지</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css?after" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin.css?after" />
- <script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/9698826605.js" crossorigin="anonymous"></script>
+<script defer src="${pageContext.request.contextPath}/js/admin.js"></script>
 </head>
 <body>
 	<div id="wrap">
@@ -45,100 +47,122 @@
 		          <li>eBook</li>
 		        </ul>
 		
-	       </div><!-- .headMiddle -->
+	       </div><%-- .headMiddle --%>
 		</header>
 		
-		<section>
-			<form >
-				<div class="topContainer">
+		<section class="admin">
+			<form action="updateBook" method="post" name="updateBookFrm" id="updateBookFrm" enctype="multipart/form-data">
 				
-					<div class="inputPhoto">
-						<label for="photo">도서 표지사진</label><br />
-						<input type="file" name="photo" id="photo" required />
-						<input type="text" name="photoText"  />
-					</div>
+				<c:choose>
+					<%-- 파라미터값이 존재하지않으면 --%>
+					<c:when test="${empty bookid}">
+						<p>수정할 도서를 선택하세요</p>  <%-- 태그 추가 --%>
+					</c:when>
 					
-					<ul class="shortInput">
-						<li>
-							<label for="title">도서 제목</label>
-							<input type="text" name="title" id="title" required />
-						</li>
-						
-						<li>
-							<label for="author">도서 작가</label>
-							<input type="text" name="author" id="author" required />
-						</li>
-						
-						<li>
-							<label for="category">도서 카테고리</label>
-							<select name="category" id="category" required >
-								<option value="국내도서">국내도서</option>
-								<option value="해외도서">해외도서</option>
-								<option value="eBook">eBook</option>
-							</select>
-						</li>
-						
-						<li>
-							<label for="genre">도서 장르</label>
-							<input type="text" name="genre" id="genre" required />
-						</li>
-						
-						<li>
-							<label for="review">도서 리뷰</label>
-							<input type="text" name="review" id="review" placeholder="한줄로 간단히 작성" required />
-						</li>
-						
-						<li>
-							<label for="publish_date">도서 출판일</label>
-							<input type="text" name="publish_date" id="publish_date" placeholder="2000-01-01 형식으로 작성" required />
-						</li>
+					<%-- 파라미터값이 존재하면(insert에서 검색해 넘어왔을 경우) --%>
+					<c:otherwise>
+					<input type="hidden" name="bookid" value="${bookid}" />
+					<div id="bookInfoWrap">
+						<div class="topContainer">
+							<c:if test="${not empty book}">
+								<img src="data:image/jpeg;base64, ${book.encodedPhoto}" alt="${book.title}" />
+							</c:if>
 							
-						<li>
-							<label for="isbn">도서 isbn</label>
-							<input type="text" name="isbn" id="isbn" placeholder="숫자만 작성" required />
-						</li>
-						
-						<li>
-							<label for="stock_Quantity">도서 재고</label>
-							<input type="text" name="stock_Quantity" id="stock_Quantity" placeholder="숫자만 작성" required />
-						</li>
-						
-						<li>
-							<label for="price">도서 가격</label>
-							<input type="text" name="price" id="price" placeholder="숫자만 작성" required />
-						</li>
-						
-						<li>
-							<label for="pages">도서 페이지수</label>
-							<input type="text" name="pages" id="pages" placeholder="숫자만 작성" required/>
-						</li>
-					</ul><!-- .shortInputr -->
-
-				</div><!-- .topContainer -->
-				
-				<ul>
-					<li>
-						<label for="contents">도서 내용 요약글</label><br />
-						<input type="text" name="contents" id="contents" required />
-					</li>
+							<div class="inputPhoto">
+								<label for="photo">도서 표지사진</label><br />
+								<input type="file" name="photo" id="photo" onchange="previewImage(event)" />
+								<%-- <input type="text" name="photoText" /> 수정 : 태그 삭제 --%>
+							</div>
+							
+							
+							<%-- 수정 / 삭제 요청에 따른 input 속성 구분 (수정-required / 삭제-readonly) --%>
+							<ul class="shortInput">
+								<li>
+									<label for="title">도서 제목</label>
+									<input type="text" name="title" id="title" value="${not empty book ? book.title : ''}" />
+								</li>
+								
+								<li>
+									<label for="author">도서 작가</label>
+									<input type="text" name="author" id="author" value="${not empty book ? book.author : ''}" required />
+								</li>
+								
+								<li>
+									<label for="category">도서 카테고리</label>
+									<select name="category" id="category" required>
+										<c:forEach var="category" items="${categories}">
+											<option value="${category}"
+												<c:if test="${book.category == category}">selected</c:if> >
+												${category}
+											</option>
+										</c:forEach>
+									</select>
+								</li>
+								
+								<li>
+									<label for="genre">도서 장르</label>
+									<input type="text" name="genre" id="genre" value="${not empty book ? book.genre : ''}" required />
+								</li>
+								
+								<li>
+									<label for="review">도서 리뷰</label>
+									<input type="text" name="review" id="review" value="${not empty book ? book.review : ''}" placeholder="한줄로 간단히 작성" required />
+								</li>
+								
+								<li>
+									<label for="publish_date">도서 출판일</label>
+									<input type="text" name="publish_date" id="publish_date" placeholder="2000-01-01 형식으로 작성" value="${not empty book ? book.publish_date : ''}" required />
+								</li>
+									
+								<li>
+									<label for="isbn">도서 isbn</label>
+									<input type="text" name="isbn" id="isbn" placeholder="숫자만 작성" value="${not empty book ? book.isbn : ''}" required />
+								</li>
+								
+								<li>
+									<label for="stock_Quantity">도서 재고</label>
+									<input type="text" name="stock_Quantity" id="stock_Quantity" placeholder="숫자만 작성" value="${not empty book ? book.stock_Quantity : ''}" required />
+								</li>
+								
+								<li>
+									<label for="price">도서 가격</label>
+									<input type="text" name="price" id="price" placeholder="숫자만 작성" value="${not empty book ? book.price : ''}" required />
+								</li>
+								
+								<li>
+									<label for="pages">도서 페이지수</label>
+									<input type="text" name="pages" id="pages" placeholder="숫자만 작성" value="${not empty book ? book.pages : ''}" required />
+								</li>
+							</ul><%-- .shortInputr --%>
+			
+						</div><%-- .topContainer --%>
 					
-					<li>
-						<label for="authorIntro">저자 소개</label><br />
-						<input type="text" name="authorIntro" id="authorIntro" required />
-					</li>
-					
-					<li>
-						<label for="contentsTables">목차</label><br />
-						<input type="text" name="contentsTables" id="contentsTables" required />
-					</li>
-					
-					<li>
-						<label for="miniIntro">간단 소개글</label><br />
-						<input type="text" name="miniIntro" id="miniIntro" required />
-					</li>
-				</ul>
-				
-				<button>도서 정보 수정</button>
+						<ul>
+							<li>
+								<label for="contents">도서 내용 요약글</label><br />
+								<input type="text" name="contents" id="contents" value="${not empty book ? book.contents : ''}" required />
+							</li>
+							
+							<li>
+								<label for="authorIntro">저자 소개</label><br />
+								<input type="text" name="authorIntro" id="authorIntro" value="${not empty book ? book.authorIntro : ''}" required />
+							</li>
+							
+							<li>
+								<label for="contentsTables">목차</label><br />
+								<input type="text" name="contentsTables" id="contentsTables" value="${not empty book ? book.contentsTables : ''}" required />
+							</li>
+							
+							<li>
+								<label for="miniIntro">간단 소개글</label><br />
+								<input type="text" name="miniIntro" id="miniIntro" value="${not empty book ? book.miniIntro : ''}" required />
+							</li>
+						</ul>
+						</div> <%-- bookInfoWrap --%>
+						
+						<button>도서 정보 수정</button>
+					</c:otherwise>
+				</c:choose>
 			</form>
 		</section>
 	</div>
@@ -201,7 +225,7 @@
          const $author = document.createElement('p');
          const $genre = document.createElement('p');
 
-         //$a.setAttribute('href','/shop/shop02?bookid=' + bookid);
+         $a.setAttribute('href','javascript:bookInfoFn('+bookid+', "update")');
          $image.setAttribute('src','/image?bookid=' + bookid);
          $image.setAttribute('alt', title);
          $title.textContent = title;
@@ -341,7 +365,6 @@
          $searchCat.textContent = $searchItem.textContent;
        });
      });//$searchItems.forEach(($searchItem)
-
 </script>
 </body>
 </html>

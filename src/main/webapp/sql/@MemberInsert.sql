@@ -12,6 +12,7 @@ INSERT INTO membertbl (account, pwd, salt, question, answer, name, nickname, gen
 
 ('admin@milkyway.com', 'cf76649b082af03c82a9451b4d933154d5ab98434bee6572070e8f344be19745', '3b7aa5df8bd3367b870fde6815d07b78190031d5', '', '', '관리자', '관리자', 'M', '00000', '', '010-1234-5678', 'admin@millkyway.com', NULL, 'admin', '', NULL);
 
+
 UPDATE membertbl SET usergrade="VIP++", curpoint=25000, expectpoint=3000 WHERE userid = 1;
 UPDATE membertbl SET usergrade="VIP++", curpoint=45000, expectpoint=15000 WHERE userid = 2;
 UPDATE membertbl SET usergrade="VIP++", curpoint=15000, expectpoint=5000 WHERE userid = 3;
