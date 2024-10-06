@@ -99,7 +99,7 @@ public class BoardServlet extends HttpServlet {
 	            if (post.getPhoto() != null) {
 	                // Base64로 인코딩
 	                String encodedPhoto = Base64.getEncoder().encodeToString(post.getPhoto());
-	                post.setEncodedPhoto(encodedPhoto); 
+	                post.setEncodedPhoto(encodedPhoto);
 	            }
 	        }
 	        

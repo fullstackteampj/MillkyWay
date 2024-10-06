@@ -89,7 +89,7 @@ CREATE TABLE Booktbl (
     authorIntro TEXT,                               -- 저자소개
     contentsTables TEXT,						    -- 목차
     miniIntro TEXT,                                 -- 간단한 설명
-    photo BLOB,                                     -- 도서 표지 사진
+    photo MEDIUMBLOB,                                     -- 도서 표지 사진
     publish_date DATE,                              -- 출판일
     isbn VARCHAR(20),                               -- ISBN (국제 표준 도서 번호)
     stock_Quantity INT,                              -- 재고 수량
