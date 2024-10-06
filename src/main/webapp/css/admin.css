@@ -192,7 +192,7 @@
   height: 250px;
   -o-object-fit: cover;
      object-fit: cover;
-  outline: 1px solid #222;
+  outline: 1px solid red;
 }
 #wrap form #bookInfoWrap .topContainer > div.inputPhoto {
   position: absolute; /*추가*/
