@@ -10,16 +10,6 @@
 -- 각 테이블간 참조관계를 고려하여 참조된 필드가 있는 테이블 먼저 삭제
 -- 모든 테이블이 삭제된 후 데이터베이스를 삭제하여
 -- 잔여 데이터가 남지않도록 삭제
-DROP TABLE IF EXISTS canceltbl;
-DROP TABLE IF EXISTS carttbl;
-DROP TABLE IF EXISTS wishtbl;
-DROP TABLE IF EXISTS purchasetbl;
-DROP TABLE IF EXISTS commenttbl;
-DROP TABLE IF EXISTS Reviewtbl;
-DROP TABLE IF EXISTS boardtbl;
-DROP TABLE IF EXISTS Booktbl;
-DROP TABLE IF EXISTS membertbl;
-
 DROP DATABASE IF EXISTS MillkyWayDB;
 
 
