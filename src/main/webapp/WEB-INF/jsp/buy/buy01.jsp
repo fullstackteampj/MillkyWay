@@ -294,7 +294,7 @@
 	                    // 백엔드로 주문 생성 요청
 	                    axios.post("http://localhost:8080/orders/kakaoPay?impUid="+res.imp_uid).then((response) => {
 	                        console.log('response.data = ' + response.data);
-	                        frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent;
+	                        frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent + '&point=' + $point.textContent;
 	                        frm.submit();
 	                        
 	                    }).catch((error) => {
@@ -316,7 +316,7 @@
           "openType": "popup",
           "onAuthorize": function(oData){
         	  if(oData.resultCode === "Success"){
-        		  frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent;
+        		  frm.action = '/procs/buyProc?totalPrice=' +  $totPrice.textContent + '&point=' + $point.textContent;
                   frm.submit();
         	  }else{
         		 console.log(oData.resultCode);
@@ -332,7 +332,7 @@
           "totalPayAmount": $totPrice.textContent,
           "taxScopeAmount": $totPrice.textContent,
           "taxExScopeAmount": "0",
-          "returnUrl": 'http://localhost:8080/procs/buyProc?totalPrice=' +  $totPrice.textContent
+          "returnUrl": 'http://localhost:8080/procs/buyProc?totalPrice=' +  $totPrice.textContent + '&point=' + $point.textContent
         });
 	 };
 
