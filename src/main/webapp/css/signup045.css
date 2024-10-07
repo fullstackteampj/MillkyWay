@@ -15,7 +15,7 @@
   line-height: 1.8;
 }
 .duplication > h1 > span {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 .duplication > button {
   background: none;
@@ -25,10 +25,10 @@
   width: 100px;
   height: 40px;
   margin: 40px auto 20px;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
   border-radius: 5px;
   cursor: pointer;
 }
 .duplication > button:hover {
-  background-color: #ded5d0;
+  background-color: #addef6;
 }/*# sourceMappingURL=signup045.css.map */

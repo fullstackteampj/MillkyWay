@@ -71,6 +71,8 @@
 	
 	int commentCount = (int)request.getAttribute("commentCount");
 	ArrayList<CommentBean> clist = (ArrayList<CommentBean>)request.getAttribute("clist");
+	
+	int activeComCount = bMgr.getActiveComCount(num);
 %>
 <html>
 <head>
@@ -85,7 +87,7 @@
 <body>
 	<div id="commentHead">
 	        <div id="commentOpt">
-	          <h3>댓글 [<span><%= commentCount %></span>]</h3>
+	          <h3>댓글 [<span><%= activeComCount %></span>]</h3>
 	          <select name="commentSort" id="commentSort">
 	            <option value="등록순">등록순</option>
 	            <option value="최신순">최신순</option>
@@ -192,29 +194,11 @@
 		</form>
 		
         <% // status=9면서 대댓이있는건 내용대체출력+버튼미출력
-   		  } else if(comStatus==9 && bMgr.hasComReply(commentId)) { %>
+   		  } else if(comStatus==9) { %>
         	<div class="comment comment-<%=num%> comid-<%=commentId%>
     		<%if(comDepth > 0) {%> depth depth-<%=comDepth%>"
     		<% int depthPx = comDepth <= 16 ?  (30 * comDepth) : (30 * 16); %>
     		style="margin-left: <%=depthPx%><%}%>px;">
-    	
-	          <div class="commentInfo">
-	            <div class="authorInfo">
-	            <% // 글작성자와 댓글작성자가 같을경우 작성자표시
-	           		if(postuser == comUserid) {%>
-	            	<span class="commentAuthor same">
-	            <% } else { %>
-	            	<span class="commentAuthor">
-	         	<% } %>
-	            <%=comNickname%></span>
-	          	</div> <!-- .authorInfo -->
-	            
-	            <div class="commentAdd">
-	              <span class="commentDate"><%=comRegdate%></span>
-	            </div> <!-- commentAdd -->
-	            
-	          </div> <!-- commentInfo -->
-	          
 	          <div class="commentMsg">
 	            <p class="text">삭제된 댓글입니다.</p>
 	          </div>

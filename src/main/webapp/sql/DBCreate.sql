@@ -10,6 +10,20 @@
 -- 각 테이블간 참조관계를 고려하여 참조된 필드가 있는 테이블 먼저 삭제
 -- 모든 테이블이 삭제된 후 데이터베이스를 삭제하여
 -- 잔여 데이터가 남지않도록 삭제
+
+DROP TABLE IF EXISTS canceltbl;
+DROP TABLE IF EXISTS carttbl;
+DROP TABLE IF EXISTS wishtbl;
+DROP TABLE IF EXISTS purchasetbl;
+DROP TABLE IF EXISTS purchase_bundletbl;
+DROP TABLE IF EXISTS commenttbl;
+DROP TABLE IF EXISTS Reviewtbl;
+DROP TABLE IF EXISTS boardtbl;
+DROP TABLE IF EXISTS Booktbl;
+DROP TABLE IF EXISTS pointManagementtbl;
+DROP TABLE IF EXISTS membertbl;
+
+
 DROP DATABASE IF EXISTS MillkyWayDB;
 
 
@@ -44,7 +58,7 @@ CREATE TABLE membertbl (
     userid INT PRIMARY KEY AUTO_INCREMENT,  -- 회원 ID, 기본 키 및 자동 증가
     account VARCHAR(100) NOT NULL unique,   -- 회원 계정 (이메일 또는 사용자 이름)
     pwd VARCHAR(100) NULL,              	-- 비밀번호
-	salt VARCHAR(100) NULL,             	-- salt값
+    salt VARCHAR(100) NULL,             	-- salt값
     question VARCHAR(100) NULL,         	-- 질문
     answer VARCHAR(100) NULL,           	-- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름
@@ -52,10 +66,10 @@ CREATE TABLE membertbl (
     gender CHAR(1) default null,            -- 성별 (M, F)
     zipcode VARCHAR(10) default 00000,      -- 우편번호
     usergrade VARCHAR(100) default 'vip',	-- 유저등급
-	curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
-	expectpoint int default 0,				-- 적립예정포인트
+	  curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
+	  expectpoint int default 0,				-- 적립예정포인트
     address TEXT,        					-- 주소
-	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
+	  detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
     signup_date DATE,     					-- 회원 가입 날짜, 기본값 현재 날짜
@@ -74,6 +88,17 @@ CREATE TRIGGER before_insert_membertbl
 BEFORE INSERT ON membertbl
 FOR EACH ROW
 SET NEW.signup_date = IFNULL(NEW.signup_date, CURDATE());
+
+
+-- 포인트 관리 테이블
+CREATE TABLE pointManagementtbl (
+	pointid INT PRIMARY KEY AUTO_INCREMENT,
+	userid INT,  
+    point INT, 
+    division VARCHAR(5), 		-- 구분(적립/차감)
+    update_date DATETIME,  
+    FOREIGN KEY (userid) REFERENCES membertbl(userid)
+);
 
 
 -- 도서 정보를 저장하는 테이블
@@ -139,6 +164,7 @@ CREATE TABLE boardtbl (
     title VARCHAR(200) NOT NULL,                            -- 게시물 제목
     content TEXT NOT NULL,                                  -- 게시물 내용
     photo MEDIUMBLOB,                               	 	-- 게시물에 포함된 사진
+    photo_name VARCHAR(100),                        		-- 사진 이름
     genre VARCHAR(50) NOT NULL,                             -- 도서 장르 (문학, 인문학, 에세이, 자기계발, 경제경영, 과학, 사회과학, 역사, 종교, 만화, 기타)
     tab VARCHAR(10) NOT NULL DEFAULT '일반',					-- 글의 탭분류 (일반, 질문, 감상, 추천)
     regdate datetime DEFAULT now() NOT NULL,                -- 게시물 작성 날짜
@@ -152,20 +178,21 @@ CREATE TABLE boardtbl (
 
 -- 댓글 테이블 생성
 CREATE TABLE commenttbl (
-	commentid INT PRIMARY KEY AUTO_INCREMENT,				-- 댓글 ID, 기본키 및 자동 증가
-	userid INT NOT NULL, 							        -- 댓글 작성자 id(식별자)
-    nickname VARCHAR(100) NOT NULL,							-- 댓글 작성자 닉네임
-	content TEXT NOT NULL,									-- 댓글 내용
-    boardid INT NOT NULL DEFAULT 0,                         -- 댓글이 속한 글 (100~127 사이에서만)
-    pos INT NOT NULL DEFAULT 0,								-- 대댓글 순서(위치) - 댓글은 그냥 0이면됨
-    depth INT NOT NULL DEFAULT 0,        			        -- 댓글의 깊이 (0은 최상위 댓글)
-	ref INT,												-- 대댓글이 속한 조상댓글
-	parentid INT,											-- 대댓글이 속한 직계부모댓글
-    regdate DATETIME NOT NULL DEFAULT now(),                -- 댓글 작성 날짜
+   commentid INT PRIMARY KEY AUTO_INCREMENT,            	-- 댓글 ID, 기본키 및 자동 증가
+   userid INT NOT NULL,                              		-- 댓글 작성자 id(식별자)
+    nickname VARCHAR(100) NOT NULL,                     	-- 댓글 작성자 닉네임
+   content TEXT NOT NULL,                           		-- 댓글 내용
+    boardid INT NOT NULL DEFAULT 0,                     	-- 댓글이 속한 글
+    pos INT NOT NULL DEFAULT 0,                        		-- 대댓글 순서(위치)
+    depth INT NOT NULL DEFAULT 0,                       	-- 댓글의 깊이 (0은 최상위 댓글)
+   	ref INT,                                    			-- 대댓글이 속한 조상댓글
+   	parentid INT,                                 			-- 대댓글이 속한 직계부모댓글
+    regdate DATETIME NOT NULL DEFAULT now(),            	-- 댓글 작성 날짜
     update_date DATETIME,                               	-- 댓글 수정 날짜
     delete_date DATETIME,                               	-- 댓글 삭제 날짜
-    ip VARCHAR(45) NOT NULL,                                -- 작성자 IP 주소
-    status INT NOT NULL DEFAULT 0							-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    ip VARCHAR(45) NOT NULL,                            	-- 작성자 IP 주소
+    status INT NOT NULL DEFAULT 0,                     		-- 게시물 상태 (0 : 일반 /  9 : 삭제)
+    totalChild INT DEFAULT 0                        		-- 조상댓글의 자손댓글 수
 );
 
 -- 추천 테이블 생성
@@ -202,19 +229,25 @@ CREATE TABLE Reviewtbl (
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)
 );
 
-
--- 구매 내역을 저장하는 테이블
 CREATE TABLE purchasetbl (
-	purchaseid INT PRIMARY KEY AUTO_INCREMENT,
-    userid INT,                             		
-    bookid INT,                                     -- 구매한 도서 ID, 외래 키로 `Booktbl` 참조
-    status VARCHAR(20),                             -- 구매 상태 (purchased, pending 등)
+    purchaseid INT PRIMARY KEY AUTO_INCREMENT,      -- 자동 증가하는 구매 ID
+    userid INT,                                     -- 사용자 ID
+    bookid INT,                                     -- 구매한 도서 ID, 외래 키로 Booktbl 참조
+    bundleid INT default null,                      -- 묶음 ID, NULL이면 단독 구매
+    status VARCHAR(20) default'대기중',               -- 구매 상태
     purchase_date DATE,                             -- 구매 날짜
     quantity INT,                                   -- 구매 수량
     pay_method VARCHAR(10),                         -- 결제 수단 
-    total_price INT, 								-- 총 결제금액
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 구매자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결
+);
+
+-- 구매묶음 관리 테이블
+CREATE TABLE purchase_bundle (
+    bundleid INT PRIMARY KEY AUTO_INCREMENT,   -- 묶음 ID
+    userid INT,                                -- 사용자 ID
+    purchase_date DATE ,                        -- 묶음 구매 날짜
+    total_price INT                    		-- 총 결제 금액
 );
 
 -- 관심목록 항목을 저장하는 테이블
@@ -222,7 +255,7 @@ CREATE TABLE wishtbl (
 	wishid INT PRIMARY KEY AUTO_INCREMENT,
     userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
-    status VARCHAR(20),                             -- 위시리스트 상태 (active, inactive 등)
+    status VARCHAR(20) default'active',             -- 위시리스트 상태 (active, inactive 등)
     added_date DATE,                                -- 위시리스트 추가 날짜
 
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 사용자 ID와 외래 키 연결
@@ -234,9 +267,9 @@ CREATE TABLE carttbl (
 	cartid INT PRIMARY KEY AUTO_INCREMENT,
     userid INT,                             -- 사용자 ID, 외래 키로 `membertbl` 참조
     bookid INT,                                     -- 도서 ID, 외래 키로 `Booktbl` 참조
-    status VARCHAR(20),                             -- 장바구니 상태 (active, inactive 등)
+    status VARCHAR(20) default'active',             -- 장바구니 상태 (active, inactive 등)
     added_date DATE,                                -- 장바구니 추가 날짜
-    quantity INT default 1,                                   -- 장바구니에 담긴 수량
+    quantity INT default 1,                         -- 장바구니에 담긴 수량
 
     FOREIGN KEY (userid) REFERENCES membertbl(userid),  -- 사용자 ID와 외래 키 연결
     FOREIGN KEY (bookid) REFERENCES Booktbl(bookid)     -- 도서 ID와 외래 키 연결

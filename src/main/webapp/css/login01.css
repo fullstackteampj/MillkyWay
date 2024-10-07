@@ -287,7 +287,7 @@ section.login > form {
   width: 340px;
   padding: 20px;
   margin: 0 auto;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 20px;
 }
 section.login > form > div {
@@ -311,7 +311,7 @@ section.login input[type=text], section.login input[type=password] {
   width: 30%;
   padding: 5px;
   font-size: 16px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   outline: none;
 }
@@ -319,7 +319,7 @@ section.login input[type=text]:hover, section.login input[type=password]:hover {
   box-shadow: 1px 1px 1px #ddd;
 }
 section.login input[type=text]:focus, section.login input[type=password]:focus {
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 section.login input[type=checkbox] {
   width: 20px;
@@ -348,11 +348,11 @@ section.login button {
   color: #fdfdfd;
   font-weight: 600;
   font-size: 17px;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 section.login button:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.login .naver {
   display: block;
@@ -369,7 +369,7 @@ section.login #loginMng > a {
   font-size: 14px;
 }
 section.login #loginMng > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
   text-decoration: underline;
 }
 

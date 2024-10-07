@@ -29,18 +29,29 @@
 	String payMethod = request.getParameter("payMethod");
 	int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
 	int usePoint = Integer.parseInt(request.getParameter("usePoint"));
+	int savePoint = Integer.parseInt(request.getParameter("point"));
 	boolean result = false;
-	boolean pResult = false;
+	boolean mResult = false;
+	boolean sResult = false;
+	boolean uResult = false;
 	
 	//ver.2 데이터 개수에 상관없이 배열로 받기(그래서 bean파일 사용 안함)
 	bookids =  request.getParameterValues("bookids");
 	eachNum =  request.getParameterValues("eachNum");
 	
-	result = oMgr.insertPurchaseOne(userid, bookids, eachNum, payMethod, totalPrice);
+	result = oMgr.insertPurchase(userid, bookids, eachNum, payMethod, totalPrice);
 	
-	//사용 포인트 membertbl에서 차감
-	pResult = oMgr.updateMemberPoint(userid, usePoint);
-	if(pResult) System.out.println("회원 테이블의 포인트 차감 완료");
+	//회원 테이블에서 포인트 수정
+	mResult = oMgr.updateMemberPoint(userid, usePoint, savePoint);
+	if(mResult) System.out.println("회원 테이블의 포인트 수정 완료");
+	
+	//포인트관리 테이블에서 내역 추가
+	sResult = oMgr.insertPointManage(userid, savePoint, "적립");
+	if(sResult) System.out.println("포인트관리테이블의 포인트 적립 추가 완료");
+	if(usePoint != 0){
+		uResult = oMgr.insertPointManage(userid, usePoint, "사용");
+		if(uResult) System.out.println("포인트관리테이블의 포인트 사용 추가 완료");
+	}
 	
 	
 	if(result){
