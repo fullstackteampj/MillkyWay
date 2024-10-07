@@ -414,7 +414,7 @@ section.choice > h2 {
   padding: 20px 0;
 }
 section.choice > h2 > i {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.choice > nav {
   position: absolute;
@@ -424,7 +424,7 @@ section.choice > nav {
 }
 section.choice > nav > ul > li {
   margin-bottom: 5px;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
@@ -435,7 +435,7 @@ section.choice > nav > ul > li.on {
   box-sizing: border-box;
 }
 section.choice > nav > ul > li.on > a {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.choice > nav > ul > li > a {
   display: flex;
@@ -462,7 +462,7 @@ section.choice > .container > .frame > a {
   display: block;
   position: absolute;
   top: 310px;
-  color: rgb(127, 161, 195);
+  color: #33afe9;
   font-size: 40px;
   z-index: 10;
 }
@@ -473,7 +473,7 @@ section.choice > .container > .frame > a:nth-of-type(2) {
   right: 50px;
 }
 section.choice > .container > .frame > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.choice > .container > .frame > .slide-recommend {
   display: flex;
@@ -499,7 +499,7 @@ section.choice > .container > .frame > .slide-recommend > article > h4 {
 section.choice > .container > .frame > .slide-recommend > article > img {
   height: 400px;
   margin-bottom: 60px;
-  box-shadow: 2px 2px 2px rgb(226, 218, 214);
+  box-shadow: 2px 2px 2px #b6e2f7;
 }
 section.choice > .container > .frame > .slide-recommend > article > div {
   display: flex;
@@ -512,17 +512,17 @@ section.choice > .container > .frame > .slide-recommend > article > div > a {
   margin-right: 10px;
   padding: 10px;
   font-size: 25px;
-  border: 1px solid rgb(127, 161, 195);
+  border: 1px solid #33afe9;
   border-radius: 10px;
 }
 section.choice > .container > .frame > .slide-recommend > article > div > a:last-child {
   margin-right: 0;
 }
 section.choice > .container > .frame > .slide-recommend > article > div > a > i {
-  color: rgb(127, 161, 195);
+  color: #33afe9;
 }
 section.choice > .container > .frame > .slide-recommend > article > div > a > i:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.choice > .container > .frame > .slide-recommend > article > h5 {
   padding: 20px 0 10px;

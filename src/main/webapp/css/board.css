@@ -10,18 +10,12 @@
   font-weight: 700;
   font-style: normal;
 }
-
 * {
   font-family: "Pretendard-Regular";
 }
 
 h1, h2 {
   letter-spacing: -2px;
-}
-
-header, header h1, h2 {
-	font-family: initial;
-	letter-spacing: 0;
 }
 
 #wrap {
@@ -83,20 +77,6 @@ header > .headTop > .frame > .topGnb > li > a {
   font-weight: 500;
   font-size: 16px;
 }
-header > .headTop > .frame > .topGnb > li > .underNav {
-  display: none;
-  position: absolute;
-  top: 41px;
-  left: calc((100% - 1200px) / 2);
-  z-index: 300;
-  width: 1200px;
-  height: auto;
-  border: 1px solid #aaa;
-  box-sizing: border-box;
-}
-header > .headTop > .frame > .topGnb > li:hover > .underNav {
-  display: block;
-}
 header > .headTop > .frame .userBar {
   display: flex;
   justify-content: space-around;
@@ -116,7 +96,6 @@ header > .headTop > .frame .userBar > li > a {
   color: #fff;
   font-weight: 500;
   font-size: 14px;
-  text-align: center;
 }
 header > .headTop > .frame .userBar > li > a > .arrow {
   position: relative;
@@ -128,29 +107,22 @@ header > .headTop > .frame .userBar > li > a > .arrow {
 header > .headTop > .frame .userBar > li > .myPageList {
   display: none;
 }
-header > .headTop > .frame .userBar > li > .myPageList > li {
-  line-height: 25px;
-}
-header > .headTop > .frame .userBar > li > .myPageList > li > a {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-header > .headTop > .frame .userBar > li > .myPageList > li > a:hover {
-  font-weight: 600;
-}
 header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList,
 header > .headTop > .frame .userBar > li > .myPageList:hover {
   display: block;
   position: absolute;
   z-index: 100;
-  top: 30px;
+  top: 40px;
   left: -10px;
-  width: 120px;
+  width: 100px;
   padding: 0 10px;
   background-color: #fff;
   box-shadow: 0 0 7px 0 #666;
   box-sizing: border-box;
+}
+header > .headTop > .frame .userBar > li:hover:has(.arrow) > .myPageList > li,
+header > .headTop > .frame .userBar > li > .myPageList:hover > li {
+  line-height: 25px;
 }
 header > .headMiddle {
   display: flex;
@@ -181,9 +153,6 @@ header > .headMiddle > .searchFrame {
   border-radius: 20px;
   box-sizing: border-box;
 }
-header > .headMiddle > .searchFrame.searched {
-  border-radius: 20px 20px 0 0;
-}
 header > .headMiddle > .searchFrame > p.searchId {
   width: 80px;
   height: 40px;
@@ -193,17 +162,14 @@ header > .headMiddle > .searchFrame > p.searchId {
   text-align: center;
   cursor: pointer;
 }
-header > .headMiddle > .searchFrame > form {
-  flex: 1 1 auto;
-}
-header > .headMiddle > .searchFrame > form > input {
+header > .headMiddle > .searchFrame > input {
   border: none;
   outline: none;
-  width: 100%;
+  flex: 1 1 auto;
   height: 30px;
 }
 header > .headMiddle > .searchFrame > span {
-  display: none;
+  display: block;
   width: 80px;
   height: 40px;
   color: #fff;
@@ -212,64 +178,8 @@ header > .headMiddle > .searchFrame > span {
   line-height: 40px;
   text-align: center;
   background-color: #33afe9;
-  cursor: pointer;
 }
-header > .headMiddle > .searchFrame > span.visible {
-  display: block;
-}
-header > .headMiddle > .searchedList {
-  position: absolute;
-  top: 60px;
-  left: 350px;
-  width: 500px;
-  height: auto;
-}
-#wrap > header > .headMiddle > .searchedList > li {
-  background-color: #fff;
-  border: 3px solid #33afe9;
-  box-sizing: border-box;
-}
-#wrap > header > .headMiddle > .searchedList > li:last-child {
-  border-radius: 0 0 20px 20px;
-}
-#wrap > header > .headMiddle > .searchedList > li > p {
-  width: 100%;
-  height: 30px;
-  font-size: 16px;
-  line-height: 30px;
-  text-align: center;
-}
-#wrap > header > .headMiddle > .searchedList > li > a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-#wrap > header > .headMiddle > .searchedList > li > a > img {
-  height: 80px;
-}
-#wrap > header > .headMiddle > .searchedList > li > a > .title {
-  width: 30%;
-  font-weight: 600;
-  font-size: 18px;
-  line-height: 25px;
-  text-align: center;
-}
-#wrap > header > .headMiddle > .searchedList > li > a > .author {
-  width: 30%;
-  font-weight: 400;
-  font-size: 16px;
-  text-align: center;
-}
-#wrap > header > .headMiddle > .searchedList > li > a > .genre {
-  width: 10%;
-  color: #666;
-}
-#wrap > header > .headMiddle > .searchList {
+header > .headMiddle > .searchList {
   display: none;
 }
 header > .headMiddle:has(p.searchId:hover) > .searchList,
@@ -389,40 +299,9 @@ section > #post > #head > a {
   background-color: #33afe9;
   border-radius: 3px;
 }
-section > #post > #searchInfo {
-	display: flex;
-	align-items: center;
-	margin: 12px;
-	padding: 10px;
-    font-family: "Pretendard-Bold";
-	font-size: 16px;
-	color: #222;
-	border: 1px solid #ccc;
-	border-radius: 10px;
-	/* background-color: rgba(255,247,196,0.3); */
-}
-section > #post > #searchInfo > span {
-	margin: 0 6px;
-	color: #33afe9;
-    font-family: "Pretendard-Bold";
-}
 section > #post > #list {
   border: 1px solid #ccc;
   padding: 0 10px;
-  margin-bottom: 24px;
-}
-section > #post > #list > p {
-	display: flex;
-	justify-content: center;
-  	align-items: center;
-  	height: 200px;
-  	font-size: 15px;
-  	color: #222;
-}
-section > #post > #list > p > span {
-	color: #33afe9;
-    font-family: "Pretendard-Bold";
-    margin-right: 5px;
 }
 section > #post > #list > a {
   display: flex;
@@ -436,7 +315,7 @@ section > #post > #list > a:last-of-type {
 section > #post > #list > a > .kind {
   display: inline-block;
   flex: 0 0 auto;
-  width: 80px;
+  width: 70px;
   color: #ccc;
   text-align: center;
 }
@@ -447,30 +326,19 @@ section > #post > #list > a .content {
   font-size: 16px;
   box-sizing: border-box;
 }
-section > #post > #list > a .content > .contentHead {
-  display: flex;
+section > #post > #list > a .content > .title {
   padding: 5px 0;
-  margin-bottom: 3px;
-}
-section > #post > #list > a .content > .contentHead > .title {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
-section > #post > #list > a .content > .contentHead > .title.read {
-	color: #aaa;
-}
-section > #post > #list > a .content > .contentHead > .title.overBestLike.read {
-	color: #a7d7e0;
-}
-section > #post > #list > a .content > .contentHead > span.commentCount {
-  margin-left: 5px;
+section > #post > #list > a .content > .title > span.commentCount {
+  margin-left: 3px;
   color: #1a6080;
-  font-size: 14px;
 }
 section > #post > #list > a .content > .postInfo {
   display: flex;
-  color: #bbb;
+  color: #ccc;
   font-size: 12px;
 }
 section > #post > #list > a .content > .postInfo > p {
@@ -484,24 +352,25 @@ section > #post > #list > a .content > .postInfo > p:last-of-type {
   border: none;
   padding-right: 0;
 }
+section > #post > #list > a .content > .postInfo > p.over15 {
+  font-family: "Pretendard-Bold";
+  color: #1a6080;
+}
 section > #post > #list > a > .frame {
+  width: 50px;
+  height: 40px;
   flex: 0 0 auto;
-  overflow: hidden;
-  width: 60px;
-  height: 50px;
-  margin-right: 20px;
 }
 section > #post > #list > a > .frame > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 section > #post > #pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 35px;
-  margin: 0 auto;
+  margin: 24px auto;
   font-size: 15px;
 }
 section > #post > #pagination > li {
@@ -530,9 +399,6 @@ section > #post > #pagination > li.on > a {
   background-color: #edf5f8;
   box-shadow: 0px 0px 1px 1px #33afe9;
   border: 1px solid #33afe9;
-}
-section > #post #postSearch {
-	margin-top: 24px;
 }
 section > #post #postSearch > form {
   display: flex;
@@ -580,138 +446,33 @@ section > #post #postSearch > form > button:focus {
 section > #post #postSearch > form > button:hover {
   background-color: #edf5f8;
 }
-section > #rightBox {
-	position: absolute;
-  	top: 0;
-  	right: 0;
-  	margin-top: 51px;
-  	max-height: 805px;
-}
-section > #rightBox > article {
+section > #bestPost {
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 200px;
-  margin-bottom: 12px;
+  height: 240px;
+  margin-top: 51px;
   padding: 16px;
   background-color: #fff;
   box-sizing: border-box;
   border: 1px solid #ddd;
 }
-section > #rightBox > article:last-child {
-  margin-bottom: 0;	
-}
-section > #rightBox > article > h3 {
+section > #bestPost > h3 {
   font-size: 20px;
   margin-bottom: 7px;
-  /*border: 1px solid red;*/
 }
-section > #rightBox > #bestBook {
-	position: relative;
-	padding: 16px 0;
-}
-section > #rightBox > #bestBook > h3 {
-	padding: 0 16px;
-}
-section > #rightBox > #bestBook > i {
-	position: absolute;
-	top: 21px;
-	right: 16px;
-	font-size: 14px;
-	color: #888;
-}
-section > #rightBox > #bestBook > span {
-	display: none;
-	justify-content: center;
-  	align-items: center;
-	position: absolute;
-	top: -30px;
-	right: 0;
-	width: 300px;
-	height: 30px;
-	border: 1px solid #222;
-	background-color: rgba(255,247,196,0.3);
-}
-section > #rightBox > #bestBook > span:before{
-	position: absolute; 
-	bottom: 0px; 
-	right: 15px;
-	width: 0; 
-	height: 0; 
-	border-left: 10px solid transparent; 
-	border-right: 10px solid transparent; 
-	border-top: 10px solid #222;
-	transform: translate(0, 100%);
-	content: ''; 
-}
-section > #rightBox > #bestBook > span:after{
-	position: absolute; 
-	bottom: 1px; 
-	right: 15px;
-	width: 0; 
-	height: 0; 
-	border-left: 10px solid transparent; 
-	border-right: 10px solid transparent; 
-	border-top: 10px solid #FFFDED; 
-	transform: translate(0, 100%);
-	content: ''; 
-}
-section > #rightBox > #bestBook > i:hover~span {
-	display: flex;
-}
-section > #rightBox > article > p {
-	display: flex;
-	align-items: center;
-	height: 40px;
-  	font-size: 14px;
-}
-section > #rightBox > article > ul {
+section > #bestPost > ul {
   font-size: 14px;
 }
-section > #rightBox > article > ul > li {
+section > #bestPost > ul > li {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  padding: 5px 0;
 }
-section > #rightBox > #bestPost > ul > li > a {
-	display: block;
-	padding: 5px 0;
-}
-section > #rightBox > #bestBook > p,
-section > #rightBox > #bestBook > ul > li > a {
-	margin: 0 16px;
-}
-section > #rightBox > #bestPost > ul > li > a:hover {
+section > #bestPost > ul > li > a:hover {
   color: #ccc;
-}
-section > #rightBox > #bestBook > ul > li > a {
-	display: flex;
-	padding: 15px 0;
-	border-bottom: 1px solid #ccc;
-}
-section > #rightBox > #bestBook > ul > li:last-child > a {
-	border: none;
-}
-section > #rightBox > #bestBook > ul > li:hover {
-	background-color: #eff1f5;
-}
-section > #rightBox > #bestBook > ul > li:hover > a {
-	color: #33afe9;
-}
-	
-section > #rightBox > #bestBook > ul > li > a > p {
-	flex: 1 0 0;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-}
-section > #rightBox > #bestBook > ul > li > a > p > span:first-child {
-	font-family: "Pretendard-Bold";
-}
-section > #rightBox > #bestBook > ul > li > a > p > span:last-child {
-	color: #ccc;
-}
-section > #rightBox > #bestBook > ul > li > a > span {
-	margin-left: 12px;
-	font-family: "Pretendard-Bold";
-	color: #ccc;
 }
 section > h2 {
   font-size: 30px;
@@ -720,7 +481,7 @@ section > h2 {
 section > form#FrmPost {
   position: relative;
 }
-section > form#FrmPost > div {
+section > form#FrmPost > #writeArea {
   padding: 30px;
   margin-bottom: 12px;
   border: 1px solid #ccc;
@@ -734,7 +495,7 @@ section > form#FrmPost > #writeArea > select {
 }
 section > form#FrmPost > #writeArea > #writeHead {
   display: flex;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
 }
 section > form#FrmPost > #writeArea > #writeHead > select {
   width: 100px;
@@ -749,7 +510,6 @@ section > form#FrmPost > #writeArea > #writeHead > input {
   outline-color: #33afe9;
 }
 section > form#FrmPost > #writeArea > #postEditor {
-  margin-top: 20px;
   margin-bottom: 12px;
 }
 section > form#FrmPost > #writeArea > #postEditor > #writeSet {
@@ -765,6 +525,18 @@ section > form#FrmPost > #writeArea > #postEditor > #writeSet > button {
   border-right: 1px solid #000;
   background-color: #eee;
 }
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.boldBtn {
+  font-family: "Pretendard-Bold";
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.italicBtn {
+  font-style: italic;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.underLineBtn {
+  text-decoration: underline;
+}
+section > form#FrmPost > #writeArea > #postEditor > #writeSet > button.throughBtn {
+  text-decoration: line-through;
+}
 section > form#FrmPost > #writeArea > #postEditor > #writeSet > button:hover {
   background-color: #ddd;
 }
@@ -775,8 +547,13 @@ section > form#FrmPost > #writeArea > #postEditor > textarea {
   box-sizing: border-box;
   outline-color: #33afe9;
 }
-section > form#FrmPost > div > h3 {
+section > form#FrmPost > #uploadArea {
+  padding: 30px;
+  border: 1px solid #ccc;
   margin-bottom: 12px;
+}
+section > form#FrmPost > #uploadArea > p {
+  margin-bottom: 10px;
   font-family: "Pretendard-Bold";
   font-size: 14px;
 }
@@ -816,127 +593,9 @@ section > form#FrmPost > #uploadArea > #upload > label {
 section > form#FrmPost > #uploadArea > #upload > #uploadFile {
   display: none;
 }
-section > form#FrmPost > #bookSearchArea {
-	position: relative;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook {
-  display: flex;
-  width: 100%;
-  margin-bottom: 7px;
-  padding: 12px;
-  color: #222;
-  font-size: 13px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  outline: none;
-  cursor: pointer;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook:hover {
-	border-color: #33afe9;
-	outline: 1px solid #33afe9;
-	background-color: #eff1f5;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook > img {
-	width: 35px; /* 임시 */
-	height: 50px;
-	object-fit: cover;
-	margin-right: 12px;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook > div {
-	display: flex;
-	align-items: center;
-	flex: 1 0 0;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook > div > p {
-	font-size: 16px;
-	margin-right: 12px;
-}
-section > form#FrmPost > #bookSearchArea > #selectedBook > div > p:last-child {
-	font-size: 14px;
-	color: #ccc;
-	margin-right: 0;
-}
-section > #postBookFrm {
-	display: none;
-	position: fixed;
-	left: 50%;
-	top: 30%;
-	transform: translate(-50%, 0);
-	width: 60%;
-	max-width: 700px;
-	padding: 30px;
-	border: 1px solid #aaa;
-	box-sizing: border-box;
-	z-index: 300;
-	background-color: #fff;
-}
-section > #postBookFrm.on {
-	display: initial;
-}
-section > #postBookFrm > #formHead {
-	display: flex;
-	justify-content: space-between;
-	font-size: 18px;
-}
-section > #postBookFrm > #formHead > i {
-	cursor: pointer;
-}
-section > #postBookFrm > input {
-	display: block;
-	width: 95%;
-	height: 40px;
-	margin: 16px auto;
-	padding: 0 12px;
-	/*border: 2px solid #1a6080;*/
-	border: 2px solid #33afe9;
-	outline: none;
-}
-section > #postBookFrm > #bookSearchList {
-	max-height: 300px;
-	overflow: auto;
-	/*
-	border-top: 1px solid #222;
-	border-bottom: 1px solid #222;
-	*/
-}
-section > #postBookFrm > #bookSearchList::-webkit-scrollbar {
-    width: 10px;
-}
-section > #postBookFrm > #bookSearchList::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 5px;
-}
-section > #postBookFrm > #bookSearchList > li {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 12px;
-	font-size: 14px;
-	border-bottom: 1px solid #ccc;
-	cursor: pointer;
-}
-section > #postBookFrm > #bookSearchList > li:hover {
-	background-color: #eff1f5;
-}
-section > #postBookFrm > #bookSearchList > li:last-child {
-	border-bottom: none;
-}
-section > #postBookFrm > #bookSearchList > li > div > span:last-child {
-	margin-left: 12px;
-	color: #ccc;
-}
-section > #postBookFrm > #bookSearchList > li > img {
-	display: block;
-	width: 30px;
-	height: 30px;
-	object-fit: cover;
-}
 section > form#FrmPost > #postBtn {
   display: flex;
   justify-content: flex-end;
-  padding: 0;
-  margin-bottom: 0;
-  border: none;
 }
 section > form#FrmPost > #postBtn > button {
   width: 110px;
@@ -950,7 +609,7 @@ section > form#FrmPost > #postBtn > button:last-of-type {
   margin-left: 5px;
   background-color: #33afe9;
 }
-section > #postBox, #commentBox {
+section > #postBox, section #commentBox {
   margin-bottom: 12px;
   padding: 20px;
   border: 1px solid #ccc;
@@ -966,7 +625,7 @@ section > #postBox > #readHead {
 section > #postBox > #readHead > #readHead-top {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
 }
 section > #postBox > #readHead > #readHead-top > #readTit {
   font-size: 18px;
@@ -990,75 +649,26 @@ section > #postBox > #readHead > #readHead-bottom > #regInfo > span:first-of-typ
 section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type {
   padding-left: 10px;
 }
-section > #postBox > #readHead > #readHead-bottom > #regInfo > span:last-of-type > .edited {
-	color: #aaa;
-}
 section > #postBox > #readHead > #readHead-bottom > #feedback {
   display: flex;
 }
 section > #postBox > #readHead > #readHead-bottom > #feedback > p {
   font-size: 15px;
-  padding: 0 10px;
+}
+section > #postBox > #readHead > #readHead-bottom > #feedback > p:first-of-type {
+  padding-right: 10px;
   border-right: 1px solid #ccc;
 }
 section > #postBox > #readHead > #readHead-bottom > #feedback > p:last-of-type {
-  border-right: none;
-  text-decoration: underline;
-  cursor: pointer;
+  padding-left: 10px;
 }
 section > #postBox > #readContent {
-  padding: 40px 10px;
+  padding: 40px 0;
 }
 section > #postBox > #readContent > #contentDetail {
-  min-height: 150px;
   padding-bottom: 40px;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
-}
-section > #postBox > #readContent > #contentDetail > p {
-	
-}
-section > #postBox > #readContent > #contentDetail > img {
-	max-width: 100%;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink {
-	width: 90%;
-	margin: 0 auto;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > h4 {
-	margin-top: 150px;
-	margin-bottom: 6px;
-	font-size: 14px;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a {
-	display: flex;
-	align-items: center;
-	padding: 12px 24px;
-	background-color: #edf5f8;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a > img {
-    object-fit: cover;
-	width: 60px; /* 임시 */
-	height: 80px;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a > p {
-	display: flex;
-	flex-flow: column nowrap;
-	flex: 1 0 0;
-	margin: 0 16px;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a > p > span {
-	font-family: "Pretendard-Bold";
-	font-size: 20px;
-	margin-right: 12px;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a > p > span:last-child {
-	color: #ccc;
-	font-size: 14px;
-	margin-right: 0;
-}
-section > #postBox > #readContent > #contentDetail > #bookLink > a > span {
-	color: #ccc;
 }
 section > #postBox > #readContent > #likeBtn {
   display: flex;
@@ -1112,152 +722,101 @@ section > #postBox > #postMng > .readBtn:last-child {
   border: 1px solid #ccc;
   margin: 0;
 }
-#commentHead {
+section > #commentBox > #commentHead {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 16px;
 }
-#commentHead > #commentOpt {
+section > #commentBox > #commentHead > #commentOpt {
   display: flex;
 }
-#commentHead > #commentOpt > h3 {
+section > #commentBox > #commentHead > #commentOpt > h3 {
   font-size: 18px;
   margin-right: 12px;
 }
-#commentHead > #commentOpt > select {
+section > #commentBox > #commentHead > #commentOpt > select {
   text-align: center;
   outline: none;
   border: 1px solid #ccc;
 }
-#commentHead > #commentMng {
+section > #commentBox > #commentHead > #commentMng {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 15px;
 }
-#commentHead > #commentMng > span {
+section > #commentBox > #commentHead > #commentMng > span {
   margin-right: 10px;
-  text-decoration: underline;
   cursor: pointer;
 }
-#commentHead > #commentMng > span:last-of-type {
+section > #commentBox > #commentHead > #commentMng > span:last-of-type {
   margin: 0;
 }
-#commentCont {
+section > #commentBox > #commentCont {
   font-size: 14px;
-  margin: 16px 0;
+  padding: 16px 0;
 }
-#commentCont > .comment {
-  position: relative;
+section > #commentBox > #commentCont > .comment {
   padding: 5px 10px;
   border-bottom: 1px solid #ccc;
   border: 1px solid #ccc;
   margin-bottom: 10px;
 }
-#commentCont > .comment > .commentInfo {
+section > #commentBox > #commentCont > .comment > .commentInfo {
   display: flex;
   justify-content: space-between;
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
 }
-#commentCont > .comment > .commentInfo > .authorInfo > .commentAuthor {
+section > #commentBox > #commentCont > .comment > .commentInfo > .author {
   font-family: "Pretendard-Bold";
 }
-#commentCont > .comment > .commentInfo > .authorInfo > .same {
-	display: inline;
-    /*box-shadow: inset 0 -10px 0 #D9FCDB;*/
-    box-shadow: inset 0 -10px 0 #b0dbe3;
-}
-#commentCont > .comment > .commentInfo > .authorInfo > .comUpdate {
-	font-family: "Pretendard-Bold";
-	color: #ccc;
-}
-#commentCont > .comment > .commentInfo > .commentAdd {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd {
   display: flex;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
-  color: #aaa;
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .commentDate {
+  margin-right: 12px;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
-  margin-left: 12px;
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns {
   font-size: 0;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span {
   display: inline-block;
-  margin-top: 3px;
-  margin-right: 12px;
   font-size: 12px;
   cursor: pointer;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child {
-  margin: 0;
-}
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i {
   display: block;
+  margin-top: 3px;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i:hover {
   color: #33afe9;
 }
-#commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span > i[class="fa-solid fa-trash-can"]:hover {
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i {
+  margin-left: 12px;
+}
+section > #commentBox > #commentCont > .comment > .commentInfo > .commentAdd > .author-addOns > span:last-child > i:hover {
   color: rgb(205, 92, 92);
 }
-#commentCont > .comment > .commentMsg {
+section > #commentBox > #commentCont > .comment > .commentMsg {
   padding: 10px 0;
 }
-#commentCont > .depth:after {
-	position: absolute;
-	top: 10px;
-	left: -25px;
-	width: 10px;
-	height: 10px;
-	content: '👉';
-}
-#commentBox form {
+section > #commentBox > form {
   margin-top: 30px;
 }
-#commentCont > form {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-#commentCont > #replyFrm {
-  position: relative;
-  margin-left: 50px;
-}
-#commentCont > #replyFrm:after {
-	position: absolute;
-	top: 10px;
-	left: -25px;
-	width: 10px;
-	height: 10px;
-	content: '👉';
-}
-#commentBox  form > #writeComment,
-#commentCont > form > #writeComment {
+section > #commentBox > form > #writeComment {
   position: relative;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 6px;
-  outline: none;
 }
-#commentBox  form > #writeComment:focus-within,
-#commentCont > form > #writeComment:focus-within {
-  border-color: #33afe9;
-  outline: 1px solid #33afe9;
-}
-#commentBox  form > #writeComment > .commentAuthor,
-#commentCont > form > #writeComment > .commentAuthor {
+section > #commentBox > form > #writeComment > .commentAuthor {
   font-size: 14px;
   font-family: "Pretendard-Bold";
   padding: 10px;
   color: #ccc;
   border-bottom: 1px solid #ccc;
 }
-#commentCont > form > #writeComment > .commentAuthor > span {
-	font-size: 12px;
-	margin-right: 10px;
-}
-#commentBox  form > #writeComment > textarea,
-#commentCont > form > #writeComment > textarea {
+section > #commentBox > form > #writeComment > textarea {
   display: block;
   width: 100%;
   min-height: 130px;
@@ -1268,8 +827,7 @@ section > #postBox > #postMng > .readBtn:last-child {
   border: none;
   outline: none;
 }
-#commentBox  form > #writeComment > button,
-#commentCont > form > #writeComment > button {
+section > #commentBox > form > #writeComment > button {
   position: absolute;
   right: 20px;
   bottom: 20px;
@@ -1280,63 +838,14 @@ section > #postBox > #postMng > .readBtn:last-child {
   border-radius: 3px;
   background: none;
 }
-#commentBox  form > #writeComment > button:hover,
-#commentCont > form > #writeComment > button:hover {
-	color: #fff;
-	background-color: #33afe9;
-	border-color: #33afe9;
-}
-#commentCont form.off {
-	display: none;
-}
-#loginNotice {
-	margin: 30px 0;
-	padding: 20px 0;
-	font-size: 14px;
-	text-align: center;
-}
-#loginNotice > p {
-	margin-bottom: 20px;
-}
-#loginNotice > a {
-	text-decoration: underline;
-    box-shadow: inset 0 -10px 0 #b0dbe3;
-}
-#comPagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-	/*outline: 1px solid red;*/
-}
-#comPagination > li {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 30px;
-	height: 30px;
-	margin-right: 5px;
-	font-size: 14px;
-	cursor: pointer;
-	border: 1px solid #ccc;
-}
-#comPagination > li:last-child {
-	margin-right: 0px;
-}
-#comPagination > li:hover,
-#comPagination > li.on {
-	font-family: "Pretendard-Bold";
-	color: #33afe9;
-	border-color: #33afe9;
-}
 section > #btns {
   display: flex;
   justify-content: flex-end;
 }
 section > #btns > a {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 110px;
   height: 40px;
   margin-right: 5px;
@@ -1349,70 +858,7 @@ section > #btns > a:first-child {
 section > #btns > a:last-child {
   margin: 0;
 }
-section > #postBox > #deleteArea,
-section > #postBox > #errorNotice {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin: 70px 0;
-}
-section > #postBox > #deleteArea > p {
-	font-size: 14px;
-	margin-bottom: 50px;
-}
-section > #postBox > #deleteArea > #delFrm {
-	display: flex;
-	flex-flow: column nowrap;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
-}
-section > #postBox >#deleteArea >  #delFrm > p {
-	margin-bottom: 12px;
-	color: #222;
-	font-size: 18px;
-	font-family: "Pretendard-Bold";
-}
-section > #postBox > #deleteArea > #delFrm > input {
-	width: 400px;
-	height: 35px;
-	padding: 0 12px;
-	box-sizing: border-box;
-	border: 1px solid #222;
-	border-radius: 3px;
-	outline: none;
-}
-section > #postBox > #deleteArea > #delFrm > input:focus {
-	border-color: #33afe9;
-	outline: 1px solid #33afe9;
-}
-section > #btns > button {
-	width: 110px;
-	height: 40px;
-	margin-right: 5px;
-	color: #fff;
-	outline: none;
-	border: none;
-	background-color: #ccc;
-}
-section > #btns > button:last-child {
-	margin-right: 0;
-	background-color: #33afe9;
-}
-section > #btns > button:last-child:hover {
-	background-color: rgb(205, 92, 92);
-}
-section > #postBox > #errorNotice > p {
-	font-size: 18px;
-	font-family: "Pretendard-Bold";
-	margin-bottom: 30px;
-}
-section > #postBox > #errorNotice > p:last-child {
-	font-size: 14px;
-	font-family: "Pretendard-Regular";
-	margin-bottom: 0;
-}
+
 footer {
   width: 100%;
   min-width: 1200px;
@@ -1422,9 +868,3 @@ footer {
   height: 130px;
   background-color: #ddd;
 }/*# sourceMappingURL=board.css.map */
-
-
-.overBestLike {
-  font-family: "Pretendard-Bold";
-  color: #42a4b9;
-}
