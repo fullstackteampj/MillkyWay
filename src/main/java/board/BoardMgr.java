@@ -510,7 +510,7 @@ public class BoardMgr {
 	}
 	
 	
-	// 총 댓글 수 반환 - 완전삭제댓글제외
+	// 총 댓글 수 반환 - 삭제댓글 포함
 	public int getCommentCount(int boardid) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -520,7 +520,34 @@ public class BoardMgr {
 		
 		try {
 			con = pool.getConnection();
-			sql = "select count(commentid) from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0))";
+			sql = "select count(commentid) from commenttbl where boardid=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, boardid);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		
+		return count;
+	}
+	
+	// 미삭제 댓글 수 반환
+	public int getActiveComCount(int boardid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		int count = 0;
+		
+		try {
+			con = pool.getConnection();
+			sql = "select count(commentid) from commenttbl where boardid=? and status=0";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, boardid);
 			rs = pstmt.executeQuery();
@@ -550,8 +577,9 @@ public class BoardMgr {
 			con = pool.getConnection();
 			//sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
 			sql = "select * from "
-					+ "(select * from commenttbl where boardid = ? and ( (status=0)  or (status=0 and totalChild>0) ) "
-					+ "order by REF desc, pos limit ?,?) e "
+					//+ "(select * from commenttbl where boardid = ? and ( (status=0)  or (status=0 and totalChild>0) ) "
+					+ "(select * from commenttbl where boardid = ? "
+					+ "order by REF desc, pos desc limit ?,?) e "
 					+ "order by ref, pos ASC";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, boardid);
