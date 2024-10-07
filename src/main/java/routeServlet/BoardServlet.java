@@ -1,15 +1,15 @@
 package routeServlet;
 
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -29,7 +29,7 @@ import beans.BookBean;
 import beans.CommentBean;
 import beans.boardPagingBean;
 
-@WebServlet("/board/*")
+
 public class BoardServlet extends HttpServlet {
 		
     @Override
@@ -99,7 +99,7 @@ public class BoardServlet extends HttpServlet {
 	            if (post.getPhoto() != null) {
 	                // Base64로 인코딩
 	                String encodedPhoto = Base64.getEncoder().encodeToString(post.getPhoto());
-	                post.setEncodedPhoto(encodedPhoto); 
+	                post.setEncodedPhoto(encodedPhoto);
 	            }
 	        }
 	        
