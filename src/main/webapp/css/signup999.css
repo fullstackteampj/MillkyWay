@@ -6,7 +6,7 @@
 }
 .zipcode h1 {
   padding: 20px 0 50px;
-  color: rgb(127, 161, 195);
+  color: #33afe9;
   text-align: center;
 }
 .zipcode form[name=searchZipcodeFrm] {
@@ -25,12 +25,12 @@
   margin-right: 5px;
   padding: 5px;
   font-size: 20px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   box-sizing: border-box;
 }
 .zipcode form[name=searchZipcodeFrm] > input:focus {
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 .zipcode form[name=searchZipcodeFrm] > button {
   background: none;
@@ -40,15 +40,15 @@
   height: 35px;
   color: #fdfdfd;
   font-size: 16px;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 .zipcode form[name=searchZipcodeFrm] > button:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 .zipcode form[name=searchZipcodeFrm] > button:nth-of-type(2) {
   color: #555;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
 }
 .zipcode > ul {
   overflow: auto;
@@ -72,10 +72,10 @@
   width: 100px;
   height: 40px;
   margin: 50px auto 20px;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
   border-radius: 5px;
   cursor: pointer;
 }
 .zipcode > button:hover {
-  background-color: #ded5d0;
+  background-color: #addef6;
 }/*# sourceMappingURL=signup999.css.map */

@@ -433,7 +433,7 @@ section.buy > form > .payment-info > li {
   flex-flow: row nowrap;
   margin: 10px 0 20px;
   padding: 30px 20px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 10px;
 }
 section.buy > form > .payment-info > li:nth-of-type(2) > ol > li:nth-of-type(3) {
@@ -502,7 +502,7 @@ section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > inp
   margin: 0;
   text-align: center;
   font-size: 17px;
-  border: 1px solid rgb(127, 161, 195);
+  border: 1px solid #33afe9;
   border-right: none;
   border-radius: 0;
   box-sizing: border-box;
@@ -511,7 +511,7 @@ section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .bt
   display: flex;
   flex-flow: column nowrap;
   width: 15px;
-  border: 1px solid rgb(127, 161, 195);
+  border: 1px solid #33afe9;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button {
   display: flex;
@@ -524,10 +524,10 @@ section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .bt
 }
 section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button:hover {
   color: #fff;
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li .updown-qty > .btn-updown > button:first-child {
-  border-bottom: 1px solid rgb(127, 161, 195);
+  border-bottom: 1px solid #33afe9;
 }
 section.buy > form > .payment-info > li > ol.buy-products > li > img {
   display: block;
@@ -553,7 +553,7 @@ section.buy > form > .payment-info > li > ol > li #address {
 section.buy > form > .payment-info > li > ol > li #address + button {
   width: calc(15% - 10px);
   color: #fdfdfd;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 section.buy > form > .payment-info > li > ol > li input[type=text] {
@@ -562,7 +562,7 @@ section.buy > form > .payment-info > li > ol > li input[type=text] {
   margin-bottom: 20px;
   padding: 5px;
   font-size: 16px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   outline: none;
   box-sizing: border-box;
@@ -571,7 +571,7 @@ section.buy > form > .payment-info > li > ol > li input[type=text]:hover {
   box-shadow: 1px 1px 1px #ddd;
 }
 section.buy > form > .payment-info > li > ol > li input[type=text]:focus {
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 section.buy > form > .payment-info > li > .btns-pay {
   display: flex;
@@ -582,17 +582,17 @@ section.buy > form > .payment-info > li > .btns-pay > button {
   width: 140px;
   height: 40px;
   margin: 0 15px 10px 0;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 10px;
 }
 section.buy > form > .payment-info > li > .btns-pay > button.on {
-  border: 2px solid rgb(100, 130, 173);
+  border: 2px solid #1a6080;
 }
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(3n) {
   margin-right: 0;
 }
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(4), section.buy > form > .payment-info > li > .btns-pay > button:nth-child(5) {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.buy > form > .payment-info > li > .btns-pay > button:nth-child(7), section.buy > form > .payment-info > li > .btns-pay > button:nth-child(8) {
   margin-bottom: 0;
@@ -608,7 +608,7 @@ section.buy > form > .buy-total {
   height: 300px;
   margin: 30px 20px 0 0;
   padding: 20px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 10px;
 }
 section.buy > form > .buy-total > li {
@@ -626,7 +626,7 @@ section.buy > form > .buy-total > li.deleteline:after {
   position: absolute;
   top: 0;
   left: 110px;
-  color: rgb(100, 130, 173);
+  color: #1a6080;
   content: "0원";
 }
 section.buy > form > .buy-total > li > span {
@@ -639,18 +639,18 @@ section.buy > form > .buy-total > li > button {
   color: #fdfdfd;
   font-weight: 600;
   font-size: 17px;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 section.buy > form > .buy-total > li > button:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.buy > form > .buy-total > li > input {
   width: 120px;
   margin: 0 5px;
   padding: 5px;
   font-size: 14px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   outline: none;
   box-sizing: border-box;
@@ -659,16 +659,16 @@ section.buy > form > .buy-total > li > input:hover {
   box-shadow: 1px 1px 1px #ddd;
 }
 section.buy > form > .buy-total > li > input:focus {
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 section.buy > form > .buy-total > li > input + button {
   width: 40px;
   height: 28px;
   margin: 0 3px 0 10px;
   font-size: 14px;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
 }
 section.buy > form > .buy-total > li .usePointBtn.active {
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   color: #fdfdfd;
 }/*# sourceMappingURL=buy01.css.map */
