@@ -150,9 +150,9 @@
 					            		</c:otherwise>
 					            	</c:choose>
 				              		<%-- 댓글이 존재하면 댓글수 출력 --%>
-				              		<c:set var="commentCount" value="${bMgr.getCommentCount(post.boardid)}"></c:set>
-				              		<c:if test="${commentCount > 0}">
-				              			<span class="commentCount">[${commentCount}]</span>
+				              		<c:set var="activeComCount" value="${bMgr.getActiveComCount(post.boardid)}"></c:set>
+				              		<c:if test="${activeComCount > 0}">
+				              			<span class="commentCount">[${activeComCount}]</span>
 				              		</c:if>
 								</p>
 				              	
