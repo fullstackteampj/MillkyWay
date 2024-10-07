@@ -85,6 +85,7 @@
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body>

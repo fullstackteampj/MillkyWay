@@ -28,6 +28,7 @@
 	
 
 	if(save.equals("cart")){//장바구니 추가시
+		System.out.println("anjdiandi");
 		boolean checkResult = oMgr.checkCart(userid, bookid );
 		if(checkResult){
 			//carttbl에 이미 등록된 도서인 경우 레코드에 수량+1

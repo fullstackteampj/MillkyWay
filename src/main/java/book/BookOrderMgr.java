@@ -140,11 +140,11 @@ public class BookOrderMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "update carttbl set (quantity = quantity + 1) where userid = ? and bookid = ?";
+			sql = "update carttbl set quantity = quantity + 1 where userid = ? and bookid = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, userid);
 			pstmt.setInt(2, bookid);
-			flag = pstmt.executeQuery().next();
+			if(pstmt.executeUpdate() == 1) flag = true;
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -254,10 +254,10 @@ public class BookOrderMgr {
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "update membertbl set (curpoint = curpoint - ?), (expectpoint = expectpoint + ?) where userid = ? ";
+			sql = "update membertbl set curpoint = curpoint - ?, expectpoint = expectpoint + ? where userid = ? ";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, usePoint);
-			pstmt.setInt(2, savePoint); //누적합계로 처리했는데 관리자 페이지에서 포인트관리 어떻게 할지 보고 수정 필요?!
+			pstmt.setInt(2, savePoint); //누적합계로 처리
 			pstmt.setInt(3, userid);
 			if(pstmt.executeUpdate() == 1) flag = true;
 			
