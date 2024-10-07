@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+
   <display-name>MillkyWay</display-name>
   
   <welcome-file-list>
@@ -28,6 +29,200 @@
 		<url-pattern>*.jsp</url-pattern>
 		<url-pattern>*.jspx</url-pattern>
 	</servlet-mapping>
+	
+	  <!-- AdminServlet 추가 -->
+  <servlet>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>routeServlet.AdminServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+  
+  
+  <!-- BoardServlet 추가 -->
+<servlet>
+    <servlet-name>BoardServlet</servlet-name>
+    <servlet-class>routeServlet.BoardServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>BoardServlet</servlet-name>
+    <url-pattern>/board/*</url-pattern>
+</servlet-mapping>
+  
+  <!-- BuyServlet 추가 -->
+<servlet>
+    <servlet-name>BuyServlet</servlet-name>
+    <servlet-class>routeServlet.BuyServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>BuyServlet</servlet-name>
+    <url-pattern>/buy/*</url-pattern>
+</servlet-mapping>
+  
+  <!-- ChoiceServlet 추가 -->
+<servlet>
+    <servlet-name>ChoiceServlet</servlet-name>
+    <servlet-class>routeServlet.ChoiceServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ChoiceServlet</servlet-name>
+    <url-pattern>/choice/*</url-pattern>
+</servlet-mapping>
+  
+  
+  <!-- ComponentsServlet 추가 -->
+<servlet>
+    <servlet-name>ComponentsServlet</servlet-name>
+    <servlet-class>routeServlet.ComponentsServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ComponentsServlet</servlet-name>
+    <url-pattern>/components/*</url-pattern>
+</servlet-mapping>
+  
+  
+<!-- LoginServlet 추가 -->
+<servlet>
+    <servlet-name>LoginServlet</servlet-name>
+    <servlet-class>routeServlet.LoginServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>LoginServlet</servlet-name>
+    <url-pattern>/login/*</url-pattern>
+</servlet-mapping>
+
+
+<!-- MypageServlet 추가 -->
+<servlet>
+    <servlet-name>MypageServlet</servlet-name>
+    <servlet-class>routeServlet.MypageServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>MypageServlet</servlet-name>
+    <url-pattern>/mypage/*</url-pattern>
+</servlet-mapping>
+
+
+<!-- ProcsServlet 추가 -->
+<servlet>
+    <servlet-name>ProcsServlet</servlet-name>
+    <servlet-class>routeServlet.ProcsServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ProcsServlet</servlet-name>
+    <url-pattern>/procs/*</url-pattern>
+</servlet-mapping>
+
+
+<!-- RootServlet 추가 -->
+<servlet>
+    <servlet-name>RootServlet</servlet-name>
+    <servlet-class>routeServlet.RootServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>RootServlet</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+
+
+<!-- ShopServlet 추가 -->
+<servlet>
+    <servlet-name>ShopServlet</servlet-name>
+    <servlet-class>routeServlet.ShopServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ShopServlet</servlet-name>
+    <url-pattern>/shop/*</url-pattern>
+</servlet-mapping>
+
+
+
+<!-- SignupServlet 추가 -->
+<servlet>
+    <servlet-name>SignupServlet</servlet-name>
+    <servlet-class>routeServlet.SignupServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SignupServlet</servlet-name>
+    <url-pattern>/signup/*</url-pattern>
+</servlet-mapping>
+
+
+
+<!-- SearchAPIServlet 추가 -->
+<servlet>
+    <servlet-name>SearchAPIServlet</servlet-name>
+    <servlet-class>index.SearchAPIServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SearchAPIServlet</servlet-name>
+    <url-pattern>/searchAPI</url-pattern>
+</servlet-mapping>
+
+
+<!-- SearchDBServlet 추가 -->
+<servlet>
+    <servlet-name>SearchDBServlet</servlet-name>
+    <servlet-class>index.SearchDBServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>SearchDBServlet</servlet-name>
+    <url-pattern>/searchDB</url-pattern>
+</servlet-mapping>
+
+
+<!-- BookImageServlet 추가 -->
+<servlet>
+    <servlet-name>BookImageServlet</servlet-name>
+    <servlet-class>Image.BookImageServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>BookImageServlet</servlet-name>
+    <url-pattern>/image</url-pattern>
+</servlet-mapping>
+
+  
+  
 </web-app>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

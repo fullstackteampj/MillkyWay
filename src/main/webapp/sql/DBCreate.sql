@@ -10,6 +10,7 @@
 -- 각 테이블간 참조관계를 고려하여 참조된 필드가 있는 테이블 먼저 삭제
 -- 모든 테이블이 삭제된 후 데이터베이스를 삭제하여
 -- 잔여 데이터가 남지않도록 삭제
+
 DROP TABLE IF EXISTS canceltbl;
 DROP TABLE IF EXISTS carttbl;
 DROP TABLE IF EXISTS wishtbl;
@@ -21,6 +22,7 @@ DROP TABLE IF EXISTS boardtbl;
 DROP TABLE IF EXISTS Booktbl;
 DROP TABLE IF EXISTS pointManagementtbl;
 DROP TABLE IF EXISTS membertbl;
+
 
 DROP DATABASE IF EXISTS MillkyWayDB;
 
@@ -56,7 +58,7 @@ CREATE TABLE membertbl (
     userid INT PRIMARY KEY AUTO_INCREMENT,  -- 회원 ID, 기본 키 및 자동 증가
     account VARCHAR(100) NOT NULL unique,   -- 회원 계정 (이메일 또는 사용자 이름)
     pwd VARCHAR(100) NULL,              	-- 비밀번호
-	salt VARCHAR(100) NULL,             	-- salt값
+    salt VARCHAR(100) NULL,             	-- salt값
     question VARCHAR(100) NULL,         	-- 질문
     answer VARCHAR(100) NULL,           	-- 답
     name VARCHAR(100) NOT NULL,             -- 회원 이름
@@ -64,10 +66,10 @@ CREATE TABLE membertbl (
     gender CHAR(1) default null,            -- 성별 (M, F)
     zipcode VARCHAR(10) default 00000,      -- 우편번호
     usergrade VARCHAR(100) default 'vip',	-- 유저등급
-	curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
-	expectpoint int default 0,				-- 적립예정포인트
+	  curpoint int default 0,				 	-- 보유포인트 //디폴트값 추가 
+	  expectpoint int default 0,				-- 적립예정포인트
     address TEXT,        					-- 주소
-	detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
+	  detailAddress TEXT,                     -- 상세 주소  // 추가한 컬럼
     phone VARCHAR(20),                      -- 전화번호
     email VARCHAR(100) default null,        -- 이메일
     signup_date DATE,     					-- 회원 가입 날짜, 기본값 현재 날짜
@@ -112,7 +114,7 @@ CREATE TABLE Booktbl (
     authorIntro TEXT,                               -- 저자소개
     contentsTables TEXT,						    -- 목차
     miniIntro TEXT,                                 -- 간단한 설명
-    photo BLOB,                                     -- 도서 표지 사진
+    photo MEDIUMBLOB,                                     -- 도서 표지 사진
     publish_date DATE,                              -- 출판일
     isbn VARCHAR(20),                               -- ISBN (국제 표준 도서 번호)
     stock_Quantity INT,                              -- 재고 수량
