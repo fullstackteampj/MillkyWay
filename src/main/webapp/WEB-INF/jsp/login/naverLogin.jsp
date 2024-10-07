@@ -10,7 +10,7 @@
     
 <%
   String clientId = "cR6ZYmE3B8jjB8ERbb3U";//애플리케이션 클라이언트 아이디값";
-  String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
+  String clientSecret = "AZJitQmkQW";//애플리케이션 클라이언트 시크릿값";
   String code = request.getParameter("code");
   String state = request.getParameter("state");
   String redirectURI = URLEncoder.encode("http://localhost:8080/procs/loginProc", "UTF-8");

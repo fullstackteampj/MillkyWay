@@ -442,21 +442,21 @@ section.sign-up .btns > button {
   color: #fdfdfd;
   font-weight: 600;
   font-size: 17px;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 section.sign-up .btns > button:nth-of-type(1) {
   color: #555;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
 }
 section.sign-up .btns > button:nth-of-type(1):hover {
-  background-color: #ded5d0;
+  background-color: #addef6;
 }
 section.sign-up .btns > button:last-child {
   margin-right: 0;
 }
 section.sign-up .btns > button:last-child:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.sign-up > h2 {
   padding: 20px 0;
@@ -475,7 +475,7 @@ section.sign-up > .progress.next-stage > .ball {
   left: 49%;
 }
 section.sign-up > .progress.next-stage > .back-line1 {
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
 }
 section.sign-up > .progress.next-stage > .text > span:nth-of-type(2) {
   font-weight: 600;
@@ -484,10 +484,10 @@ section.sign-up > .progress.complete > .ball {
   left: 97%;
 }
 section.sign-up > .progress.complete > .back-line1 {
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
 }
 section.sign-up > .progress.complete > .back-line2 {
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
 }
 section.sign-up > .progress.complete > .text > span:nth-of-type(2), section.sign-up > .progress.complete > .text span:nth-of-type(3) {
   font-weight: 600;
@@ -498,13 +498,13 @@ section.sign-up > .progress > .ball {
   top: -1px;
   width: 22px;
   height: 22px;
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
   border-radius: 50%;
 }
 section.sign-up > .progress > div {
   width: 48%;
   height: 10px;
-  background-color: rgb(226, 218, 214);
+  background-color: #b6e2f7;
 }
 section.sign-up > .progress > div.back-line1 {
   border-top-left-radius: 10px;
@@ -546,13 +546,13 @@ section.sign-up > .agreement > form > ul > li {
   margin: 10px;
   padding: 10px 20px;
   font-size: 15px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 30px;
   box-sizing: border-box;
 }
 section.sign-up > .agreement > form > ul > li:last-child {
   margin: 80px 10px 30px 10px;
-  border: 2px solid rgb(127, 161, 195);
+  border: 2px solid #33afe9;
 }
 section.sign-up > .agreement > form > ul > li input[type=checkbox] {
   width: 25px;
@@ -588,7 +588,7 @@ section.sign-up > .enterInfo > form ul {
 }
 section.sign-up > .enterInfo > form ul:nth-of-type(1) {
   padding-bottom: 30px;
-  border-bottom: 1px solid rgb(127, 161, 195);
+  border-bottom: 1px solid #33afe9;
 }
 section.sign-up > .enterInfo > form ul > li {
   display: flex;
@@ -602,7 +602,7 @@ section.sign-up > .enterInfo > form ul > li.sec {
   margin-bottom: 30px;
 }
 section.sign-up > .enterInfo > form ul > li input:focus, section.sign-up > .enterInfo > form ul > li select:focus {
-  border-color: rgb(127, 161, 195);
+  border-color: #33afe9;
 }
 section.sign-up > .enterInfo > form ul > li #account, section.sign-up > .enterInfo > form ul > li #nickname {
   width: 68%;
@@ -615,7 +615,7 @@ section.sign-up > .enterInfo > form ul > li #pwd + span {
   position: absolute;
   left: 130px;
   top: 35px;
-  color: rgb(100, 130, 173);
+  color: #1a6080;
   font-size: 12px;
 }
 section.sign-up > .enterInfo > form ul > li #phone {
@@ -666,11 +666,11 @@ section.sign-up > .enterInfo > form ul > li > button {
   height: 30px;
   color: #fdfdfd;
   font-weight: 600;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
 }
 section.sign-up > .enterInfo > form ul > li > button:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.sign-up > .enterInfo > form ul > li > label {
   display: block;
@@ -682,7 +682,7 @@ section.sign-up > .enterInfo > form ul > li input[type=password] {
   width: 80%;
   padding: 5px;
   font-size: 16px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   outline: none;
 }
@@ -692,7 +692,7 @@ section.sign-up > .enterInfo > form ul > li input[type=password]:hover {
 }
 section.sign-up > .enterInfo > form ul > li > input[type=text]:focus,
 section.sign-up > .enterInfo > form ul > li input[type=password]:focus {
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 section.sign-up > .enterInfo > form ul > li > input[type=radio] {
   -webkit-appearance: none;
@@ -704,7 +704,7 @@ section.sign-up > .enterInfo > form ul > li > input[type=radio] {
   position: relative;
   width: 10%;
   height: 30px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -717,18 +717,18 @@ section.sign-up > .enterInfo > form ul > li > input[type=radio]:after {
   width: 20px;
   height: 20px;
   margin-left: -10px;
-  color: rgb(226, 218, 214);
+  color: #b6e2f7;
   font-weight: 600;
   font-size: 17px;
 }
 section.sign-up > .enterInfo > form ul > li > input[type=radio]:hover {
-  border-color: rgb(127, 161, 195);
+  border-color: #33afe9;
 }
 section.sign-up > .enterInfo > form ul > li > input[type=radio]:hover:after {
-  color: rgb(127, 161, 195);
+  color: #33afe9;
 }
 section.sign-up > .enterInfo > form ul > li > input[type=radio]:checked {
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border: none;
 }
 section.sign-up > .enterInfo > form ul > li > input[type=radio]:checked:after {
@@ -749,7 +749,7 @@ section.sign-up > .enterInfo > form ul > li > select {
   margin-right: 5px;
   padding: 5px;
   font-size: 16px;
-  border: 1px solid rgb(226, 218, 214);
+  border: 1px solid #b6e2f7;
   border-radius: 5px;
   background-image: url(./../images/dropdownGray.png);
   background-position: 99% 50%;
@@ -762,7 +762,7 @@ section.sign-up > .enterInfo > form ul > li > select:hover {
 }
 section.sign-up > .enterInfo > form ul > li > select:focus {
   background-image: url(./../images/dropdownActive.png);
-  border-color: rgb(100, 130, 173);
+  border-color: #1a6080;
 }
 section.sign-up > .enterInfo > form ul > li > select#date {
   margin-right: 0;
@@ -773,7 +773,7 @@ section.sign-up > .finish {
 }
 section.sign-up > .finish > h2 {
   padding: 20px;
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.sign-up > .finish > h2 + p {
   padding: 10px;

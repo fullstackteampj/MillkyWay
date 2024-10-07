@@ -1,10 +1,10 @@
 package index;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,14 +19,13 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/searchAPI")
 public class SearchAPIServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String subject = request.getParameter("subject");
         String clientId = "aTtUtH6PI0jq29wOuhuU"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = ""; // 애플리케이션 클라이언트 시크릿
+        String clientSecret = "M4sHJOcUaa"; // 애플리케이션 클라이언트 시크릿
 
         String text = null;
         try {

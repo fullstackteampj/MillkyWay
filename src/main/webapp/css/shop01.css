@@ -426,7 +426,7 @@ section.shop-list > .container > nav > ul i {
   padding: 3px;
   color: #fdfdfd;
   font-size: 14px;
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
   border-radius: 50%;
 }
 section.shop-list > .container > nav > ul > li {
@@ -446,7 +446,7 @@ section.shop-list > .container > nav > ul > li > a {
   font-weight: 700;
 }
 section.shop-list > .container > nav > ul > li > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.shop-list > .container > nav > ul > li > ul {
   display: none;
@@ -464,7 +464,7 @@ section.shop-list > .container > nav > ul > li > ul > li > a {
   font-weight: 600;
 }
 section.shop-list > .container > nav > ul > li > ul > li > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.shop-list > .container > nav > ul > li > ul > li > a > i {
   font-size: 10px;
@@ -487,7 +487,7 @@ section.shop-list > .container > nav > ul > li > ul > li > ol > li > a {
 section.shop-list > .container > .content {
   width: 1000px;
   padding: 10px 10px 10px 20px;
-  border-left: 1px solid rgb(226, 218, 214);
+  border-left: 1px solid #b6e2f7;
   box-sizing: border-box;
 }
 section.shop-list > .container > .content > nav > ul {
@@ -503,18 +503,18 @@ section.shop-list > .container > .content > nav > ul > li.on > a {
   top: 0px;
   z-index: 100;
   width: 200px;
-  color: rgb(100, 130, 173);
-  border-color: rgb(100, 130, 173);
+  color: #1a6080;
+  border-color: #1a6080;
   background-color: #fdfdfd;
   border-bottom: 1px solid #fdfdfd;
 }
 section.shop-list > .container > .content > nav > ul > li.on > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.shop-list > .container > .content > nav > ul > li > a {
   display: block;
   height: 50px;
-  color: rgb(226, 218, 214);
+  color: #b6e2f7;
   font-size: 16px;
   font-weight: 600;
   text-align: center;
@@ -526,10 +526,10 @@ section.shop-list > .container > .content > nav > ul > li > a {
   border-top-right-radius: 10px;
 }
 section.shop-list > .container > .content > nav > ul > li > a:hover {
-  color: rgb(127, 161, 195);
+  color: #33afe9;
 }
 section.shop-list > .container > .content > ol {
-  border-top: 1px solid rgb(100, 130, 173);
+  border-top: 1px solid #1a6080;
   padding: 0 10px;
   background-color: #fdfdfd;
 }
@@ -540,7 +540,7 @@ section.shop-list > .container > .content > ol > li > a {
   display: flex;
   flex-flow: row nowrap;
   padding: 30px 0;
-  border-bottom: 1px solid rgb(226, 218, 214);
+  border-bottom: 1px solid #b6e2f7;
 }
 section.shop-list > .container > .content > ol > li > a:hover > .text > p:last-of-type {
   text-decoration: underline;
@@ -548,7 +548,7 @@ section.shop-list > .container > .content > ol > li > a:hover > .text > p:last-o
 section.shop-list > .container > .content > ol > li > a > img {
   display: block;
   width: 150px;
-  box-shadow: 1px 1px 2px rgb(226, 218, 214);
+  box-shadow: 1px 1px 2px #b6e2f7;
 }
 section.shop-list > .container > .content > ol > li > a > .text {
   flex: 1 1 0;
@@ -569,7 +569,7 @@ section.shop-list > .container > .content > ol > li > a > .text > p:nth-of-type(
   font-size: 13px;
 }
 section.shop-list > .container > .content > ol > li > a > .text > p > i {
-  color: rgb(127, 161, 195);
+  color: #33afe9;
 }
 section.shop-list > .container > .content > ol > li > a > form {
   display: flex;
@@ -587,12 +587,12 @@ section.shop-list > .container > .content > ol > li > a > form > button {
   margin: 5px 10px;
   color: #fdfdfd;
   font-weight: 600;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
   border-radius: 5px;
   z-index: 100;
 }
 section.shop-list > .container > .content > ol > li > a > form > button:hover {
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }
 section.shop-list > .container > .content > .pagination {
   display: flex;
@@ -606,7 +606,7 @@ section.shop-list > .container > .content > .pagination > a {
   font-size: 20px;
 }
 section.shop-list > .container > .content > .pagination > a:hover {
-  color: rgb(100, 130, 173);
+  color: #1a6080;
 }
 section.shop-list > .container > .content > .pagination > button {
   display: flex;
@@ -617,14 +617,14 @@ section.shop-list > .container > .content > .pagination > button {
   width: 20px;
   height: 20px;
   margin: 0 10px;
-  border: 1px solid rgb(127, 161, 195);
+  border: 1px solid #33afe9;
   border-radius: 5px;
 }
 section.shop-list > .container > .content > .pagination > button.on {
   color: #fdfdfd;
-  background-color: rgb(127, 161, 195);
+  background-color: #33afe9;
 }
 section.shop-list > .container > .content > .pagination > button:hover {
   color: #fdfdfd;
-  background-color: rgb(100, 130, 173);
+  background-color: #1a6080;
 }/*# sourceMappingURL=shop01.css.map */

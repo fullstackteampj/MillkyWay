@@ -68,7 +68,6 @@
 	start = (nowPage * numPerPage) - numPerPage;
 	end = numPerPage;
 	
-	System.out.println("tap = " + tap);
 	
 	if(tap == null || tap.equals("null")){
 		totalRecord = bMgr.getTotalCount(category, genre);

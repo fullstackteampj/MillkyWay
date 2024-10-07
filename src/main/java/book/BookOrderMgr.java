@@ -179,47 +179,86 @@ public class BookOrderMgr {
 	}
 	
 	//구매테이블 추가
-	public boolean insertPurchaseOne(int userid, String[] bookids, String[] eachNum, String payMethod, int totalPrice) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		String sql = null;
-		boolean flag = false;
-		
-		try {
-			con = pool.getConnection();
-			sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, status, purchase_date, total_price) "
-					+ "values(?,?,?,?,?, now(), ?)";
-			for(int i=0; i<bookids.length; i++) {
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, userid);
-				pstmt.setInt(2, Integer.parseInt(bookids[i]));
-				pstmt.setInt(3, Integer.parseInt(eachNum[i]));
-				pstmt.setString(4, payMethod);
-				pstmt.setString(5, "대기중");
-				pstmt.setInt(6, totalPrice);
-				if(pstmt.executeUpdate() == 1) flag = true;
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			pool.freeConnection(con, pstmt);
-		}
-		
-		return flag;
+	public boolean insertPurchase(int userid, String[] bookids, String[] eachNum, String payMethod, int totalPrice) {
+	    Connection con = null;
+	    PreparedStatement pstmt = null;
+	    String sql = null;
+	    boolean flag = false;
+	    Integer bundleId = null; //Integer변환시 null 가능
+	    
+	    try {
+	        con = pool.getConnection();
+	        
+	        // 1. 묶음추가 (배열 길이가 1 이상일 때 - 여러권 구매)
+	        if (bookids.length > 1) {
+	            String bundleSql = "insert into purchase_bundle (userid, total_price, purchase_date) VALUES (?, ?, now())";
+	            pstmt = con.prepareStatement(bundleSql, Statement.RETURN_GENERATED_KEYS);
+	            pstmt.setInt(1, userid);
+	            pstmt.setInt(2, totalPrice);
+	            pstmt.executeUpdate();
+	            
+	            // 2. 생성된 bundleId 가져오기
+	            ResultSet rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                bundleId = rs.getInt(1);
+	            }
+	        }
+	        
+	        // 3. 각 구매 추가
+	        if(bookids.length > 1) {//여러권 구매일 경우 - bundleid 추가
+	        	sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, purchase_date, bundleid) "
+	        			+ "values (?, ?, ?, ?, now(), ?)";
+	        	
+	        	for (int i = 0; i < bookids.length; i++) {
+	        		pstmt = con.prepareStatement(sql);
+	        		pstmt.setInt(1, userid);
+	        		pstmt.setInt(2, Integer.parseInt(bookids[i]));
+	        		pstmt.setInt(3, Integer.parseInt(eachNum[i]));
+	        		pstmt.setString(4, payMethod);
+	        		pstmt.setInt(5, bundleId);
+	        		
+	        		if (pstmt.executeUpdate() == 1) 
+	        			flag = true;
+	        		
+	        	}//for
+	        }else{//단권 구매일 경우 - bundleid null
+	        	sql = "insert into purchasetbl (userid, bookid, quantity, pay_method, purchase_date) "
+	        			+ "values (?, ?, ?, ?, now())";
+	        	
+	        	for (int i = 0; i < bookids.length; i++) {
+	        		pstmt = con.prepareStatement(sql);
+	        		pstmt.setInt(1, userid);
+	        		pstmt.setInt(2, Integer.parseInt(bookids[i]));
+	        		pstmt.setInt(3, Integer.parseInt(eachNum[i]));
+	        		pstmt.setString(4, payMethod);
+	        		
+	        		if (pstmt.executeUpdate() == 1) 
+	        			flag = true;
+	        	}//for
+	        }//else
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        pool.freeConnection(con, pstmt);
+	    }
+	    
+	    return flag;
 	}
+
 	
 	//포인트 사용시 membertbl 수정
-	public boolean updateMemberPoint(int userid, int usePoint){
+	public boolean updateMemberPoint(int userid, int usePoint, int savePoint){
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		String sql = null;
 		boolean flag = false;
 		try {
 			con = pool.getConnection();
-			sql = "update membertbl set curpoint = curpoint - ? where userid = ? ";
+			sql = "update membertbl set (curpoint = curpoint - ?), (expectpoint = expectpoint + ?) where userid = ? ";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, usePoint);
-			pstmt.setInt(2, userid);
+			pstmt.setInt(2, savePoint); //누적합계로 처리했는데 관리자 페이지에서 포인트관리 어떻게 할지 보고 수정 필요?!
+			pstmt.setInt(3, userid);
 			if(pstmt.executeUpdate() == 1) flag = true;
 			
 		}catch(Exception e) {
@@ -229,5 +268,30 @@ public class BookOrderMgr {
 		}
 		return flag;
 	};
+	
+	//포인트관리 테이블 추가
+	public boolean insertPointManage(int userid, int point, String division) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		boolean flag = false;
+		
+		try {
+			con = pool.getConnection();
+			sql = "insert into pointmanagementtbl (userid, point, division, update_date) values(?,?,?,now())";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, userid);
+			pstmt.setInt(2, point);
+			pstmt.setString(3, division);
+			
+			if(pstmt.executeUpdate() == 1) flag = true;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			pool.freeConnection(con, pstmt);
+		}
+		return flag;
+	}
 	
 }
