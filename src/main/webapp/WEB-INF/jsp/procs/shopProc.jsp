@@ -8,7 +8,7 @@
 	String save = request.getParameter("save");
 	int userid = 0;
 	
-	if(session.getAttribute("idKey") !=null){
+	if(session.getAttribute("idKeyS") !=null){
 		//세션값 int로 저장 
 		Object sessionValue = session.getAttribute("idKey");
 		
@@ -28,7 +28,7 @@
 	
 
 	if(save.equals("cart")){//장바구니 추가시
-		boolean checkResult = oMgr.checkCart(bookid, userid);
+		boolean checkResult = oMgr.checkCart(userid, bookid );
 		if(checkResult){
 			//carttbl에 이미 등록된 도서인 경우 레코드에 수량+1
 			oMgr.plusQCart(userid,bookid); 

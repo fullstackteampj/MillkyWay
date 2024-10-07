@@ -199,11 +199,23 @@ function zipSearch() {
   }).open();
 }
 
-//결제 수단 - 클릭 이벤트
+//결제 수단 버튼들
 const $payBtns = document.querySelectorAll('.buy .payment-info .btns-pay>button');
 let payment = null;
 
 $payBtns.forEach($payBtn => {
+  //처음 기본 설정값 세팅
+  if($payBtn.classList.contains('on')) {
+    payment = $payBtn.textContent;
+
+    const $input = document.createElement('input');
+      $input.setAttribute('type', 'hidden');
+      $input.setAttribute('name', 'payMethod');
+      $input.setAttribute('class', 'payMethod');
+      $input.setAttribute('value', payment);
+      document.buyFrm.appendChild($input);
+  }
+  //버튼 - 클릭 이벤트
   $payBtn.addEventListener('click', ()=>{
       //다른 테두리 모두 지우기
       for(let i=0; i<$payBtns.length; i++){
@@ -218,20 +230,24 @@ $payBtns.forEach($payBtn => {
       }
 
       //결제 수단 버튼 값 - input:hidden 태그 생성해서 데이터 전달
+      payment = $payBtn.textContent;
+
       const $input = document.createElement('input');
       $input.setAttribute('type', 'hidden');
       $input.setAttribute('name', 'payMethod');
       $input.setAttribute('class', 'payMethod');
-      $input.setAttribute('value', $payBtn.textContent);
+      $input.setAttribute('value', payment);
       document.buyFrm.appendChild($input);
 
-      payment = $payBtn.textContent;
   });
 });
 
-//buyFrm - submit 이벤트
+
+
+//buyFrm - submit 이벤트(required 활용 가능)
 document.buyFrm.addEventListener('submit', (evt)=>{
   evt.preventDefault(); 
+  //api로 구현한 결제 수단
   if(payment === '카카오페이') reqKakaoPay();
   if(payment === '네이버페이') reqNaverPay();
 });
