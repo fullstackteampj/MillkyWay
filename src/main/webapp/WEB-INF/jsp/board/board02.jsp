@@ -195,8 +195,8 @@
 	          <i class="fa-regular fa-thumbs-up"></i>
 	        </p>
 	      </div>
-		 <!-- 임시: 개발자용 추천버튼 -->
-       	 <button type="button" onclick="location.href='forDev/likebug?num=<%=num%>'">추천버그버튼(인기글은15개부터)</button>
+		 <!-- 임시: 개발자용 추천버튼 
+       	 <button type="button" onclick="location.href='forDev/likebug?num=<=num%>'">개발자용:추천14개(인기글은15개부터)</button>-->
       	
 		<% // 내글일 때만 수정/삭제버튼
 			if(loginId != null) { 
@@ -215,10 +215,10 @@
 	      <div id="commentHead">
 	        <div id="commentOpt">
 	          <h3>댓글 [<span><%= activeComCount %></span>]</h3>
-	          <select name="commentSort" id="commentSort">
+	          <!--  <select name="commentSort" id="commentSort">
 	            <option value="등록순">등록순</option>
 	            <option value="최신순">최신순</option>
-	          </select>
+	          </select>-->
 	        </div> <!-- div#commentOpt -->
 	
 	        <div id="commentMng">

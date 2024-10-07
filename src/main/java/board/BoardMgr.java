@@ -7,9 +7,9 @@ import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.Part;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 
 import DBConnection.DBConnectionMgr;
 import SHA256.SHASalt;
