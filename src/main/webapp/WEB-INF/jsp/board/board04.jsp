@@ -6,7 +6,7 @@
 <!-- 글작성 페이지 -->
 <%
 	request.setCharacterEncoding("UTF-8");
-	Integer loginId = 0;
+	Integer loginId = null;
 	String loginNickname = null;
 	
 	if(session != null && session.getAttribute("idKey") != null) {

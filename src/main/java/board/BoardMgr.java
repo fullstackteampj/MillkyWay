@@ -564,7 +564,7 @@ public class BoardMgr {
 		return count;
 	}
 	
-	// 댓글 목록 반환 -- status=0이거나 9이지만 자식댓글이 있는 댓글만 반환
+	// 등록순 댓글 목록 반환 -- status=0이거나 9이지만 자식댓글이 있는 댓글만 반환
 	public ArrayList<CommentBean> getCommentList(int boardid, int start, int end) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -610,6 +610,52 @@ public class BoardMgr {
 		}
 		return clist;
 	}
+	
+	// 최신순 댓글 목록 반환 -- status=0이거나 9이지만 자식댓글이 있는 댓글만 반환
+		public ArrayList<CommentBean> getRecentCommentList(int boardid, int start, int end) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = null;
+			
+			ArrayList<CommentBean> clist = new ArrayList<CommentBean>();
+					
+			try {
+				con = pool.getConnection();
+				//sql = "select * from commenttbl where boardid=? and ((status=0) or (status=9 and totalChild>0)) order by ref, pos limit ?, ?;";
+				sql = "select * from "
+						+ "(select * from commenttbl where boardid = ? "
+						+ "order by REF desc, pos desc limit ?,?) e "
+						+ "order by ref desc, pos ASC";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, boardid);
+				pstmt.setInt(2, start);
+				pstmt.setInt(3, end);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {					
+					CommentBean bean = new CommentBean();
+					bean.setCommentid(rs.getInt("commentid"));
+					bean.setUserid(rs.getInt("userid"));
+					bean.setNickname(rs.getString("nickname"));
+					bean.setContent(rs.getString("content"));
+					bean.setBoardid(rs.getInt("boardid"));
+					bean.setPos(rs.getInt("pos"));
+					bean.setDepth(rs.getInt("depth"));
+					bean.setRef(rs.getInt("ref"));
+					bean.setRegdate(rs.getString("regdate"));
+					bean.setUpdateDate(rs.getString("update_date"));
+					bean.setIp(rs.getString("ip"));
+					bean.setStatus(rs.getInt("status"));
+					clist.add(bean);
+				}
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				pool.freeConnection(con, pstmt, rs);
+			}
+			return clist;
+		}
 	
 	// 댓글정보 반환
 	public CommentBean getComment(int commentId) {

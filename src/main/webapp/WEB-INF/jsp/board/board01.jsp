@@ -5,9 +5,6 @@
 <%@ page import="beans.BoardBean, beans.BookBean, beans.MemberBean, beans.BoardFilterBean, beans.boardPagingBean" %>
 <jsp:useBean id="bMgr" class="board.BoardMgr" />
 <jsp:useBean id="dMgr" class="board.DateMgr" />
-<%
-	String readPosts = (String)request.getAttribute("readPosts");
-%>
 <!-- 글목록 페이지 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -23,6 +20,7 @@
 <body>
 	<c:set var="loginId" value="${loginId}" />
 	<c:set var="filter" value="${filter}" />
+	<c:set var="readPosts" value="${readPosts}" />
 	
   <div id="wrap">
 
@@ -150,7 +148,7 @@
 					            		</c:otherwise>
 					            	</c:choose>
 				              		<%-- 댓글이 존재하면 댓글수 출력 --%>
-				              		<c:set var="commentCount" value="${bMgr.getCommentCount(post.boardid)}"></c:set>
+				              		<c:set var="commentCount" value="${bMgr.getActiveComCount(post.boardid)}"></c:set>
 				              		<c:if test="${commentCount > 0}">
 				              			<span class="commentCount">[${commentCount}]</span>
 				              		</c:if>

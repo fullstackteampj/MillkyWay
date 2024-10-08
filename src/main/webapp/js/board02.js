@@ -524,3 +524,46 @@ async function goComBlock(element, boardid, nowBlock, pagePerBlock, totalPage, e
 		console.error(error);
 	})
 }
+
+// 댓글 정렬옵션에 따른 정렬
+async function commentSort(element, boardid) {
+	const nowPage = 1;
+	const numPerPage = 10;
+	const start = (nowPage-1)*numPerPage;
+	const end = numPerPage;
+	const url = (element.value === "최신순") ? 'recentSort' : 'regSort'
+	
+	const commentData = {
+		boardid,
+		nowPage,
+		numPerPage,
+		start,
+		end
+	}
+	
+	await fetch('recentSort', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(commentData)
+	})
+
+	.then(response => response.text())
+	.then(data => {
+		console.log(data);
+		// commentCont에 요소비우기
+		 const $commentBox = document.getElementById('commentBox');
+		 const $commentCont = document.getElementById('commentCont');
+		 while($commentCont.firstChild)  {
+			$commentCont.removeChild($commentCont.firstChild);
+		}
+		
+		// contentbox에 요소채우기
+		$commentBox.innerHTML = data;
+	})
+	.catch(error => {
+		console.error(error);
+	})
+	console.log(element.value);
+}

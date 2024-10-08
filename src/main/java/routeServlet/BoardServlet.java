@@ -137,6 +137,147 @@ public class BoardServlet extends HttpServlet {
 	    	request.setAttribute("readPosts", readPosts);
     	}
     	
+    	// 글읽기 페이지
+    	if("/board02".equals(path)) {
+
+    		int num = Integer.parseInt(request.getParameter("num"));
+    		String numS = request.getParameter("num");
+    		BoardMgr bMgr = new BoardMgr();
+    		
+    		// 조회수 증가
+    		bMgr.upCount(num);
+    		
+    		Integer loginId = null;
+    		String loginNickname = null;
+    		
+    		// 로그인 상태면 필요한 데이터 추출(id, nickname)
+    		HttpSession session = request.getSession();
+    		if(session != null && session.getAttribute("idKey") != null) {
+    			loginId = (Integer)session.getAttribute("idKey");
+    			loginNickname = bMgr.getNickname(loginId);
+    		}
+    		
+    		// 글정보추출
+    		BoardBean post = bMgr.getPost(num);
+    		
+    		// 책이 있으면 책정보 추출
+    		int bookid = post.getBookid();
+    		BookBean book = null;
+    		if(post.getBookid() != 0) {
+    			book = bMgr.getBook(bookid);
+    		}
+    		
+    		
+    		// Base64로 인코딩한 이미지 데이터를 추가
+    		if (book != null) {
+                // Base64로 인코딩
+                String encodedPhoto = Base64.getEncoder().encodeToString(book.getPhoto());
+                post.setEncodedPhoto(encodedPhoto);
+            }
+
+    		// 추천 수 추출
+    		int liked = (bMgr.getLikedCount(num) > 0) ? bMgr.getLikedCount(num) : 0;
+    		
+    		// 댓글 수 추출
+    		int activeComCount = bMgr.getActiveComCount(num);
+    		int commenCount = bMgr.getCommentCount(num);
+    		
+    		// 댓글 페이징
+    		int totalRecord=0; //전체레코드수
+    		int numPerPage=10; // 페이지당 레코드 수 
+    		int pagePerBlock=5; //블럭당 페이지수 
+    		int totalPage=0; //전체 페이지 수
+    		int totalBlock=0;  //전체 블럭수
+    		int nowPage=1; // 현재페이지
+    		int nowBlock=1;  //현재블럭
+    		int start=0; //디비의 select 시작번호
+    		int end=numPerPage; //시작번호로 부터 가져올 select 갯수
+    		int listSize=0; // DB로부터 추출해 list에 저장한 댓글 수
+    		
+    		
+    		// 페이지이동 시 게시글을 DB에서 추출할 때 기준이 되는 값을 초기화
+    		start = (nowPage-1)*numPerPage;
+    		end = numPerPage;
+    		
+    		// 페이징, 글목록출력 등에 활용될 변수 초기화 (총게시글수, 총페이지수, 현재블럭, 총블럭수)
+    		totalRecord = bMgr.getCommentCount(num);
+    		totalPage = (int)Math.ceil((double)totalRecord / numPerPage);  //전체페이지수
+    		nowBlock = (int)Math.ceil((double)nowPage/pagePerBlock); //현재블럭 계산
+    		totalBlock = (int)Math.ceil((double)totalPage / pagePerBlock);  //전체블럭계산
+
+    		// 페이지네이션 변수 초기화
+    		// 현재 블럭에서의 시작번호 (현재블럭과 블럭당페이지수로 계산)
+    		int pageStart = (nowBlock-1)*pagePerBlock+1;
+    	    // 현재 블럭에서의 끝번호 ()
+    		int pageEnd = ((pageStart + pagePerBlock ) <= totalPage) ?  (pageStart + pagePerBlock): totalPage+1;
+    	    
+    		
+    		String category="";
+
+    		// 카테고리를 고르면 변수 초기화
+    		if(request.getParameter("category") != null || request.getParameter("category") != "") {
+    			category = request.getParameter("category");
+    		}
+    		
+    		// 댓글 추출
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(num, start, end);
+			listSize = clist.size();
+	        
+			// 아이피 추출
+	        String userip = request.getRemoteAddr();
+
+    		// 쿠키저장
+    		// 기존 쿠키 유무를 확인하고 누적
+    		// 쿠키 추출
+    	  	String readPosts = null;
+    	  	Cookie[] cookies = request.getCookies();
+    	  	if(cookies != null) {
+    	  		for(Cookie cookie : cookies) {
+    	  			if(cookie.getName().equals("readPosts")) {
+    	  				readPosts = URLDecoder.decode(cookie.getValue(), "UTF-8"); // URL 디코딩 (읽을때는 다시 원래의 문자열로 복원)
+    	  				break;
+    	  			}
+    	  		}
+    	  	}
+    	  	
+    	  	// 확인 후 누적
+    	  	if(readPosts == null) {
+    	  		readPosts = numS;
+    	  	} else if(!readPosts.contains(numS)) {
+    	  		readPosts += ", " + numS;
+    	  	}
+    	  			
+    		Cookie cookie = new Cookie("readPosts", URLEncoder.encode(readPosts)); //쿠키에 저장하기 전에 문자열을 인코딩(특수문자를 안전하게 저장가능)
+    		cookie.setMaxAge(60 * 60 * 24 * 30); 	// 만료는 30일
+    		cookie.setPath("/"); 					//모든 경로에서 접근가능
+    		response.addCookie(cookie);
+    		
+    		// 결과를 request에 저장
+	    	boardPagingBean paging = new boardPagingBean(totalRecord, numPerPage, pagePerBlock,
+	    			totalPage, totalBlock, nowPage, nowBlock, start, end, listSize, pageStart, pageEnd);
+	    	
+	    	request.setAttribute("paging", paging);
+	    	request.setAttribute("num", num);
+	    	request.setAttribute("numS", numS);
+	    	request.setAttribute("loginId", loginId);
+	    	request.setAttribute("loginNickname", loginNickname);
+	    	request.setAttribute("post", post);
+	    	request.setAttribute("category", category);
+	    	request.setAttribute("activeComCount", activeComCount);
+	    	request.setAttribute("commenCount", commenCount);
+	    	request.setAttribute("book", book);
+	    	request.setAttribute("liked", liked);
+	    	request.setAttribute("clist", clist);
+	    	request.setAttribute("userip", userip);
+    	}
+    	
+
+    	// 글수정 페이지
+    	if("/board03".equals(path)) {
+    		
+    	}
+
+    	
         handleRequest(request, response);
     }
 
@@ -224,6 +365,86 @@ public class BoardServlet extends HttpServlet {
     		
     		// 포워딩
     		String commentBoxJsp = "/WEB-INF/jsp/board/boardBookSearch.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
+    	}
+    	
+    	// 댓글 정렬 옵션 요청 - 최신순
+    	if("/recentSort".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            int boardid = jsonObj.get("boardid").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
+            int numPerPage = jsonObj.get("numPerPage").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
+            
+
+            //필요한 데이터 추가
+            BoardMgr bMgr = new BoardMgr();
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// 댓글창에 필요한 데이터 담기
+    		int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getRecentCommentList(boardid, start, end);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("nowPage", nowPage);
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
+    		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
+    		dispatcher.forward(request, response);
+    	}
+    	
+    	// 댓글 정렬 옵션 요청 - 등록순
+    	if("/regSort".equals(path)) {
+    		StringBuilder sb = new StringBuilder();
+    		String line;
+            while ((line = request.getReader().readLine()) != null) {
+                sb.append(line);
+            }
+    		
+    		// JSON으로 읽은 데이터 파싱
+            JsonObject jsonObj = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            int boardid = jsonObj.get("boardid").getAsInt();
+            int nowPage = jsonObj.get("nowPage").getAsInt();
+            int numPerPage = jsonObj.get("numPerPage").getAsInt();
+            int start = jsonObj.get("start").getAsInt();
+            int end = jsonObj.get("end").getAsInt();
+            
+
+            //필요한 데이터 추가
+            BoardMgr bMgr = new BoardMgr();
+            BoardBean post = bMgr.getPost(boardid);
+            int postuser = post.getUserid();
+    		
+    		// 댓글창에 필요한 데이터 담기
+    		int commentCount = bMgr.getCommentCount(boardid);
+    		ArrayList<CommentBean> clist = bMgr.getCommentList(boardid, start, end);
+    		
+    		// request 객체로 반환
+    		request.setAttribute("nowPage", nowPage);
+    		request.setAttribute("postuser", postuser);
+    		request.setAttribute("commentCount", commentCount);
+    		request.setAttribute("clist", clist);
+    		request.setAttribute("boardid", boardid);
+
+    		// 포워딩
+    		String commentBoxJsp = "/WEB-INF/jsp/board/commentBox.jsp";
     		RequestDispatcher dispatcher = request.getRequestDispatcher(commentBoxJsp);
     		dispatcher.forward(request, response);
     	}
