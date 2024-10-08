@@ -331,10 +331,10 @@
 	  //해당 별점 - 클릭이벤트
 	  $star.addEventListener('click', ()=>{
 	    for(let i=0; i<=idx; i++){
-	      $stars[i].style.color = 'rgb(100, 130, 173)';/******* 포인트 컬러에 따라 변경 필요********/
+	      $stars[i].style.color = '#1a6080';
 	    }
 	    for(let k=$stars.length-1; k>idx; k--){
-	      $stars[k].style.color = '#ddd';/******* 포인트 컬러에 따라 변경 필요********/
+	      $stars[k].style.color = '#ddd';
 	    }
 	    inputScore = idx+1;
 	  });
