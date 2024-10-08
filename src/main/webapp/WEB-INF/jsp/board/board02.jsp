@@ -215,18 +215,11 @@
 	      <div id="commentHead">
 	        <div id="commentOpt">
 	          <h3>댓글 [<span><%= activeComCount %></span>]</h3>
-<<<<<<< HEAD
-	          <!-- 
-	          <select name="commentSort" id="commentSort">
-	            <option value="등록순">등록순</option>
-	            <option value="최신순">최신순</option>
-	          </select> -->
-=======
+
 	          <!--  <select name="commentSort" id="commentSort">
 	            <option value="등록순">등록순</option>
 	            <option value="최신순">최신순</option>
 	          </select>-->
->>>>>>> f9c3366d4b29c47fbb52615b64dcea966d670865
 	        </div> <!-- div#commentOpt -->
 	
 	        <div id="commentMng">

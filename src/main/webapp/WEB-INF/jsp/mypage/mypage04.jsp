@@ -102,7 +102,7 @@
 		              <i class="fa-solid fa-chevron-down on"></i>
 		              <i class="fa-solid fa-chevron-up"></i>
 		              <button type="button">
-		              	<a href="/board/board01?boardid=<%=bean.getBoardid()%>">수정</a>
+		              	<a href="/board/board03?num=<%=bean.getBoardid()%>&category=전체">수정</a>
 		              </button>
 		              <button type="button" onClick="javascript:delCheck(<%=bean.getBoardid()%>)">
 		             	  	삭제
