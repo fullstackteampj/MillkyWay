@@ -163,7 +163,7 @@
 	    }else{
 	    	//장바구니/관심목록 구분
 			if(save === 'cart'){
-				location.href = '/props/shopProc?orderNum=1&save=cart&bookid=' + bookid;
+				location.href = '/procs/shopProc?orderNum=1&save=cart&bookid=' + bookid;
 			}else if(save==='wish'){
 				location.href = '/procs/shopProc?orderNum=1&save=wish&bookid=' + bookid;
 			}else{
