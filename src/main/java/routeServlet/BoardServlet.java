@@ -167,12 +167,18 @@ public class BoardServlet extends HttpServlet {
     			book = bMgr.getBook(bookid);
     		}
     		
+    		// 첨부이미지 = Base64로 인코딩한 이미지 데이터를 추가
+    		if (post.getPhoto() != null) {
+                // Base64로 인코딩
+                String encodedPhoto = Base64.getEncoder().encodeToString(post.getPhoto());
+                post.setEncodedPhoto(encodedPhoto);
+            }
     		
-    		// Base64로 인코딩한 이미지 데이터를 추가
-    		if (book != null) {
+    		// 도서표지 = Base64로 인코딩한 이미지 데이터를 추가
+    		if (book != null && book.getPhoto() != null) {
                 // Base64로 인코딩
                 String encodedPhoto = Base64.getEncoder().encodeToString(book.getPhoto());
-                post.setEncodedPhoto(encodedPhoto);
+                book.setEncodedPhoto(encodedPhoto);
             }
 
     		// 추천 수 추출

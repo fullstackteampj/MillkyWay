@@ -538,10 +538,11 @@ async function commentSort(element, boardid) {
 		nowPage,
 		numPerPage,
 		start,
-		end
+		end,
+		"sort" : element.value
 	}
 	
-	await fetch('recentSort', {
+	await fetch(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'

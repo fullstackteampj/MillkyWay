@@ -65,7 +65,7 @@
 			      <div id="readContent">
 			        <div id="contentDetail">
 			          <%-- 이미지가 존재하면 출력 --%>
-			          <c:if test="${post.photo != null && post.photo.length > 0 }">
+			          <c:if test="${post.photo != null}">
 			          	<img src="data:image/jpeg;base64, ${post.encodedPhoto}" alt="${post.photoName}">
 				        <br />
 			          </c:if>
@@ -81,7 +81,7 @@
 				          		<%-- 첨부이미지가 있으면 출력 --%>
 				          		<c:choose>
 				          			<c:when test="${book.getPhoto() != null}">
-				          				<img src="data:image/jpeg;base64, ${post.encodedPhoto}" alt="${book.title}">
+				          				<img src="data:image/jpeg;base64, ${book.encodedPhoto}" alt="${book.title}">
 				          			</c:when>
 				          			<c:otherwise>
 				          				<img src="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg" alt="${book.title}">
@@ -114,7 +114,7 @@
 		      	
 				<%-- // 내글일 때만 수정/삭제버튼 --%>
 					<c:if test="${loginId != null}">
-						<c:if test="${userid == loginId}">
+						<c:if test="${post.userid == loginId}">
 							<div id="postMng">
 						        <a href="board05?category=${category}&num=${num}" class="readBtn">삭제 <i class="fa-solid fa-trash-can"></i></a>
 						        <a href="board03?category=${category}&num=${num}" class="readBtn">수정 <i class="fa-solid fa-pencil"></i></a>
@@ -128,10 +128,10 @@
 			      <div id="commentHead">
 			        <div id="commentOpt">
 			          <h3>댓글 [<span>${activeComCount}</span>]</h3>
-			          <select name="commentSort" id="commentSort" onchange="commentSort(this, ${num})">
-			            <option value="등록순"">등록순</option>
-			            <option value="최신순">최신순</option>
-			          </select>
+				          <select name="commentSort" id="commentSort" onchange="commentSort(this, ${num})">
+				            <option value="등록순"">등록순</option>
+				            <option value="최신순">최신순</option>
+				          </select>
 			        </div> <%-- div#commentOpt --%>
 			
 			        <div id="commentMng">
