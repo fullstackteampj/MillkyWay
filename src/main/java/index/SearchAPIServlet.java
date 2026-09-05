@@ -1,7 +1,7 @@
 package index;
 
+import config.EnvConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,32 +24,42 @@ public class SearchAPIServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String subject = request.getParameter("subject");
-        String clientId = "aTtUtH6PI0jq29wOuhuU"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "M4sHJOcUaa"; // 애플리케이션 클라이언트 시크릿
+        if (subject == null || subject.trim().isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "검색어가 필요합니다.");
+            return;
+        }
 
-        String text = null;
+        final String clientId;
+        final String clientSecret;
+        try {
+            clientId = EnvConfig.required("NAVER_SEARCH_CLIENT_ID");
+            clientSecret = EnvConfig.required("NAVER_SEARCH_CLIENT_SECRET");
+        } catch (IllegalStateException e) {
+            response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "검색 API 설정을 사용할 수 없습니다.");
+            return;
+        }
+
+        String text;
         try {
             text = URLEncoder.encode(subject, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("검색어 인코딩 실패", e);
+            throw new ServletException("검색어 인코딩 실패", e);
         }
 
-        // API URL : JSON 응답 받기
         String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=5&start=1";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
         String responseBody = get(apiURL, requestHeaders);
-        
-        // JSON 응답을 설정
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter out = response.getWriter();
         out.print(responseBody);
         out.flush();
     }
-    
+
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
@@ -59,11 +69,10 @@ public class SearchAPIServlet extends HttpServlet {
             }
 
             int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 return readBody(con.getInputStream());
-            } else { // 오류 발생
-                return readBody(con.getErrorStream());
             }
+            return readBody(con.getErrorStream());
         } catch (IOException e) {
             throw new RuntimeException("API 요청과 응답 실패", e);
         } finally {
@@ -76,9 +85,9 @@ public class SearchAPIServlet extends HttpServlet {
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+            throw new RuntimeException("API URL이 잘못되었습니다.", e);
         } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+            throw new RuntimeException("연결이 실패했습니다.", e);
         }
     }
 
