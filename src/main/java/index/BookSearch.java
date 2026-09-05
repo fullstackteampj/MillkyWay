@@ -1,5 +1,11 @@
 package index;
-import java.io.*;
+
+import config.EnvConfig;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,25 +16,22 @@ import java.util.Map;
 public class BookSearch {
 
     public static String runApi(String subject) {
-        String clientId = "7NOGl4nY8Lp_ieE9Ip9X"; // 애플리케이션 클라이언트 아이디
-        String clientSecret = "Uo73ED7wKU"; // 애플리케이션 클라이언트 시크릿
+        String clientId = EnvConfig.required("NAVER_SEARCH_CLIENT_ID");
+        String clientSecret = EnvConfig.required("NAVER_SEARCH_CLIENT_SECRET");
 
-        String text = null;
+        String text;
         try {
-            text = URLEncoder.encode(subject, "UTF-8"); // 검색어 입력
+            text = URLEncoder.encode(subject, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException("검색어 인코딩 실패", e);
         }
 
-        //  JSON 응답 받기
         String apiURL = "https://openapi.naver.com/v1/search/book.json?query=" + text + "&display=5&start=1";
 
         Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("X-Naver-Client-Id", clientId);
         requestHeaders.put("X-Naver-Client-Secret", clientSecret);
-        String responseBody = get(apiURL, requestHeaders);
-        
-		return responseBody;
+        return get(apiURL, requestHeaders);
     }
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
@@ -40,11 +43,10 @@ public class BookSearch {
             }
 
             int responseCode = con.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+            if (responseCode == HttpURLConnection.HTTP_OK) {
                 return readBody(con.getInputStream());
-            } else { // 오류 발생
-                return readBody(con.getErrorStream());
             }
+            return readBody(con.getErrorStream());
         } catch (IOException e) {
             throw new RuntimeException("API 요청과 응답 실패", e);
         } finally {
@@ -57,9 +59,9 @@ public class BookSearch {
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+            throw new RuntimeException("API URL이 잘못되었습니다.", e);
         } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+            throw new RuntimeException("연결이 실패했습니다.", e);
         }
     }
 
