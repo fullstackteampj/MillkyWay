@@ -1,12 +1,18 @@
-#클래스패스 업로드방지
+# Eclipse / IDE metadata
 .classpath
-
-#프로젝트설정 업로드방지
 .project
-
-#세팅폴더 안에 모든 파일 업로드방지
 .settings/
 
+# Build outputs
 bin/
-/bin/
 /build/
+
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+*.local.properties
+secrets.properties
+
+# Local archives / backup bundles
+*.zip
